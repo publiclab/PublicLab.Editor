@@ -22,7 +22,9 @@
   },
   "dependencies": {
     "woofmark":              "~4.0.2",
-    "fontawesome":           "~4.5.0",
+    "domador":               "2.3.0",
+    "megamark":              "3.2.2",
+    "font-awesome":          "~4.5.0",
     "bootstrap":             "~3.2.0",
     "bootstrap-datepicker":  "~1.6.0",
     "jquery":                "~2"

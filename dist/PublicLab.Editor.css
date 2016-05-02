@@ -1,8 +1,88 @@
+.help {
+  color: #aaa;
+}
+
 .pl-editor-header {
   text-align: center;
+}
+
+.pl-editor-footer {
+  padding: 10px;
+  background: #f8f8f8;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  text-align: right;
+}
+
+.pl-editor-type {
+  margin-bottom: 20px;
 }
 
 .pl-editor-section {
   padding: 20px;
   border-top: 1px solid #ddd;
+}
+
+.pl-editor-section-guide h2 {
+  font-size: 4em;
+  margin-top: 0;
+}
+
+.pl-editor-section-guide p {
+  color: #aaa;
+}
+
+.pl-editor-drag-drop {
+  border:4px dotted #ccc;
+  background: #f8f8f8;
+  color: #aaa;
+  font-size:16px;
+  padding:40px;
+  text-align:center;
+  margin-bottom:10px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius:    8px;
+  border-radius:         8px;
+}
+
+.wk-wysiwyg {
+  min-height: 200px;
+  padding:10px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius:    8px;
+  border-radius:         8px;
+}
+
+.wk-commands {
+  float: left;
+}
+
+.wk-switchboard {
+  float: right;
+}
+
+.wk-commands button, 
+.wk-switchboard button {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
 }

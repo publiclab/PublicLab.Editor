@@ -73,3 +73,77 @@ var PublicLab = {};
     return Class;
   };
 })();
+
+PublicLab.Util = {
+
+  getUrlHashParameter: function(sParam) {
+
+    var sPageURL = window.location.hash;
+    if (sPageURL) sPageURL = sPageURL.split('#')[1];
+    var sURLVariables = sPageURL.split('&');
+
+    for (var i = 0; i < sURLVariables.length; i++) {
+
+      var sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] == sParam) {
+        return sParameterName[1];
+      }
+
+    }
+
+  },
+
+  getUrlParameter: function(sParam) {
+
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+
+    for (var i = 0; i < sURLVariables.length; i++) {
+
+      var sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] == sParam) {
+        return sParameterName[1];
+      }
+
+    }
+
+  }
+
+}
+
+PublicLab.Editor = Class.extend({
+
+  init: function(textarea) {
+
+    var editor = this;
+
+    editor.wysiwyg = woofmark(textarea, {
+
+      parseMarkdown: function (input) {
+        return megamark(input, {
+          tokenizers: [{
+            token: /(^|\s)@([A-z]+)\b/g,
+            transform: function (all, separator, id) {
+              return separator + '<a href="/users/' + id + '">@' + id + '</a>';
+            }
+          }]
+        });
+      },
+
+      parseHTML: function (input) {
+        return domador(input, {
+          transform: function (el) {
+            if (el.tagName === 'A' && el.innerHTML[0] === '@') {
+              return el.innerHTML;
+            }
+          }
+        });
+      }
+
+    });
+
+  }
+
+});
