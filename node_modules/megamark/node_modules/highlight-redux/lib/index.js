@@ -1,0 +1,11 @@
+var Highlight = require('./highlight');
+var hljs = new Highlight();
+hljs.registerLanguage('bash', require('./languages/bash.js'));
+hljs.registerLanguage('javascript', require('./languages/javascript.js'));
+hljs.registerLanguage('xml', require('./languages/xml.js'));
+hljs.registerLanguage('markdown', require('./languages/markdown.js'));
+hljs.registerLanguage('css', require('./languages/css.js'));
+hljs.registerLanguage('http', require('./languages/http.js'));
+hljs.registerLanguage('ini', require('./languages/ini.js'));
+hljs.registerLanguage('json', require('./languages/json.js'));
+module.exports = hljs;
