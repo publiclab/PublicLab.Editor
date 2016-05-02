@@ -1,0 +1,39 @@
+{
+  "name": "publiclab-editor",
+  "version": "0.0.1",
+  "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
+  "main": "dist/webjack.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/publiclab/PublicLab.Editor.git"
+  },
+  "keywords": [
+    "editor",
+    "wysiwyg",
+    "publiclab"
+  ],
+  "author": "Public Lab",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/publiclab/PublicLab.Editor/issues"
+  },
+  "dependencies": {
+    "woofmark":              "~4.0.2",
+    "fontawesome":           "~4.5.0",
+    "bootstrap":             "~3.2.0",
+    "bootstrap-datepicker":  "~1.6.0",
+    "jquery":                "~2"
+  },
+  "devDependencies": {
+    "matchdep":                 "^0.3.0",
+    "jasmine":                  "~2.3.0",
+    "grunt":                    "^0.4.5",
+    "grunt-cli":                "^1.2.0",
+    "grunt-contrib-concat":     "^0.5.0",
+    "grunt-contrib-watch":      "^0.6.1"
+  },
+  "homepage": "https://github.com/publiclab/PublicLab.Editor#readme"
+}
