@@ -24,11 +24,11 @@
 
     <div class="pl-editor">
 
-      <div class="pl-editor-header">
+      <div class="ple-header">
 
         <h1>Share</h1>
 
-        <div class="container pl-editor-type">
+        <div class="container ple-type">
           <div class="col-md-4 col-md-push-4">
             <select class="form-control input-lg">
               <option selected value="">a research note</option>
@@ -40,51 +40,54 @@
 
       </div>
 
-      <div class="pl-editor-body">
+      <div class="ple-body">
 
 
-        <div class="pl-editor-title pl-editor-section container">
+        <div class="ple-title ple-section container">
 
-          <div class="pl-editor-section-guide col-md-3">
+          <div class="ple-section-guide col-md-3">
             <h2>1</h2>
             <p>The title is a very important thing. <a href="">Read more</a></p>
           </div>
 
-          <div class="pl-editor-section-content col-md-9">
+          <div class="ple-section-content col-md-9">
             <input class="form-control input-lg" type="text" placeholder="Title" />
           </div>
 
         </div>
 
 
-        <div class="pl-editor-main-image pl-editor-section container">
+        <div class="ple-main-image ple-section container">
 
-          <div class="pl-editor-section-guide col-md-3">
+          <div class="ple-section-guide col-md-3">
             <h2>2</h2>
             <p>Choose an image. <a href="">Read more</a></p>
           </div>
 
-          <div class="pl-editor-section-content col-md-9 container">
-            <div class="pl-editor-drag-drop col-md-6">
+          <div class="ple-section-content col-md-9 container">
+            <div class="ple-drag-drop col-md-6">
               Drag an image here to upload.
             </div>
             <div class="col-md-6 help">
-              Select a main image for your post.
+
+              <p><input type="file" name="image[photo]" /></p>
+              <p class="ple-help">Select a main image for your post.</p>
+
             </div>
           </div>
 
         </div>
 
 
-        <div class="pl-editor-body pl-editor-section container">
+        <div class="ple-body ple-section container">
 
-          <div class="pl-editor-section-guide col-md-3">
+          <div class="ple-section-guide col-md-3">
             <h2>3</h2>
             <p>Your body text. <a href="">Read more</a></p>
           </div>
 
-          <div class="pl-editor-section-content col-md-9 container">
-            <textarea class="pl-editor-textarea form-control"></textarea>
+          <div class="ple-section-content col-md-9 container">
+            <textarea class="ple-textarea form-control"></textarea>
           </div>
 
         </div>
@@ -92,7 +95,7 @@
         
       </div>
 
-      <div class="pl-editor-footer">
+      <div class="ple-footer">
 
         <button class="btn btn-lg btn-default">Preview</button>
         <button class="btn btn-lg btn-primary">Publish</button>
@@ -108,7 +111,7 @@
 
       (function() {
 
-        editor = new PublicLab.Editor($('.pl-editor-textarea')[0]);
+        editor = new PublicLab.Editor($('.ple-textarea')[0]);
 
       })();
 
