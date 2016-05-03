@@ -28,7 +28,10 @@ Some, or many of the above may be optionally based on [Public Lab Powertags](htt
 
 * client-side validation
 
-## Prototypes
+
+## Development
+
+Early design discussion is [happening on PublicLab.org](https://publiclab.org/tag/rich-editor).
 
 You can try a very early, rough prototype here: 
 
