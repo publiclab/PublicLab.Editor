@@ -1,3 +1,7 @@
+.pl-editor {
+  margin-bottom: 100px;
+}
+
 .pl-editor h1,
 .pl-editor h2,
 .pl-editor h3,
@@ -53,6 +57,8 @@
   border-radius:         8px;
 }
 
+.ple-textarea,
+.ple-textarea:focus,
 .wk-wysiwyg {
   min-height: 200px;
   padding:10px;
@@ -61,6 +67,7 @@
   -webkit-border-radius: 8px;
   -moz-border-radius:    8px;
   border-radius:         8px;
+  outline: none;
 }
 
 .wk-commands {
@@ -95,3 +102,8 @@
   user-select: none;
   background-image: none;
 }
+
+.woofmark-command-link {
+  color: blue;
+}
+
