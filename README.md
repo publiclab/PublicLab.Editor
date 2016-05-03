@@ -15,14 +15,18 @@ PublicLab.Editor will provide author-friendly interfaces for:
 * tagging
 * edit history
 
-We may include an extensible API for adding custom content, mostly based around [Public Lab Powertags](https://publiclab.org/wiki/power-tags), for example:
+You can try a very early, rough prototype here: https://publiclab.github.io/PublicLab.Editor/examples/
 
-* coauthoring
+We may include an extensible API for adding custom content modules, for example:
+
+* coauthoring: "add co-authors"
 * "post a response" buttons
-* event data (calendar selector)
-* related content selection
+* event data (calendar selector, RSVP)
+* related content selection: "this work is a response to post X"
+* geotagging: "Use the map to show where this happened"
+* data embedding: "Paste data here and choose a chart style" (via Chart.js?)
 
-We may also include:
+Some, or many of the above may be optionally based on [Public Lab Powertags](https://publiclab.org/wiki/power-tags). We may also include:
 
 * client-side validation
 

@@ -21,22 +21,23 @@
     "url": "https://github.com/publiclab/PublicLab.Editor/issues"
   },
   "dependencies": {
-    "woofmark":              "~4.0.2",
-    "domador":               "2.3.0",
-    "megamark":              "3.2.2",
-    "font-awesome":          "~4.5.0",
-    "bootstrap":             "~3.2.0",
-    "bootstrap-datepicker":  "~1.6.0",
-    "jquery":                "~2",
-    "grow-textarea":         "1.0.1"
+    "woofmark": "~4.0.2",
+    "domador": "2.3.0",
+    "megamark": "3.2.2",
+    "font-awesome": "~4.5.0",
+    "bootstrap": "~3.2.0",
+    "bootstrap-datepicker": "~1.6.0",
+    "jquery": "~2",
+    "grow-textarea": "1.0.1"
   },
   "devDependencies": {
-    "matchdep":                 "^0.3.0",
-    "jasmine":                  "~2.3.0",
-    "grunt":                    "^0.4.5",
-    "grunt-cli":                "^1.2.0",
-    "grunt-contrib-concat":     "^0.5.0",
-    "grunt-contrib-watch":      "^0.6.1"
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^5.0.0",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "jasmine": "~2.3.0",
+    "matchdep": "^0.3.0"
   },
   "homepage": "https://github.com/publiclab/PublicLab.Editor#readme"
 }
