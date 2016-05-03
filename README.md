@@ -15,8 +15,6 @@ PublicLab.Editor will provide author-friendly interfaces for:
 * tagging
 * edit history
 
-You can try a very early, rough prototype here: https://publiclab.github.io/PublicLab.Editor/examples/
-
 We may include an extensible API for adding custom content modules, for example:
 
 * coauthoring: "add co-authors"
@@ -30,8 +28,16 @@ Some, or many of the above may be optionally based on [Public Lab Powertags](htt
 
 * client-side validation
 
+## Prototypes
 
-### Setup
+You can try a very early, rough prototype here: 
+
+https://publiclab.github.io/PublicLab.Editor/examples/
+
+![Screenshot](https://i.publiclab.org/system/images/photos/000/015/865/original/Public_Lab_Rich_Editor_design_%281%29.png)
+
+
+## Setup
 
 To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/), and use the following constructor:
 
