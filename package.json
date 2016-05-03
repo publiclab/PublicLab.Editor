@@ -27,7 +27,8 @@
     "font-awesome":          "~4.5.0",
     "bootstrap":             "~3.2.0",
     "bootstrap-datepicker":  "~1.6.0",
-    "jquery":                "~2"
+    "jquery":                "~2",
+    "grow-textarea":         "1.0.1"
   },
   "devDependencies": {
     "matchdep":                 "^0.3.0",
