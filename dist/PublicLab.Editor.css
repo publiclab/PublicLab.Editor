@@ -1,12 +1,19 @@
-.help {
+.pl-editor h1,
+.pl-editor h2,
+.pl-editor h3,
+.pl-editor h4 {
+  font-family: serif;
+}
+
+.ple-help {
   color: #aaa;
 }
 
-.pl-editor-header {
+.ple-header {
   text-align: center;
 }
 
-.pl-editor-footer {
+.ple-footer {
   padding: 10px;
   background: #f8f8f8;
   width: 100%;
@@ -15,25 +22,25 @@
   text-align: right;
 }
 
-.pl-editor-type {
+.ple-type {
   margin-bottom: 20px;
 }
 
-.pl-editor-section {
+.ple-section {
   padding: 20px;
   border-top: 1px solid #ddd;
 }
 
-.pl-editor-section-guide h2 {
+.ple-section-guide h2 {
   font-size: 4em;
   margin-top: 0;
 }
 
-.pl-editor-section-guide p {
+.ple-section-guide p {
   color: #aaa;
 }
 
-.pl-editor-drag-drop {
+.ple-drag-drop {
   border:4px dotted #ccc;
   background: #f8f8f8;
   color: #aaa;
@@ -49,6 +56,8 @@
 .wk-wysiwyg {
   min-height: 200px;
   padding:10px;
+  margin-bottom:10px;
+  border: 5px solid #eee;
   -webkit-border-radius: 8px;
   -moz-border-radius:    8px;
   border-radius:         8px;
