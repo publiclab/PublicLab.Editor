@@ -1,4 +1,4 @@
-PublicLab.Util = {
+module.exports = {
 
   getUrlHashParameter: function(sParam) {
 

@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+    grunt.loadNpmTasks('grunt-browserify');
+
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.initConfig({
@@ -19,23 +21,22 @@ module.exports = function(grunt) {
             }
         },
 
-        concat: {
+        browserify: {
             dist: {
                 src: [
-                    'src/core/Class.js',
-                    'src/core/Util.js',
-                    'src/*.js'
+                    'src/PublicLab.Editor.js'
                 ],
-                dest: 'dist/PublicLab.Editor.js',
+                dest: 'dist/PublicLab.Editor.js'
             }
         }
+
     });
 
     /* Default (development): Watch files and build on change. */
     grunt.registerTask('default', ['watch']);
 
     grunt.registerTask('build', [
-        'concat:dist'
+        'browserify:dist'
     ]);
 
 };

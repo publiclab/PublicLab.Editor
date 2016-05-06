@@ -57,6 +57,11 @@
   border-radius:         8px;
 }
 
+.ple-textarea {
+  box-sizing: border-box;
+  min-height: 31px;
+}
+
 .ple-textarea,
 .ple-textarea:focus,
 .wk-wysiwyg {
@@ -107,3 +112,8 @@
   color: blue;
 }
 
+.wk-container-drop {
+  padding: 30px;
+  border: 4px dotted #ccc;
+  background: #eee;
+}

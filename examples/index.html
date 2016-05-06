@@ -11,12 +11,6 @@
     <link href="../node_modules/woofmark/dist/woofmark.min.css" rel="stylesheet">
     <link href="../dist/PublicLab.Editor.css" rel="stylesheet">
 
-    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/woofmark/dist/woofmark.js"></script>
-    <script src="../node_modules/domador/dist/domador.min.js"></script>
-    <script src="../node_modules/megamark/dist/megamark.min.js"></script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<!--    <script src="../node_modules/grow-textarea/index.js"></script>-->
     <script src="../dist/PublicLab.Editor.js"></script>
 
   </head>
@@ -115,7 +109,7 @@ PublicLab.Editor will provide author-friendly interfaces for:
 To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/), and use the following constructor:
 
 ````js
-var editor = PublicLab.Editor({
+var editor = PL.Editor({
   publishUrl:      "/notes",            // content will POST to this URL upon clicking "Publish"
   updateUrl:       "/notes",            // content will UPDATE to this URL upon clicking "Save"
   relatedTagsUrl:  "/notes",            // content will UPDATE to this URL upon clicking "Save"
@@ -149,7 +143,7 @@ var editor = PublicLab.Editor({
 
       (function() {
 
-        editor = new PublicLab.Editor($('.ple-textarea')[0]);
+        editor = new PL.Editor($('.ple-textarea')[0]);
 
       })();
 
