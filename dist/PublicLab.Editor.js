@@ -21383,7 +21383,7 @@ function bullseye (el, target, options) {
 
 module.exports = bullseye;
 
-},{"./tailormade":111,"./throttle":112,"crossvent":114}],110:[function(require,module,exports){
+},{"./tailormade":111,"./throttle":112,"crossvent":2}],110:[function(require,module,exports){
 'use strict';
 
 var get = easyGet;
@@ -21661,7 +21661,7 @@ function tailormade (el, options) {
 module.exports = tailormade;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./throttle":112,"crossvent":114,"seleccion":127,"sell":110}],112:[function(require,module,exports){
+},{"./throttle":112,"crossvent":2,"seleccion":124,"sell":110}],112:[function(require,module,exports){
 'use strict';
 
 function throttle (fn, boundary) {
@@ -21691,12 +21691,6 @@ function throttle (fn, boundary) {
 module.exports = throttle;
 
 },{}],113:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"dup":1}],114:[function(require,module,exports){
-arguments[4][2][0].apply(exports,arguments)
-},{"./eventmap":115,"custom-event":113,"dup":2}],115:[function(require,module,exports){
-arguments[4][3][0].apply(exports,arguments)
-},{"dup":3}],116:[function(require,module,exports){
 'use strict';
 
 var sektor = require('sektor');
@@ -21845,7 +21839,7 @@ module.exports = {
   handlers: handlers
 };
 
-},{"crossvent":114,"sektor":117}],117:[function(require,module,exports){
+},{"crossvent":2,"sektor":114}],114:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -21920,7 +21914,7 @@ function matchesSelector (element, selector) {
 function never () { return false; }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],118:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -21966,7 +21960,7 @@ accessor.off = tracking.off;
 module.exports = accessor;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./stub":119,"./tracking":120}],119:[function(require,module,exports){
+},{"./stub":116,"./tracking":117}],116:[function(require,module,exports){
 'use strict';
 
 var ms = {};
@@ -22000,7 +21994,7 @@ module.exports = {
   clear: clear
 };
 
-},{}],120:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22057,7 +22051,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],121:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22078,7 +22072,7 @@ if (isHost.method(global, 'getSelection')) {
 module.exports = getSelection;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./getSelectionNullOp":122,"./getSelectionRaw":123,"./getSelectionSynthetic":124,"./isHost":125}],122:[function(require,module,exports){
+},{"./getSelectionNullOp":119,"./getSelectionRaw":120,"./getSelectionSynthetic":121,"./isHost":122}],119:[function(require,module,exports){
 'use strict';
 
 function noop () {}
@@ -22092,7 +22086,7 @@ function getSelectionNullOp () {
 
 module.exports = getSelectionNullOp;
 
-},{}],123:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22103,7 +22097,7 @@ function getSelectionRaw () {
 module.exports = getSelectionRaw;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],124:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22357,7 +22351,7 @@ function getSelection () {
 module.exports = getSelection;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./rangeToTextRange":126}],125:[function(require,module,exports){
+},{"./rangeToTextRange":123}],122:[function(require,module,exports){
 'use strict';
 
 function isHostMethod (host, prop) {
@@ -22388,7 +22382,7 @@ module.exports = {
   properties: many(isHostProperty)
 };
 
-},{}],126:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22452,7 +22446,7 @@ function createBoundaryTextRange (p, starting) {
 module.exports = rangeToTextRange;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],127:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 var getSelection = require('./getSelection');
@@ -22463,7 +22457,7 @@ module.exports = {
   set: setSelection
 };
 
-},{"./getSelection":121,"./setSelection":128}],128:[function(require,module,exports){
+},{"./getSelection":118,"./setSelection":125}],125:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22502,7 +22496,7 @@ function setSelection (p) {
 module.exports = setSelection;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./getSelection":121,"./rangeToTextRange":126}],129:[function(require,module,exports){
+},{"./getSelection":118,"./rangeToTextRange":123}],126:[function(require,module,exports){
 'use strict';
 
 var crossvent = require('crossvent');
@@ -22704,7 +22698,7 @@ function preventCtrlYZ (e) {
 
 module.exports = InputHistory;
 
-},{"./InputState":130,"crossvent":114}],130:[function(require,module,exports){
+},{"./InputState":127,"crossvent":2}],127:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -22787,7 +22781,7 @@ InputState.prototype.setChunks = function (chunk) {
 module.exports = InputState;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./fixEOL":137,"./html/HtmlChunks":141,"./isVisibleElement":150,"./markdown/MarkdownChunks":152}],131:[function(require,module,exports){
+},{"./fixEOL":134,"./html/HtmlChunks":138,"./isVisibleElement":147,"./markdown/MarkdownChunks":149}],128:[function(require,module,exports){
 'use strict';
 
 var crossvent = require('crossvent');
@@ -22883,7 +22877,7 @@ function bindCommands (surface, options, editor) {
 
 module.exports = bindCommands;
 
-},{"./html/blockquote":142,"./html/boldOrItalic":143,"./html/codeblock":144,"./html/heading":145,"./html/hr":146,"./html/linkOrImageOrAttachment":147,"./html/list":148,"./markdown/blockquote":153,"./markdown/boldOrItalic":154,"./markdown/codeblock":155,"./markdown/heading":156,"./markdown/hr":157,"./markdown/linkOrImageOrAttachment":158,"./markdown/list":159,"crossvent":114}],132:[function(require,module,exports){
+},{"./html/blockquote":139,"./html/boldOrItalic":140,"./html/codeblock":141,"./html/heading":142,"./html/hr":143,"./html/linkOrImageOrAttachment":144,"./html/list":145,"./markdown/blockquote":150,"./markdown/boldOrItalic":151,"./markdown/codeblock":152,"./markdown/heading":153,"./markdown/hr":154,"./markdown/linkOrImageOrAttachment":155,"./markdown/list":156,"crossvent":2}],129:[function(require,module,exports){
 'use strict';
 
 function cast (collection) {
@@ -22898,7 +22892,7 @@ function cast (collection) {
 
 module.exports = cast;
 
-},{}],133:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 var rinput = /^\s*(.*?)(?:\s+"(.+)")?\s*$/;
@@ -22949,7 +22943,7 @@ function formatHref (url) {
 
 module.exports = parseLinkInput;
 
-},{}],134:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 function trim (remove) {
@@ -22970,7 +22964,7 @@ function trim (remove) {
 
 module.exports = trim;
 
-},{}],135:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 var rtrim = /^\s+|\s+$/g;
@@ -22992,7 +22986,7 @@ module.exports = {
   rm: rmClass
 };
 
-},{}],136:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 function extendRegExp (regex, pre, post) {
@@ -23012,7 +23006,7 @@ function extendRegExp (regex, pre, post) {
 
 module.exports = extendRegExp;
 
-},{}],137:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 function fixEOL (text) {
@@ -23021,7 +23015,7 @@ function fixEOL (text) {
 
 module.exports = fixEOL;
 
-},{}],138:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 var InputState = require('./InputState');
@@ -23058,7 +23052,7 @@ function getCommandHandler (surface, history, fn) {
 
 module.exports = getCommandHandler;
 
-},{"./InputState":130}],139:[function(require,module,exports){
+},{"./InputState":127}],136:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -23278,7 +23272,7 @@ function surface (textarea, editable, droparea) {
 module.exports = surface;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./cast":132,"./fixEOL":137,"./many":151,"seleccion":127}],140:[function(require,module,exports){
+},{"./cast":129,"./fixEOL":134,"./many":148,"seleccion":124}],137:[function(require,module,exports){
 'use strict';
 
 function getText (el) {
@@ -23287,7 +23281,7 @@ function getText (el) {
 
 module.exports = getText;
 
-},{}],141:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 'use strict';
 
 var trimChunks = require('../chunks/trim');
@@ -23305,7 +23299,7 @@ HtmlChunks.prototype.skip = function () {
 
 module.exports = HtmlChunks;
 
-},{"../chunks/trim":134}],142:[function(require,module,exports){
+},{"../chunks/trim":131}],139:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -23317,7 +23311,7 @@ function blockquote (chunks) {
 
 module.exports = blockquote;
 
-},{"../strings":169,"./wrapping":149}],143:[function(require,module,exports){
+},{"../strings":166,"./wrapping":146}],140:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -23329,7 +23323,7 @@ function boldOrItalic (chunks, type) {
 
 module.exports = boldOrItalic;
 
-},{"../strings":169,"./wrapping":149}],144:[function(require,module,exports){
+},{"../strings":166,"./wrapping":146}],141:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -23341,7 +23335,7 @@ function codeblock (chunks) {
 
 module.exports = codeblock;
 
-},{"../strings":169,"./wrapping":149}],145:[function(require,module,exports){
+},{"../strings":166,"./wrapping":146}],142:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -23377,7 +23371,7 @@ function heading (chunks) {
 
 module.exports = heading;
 
-},{"../strings":169}],146:[function(require,module,exports){
+},{"../strings":166}],143:[function(require,module,exports){
 'use strict';
 
 function hr (chunks) {
@@ -23387,7 +23381,7 @@ function hr (chunks) {
 
 module.exports = hr;
 
-},{}],147:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 var crossvent = require('crossvent');
@@ -23475,7 +23469,7 @@ function linkOrImageOrAttachment (chunks, options) {
 
 module.exports = linkOrImageOrAttachment;
 
-},{"../chunks/parseLinkInput":133,"../once":162,"../strings":169,"crossvent":114}],148:[function(require,module,exports){
+},{"../chunks/parseLinkInput":130,"../once":159,"../strings":166,"crossvent":2}],145:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -23548,7 +23542,7 @@ function list (chunks, ordered) {
 
 module.exports = list;
 
-},{"../strings":169}],149:[function(require,module,exports){
+},{"../strings":166}],146:[function(require,module,exports){
 'use strict';
 
 function wrapping (tag, placeholder, chunks) {
@@ -23659,7 +23653,7 @@ function surrounded (chunks, tag) {
 
 module.exports = wrapping;
 
-},{}],150:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -23674,7 +23668,7 @@ function isVisibleElement (elem) {
 module.exports = isVisibleElement;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],151:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 'use strict';
 
 function many (text, times) {
@@ -23683,7 +23677,7 @@ function many (text, times) {
 
 module.exports = many;
 
-},{}],152:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 var many = require('../many');
@@ -23754,7 +23748,7 @@ MarkdownChunks.prototype.skip = function (options) {
 
 module.exports = MarkdownChunks;
 
-},{"../chunks/trim":134,"../extendRegExp":136,"../many":151}],153:[function(require,module,exports){
+},{"../chunks/trim":131,"../extendRegExp":133,"../many":148}],150:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -23882,7 +23876,7 @@ function blockquote (chunks) {
 
 module.exports = blockquote;
 
-},{"../strings":169,"./settings":160,"./wrapping":161}],154:[function(require,module,exports){
+},{"../strings":166,"./settings":157,"./wrapping":158}],151:[function(require,module,exports){
 'use strict';
 
 var rleading = /^(\**)/;
@@ -23921,7 +23915,7 @@ function boldOrItalic (chunks, type) {
 
 module.exports = boldOrItalic;
 
-},{"../strings":169}],155:[function(require,module,exports){
+},{"../strings":166}],152:[function(require,module,exports){
 'use strict';
 
 var strings = require('../strings');
@@ -24008,7 +24002,7 @@ function codeblock (chunks, options) {
 
 module.exports = codeblock;
 
-},{"../strings":169}],156:[function(require,module,exports){
+},{"../strings":166}],153:[function(require,module,exports){
 'use strict';
 
 var many = require('../many');
@@ -24057,7 +24051,7 @@ function heading (chunks) {
 
 module.exports = heading;
 
-},{"../many":151,"../strings":169}],157:[function(require,module,exports){
+},{"../many":148,"../strings":166}],154:[function(require,module,exports){
 'use strict';
 
 function hr (chunks) {
@@ -24068,7 +24062,7 @@ function hr (chunks) {
 
 module.exports = hr;
 
-},{}],158:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 var once = require('../once');
@@ -24209,7 +24203,7 @@ function linkOrImageOrAttachment (chunks, options) {
 
 module.exports = linkOrImageOrAttachment;
 
-},{"../chunks/parseLinkInput":133,"../once":162,"../strings":169}],159:[function(require,module,exports){
+},{"../chunks/parseLinkInput":130,"../once":159,"../strings":166}],156:[function(require,module,exports){
 'use strict';
 
 var many = require('../many');
@@ -24298,14 +24292,14 @@ function list (chunks, ordered) {
 
 module.exports = list;
 
-},{"../many":151,"../strings":169,"./settings":160,"./wrapping":161}],160:[function(require,module,exports){
+},{"../many":148,"../strings":166,"./settings":157,"./wrapping":158}],157:[function(require,module,exports){
 'use strict';
 
 module.exports = {
   lineLength: 72
 };
 
-},{}],161:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 var prefixes = '(?:\\s{4,}|\\s*>|\\s*-\\s+|\\s*\\d+\\.|=|\\+|-|_|\\*|#|\\s*\\[[^\n]]+\\]:)';
@@ -24336,7 +24330,7 @@ module.exports = {
   unwrap: unwrap
 };
 
-},{}],162:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 'use strict';
 
 function once (fn) {
@@ -24352,7 +24346,7 @@ function once (fn) {
 
 module.exports = once;
 
-},{}],163:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 var doc = document;
@@ -24391,7 +24385,7 @@ function remove (prompts) {
 
 module.exports = closePrompts;
 
-},{}],164:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 var crossvent = require('crossvent');
@@ -24580,7 +24574,7 @@ function prompt (options, done) {
 
 module.exports = prompt;
 
-},{"../classes":135,"../strings":169,"../uploads":170,"./render":165,"crossvent":114}],165:[function(require,module,exports){
+},{"../classes":132,"../strings":166,"../uploads":167,"./render":162,"crossvent":2}],162:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -24678,7 +24672,7 @@ render.uploads = uploads;
 module.exports = render;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../classes":135,"../getText":140,"../setText":168,"../strings":169,"crossvent":114}],166:[function(require,module,exports){
+},{"../classes":132,"../getText":137,"../setText":165,"../strings":166,"crossvent":2}],163:[function(require,module,exports){
 'use strict';
 
 var bullseye = require('bullseye');
@@ -24899,7 +24893,7 @@ function rememberSelection (history) {
 
 module.exports = rememberSelection;
 
-},{"bullseye":109}],167:[function(require,module,exports){
+},{"bullseye":109}],164:[function(require,module,exports){
 'use strict';
 
 var setText = require('./setText');
@@ -24922,7 +24916,7 @@ module.exports = {
   commands: commands
 };
 
-},{"./setText":168,"./strings":169}],168:[function(require,module,exports){
+},{"./setText":165,"./strings":166}],165:[function(require,module,exports){
 'use strict';
 
 function setText (el, value) {
@@ -24931,7 +24925,7 @@ function setText (el, value) {
 
 module.exports = setText;
 
-},{}],169:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -25000,7 +24994,7 @@ module.exports = {
   }
 };
 
-},{}],170:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 var crossvent = require('crossvent');
@@ -25070,7 +25064,7 @@ function dragstopper (droparea) {
 uploads.stop = dragstopper;
 module.exports = uploads;
 
-},{"./classes":135,"crossvent":114}],171:[function(require,module,exports){
+},{"./classes":132,"crossvent":2}],168:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -25415,7 +25409,7 @@ woofmark.strings = strings;
 module.exports = woofmark;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./InputHistory":129,"./bindCommands":131,"./classes":135,"./getCommandHandler":138,"./getSurface":139,"./prompts/close":163,"./prompts/prompt":164,"./rememberSelection":166,"./renderers":167,"./setText":168,"./strings":169,"./uploads":170,"./xhrStub":172,"crossvent":114,"kanye":116,"local-storage":118}],172:[function(require,module,exports){
+},{"./InputHistory":126,"./bindCommands":128,"./classes":132,"./getCommandHandler":135,"./getSurface":136,"./prompts/close":160,"./prompts/prompt":161,"./rememberSelection":163,"./renderers":164,"./setText":165,"./strings":166,"./uploads":167,"./xhrStub":169,"crossvent":2,"kanye":113,"local-storage":115}],169:[function(require,module,exports){
 'use strict';
 
 function xhrStub (options) {
@@ -25424,7 +25418,7 @@ function xhrStub (options) {
 
 module.exports = xhrStub;
 
-},{}],173:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -25645,7 +25639,7 @@ function _createXHR(options) {
 
 function noop() {}
 
-},{"global/window":174,"is-function":175,"once":176,"parse-headers":179,"xtend":180}],174:[function(require,module,exports){
+},{"global/window":171,"is-function":172,"once":173,"parse-headers":176,"xtend":177}],171:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -25658,7 +25652,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],175:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -25675,7 +25669,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],176:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -25696,7 +25690,7 @@ function once (fn) {
   }
 }
 
-},{}],177:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -25744,7 +25738,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":175}],178:[function(require,module,exports){
+},{"is-function":172}],175:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -25760,7 +25754,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],179:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -25792,7 +25786,7 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":177,"trim":178}],180:[function(require,module,exports){
+},{"for-each":174,"trim":175}],177:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -25813,44 +25807,62 @@ function extend() {
     return target
 }
 
-},{}],181:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
+// can we require things that rely on 
+// document, but still be runnable in nodejs?
+// if (!this.hasOwnProperty('document') document 
+
 $ = require('jquery');
-var woofmark     = require('woofmark'),
-    domador      = require('domador'),
-    megamark     = require('megamark'),
-    Class        = require('resig-class');
+var Class        = require('resig-class');
     crossvent    = require('crossvent');
 
-PL = {};
+PL = PublicLab = {};
 module.exports = PL;
 
 PL.Util = require('./core/Util.js');
+PL.Formatter = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
+
 
 PL.Editor = Class.extend({
 
-  init: function(textarea) {
+  init: function(options) {
 
     var editor = this;
 
-    editor.textarea = textarea;
+
+    /*########################
+     * Set up DOM stuff
+     */
+
     editor.growTextarea = require('grow-textarea');
 
-    // wait until document.body exists:
     $(document).ready(function() {
+
+// TEMPORARY: run during validations?
+$('.ple-title input').on('keydown', function(e) {
+  $('.ple-publish').removeClass('disabled');
+  $('.ple-steps-left').html(1);
+});
 
       editor.resize();
 
-      // once woofmark's done with the textarea
-      crossvent.add(textarea, 'woofmark-mode-change', function (e) {
+      // once woofmark's done with the textarea, this is triggered
+      // using woofmark's special event system, crossvent
+      // -- move this into the Woofmark adapter initializer
+      crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+
         editor.resize();
+
         // ensure document is scrolled to the same place:
         document.body.scrollTop = editor.scrollTop;
         // might need to adjust for markdown/rich text not 
         // taking up same amount of space, if menu is below editor...
         //if (editor.wysiwyg.mode == "markdown") 
+
       });
 
-      $(editor.textarea).on('change keydown', function(e) {
+      $(options.textarea).on('change keydown', function(e) {
         editor.resize();
       });
 
@@ -25858,38 +25870,28 @@ PL.Editor = Class.extend({
 
 
 
-    // make textarea match content height:
+    // Make textarea match content height
     editor.resize = function() {
 
-      editor.growTextarea(editor.textarea, { extra: 10 });
+      editor.growTextarea(options.textarea, { extra: 10 });
 
     }
 
 
-    editor.post = {
+    editor.data = {
 
-      title: "",
-      body: "",
-      tags: "",          // comma-delimited list; this should be added by a PL.Editor.MainImage module
-      main_image_url: "" // this should be added by a PL.Editor.MainImage module
+      title: null,
+      body:  null,
+      tags:  null,          // comma-delimited list; this should be added by a PL.Editor.MainImage module
+      main_image_url: null // this should be added by a PL.Editor.MainImage module
 
     }
 
-/*
-Parameters for plots2: {
-"authenticity_token"=>"uaX2OVOswwmJxNIBXyHOoBAIeYdKRu+LyVTrUAnEsLI=", 
-"title"=>"Test post", 
-"body"=>"###What I want to do\r\n\r\n###My attempt and results\r\n\r\n###Questions and next steps\r\n\r\n###Why I'm interested", 
-"tags"=>"", 
+    // Update data based on passed options.data
+    for (var attrname in options.data) {
+      editor.data[attrname] = options.data[attrname];
+    }
 
-"image"=>{"photo"=>""}, 
-"has_main_image"=>"", 
-"main_image"=>"", 
-"node_images"=>"", 
-"remote"=>"true", 
-"date"=>"04-25-2016"
-} 
-*/
 
     // Method to fetch the Markdown contents of the WYSIWYG textarea
     editor.value = function() {
@@ -25898,103 +25900,178 @@ Parameters for plots2: {
 
     }
 
-    editor.wysiwyg = woofmark(textarea, {
 
-      defaultMode: 'wysiwyg',
-      storage:     'ple-woofmark-mode',
-      xhr:         require('xhr'),
+    editor.wysiwyg = PublicLab.Woofmark(options.textarea, editor);
 
-      render: {
-
-        modes: function (button, id) {
-          button.className = 'woofmark-mode-' + id;
-          if (id == 'html')     button.innerHTML = "Preview";
-          if (id == 'markdown') button.innerHTML = "Markdown";
-          if (id == 'wysiwyg')  button.innerHTML = "Rich";
-        }
-/*
-        commands: function (button, id) {
-          button.className = 'woofmark-command-' + id;
-        }
-*/
-
-      },
-
-      images: {
-   
-        // endpoint where the images will be uploaded to, required
-        url: '/images',
-   
-        // optional text describing the kind of files that can be uploaded
-        restriction: 'GIF, JPG, and PNG images',
-   
-        // what to call the FormData field?
-        key: 'main_image',
-   
-        // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
-        validate: function isItAnImageFile (file) {
-          return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
-        }
-
-      },
-
-/*
-      // for handling non-image uploads
-      // -- need to insert icon, maybe, or do it in CSS
-      attachments: {
-      },
-*/
-
-      parseMarkdown: function (input) {
-
-        editor.scrollTop = document.body.scrollTop;
-
-        return megamark(input, {
-          tokenizers: [
-            {
-              token: /(^|\s)@([A-z]+)\b/g,
-              transform: function (all, separator, id) {
-                return separator + '<a href="/profile/' + id + '">@' + id + '</a>';
-              }
-            },
-            {
-              token: /(^|\s)#([A-z]+)\b/g,
-              transform: function (all, separator, id) {
-                return separator + '<a href="/tag/' + id + '">#' + id + '</a>';
-              }
-            }
-          ]
-        });
-
-      },
-
-      parseHTML: function (input) {
-
-        editor.scrollTop = document.body.scrollTop;
-
-        return domador(input, {
-          transform: function (el) {
-
-            if (el.tagName === 'A' && el.innerHTML[0] === '@') {
-              return el.innerHTML;
-            }
-
-            if (el.tagName === 'A' && el.innerHTML[0] === '#') {
-              return el.innerHTML;
-            }
-
-          }
-        });
-
-      }
-
-    });
 
   }
 
 });
 
-},{"./core/Util.js":182,"crossvent":2,"domador":4,"grow-textarea":7,"jquery":15,"megamark":17,"resig-class":108,"woofmark":171,"xhr":173}],182:[function(require,module,exports){
+},{"./adapters/PublicLab.Formatter.js":179,"./adapters/PublicLab.Woofmark.js":180,"./core/Util.js":181,"crossvent":2,"grow-textarea":7,"jquery":15,"resig-class":108}],179:[function(require,module,exports){
+/*
+ * Formatters package the post content for a specific
+ * application, like PublicLab.org or Drupal.
+ */
+
+var Class = require('resig-class');
+
+module.exports = PublicLab.Formatter = Class.extend({
+
+
+  // eventually we could accept both a format and a URL
+  init: function(data, destination) {
+
+    var _formatter = this;
+
+    // return formatted version of data
+    return _formatter.schemas[destination](data);
+
+  },
+
+
+  // functions that accept standard <data> and output form data for known services
+  schemas: {
+
+    "publiclab": function(data) {
+
+      var output = {};
+
+      output.title              = data.title || null; 
+      output.body               = data.body  || null; 
+
+      // we can remove this from server req, since we're authenticated
+      output.authenticity_token = data.token || null; 
+
+      // Optional:
+      output.tags               = data.tags           || null; // comma delimited
+      output.has_main_image     = data.has_main_image || null;
+      output.main_image         = data.main_image     || null; // to associate with pre-uploaded image
+      output.node_images        = data.node_images    || null; // comma-separated image.ids, I think
+      // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
+      output.image              = { };  
+      output.image.photo        = data.image          || null;
+
+      return output;
+
+    }//,
+
+    // "drupal": {
+    //   "title":           null,
+    //   "body":            null
+    // }
+
+  }
+
+});
+
+},{"resig-class":108}],180:[function(require,module,exports){
+/*
+ * Wrapped woofmark() constructor with 
+ * customizations for our use case
+ */
+
+var woofmark     = require('woofmark'),
+    domador      = require('domador'),
+    megamark     = require('megamark');
+    
+module.exports = function(textarea, editor) {
+
+  return woofmark(textarea, {
+
+    defaultMode: 'wysiwyg',
+    storage:     'ple-woofmark-mode',
+    xhr:         require('xhr'),
+
+    render: {
+
+      modes: function (button, id) {
+        button.className = 'woofmark-mode-' + id;
+        if (id == 'html')     button.innerHTML = "Preview";
+        if (id == 'markdown') button.innerHTML = "Markdown";
+        if (id == 'wysiwyg')  button.innerHTML = "Rich";
+      },
+
+      commands: function (button, id) {
+        button.className = 'woofmark-command-' + id;
+      }
+
+
+    },
+
+    images: {
+ 
+      // endpoint where the images will be uploaded to, required
+      url: '/images',
+ 
+      // optional text describing the kind of files that can be uploaded
+      restriction: 'GIF, JPG, and PNG images',
+ 
+      // what to call the FormData field?
+      key: 'main_image',
+ 
+      // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
+      validate: function isItAnImageFile (file) {
+        return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+      }
+
+    },
+
+
+    // for handling non-image uploads
+    // -- need to insert icon, maybe, or do it in CSS
+    attachments: {
+    },
+
+
+    parseMarkdown: function (input) {
+
+      editor.scrollTop = document.body.scrollTop;
+
+      return megamark(input, {
+        tokenizers: [
+          {
+            token: /(^|\s)@([A-z]+)\b/g,
+            transform: function (all, separator, id) {
+              return separator + '<a href="/profile/' + id + '">@' + id + '</a>';
+            }
+          },
+          {
+            token: /(^|\s)#([A-z]+)\b/g,
+            transform: function (all, separator, id) {
+              return separator + '<a href="/tag/' + id + '">#' + id + '</a>';
+            }
+          }
+        ]
+      });
+
+    },
+
+    parseHTML: function (input) {
+
+      editor.scrollTop = document.body.scrollTop;
+
+      return domador(input, {
+        transform: function (el) {
+
+          if (el.tagName === 'A' && el.innerHTML[0] === '@') {
+            return el.innerHTML;
+          }
+
+          if (el.tagName === 'A' && el.innerHTML[0] === '#') {
+            return el.innerHTML;
+          }
+
+        }
+      });
+
+    }
+
+  });
+
+}
+
+},{"domador":4,"megamark":17,"woofmark":168,"xhr":170}],181:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -26034,4 +26111,4 @@ module.exports = {
 
 }
 
-},{}]},{},[181]);
+},{}]},{},[178]);
