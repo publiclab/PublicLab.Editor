@@ -23,7 +23,10 @@
   width: 100%;
   position: fixed;
   bottom: 0;
-  text-align: right;
+}
+
+.ple-footer .ple-help {
+  margin: 12px;
 }
 
 .ple-type {

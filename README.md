@@ -45,18 +45,18 @@ https://publiclab.github.io/PublicLab.Editor/examples/
 To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/), and use the following constructor:
 
 ````js
-var editor = PublicLab.Editor({
+var editor = PublicLab.Editor({ 
+  textarea: document.getElementById('my-textarea'),
   publishUrl:      "/notes",            // content will POST to this URL upon clicking "Publish"
   updateUrl:       "/notes",            // content will UPDATE to this URL upon clicking "Save"
   relatedTagsUrl:  "/notes",            // content will UPDATE to this URL upon clicking "Save"
-  newPost:         true,                // is it a new post, or are you editing an existing post?
-  title:           "Your post title",
-  body:            "Your post content",
-  tags:            "nice,cool"
-  // maybe more?
+  data: { // prepopulate fields:
+    title:           "Your post title",
+    body:            "Your post content",
+    tags:            "nice,cool"
+  }
 });
 ````
-
 
 ## Developers
 
