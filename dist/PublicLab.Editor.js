@@ -25819,23 +25819,33 @@ var Class        = require('resig-class');
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util = require('./core/Util.js');
+PL.Util      = require('./core/Util.js');
 PL.Formatter = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
+PL.History   = require('./PublicLab.History.js');
 
 
 PL.Editor = Class.extend({
 
   init: function(options) {
 
-    var editor = this;
+    var _editor = this;
 
 
     /*########################
      * Set up DOM stuff
      */
 
-    editor.growTextarea = require('grow-textarea');
+    _editor.growTextarea = require('grow-textarea');
+
+
+    // Make textarea match content height
+    _editor.resize = function() {
+
+      _editor.growTextarea(options.textarea, { extra: 10 });
+
+    }
+
 
     $(document).ready(function() {
 
@@ -25845,40 +25855,31 @@ $('.ple-title input').on('keydown', function(e) {
   $('.ple-steps-left').html(1);
 });
 
-      editor.resize();
+      _editor.resize();
 
       // once woofmark's done with the textarea, this is triggered
       // using woofmark's special event system, crossvent
       // -- move this into the Woofmark adapter initializer
       crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
 
-        editor.resize();
+        _editor.resize();
 
         // ensure document is scrolled to the same place:
-        document.body.scrollTop = editor.scrollTop;
+        document.body.scrollTop = _editor.scrollTop;
         // might need to adjust for markdown/rich text not 
-        // taking up same amount of space, if menu is below editor...
-        //if (editor.wysiwyg.mode == "markdown") 
+        // taking up same amount of space, if menu is below _editor...
+        //if (_editor.wysiwyg.mode == "markdown") 
 
       });
 
       $(options.textarea).on('change keydown', function(e) {
-        editor.resize();
+        _editor.resize();
       });
 
     });
 
 
-
-    // Make textarea match content height
-    editor.resize = function() {
-
-      editor.growTextarea(options.textarea, { extra: 10 });
-
-    }
-
-
-    editor.data = {
+    _editor.data = {
 
       title: null,
       body:  null,
@@ -25889,26 +25890,153 @@ $('.ple-title input').on('keydown', function(e) {
 
     // Update data based on passed options.data
     for (var attrname in options.data) {
-      editor.data[attrname] = options.data[attrname];
+      _editor.data[attrname] = options.data[attrname];
     }
 
 
     // Method to fetch the Markdown contents of the WYSIWYG textarea
-    editor.value = function() {
+    _editor.value = function() {
 
-      return editor.wysiwyg.value();
+      return _editor.wysiwyg.value();
 
     }
 
 
-    editor.wysiwyg = PublicLab.Woofmark(options.textarea, editor);
+    _editor.wysiwyg = PublicLab.Woofmark(options.textarea, _editor);
+
+    _editor.history = new PublicLab.History(_editor);
 
 
   }
 
 });
 
-},{"./adapters/PublicLab.Formatter.js":179,"./adapters/PublicLab.Woofmark.js":180,"./core/Util.js":181,"crossvent":2,"grow-textarea":7,"jquery":15,"resig-class":108}],179:[function(require,module,exports){
+},{"./PublicLab.History.js":179,"./adapters/PublicLab.Formatter.js":180,"./adapters/PublicLab.Woofmark.js":181,"./core/Util.js":182,"crossvent":2,"grow-textarea":7,"jquery":15,"resig-class":108}],179:[function(require,module,exports){
+/*
+ * History of edits, in markdown
+ * 
+ * We could eventually do 'major' and 'minor' depending on how much changed.
+ */
+
+var Class = require('resig-class');
+
+module.exports = PublicLab.History = Class.extend({
+
+  init: function(_editor, options) {
+
+    var _history = this;
+
+    _history.options = options || {};
+
+    // this would be the nid in Drupal
+    // plus the username, or just a
+    // unique id if it's a new post
+    _history.options.id       = _history.options.id || (new Date()).getTime();
+    _history.options.interval = _history.options.interval || 10000; // ten second default
+    _history.options.prefix   = _history.options.prefix || "publiclab-editor-history-";
+
+    // unique key to fetch storage
+    _history.key = _history.options.prefix + _history.options.id; 
+
+
+    if (window.hasOwnProperty('localStorage')) {
+
+
+      // Fetch the entire history of this post from localStorage
+      _history.fetch = function() {
+
+        _history.log = JSON.parse(localStorage.getItem(_history.key)) || [];
+
+        return _history.log;
+
+      }
+
+
+      // Write the entire history of this post to localStorage;
+      // overwrites previous history, so be careful
+      _history.write = function() {
+
+        var string = JSON.stringify(_history.log)
+
+        // minimal validation:
+        if (_history.log instanceof Array  
+            && typeof string    == 'string' 
+            && string[0]        == '[') {
+
+          localStorage.setItem(_history.key, string);
+
+        }
+
+      }
+
+
+      // Add an item to the history (history.log)
+      // and write to localStorage.
+      _history.add = function(text) {
+
+        var entry = {
+
+          text:      text,
+          timestamp: (new Date()).getTime()
+          // type: 'minor'
+
+        }
+
+        _history.log.push(entry);
+        _history.write();
+
+      }
+
+
+      // Add an item ONLY if it's different from the last entry
+      _history.addIfDifferent = function(text) {
+
+        if (_history.last() && text != _history.last().text) _history.add(text);
+        else if (_history.last()) _history.last().timestamp = (new Date()).getTime()
+
+      }
+
+
+      // Most recent history entry
+      _history.last = function() {
+
+        if (_history.log.length > 0 ) {
+
+          return _history.log[_history.log.length - 1];
+
+        } else {
+
+          return null;
+
+        }
+
+      }
+
+
+      // Actually get the contents of the passed textarea and store
+      _history.check = function() {
+
+        _history.addIfDifferent($(_editor.textarea).html());
+
+      }
+
+
+      _history.fetch();
+      setInterval(_history.check, _history.options.interval);
+      _history.check();
+
+
+    } else {
+
+      console.log('history requires localStorage-enabled browser');
+
+    }
+
+  }
+
+});
+
+},{"resig-class":108}],180:[function(require,module,exports){
 /*
  * Formatters package the post content for a specific
  * application, like PublicLab.org or Drupal.
@@ -25965,7 +26093,7 @@ module.exports = PublicLab.Formatter = Class.extend({
 
 });
 
-},{"resig-class":108}],180:[function(require,module,exports){
+},{"resig-class":108}],181:[function(require,module,exports){
 /*
  * Wrapped woofmark() constructor with 
  * customizations for our use case
@@ -26071,7 +26199,7 @@ module.exports = function(textarea, editor) {
 
 }
 
-},{"domador":4,"megamark":17,"woofmark":168,"xhr":170}],181:[function(require,module,exports){
+},{"domador":4,"megamark":17,"woofmark":168,"xhr":170}],182:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
