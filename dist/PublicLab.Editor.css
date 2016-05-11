@@ -6,11 +6,20 @@
 .pl-editor h2,
 .pl-editor h3,
 .pl-editor h4 {
-  font-family: serif;
+  font-family: "Junction Light", serif;
 }
 
 .ple-help {
   color: #aaa;
+}
+
+.ple-help-minor {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.ple-help-light {
+  color: #ddd;
 }
 
 .ple-header {
@@ -45,6 +54,22 @@
 
 .ple-section-guide p {
   color: #aaa;
+  padding-bottom: 22px;
+  padding-right: 30px;
+  clear: left;
+}
+
+.ple-section-guide .ple-guide-minor p {
+  font-size: 12px;
+}
+
+.ple-section-guide p i.fa {
+  color: #666;
+  font-size: 18px;
+  float:left;
+  padding-top: 6px;
+  padding-right: 12px;
+  padding-bottom: 8px;
 }
 
 .ple-drag-drop {

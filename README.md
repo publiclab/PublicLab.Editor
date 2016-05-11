@@ -47,9 +47,10 @@ To use PublicLab.Editor, you'll need to follow [the template provided here](http
 ````js
 var editor = PublicLab.Editor({ 
   textarea: document.getElementById('my-textarea'),
-  publishUrl:      "/notes",            // content will POST to this URL upon clicking "Publish"
-  updateUrl:       "/notes",            // content will UPDATE to this URL upon clicking "Save"
-  relatedTagsUrl:  "/notes",            // content will UPDATE to this URL upon clicking "Save"
+  id:                "username", // optional unique id for localStorage history
+  publishUrl:        "/notes",   // content will POST to this URL upon clicking "Publish"
+  updateUrl:         "/notes",   // content will UPDATE to this URL upon clicking "Save"
+  relatedTagsUrl:    "/notes",   // content will UPDATE to this URL upon clicking "Save"
   data: { // prepopulate fields:
     title:           "Your post title",
     body:            "Your post content",
@@ -76,6 +77,14 @@ For additional support, join the Public Lab website and mailing list at http://p
 * Find lots of info on contributing at http://publiclab.org/wiki/developers
 * Review specific contributor guidelines at http://publiclab.org/wiki/contributing-to-public-lab-software
 * Some devs hang out in http://publiclab.org/chat (irc webchat)
+
+
+## Testing
+
+Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html 
+
+To run tests, open /test.html in a browser. To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
+
 
 ****
 

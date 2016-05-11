@@ -2,32 +2,45 @@
 // document, but still be runnable in nodejs?
 // if (!this.hasOwnProperty('document') document 
 
-$ = require('jquery');
+window.$ = window.jQuery = require('jquery')
+var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() {
+  
+});
+
 var Class        = require('resig-class');
     crossvent    = require('crossvent');
 
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util = require('./core/Util.js');
+PL.Util      = require('./core/Util.js');
 PL.Formatter = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
+PL.History   = require('./PublicLab.History.js');
+PL.Help      = require('./PublicLab.Help.js'); // ui?
 
 
 PL.Editor = Class.extend({
 
   init: function(options) {
 
-    var editor = this;
+    var _editor = this;
+    _editor.options = options;
 
 
     /*########################
      * Set up DOM stuff
      */
 
-    editor.growTextarea = require('grow-textarea');
+    _editor.growTextarea = require('grow-textarea');
 
-    $(document).ready(function() {
+
+    // Make textarea match content height
+    _editor.resize = function() {
+
+      _editor.growTextarea(options.textarea, { extra: 10 });
+
+    }
 
 // TEMPORARY: run during validations?
 $('.ple-title input').on('keydown', function(e) {
@@ -35,40 +48,29 @@ $('.ple-title input').on('keydown', function(e) {
   $('.ple-steps-left').html(1);
 });
 
-      editor.resize();
+    _editor.resize();
 
-      // once woofmark's done with the textarea, this is triggered
-      // using woofmark's special event system, crossvent
-      // -- move this into the Woofmark adapter initializer
-      crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+    // once woofmark's done with the textarea, this is triggered
+    // using woofmark's special event system, crossvent
+    // -- move this into the Woofmark adapter initializer
+    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
 
-        editor.resize();
+      _editor.resize();
 
-        // ensure document is scrolled to the same place:
-        document.body.scrollTop = editor.scrollTop;
-        // might need to adjust for markdown/rich text not 
-        // taking up same amount of space, if menu is below editor...
-        //if (editor.wysiwyg.mode == "markdown") 
-
-      });
-
-      $(options.textarea).on('change keydown', function(e) {
-        editor.resize();
-      });
+      // ensure document is scrolled to the same place:
+      document.body.scrollTop = _editor.scrollTop;
+      // might need to adjust for markdown/rich text not 
+      // taking up same amount of space, if menu is below _editor...
+      //if (_editor.wysiwyg.mode == "markdown") 
 
     });
 
+    $(options.textarea).on('change keydown', function(e) {
+      _editor.resize();
+    });
 
 
-    // Make textarea match content height
-    editor.resize = function() {
-
-      editor.growTextarea(options.textarea, { extra: 10 });
-
-    }
-
-
-    editor.data = {
+    _editor.data = {
 
       title: null,
       body:  null,
@@ -79,20 +81,25 @@ $('.ple-title input').on('keydown', function(e) {
 
     // Update data based on passed options.data
     for (var attrname in options.data) {
-      editor.data[attrname] = options.data[attrname];
+      _editor.data[attrname] = options.data[attrname];
     }
 
 
     // Method to fetch the Markdown contents of the WYSIWYG textarea
-    editor.value = function() {
+    _editor.value = function() {
 
-      return editor.wysiwyg.value();
+      return _editor.wysiwyg.value();
 
     }
 
 
-    editor.wysiwyg = PublicLab.Woofmark(options.textarea, editor);
+    _editor.wysiwyg = PublicLab.Woofmark(options.textarea, _editor);
 
+    _editor.history = new PublicLab.History(_editor);
+    _editor.help = new PublicLab.Help(_editor);
+
+    // testing plots2 bootstrap styling
+    $('table').addClass('table');
 
   }
 
