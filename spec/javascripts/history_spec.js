@@ -31,7 +31,7 @@ describe("History", function() {
   });
 
 
-  it("adds and fetches", function() {
+  it("adds, fetches, and stores", function() {
 
     expect(editor.history.fetch()).toEqual([]);
     expect(editor.history.last()).toBe(null);
@@ -40,10 +40,24 @@ describe("History", function() {
     expect(editor.history.last().text).toBe("some text");
     expect(editor.history.last().timestamp).not.toBeUndefined();
 
+    expect(editor.history.fetch().length).toEqual(1);
+    expect(editor.history.last().text).toBe("some text");
+
+    editor.history.add("some more text");
+    expect(editor.history.last().text).toBe("some more text");
+    expect(editor.history.last().timestamp).not.toBeUndefined();
+
+    expect(editor.history.fetch().length).toEqual(2);
+    expect(editor.history.last().text).toBe("some more text");
+
   });
 
 
   xit("creates new log entry when textarea updated", function() {
+
+    expect($('textarea.ple-textarea').length).toBeGreaterThan(0);
+    $('textarea.ple-textarea').val('changed textarea text');
+    expect(editor.history.last().text).toBe("changed textarea text");
 
   });
 

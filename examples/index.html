@@ -24,29 +24,39 @@
         <h1>Share</h1>
 
         <div class="container ple-type">
+
           <div class="col-md-4 col-md-push-4">
-            <select class="form-control input-lg">
-              <option selected value="">a research note</option>
-              <option value="">a question or request</option>
-              <option value="">an event</option>
-            </select>
+            <div class="row">
+              <div class="col-xs-10">
+                <select class="form-control input-lg">
+                  <option selected value="">a research note</option>
+                  <option value="">a question or request</option>
+                  <option value="">an event</option>
+                </select>
+              </div>
+              <div class="col-xs-2" style="padding-top:10px;text-align:left;">
+                <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
+                
+              </div>
+            </div>
           </div>
+
         </div>
 
       </div>
 
-      <div class="ple-body">
+      <div class="ple-content">
 
 
         <div class="ple-title ple-section container">
 
           <div class="ple-section-guide col-md-3">
             <h2>1</h2>
-            <p>The title is a very important thing. <a href="">Read more</a></p>
           </div>
 
           <div class="ple-section-content col-md-9">
             <input class="form-control input-lg" type="text" placeholder="Title" />
+            <p class="ple-help-minor">The title is a very important thing. <a href="">Read more</a></p>
           </div>
 
         </div>
@@ -78,47 +88,43 @@
 
           <div class="ple-section-guide col-md-3">
             <h2>3</h2>
-            <p>Your body text. <a href="">Read more</a></p>
+            <p>
+              Describe your work in a way that others can understand. 
+              <a class="visible-xs visible-sm" onClick="$('.ple-body .ple-section-guide div').toggleClass('hidden-xs').toggleClass('hidden-sm');">Read more</a>
+            </p>
+
+            <div class="ple-guide-minor hidden-xs hidden-sm" style="display:none;">
+
+              <br style="margin-top:30px;" class="hidden-xs hidden-sm" />
+              <p><i class="fa fa-mouse-pointer"></i>Drag images into the textarea to upload them.</p>
+
+              <br style="margin-top:60px;" class="hidden-xs hidden-sm" />
+              <p><i class="fa fa-list"></i>Show people how to do what you've done; list required materials and resources.</p>
+
+            </div>
           </div>
 
           <div class="ple-section-content col-md-9 container">
-            <textarea class="ple-textarea form-control">**This library is incomplete - this page is a very rough planning document.**
+            <textarea class="ple-textarea form-control"># About my project
 
-# About this editor
+I've been working on [this thing](/) and wanted to share.
 
-Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
+My goals have been:
 
-PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
+* simple to make
+* ease of use
+* low cost
 
-PublicLab.Editor will provide author-friendly interfaces for:
-
-* titling
-* main image uploading
-* body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
-* tagging
-* edit history
-
-  
-| property | type | description |
-| `oldSize` | `[Point][6]` | The old size before resize event. |
-| `newSize` | `[Point][6]` | The new size after the resize event. |
-
-
-# Setup
-
-To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/), and use the following constructor:
+| col1 | col2 | col3 |
+|------|------|------|
+| foo  | bar  | baz  |
+| food | bars | bats |
 
 ````js
-var editor = PL.Editor({
-  publishUrl:      "/notes",            // content will POST to this URL upon clicking "Publish"
-  updateUrl:       "/notes",            // content will UPDATE to this URL upon clicking "Save"
-  relatedTagsUrl:  "/notes",            // content will UPDATE to this URL upon clicking "Save"
-  newPost:         true,                // is it a new post, or are you editing an existing post?
-  title:           "Your post title",
-  body:            "Your post content",
-  tags:            "nice,cool"
-  // maybe more?
-});
+
+// Code could go here
+var myVariable = 4;
+
 ````</textarea>
           </div>
 

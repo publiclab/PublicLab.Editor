@@ -2,7 +2,11 @@
 // document, but still be runnable in nodejs?
 // if (!this.hasOwnProperty('document') document 
 
-$ = require('jquery');
+window.$ = window.jQuery = require('jquery')
+var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() {
+  
+});
+
 var Class        = require('resig-class');
     crossvent    = require('crossvent');
 
@@ -13,6 +17,7 @@ PL.Util      = require('./core/Util.js');
 PL.Formatter = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
 PL.History   = require('./PublicLab.History.js');
+PL.Help      = require('./PublicLab.Help.js'); // ui?
 
 
 PL.Editor = Class.extend({
@@ -20,6 +25,7 @@ PL.Editor = Class.extend({
   init: function(options) {
 
     var _editor = this;
+    _editor.options = options;
 
 
     /*########################
@@ -36,36 +42,31 @@ PL.Editor = Class.extend({
 
     }
 
-
-    $(document).ready(function() {
-
 // TEMPORARY: run during validations?
 $('.ple-title input').on('keydown', function(e) {
   $('.ple-publish').removeClass('disabled');
   $('.ple-steps-left').html(1);
 });
 
+    _editor.resize();
+
+    // once woofmark's done with the textarea, this is triggered
+    // using woofmark's special event system, crossvent
+    // -- move this into the Woofmark adapter initializer
+    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+
       _editor.resize();
 
-      // once woofmark's done with the textarea, this is triggered
-      // using woofmark's special event system, crossvent
-      // -- move this into the Woofmark adapter initializer
-      crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+      // ensure document is scrolled to the same place:
+      document.body.scrollTop = _editor.scrollTop;
+      // might need to adjust for markdown/rich text not 
+      // taking up same amount of space, if menu is below _editor...
+      //if (_editor.wysiwyg.mode == "markdown") 
 
-        _editor.resize();
+    });
 
-        // ensure document is scrolled to the same place:
-        document.body.scrollTop = _editor.scrollTop;
-        // might need to adjust for markdown/rich text not 
-        // taking up same amount of space, if menu is below _editor...
-        //if (_editor.wysiwyg.mode == "markdown") 
-
-      });
-
-      $(options.textarea).on('change keydown', function(e) {
-        _editor.resize();
-      });
-
+    $(options.textarea).on('change keydown', function(e) {
+      _editor.resize();
     });
 
 
@@ -95,7 +96,10 @@ $('.ple-title input').on('keydown', function(e) {
     _editor.wysiwyg = PublicLab.Woofmark(options.textarea, _editor);
 
     _editor.history = new PublicLab.History(_editor);
+    _editor.help = new PublicLab.Help(_editor);
 
+    // testing plots2 bootstrap styling
+    $('table').addClass('table');
 
   }
 
