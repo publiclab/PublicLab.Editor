@@ -25825,18 +25825,19 @@ var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', fu
 });
 
 var Class        = require('resig-class');
-    crossvent    = require('crossvent');
 
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util        = require('./core/Util.js');
-PL.Formatter   = require('./adapters/PublicLab.Formatter.js');
-PL.Woofmark    = require('./adapters/PublicLab.Woofmark.js');
-PL.History     = require('./PublicLab.History.js');
-PL.Help        = require('./PublicLab.Help.js');
-PL.Module      = require('./modules/PublicLab.Module.js');
-PL.TitleModule = require('./modules/PublicLab.TitleModule.js');
+PL.Util            = require('./core/Util.js');
+PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
+PL.History         = require('./PublicLab.History.js');
+PL.Help            = require('./PublicLab.Help.js');
+PL.Module          = require('./modules/PublicLab.Module.js');
+PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
+PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
+PL.BodyModule      = require('./modules/PublicLab.BodyModule.js');
 
 
 PL.Editor = Class.extend({
@@ -25847,53 +25848,33 @@ PL.Editor = Class.extend({
     _editor.options = options;
 
 
-    /*########################
-     * Set up DOM stuff
-     */
+    // Validation:
+    // Count how many required modules remain for author to complete:
+    _editor.validate = function() {
 
-    // this can go in BodyModule later
-    _editor.growTextarea = require('grow-textarea');
+      var valid_modules    = 0,
+          required_modules = 0;
 
-    // Make textarea match content height
-    _editor.resize = function() {
+      Object.keys(_editor.modules).forEach(function(key, i) {
 
-      _editor.growTextarea(options.textarea, { extra: 10 });
+        if (_editor.modules[key].options.required) {
+          required_modules += 1;
+          if (_editor.modules[key].valid()) valid_modules += 1;
+        }
+
+      });
+
+      if (valid_modules == required_modules) {
+
+        $('.ple-publish').removeClass('disabled');
+
+      }
+
+      $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
 
     }
 
-    _editor.resize();
-
-    // once woofmark's done with the textarea, this is triggered
-    // using woofmark's special event system, crossvent
-    // -- move this into the Woofmark adapter initializer
-    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
-
-      _editor.resize();
-
-      // ensure document is scrolled to the same place:
-      document.body.scrollTop = _editor.scrollTop;
-      // might need to adjust for markdown/rich text not 
-      // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown") 
-
-    });
-
-    $(options.textarea).on('change keydown', function(e) {
-      _editor.resize();
-    });
-
-    // end move to BodyModule
-
-
-// TEMPORARY: run during validations? 
-// make each module report isValid() or isReady()
-$('.ple-module-title input').on('keydown', function(e) {
-  $('.ple-publish').removeClass('disabled');
-  $('.ple-steps-left').html(1);
-});
-
-// testing plots2 bootstrap styling
-$('table').addClass('table');
+    $('.ple-editor *').focusout(_editor.validate);
 
 
     _editor.data = {
@@ -25911,27 +25892,20 @@ $('table').addClass('table');
     }
 
 
-    // Method to fetch the Markdown contents of the WYSIWYG textarea
-    _editor.value = function() {
-
-      return _editor.wysiwyg.value();
-
-    }
-
-
-    _editor.wysiwyg = PublicLab.Woofmark(options.textarea, _editor);
-
     _editor.history = new PublicLab.History(_editor);
     _editor.help = new PublicLab.Help(_editor);
+
     _editor.modules = {};
-    _editor.modules.titleModule = new PublicLab.TitleModule(_editor);
+    _editor.modules.titleModule     = new PublicLab.TitleModule(_editor);
+    _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
+    _editor.modules.bodyModule      = new PublicLab.BodyModule(_editor, { textarea: _editor.options.textarea });
 
 
   }
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.Module.js":185,"./modules/PublicLab.TitleModule.js":186,"crossvent":3,"grow-textarea":8,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.BodyModule.js":185,"./modules/PublicLab.MainImageModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.TitleModule.js":188,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -25945,7 +25919,7 @@ module.exports = PublicLab.Help = Class.extend({
     _help.options = options || {};
 
     // enable tooltips
-    $(".ple-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
+    $(".pl-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
 
 
     // this won't work in xs compact state...
@@ -26160,7 +26134,7 @@ var woofmark     = require('woofmark'),
     domador      = require('domador'),
     megamark     = require('megamark');
     
-module.exports = function(textarea, editor) {
+module.exports = function(textarea, _editor, _module) {
 
   return woofmark(textarea, {
 
@@ -26211,7 +26185,7 @@ module.exports = function(textarea, editor) {
 
     parseMarkdown: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
         tokenizers: [
@@ -26234,7 +26208,7 @@ module.exports = function(textarea, editor) {
 
     parseHTML: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
         transform: function (el) {
@@ -26297,6 +26271,107 @@ module.exports = {
 }
 
 },{}],185:[function(require,module,exports){
+var crossvent    = require('crossvent');
+
+/*
+ * Form module for post body
+ */
+
+module.exports = PublicLab.BodyModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name = "body";
+    _module.options.required = true;
+
+    _module._super(_editor, _module.options);
+
+
+    // should be switchable for other editors:
+    _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
+
+    _module.key = "body";
+    _module.value = function() {
+
+      return _module.wysiwyg.value();
+
+    }
+
+
+// bootstrap styling for plots2 (remove later)
+$('table').addClass('table');
+
+
+    var growTextarea = require('grow-textarea');
+
+    // Make textarea match content height
+    _module.resize = function() {
+
+      growTextarea(options.textarea, { extra: 10 });
+
+    }
+
+    _module.resize();
+
+    // once woofmark's done with the textarea, this is triggered
+    // using woofmark's special event system, crossvent
+    // -- move this into the Woofmark adapter initializer
+    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+
+      _module.resize();
+
+      // ensure document is scrolled to the same place:
+      document.body.scrollTop = _module.scrollTop;
+      // might need to adjust for markdown/rich text not 
+      // taking up same amount of space, if menu is below _editor...
+      //if (_editor.wysiwyg.mode == "markdown") 
+
+    });
+
+    $(options.textarea).on('change keydown', function(e) {
+      _module.resize();
+    });
+
+
+  }
+
+});
+
+},{"crossvent":3,"grow-textarea":8}],186:[function(require,module,exports){
+/*
+ * Form module for main post image
+ */
+
+module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name = "main_image";
+
+    _module._super(_editor, _module.options);
+
+    _module.key = "main_image_url";
+    _module.value = function() {
+
+/////////// get this to return the image object?
+      return false;
+
+    }
+
+
+
+
+  }
+
+});
+
+},{}],187:[function(require,module,exports){
 /*
  * Form modules like title, tags, body, main image
  */
@@ -26308,6 +26383,7 @@ module.exports = PublicLab.Module = Class.extend({
     var _module = this;
 
     _module.options = options || {};
+    _module.options.required = false; // default
 
     _module.el = $('.ple-module-' + _module.options.name);
 
@@ -26321,19 +26397,18 @@ module.exports = PublicLab.Module = Class.extend({
 
     }
 
+    _module.el.find('.ple-help-minor').hide(); 
 
-    // show extras button on hover:
-    // this won't work in xs compact state...
 
-    $('.ple-module').mouseenter(function(e) {
+    $(_module.el).mouseenter(function() { 
 
-      $(this).find('.ple-btn-more').fadeOut();
+      _module.el.find('.ple-help-minor').fadeIn(); 
 
     });
 
-    $('.ple-module').mouseleave(function(e) {
+    $(_module.el).mouseleave(function() { 
 
-      $(this).find('.ple-btn-more').fadeOut();
+      _module.el.find('.ple-help-minor').fadeOut(); 
 
     });
 
@@ -26342,9 +26417,9 @@ module.exports = PublicLab.Module = Class.extend({
 
 });
 
-},{}],186:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /*
- * Form modules like title, tags, body, main image
+ * Form module for post title
  */
 
 module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
@@ -26355,6 +26430,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name = "title";
+    _module.options.required = true;
 
     _module._super(_editor, _module.options);
 
@@ -26366,6 +26442,18 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     }
 
+
+    // All the "related" behavior below is application-specific, 
+    // though perhaps it's a generalizable menu interface,
+    // like "ModuleSuggestion" or something. Anyhow, let's
+    // tuck it into a subclass or something...
+
+
+    // make an area for "related posts" to connect to
+    _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
+    _module.menuEl = _module.el.find('.ple-menu-more');
+    _module.menuEl.append('<a class="btn btn-default">...</a>');
+
     
     // make an area for "related posts" to connect to
     _module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
@@ -26376,13 +26464,11 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
     _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
 
-
     $(_module.el).find('input').keydown(function(e) {
 
       _module.relatedEl.fadeIn();
 
     });
-
 
     // make this hide only if another section is clicked, using a 'not' pseudoselector
     $(_module.el).find('input').focusout(function(e) {

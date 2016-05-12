@@ -1,5 +1,5 @@
 /*
- * Form modules like title, tags, body, main image
+ * Form module for post title
  */
 
 module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
@@ -10,6 +10,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name = "title";
+    _module.options.required = true;
 
     _module._super(_editor, _module.options);
 
@@ -21,6 +22,18 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     }
 
+
+    // All the "related" behavior below is application-specific, 
+    // though perhaps it's a generalizable menu interface,
+    // like "ModuleSuggestion" or something. Anyhow, let's
+    // tuck it into a subclass or something...
+
+
+    // make an area for "related posts" to connect to
+    _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
+    _module.menuEl = _module.el.find('.ple-menu-more');
+    _module.menuEl.append('<a class="btn btn-default">...</a>');
+
     
     // make an area for "related posts" to connect to
     _module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
@@ -31,13 +44,11 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
     _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
 
-
     $(_module.el).find('input').keydown(function(e) {
 
       _module.relatedEl.fadeIn();
 
     });
-
 
     // make this hide only if another section is clicked, using a 'not' pseudoselector
     $(_module.el).find('input').focusout(function(e) {

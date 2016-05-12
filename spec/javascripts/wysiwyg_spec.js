@@ -28,7 +28,7 @@ describe("Wysiwyg", function() {
 
     // convert
     expect(markdown2HTML).toEqual(html);
-    expect(html2Markdown)).toEqual(markdown);
+    expect(html2Markdown).toEqual(markdown);
 
     // and back
     expect(PublicLab.wysiwyg.parseHTML(markdown2HTML)).toEqual(markdown);

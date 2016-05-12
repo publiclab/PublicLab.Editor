@@ -9,6 +9,7 @@ module.exports = PublicLab.Module = Class.extend({
     var _module = this;
 
     _module.options = options || {};
+    _module.options.required = false; // default
 
     _module.el = $('.ple-module-' + _module.options.name);
 
@@ -22,19 +23,18 @@ module.exports = PublicLab.Module = Class.extend({
 
     }
 
+    _module.el.find('.ple-help-minor').hide(); 
 
-    // show extras button on hover:
-    // this won't work in xs compact state...
 
-    $('.ple-module').mouseenter(function(e) {
+    $(_module.el).mouseenter(function() { 
 
-      $(this).find('.ple-btn-more').fadeOut();
+      _module.el.find('.ple-help-minor').fadeIn(); 
 
     });
 
-    $('.ple-module').mouseleave(function(e) {
+    $(_module.el).mouseleave(function() { 
 
-      $(this).find('.ple-btn-more').fadeOut();
+      _module.el.find('.ple-help-minor').fadeOut(); 
 
     });
 

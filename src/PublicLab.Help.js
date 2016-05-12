@@ -11,7 +11,7 @@ module.exports = PublicLab.Help = Class.extend({
     _help.options = options || {};
 
     // enable tooltips
-    $(".ple-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
+    $(".pl-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
 
 
     // this won't work in xs compact state...

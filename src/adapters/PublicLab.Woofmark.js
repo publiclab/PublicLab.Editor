@@ -7,7 +7,7 @@ var woofmark     = require('woofmark'),
     domador      = require('domador'),
     megamark     = require('megamark');
     
-module.exports = function(textarea, editor) {
+module.exports = function(textarea, _editor, _module) {
 
   return woofmark(textarea, {
 
@@ -58,7 +58,7 @@ module.exports = function(textarea, editor) {
 
     parseMarkdown: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
         tokenizers: [
@@ -81,7 +81,7 @@ module.exports = function(textarea, editor) {
 
     parseHTML: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
         transform: function (el) {
