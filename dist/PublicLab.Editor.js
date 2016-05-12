@@ -25893,12 +25893,13 @@ PL.Editor = Class.extend({
 
 
     _editor.history = new PublicLab.History(_editor);
-    _editor.help = new PublicLab.Help(_editor);
 
     _editor.modules = {};
     _editor.modules.titleModule     = new PublicLab.TitleModule(_editor);
     _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
     _editor.modules.bodyModule      = new PublicLab.BodyModule(_editor, { textarea: _editor.options.textarea });
+
+    _editor.help = new PublicLab.Help(_editor);
 
 
   }
@@ -26136,7 +26137,17 @@ var woofmark     = require('woofmark'),
     
 module.exports = function(textarea, _editor, _module) {
 
-  return woofmark(textarea, {
+  var icons = {
+
+    'quote': 'quote-right',
+    'ol': 'list-ol',
+    'ul': 'list-ul',
+    'heading': 'header',
+    'attachment': 'paperclip'
+
+  }
+
+  var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
     storage:     'ple-woofmark-mode',
@@ -26146,15 +26157,16 @@ module.exports = function(textarea, _editor, _module) {
 
       modes: function (button, id) {
         button.className = 'woofmark-mode-' + id;
-        if (id == 'html')     button.innerHTML = "Preview";
+        if (id == 'html')     $(button).remove();
         if (id == 'markdown') button.innerHTML = "Markdown";
         if (id == 'wysiwyg')  button.innerHTML = "Rich";
       },
 
       commands: function (button, id) {
         button.className = 'woofmark-command-' + id;
+        var icon = icons[id] || id;
+        button.innerHTML = '<i class="fa fa-' + icon + '"></i>';
       }
-
 
     },
 
@@ -26224,9 +26236,17 @@ module.exports = function(textarea, _editor, _module) {
         }
       });
 
-    }
+    } 
 
   });
+
+
+  $('.wk-commands, .wk-switchboard').addClass('btn-group');
+  $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
+  $('.wk-switchboard button').addClass('btn-sm');
+
+
+  return wysiwyg;
 
 }
 
