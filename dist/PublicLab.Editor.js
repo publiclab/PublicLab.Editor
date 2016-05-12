@@ -25830,11 +25830,13 @@ var Class        = require('resig-class');
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util      = require('./core/Util.js');
-PL.Formatter = require('./adapters/PublicLab.Formatter.js');
-PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
-PL.History   = require('./PublicLab.History.js');
-PL.Help      = require('./PublicLab.Help.js'); // ui?
+PL.Util        = require('./core/Util.js');
+PL.Formatter   = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark    = require('./adapters/PublicLab.Woofmark.js');
+PL.History     = require('./PublicLab.History.js');
+PL.Help        = require('./PublicLab.Help.js');
+PL.Module      = require('./modules/PublicLab.Module.js');
+PL.TitleModule = require('./modules/PublicLab.TitleModule.js');
 
 
 PL.Editor = Class.extend({
@@ -25849,8 +25851,8 @@ PL.Editor = Class.extend({
      * Set up DOM stuff
      */
 
+    // this can go in BodyModule later
     _editor.growTextarea = require('grow-textarea');
-
 
     // Make textarea match content height
     _editor.resize = function() {
@@ -25858,12 +25860,6 @@ PL.Editor = Class.extend({
       _editor.growTextarea(options.textarea, { extra: 10 });
 
     }
-
-// TEMPORARY: run during validations?
-$('.ple-title input').on('keydown', function(e) {
-  $('.ple-publish').removeClass('disabled');
-  $('.ple-steps-left').html(1);
-});
 
     _editor.resize();
 
@@ -25885,6 +25881,19 @@ $('.ple-title input').on('keydown', function(e) {
     $(options.textarea).on('change keydown', function(e) {
       _editor.resize();
     });
+
+    // end move to BodyModule
+
+
+// TEMPORARY: run during validations? 
+// make each module report isValid() or isReady()
+$('.ple-module-title input').on('keydown', function(e) {
+  $('.ple-publish').removeClass('disabled');
+  $('.ple-steps-left').html(1);
+});
+
+// testing plots2 bootstrap styling
+$('table').addClass('table');
 
 
     _editor.data = {
@@ -25914,15 +25923,15 @@ $('.ple-title input').on('keydown', function(e) {
 
     _editor.history = new PublicLab.History(_editor);
     _editor.help = new PublicLab.Help(_editor);
+    _editor.modules = {};
+    _editor.modules.titleModule = new PublicLab.TitleModule(_editor);
 
-    // testing plots2 bootstrap styling
-    $('table').addClass('table');
 
   }
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"crossvent":3,"grow-textarea":8,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.Module.js":185,"./modules/PublicLab.TitleModule.js":186,"crossvent":3,"grow-textarea":8,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -25935,23 +25944,24 @@ module.exports = PublicLab.Help = Class.extend({
 
     _help.options = options || {};
 
-    $("[rel=tooltip]").tooltip(false);
-    $("[rel=tooltip]").tooltip();
+    // enable tooltips
+    $(".ple-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
 
 
     // this won't work in xs compact state...
 
-    $('.ple-body').mouseleave(function(e) {
+    $('.ple-module').mouseleave(function(e) {
 
-      $('.ple-body .ple-guide-minor').fadeOut();
+      $(this).find('.ple-guide-minor').fadeOut();
+
+    });
+
+    $('.ple-module').mouseenter(function(e) {
+
+      $(this).find('.ple-guide-minor').fadeIn();
 
     });
 
-    $('.ple-body').mouseenter(function(e) {
-
-      $('.ple-body .ple-guide-minor').fadeIn();
-
-    });
 
 
   }
@@ -26285,5 +26295,105 @@ module.exports = {
   }
 
 }
+
+},{}],185:[function(require,module,exports){
+/*
+ * Form modules like title, tags, body, main image
+ */
+
+module.exports = PublicLab.Module = Class.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+
+    _module.el = $('.ple-module-' + _module.options.name);
+
+
+    // All modules must have a module.valid() method
+    // which returns true by default (making them optional).
+    // Eventually, we might distinguish between empty and invalid.
+    _module.valid = function() {
+
+      return true;
+
+    }
+
+
+    // show extras button on hover:
+    // this won't work in xs compact state...
+
+    $('.ple-module').mouseenter(function(e) {
+
+      $(this).find('.ple-btn-more').fadeOut();
+
+    });
+
+    $('.ple-module').mouseleave(function(e) {
+
+      $(this).find('.ple-btn-more').fadeOut();
+
+    });
+
+
+  }
+
+});
+
+},{}],186:[function(require,module,exports){
+/*
+ * Form modules like title, tags, body, main image
+ */
+
+module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name = "title";
+
+    _module._super(_editor, _module.options);
+
+
+    _module.valid = function() {
+
+      // must not be empty
+      return _module.el.find('input').val() != "";
+
+    }
+
+    
+    // make an area for "related posts" to connect to
+    _module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
+    _module.relatedEl = _module.el.find('.ple-title-related');
+    _module.relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
+
+    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+
+
+    $(_module.el).find('input').keydown(function(e) {
+
+      _module.relatedEl.fadeIn();
+
+    });
+
+
+    // make this hide only if another section is clicked, using a 'not' pseudoselector
+    $(_module.el).find('input').focusout(function(e) {
+
+      _module.relatedEl.fadeOut();
+
+    });
+
+
+  }
+
+});
 
 },{}]},{},[179]);

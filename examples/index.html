@@ -48,13 +48,14 @@
       <div class="ple-content">
 
 
-        <div class="ple-title ple-section container">
+        <!-- title module -->
+        <div class="ple-module-title ple-module container">
 
-          <div class="ple-section-guide col-md-3">
+          <div class="ple-module-guide col-md-3">
             <h2>1</h2>
           </div>
 
-          <div class="ple-section-content col-md-9">
+          <div class="ple-module-content col-md-9">
             <input class="form-control input-lg" type="text" placeholder="Title" />
             <p class="ple-help-minor">The title is a very important thing. <a href="">Read more</a></p>
           </div>
@@ -62,21 +63,22 @@
         </div>
 
 
-        <div class="ple-main-image ple-section container">
+        <!-- main image module -->
+        <div class="ple-module-main-image ple-module container">
 
-          <div class="ple-section-guide col-md-3">
+          <div class="ple-module-guide col-md-3">
             <h2>2</h2>
-            <p>Choose an image. <a href="">Read more</a></p>
+            <p>Choose an image. <br /><a href="">Image tips &raquo;</a></p>
           </div>
 
-          <div class="ple-section-content col-md-9 container">
+          <div class="ple-module-content col-md-9 container">
             <div class="ple-drag-drop col-md-6">
               Drag an image here to upload.
             </div>
             <div class="col-md-6 help">
 
               <p><input type="file" name="image[photo]" /></p>
-              <p class="ple-help">Select a main image for your post.</p>
+              <p class="ple-help">Select an optional main image for your post.</p>
 
             </div>
           </div>
@@ -84,13 +86,14 @@
         </div>
 
 
-        <div class="ple-body ple-section container">
+        <!-- body module -->
+        <div class="ple-module-body ple-module container">
 
-          <div class="ple-section-guide col-md-3">
+          <div class="ple-module-guide col-md-3">
             <h2>3</h2>
             <p>
               Describe your work in a way that others can understand. 
-              <a class="visible-xs visible-sm" onClick="$('.ple-body .ple-section-guide div').toggleClass('hidden-xs').toggleClass('hidden-sm');">Read more</a>
+              <a class="visible-xs visible-sm" onClick="$('.ple-body .ple-module-guide div').toggleClass('hidden-xs').toggleClass('hidden-sm');">Read more</a>
             </p>
 
             <div class="ple-guide-minor hidden-xs hidden-sm" style="display:none;">
@@ -104,7 +107,7 @@
             </div>
           </div>
 
-          <div class="ple-section-content col-md-9 container">
+          <div class="ple-module-content col-md-9 container">
             <textarea class="ple-textarea form-control"># About my project
 
 I've been working on [this thing](/) and wanted to share.
@@ -114,6 +117,8 @@ My goals have been:
 * simple to make
 * ease of use
 * low cost
+
+And then, after #balloon-mapping with @eustatic, tables:
 
 | col1 | col2 | col3 |
 |------|------|------|

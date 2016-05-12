@@ -13,11 +13,13 @@ var Class        = require('resig-class');
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util      = require('./core/Util.js');
-PL.Formatter = require('./adapters/PublicLab.Formatter.js');
-PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
-PL.History   = require('./PublicLab.History.js');
-PL.Help      = require('./PublicLab.Help.js'); // ui?
+PL.Util        = require('./core/Util.js');
+PL.Formatter   = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark    = require('./adapters/PublicLab.Woofmark.js');
+PL.History     = require('./PublicLab.History.js');
+PL.Help        = require('./PublicLab.Help.js');
+PL.Module      = require('./modules/PublicLab.Module.js');
+PL.TitleModule = require('./modules/PublicLab.TitleModule.js');
 
 
 PL.Editor = Class.extend({
@@ -32,8 +34,8 @@ PL.Editor = Class.extend({
      * Set up DOM stuff
      */
 
+    // this can go in BodyModule later
     _editor.growTextarea = require('grow-textarea');
-
 
     // Make textarea match content height
     _editor.resize = function() {
@@ -41,12 +43,6 @@ PL.Editor = Class.extend({
       _editor.growTextarea(options.textarea, { extra: 10 });
 
     }
-
-// TEMPORARY: run during validations?
-$('.ple-title input').on('keydown', function(e) {
-  $('.ple-publish').removeClass('disabled');
-  $('.ple-steps-left').html(1);
-});
 
     _editor.resize();
 
@@ -68,6 +64,19 @@ $('.ple-title input').on('keydown', function(e) {
     $(options.textarea).on('change keydown', function(e) {
       _editor.resize();
     });
+
+    // end move to BodyModule
+
+
+// TEMPORARY: run during validations? 
+// make each module report isValid() or isReady()
+$('.ple-module-title input').on('keydown', function(e) {
+  $('.ple-publish').removeClass('disabled');
+  $('.ple-steps-left').html(1);
+});
+
+// testing plots2 bootstrap styling
+$('table').addClass('table');
 
 
     _editor.data = {
@@ -97,9 +106,9 @@ $('.ple-title input').on('keydown', function(e) {
 
     _editor.history = new PublicLab.History(_editor);
     _editor.help = new PublicLab.Help(_editor);
+    _editor.modules = {};
+    _editor.modules.titleModule = new PublicLab.TitleModule(_editor);
 
-    // testing plots2 bootstrap styling
-    $('table').addClass('table');
 
   }
 

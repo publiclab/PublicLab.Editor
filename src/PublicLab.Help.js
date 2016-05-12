@@ -10,23 +10,24 @@ module.exports = PublicLab.Help = Class.extend({
 
     _help.options = options || {};
 
-    $("[rel=tooltip]").tooltip(false);
-    $("[rel=tooltip]").tooltip();
+    // enable tooltips
+    $(".ple-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
 
 
     // this won't work in xs compact state...
 
-    $('.ple-body').mouseleave(function(e) {
+    $('.ple-module').mouseleave(function(e) {
 
-      $('.ple-body .ple-guide-minor').fadeOut();
+      $(this).find('.ple-guide-minor').fadeOut();
+
+    });
+
+    $('.ple-module').mouseenter(function(e) {
+
+      $(this).find('.ple-guide-minor').fadeIn();
 
     });
 
-    $('.ple-body').mouseenter(function(e) {
-
-      $('.ple-body .ple-guide-minor').fadeIn();
-
-    });
 
 
   }

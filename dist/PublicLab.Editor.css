@@ -42,28 +42,28 @@
   margin-bottom: 20px;
 }
 
-.ple-section {
+.ple-module {
   padding: 20px;
   border-top: 1px solid #ddd;
 }
 
-.ple-section-guide h2 {
+.ple-module-guide h2 {
   font-size: 4em;
   margin-top: 0;
 }
 
-.ple-section-guide p {
+.ple-module-guide p {
   color: #aaa;
   padding-bottom: 22px;
   padding-right: 30px;
   clear: left;
 }
 
-.ple-section-guide .ple-guide-minor p {
+.ple-module-guide .ple-guide-minor p {
   font-size: 12px;
 }
 
-.ple-section-guide p i.fa {
+.ple-module-guide p i.fa {
   color: #666;
   font-size: 18px;
   float:left;
