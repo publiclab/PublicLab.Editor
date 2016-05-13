@@ -25838,6 +25838,7 @@ PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
 PL.BodyModule      = require('./modules/PublicLab.BodyModule.js');
+PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 
 
 PL.Editor = Class.extend({
@@ -25895,9 +25896,10 @@ PL.Editor = Class.extend({
     _editor.history = new PublicLab.History(_editor);
 
     _editor.modules = {};
-    _editor.modules.titleModule     = new PublicLab.TitleModule(_editor);
+    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
     _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.modules.bodyModule      = new PublicLab.BodyModule(_editor, { textarea: _editor.options.textarea });
+    _editor.modules.bodyModule      = new PublicLab.BodyModule(     _editor, { textarea: _editor.options.textarea });
+    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
 
     _editor.help = new PublicLab.Help(_editor);
 
@@ -25906,7 +25908,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.BodyModule.js":185,"./modules/PublicLab.MainImageModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.TitleModule.js":188,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.BodyModule.js":185,"./modules/PublicLab.MainImageModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.TagsModule.js":188,"./modules/PublicLab.TitleModule.js":189,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -26305,20 +26307,35 @@ module.exports = PublicLab.BodyModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name = "body";
-    _module.options.required = true;
+    _module.options.instructions = "Describe your work in a way that others can understand.";
+    _module.options.guides = [
+      { 
+        icon: "mouse-pointer", 
+        position: 30, 
+        text: "Drag images into the textarea to upload them."
+      },
+      { 
+        icon: "list-ul",
+        position: 90, 
+        text: "Show people how to do what you've done; list required materials and resources."
+      }
+    ];
+
 
     _module._super(_editor, _module.options);
 
+    // customize options after Module defaults set in _super()
+    _module.options.required = true;
 
     // should be switchable for other editors:
     _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
 
     _module.key = "body";
-    _module.value = function() {
+    _module.value = function() { return _module.wysiwyg.value(); }
 
-      return _module.wysiwyg.value();
 
-    }
+    // construct HTML additions
+    _module.build();
 
 
 // bootstrap styling for plots2 (remove later)
@@ -26372,11 +26389,12 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     var _module = this;
 
     _module.options = options || {};
-    _module.options.name = "main_image";
+    _module.options.name = 'main_image';
+    _module.options.instructions = 'Choose an image. <br /><a href="">Image tips &raquo;</a>';
 
     _module._super(_editor, _module.options);
 
-    _module.key = "main_image_url";
+    _module.key = 'main_image_url';
     _module.value = function() {
 
 /////////// get this to return the image object?
@@ -26384,7 +26402,8 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     }
 
-
+    // construct HTML additions
+    _module.build();
 
 
   }
@@ -26404,8 +26423,29 @@ module.exports = PublicLab.Module = Class.extend({
 
     _module.options = options || {};
     _module.options.required = false; // default
+    _module.options.guides = _module.options.guides || [];
 
     _module.el = $('.ple-module-' + _module.options.name);
+
+
+    // Construct and insert HTML, including 
+    // instructions, help and tips
+    _module.build = function() {    
+
+      // standard instructions location is at start of ple-module-guide 
+      _module.el.find('.ple-module-guide')
+                .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
+                .append('<div class="ple-guide-minor hidden-xs hidden-sm" style="display:none;"></div>');
+
+      _module.options.guides.forEach(function(guide) {
+
+        _module.el.find('.ple-guide-minor')
+                  .append('<br style="position:absolute;top:' + guide.position + 'px;" class="hidden-xs hidden-sm" />')
+                  .append('<p><i class="fa fa-' + guide.icon + '"></i>' + guide.text + '</p>');
+
+      });
+ 
+    }
 
 
     // All modules must have a module.valid() method
@@ -26417,6 +26457,8 @@ module.exports = PublicLab.Module = Class.extend({
 
     }
 
+
+    // could wrap these in an events() method?
     _module.el.find('.ple-help-minor').hide(); 
 
 
@@ -26439,18 +26481,19 @@ module.exports = PublicLab.Module = Class.extend({
 
 },{}],188:[function(require,module,exports){
 /*
- * Form module for post title
+ * Form module for post tags
  */
 
-module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
+module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
 
     var _module = this;
 
     _module.options = options || {};
-    _module.options.name = "title";
-    _module.options.required = true;
+    _module.options.name         = 'tags';
+    _module.options.instructions = 'Tags relate your work to others\' posts. <a href="">Read more &raquo;</a>';
+    _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
 
     _module._super(_editor, _module.options);
 
@@ -26461,6 +26504,92 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       return _module.el.find('input').val() != "";
 
     }
+
+
+    // Overrides default build method
+    _module.build = function() {    
+
+      // custom location -- just under the input
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(_module.options.instructions);
+
+      // insert recent and common ones here -- 
+      // (this is application-specific)
+
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help-minor">Recent tags: <span class="ple-recent-tags"></span></p>');
+
+      var tags = [];
+
+      _module.options.recentTags.forEach(function(tag) {
+
+        tags.push('<a>' + tag + '</a>');
+
+      });
+
+      _module.el.find('.ple-recent-tags')
+                .append(tags.join(', '))
+
+      _module.el.find('.ple-help-minor').hide(); 
+
+    }
+
+
+    // construct HTML additions
+    _module.build();
+
+
+  }
+
+});
+
+},{}],189:[function(require,module,exports){
+/*
+ * Form module for post title
+ */
+
+module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name         = "title";
+    _module.options.required     = true;
+    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
+
+    _module._super(_editor, _module.options);
+
+
+    _module.valid = function() {
+
+      // must not be empty
+      return _module.el.find('input').val() != "";
+
+    }
+
+
+    // Overrides default build method
+    _module.build = function() {    
+
+      // custom location -- just under the title input
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(_module.options.instructions);
+
+      _module.el.find('.ple-help-minor').hide(); 
+
+    }
+
+
+    // construct HTML additions
+    _module.build();
 
 
     // All the "related" behavior below is application-specific, 

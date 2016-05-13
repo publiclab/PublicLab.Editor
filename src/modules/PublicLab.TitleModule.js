@@ -9,8 +9,9 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     var _module = this;
 
     _module.options = options || {};
-    _module.options.name = "title";
-    _module.options.required = true;
+    _module.options.name         = "title";
+    _module.options.required     = true;
+    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
 
     _module._super(_editor, _module.options);
 
@@ -21,6 +22,25 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       return _module.el.find('input').val() != "";
 
     }
+
+
+    // Overrides default build method
+    _module.build = function() {    
+
+      // custom location -- just under the title input
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(_module.options.instructions);
+
+      _module.el.find('.ple-help-minor').hide(); 
+
+    }
+
+
+    // construct HTML additions
+    _module.build();
 
 
     // All the "related" behavior below is application-specific, 

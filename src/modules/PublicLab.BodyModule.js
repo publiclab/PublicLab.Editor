@@ -12,20 +12,35 @@ module.exports = PublicLab.BodyModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name = "body";
-    _module.options.required = true;
+    _module.options.instructions = "Describe your work in a way that others can understand.";
+    _module.options.guides = [
+      { 
+        icon: "mouse-pointer", 
+        position: 30, 
+        text: "Drag images into the textarea to upload them."
+      },
+      { 
+        icon: "list-ul",
+        position: 90, 
+        text: "Show people how to do what you've done; list required materials and resources."
+      }
+    ];
+
 
     _module._super(_editor, _module.options);
 
+    // customize options after Module defaults set in _super()
+    _module.options.required = true;
 
     // should be switchable for other editors:
     _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
 
     _module.key = "body";
-    _module.value = function() {
+    _module.value = function() { return _module.wysiwyg.value(); }
 
-      return _module.wysiwyg.value();
 
-    }
+    // construct HTML additions
+    _module.build();
 
 
 // bootstrap styling for plots2 (remove later)

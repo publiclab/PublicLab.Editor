@@ -21,6 +21,7 @@ PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
 PL.BodyModule      = require('./modules/PublicLab.BodyModule.js');
+PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 
 
 PL.Editor = Class.extend({
@@ -78,9 +79,10 @@ PL.Editor = Class.extend({
     _editor.history = new PublicLab.History(_editor);
 
     _editor.modules = {};
-    _editor.modules.titleModule     = new PublicLab.TitleModule(_editor);
+    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
     _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.modules.bodyModule      = new PublicLab.BodyModule(_editor, { textarea: _editor.options.textarea });
+    _editor.modules.bodyModule      = new PublicLab.BodyModule(     _editor, { textarea: _editor.options.textarea });
+    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
 
     _editor.help = new PublicLab.Help(_editor);
 

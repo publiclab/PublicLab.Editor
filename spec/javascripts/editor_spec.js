@@ -27,4 +27,9 @@ describe("Editor", function() {
   });
 
 
+  xit("counts valid modules and enables publish button", function() {
+
+  });
+
+
 });

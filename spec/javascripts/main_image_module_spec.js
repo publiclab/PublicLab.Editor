@@ -25,7 +25,6 @@ describe("MainImageModule", function() {
   it("reports key, value, valid", function() {
 
     expect(module).not.toBeUndefined();
-    console.log(module);
 //    expect(module.value()).not.toBe(false);
 //    expect(module.value()).not.toBeUndefined();
     expect(module.key).toBe('main_image_url');
