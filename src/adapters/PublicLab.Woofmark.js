@@ -7,9 +7,19 @@ var woofmark     = require('woofmark'),
     domador      = require('domador'),
     megamark     = require('megamark');
     
-module.exports = function(textarea, editor) {
+module.exports = function(textarea, _editor, _module) {
 
-  return woofmark(textarea, {
+  var icons = {
+
+    'quote': 'quote-right',
+    'ol': 'list-ol',
+    'ul': 'list-ul',
+    'heading': 'header',
+    'attachment': 'paperclip'
+
+  }
+
+  var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
     storage:     'ple-woofmark-mode',
@@ -19,15 +29,16 @@ module.exports = function(textarea, editor) {
 
       modes: function (button, id) {
         button.className = 'woofmark-mode-' + id;
-        if (id == 'html')     button.innerHTML = "Preview";
+        if (id == 'html')     $(button).remove();
         if (id == 'markdown') button.innerHTML = "Markdown";
         if (id == 'wysiwyg')  button.innerHTML = "Rich";
       },
 
       commands: function (button, id) {
         button.className = 'woofmark-command-' + id;
+        var icon = icons[id] || id;
+        button.innerHTML = '<i class="fa fa-' + icon + '"></i>';
       }
-
 
     },
 
@@ -58,7 +69,7 @@ module.exports = function(textarea, editor) {
 
     parseMarkdown: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
         tokenizers: [
@@ -81,7 +92,7 @@ module.exports = function(textarea, editor) {
 
     parseHTML: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
         transform: function (el) {
@@ -97,8 +108,16 @@ module.exports = function(textarea, editor) {
         }
       });
 
-    }
+    } 
 
   });
+
+
+  $('.wk-commands, .wk-switchboard').addClass('btn-group');
+  $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
+  $('.wk-switchboard button').addClass('btn-sm');
+
+
+  return wysiwyg;
 
 }

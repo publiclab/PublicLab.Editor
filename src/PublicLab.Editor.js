@@ -8,16 +8,20 @@ var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', fu
 });
 
 var Class        = require('resig-class');
-    crossvent    = require('crossvent');
 
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util      = require('./core/Util.js');
-PL.Formatter = require('./adapters/PublicLab.Formatter.js');
-PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
-PL.History   = require('./PublicLab.History.js');
-PL.Help      = require('./PublicLab.Help.js'); // ui?
+PL.Util            = require('./core/Util.js');
+PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
+PL.History         = require('./PublicLab.History.js');
+PL.Help            = require('./PublicLab.Help.js');
+PL.Module          = require('./modules/PublicLab.Module.js');
+PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
+PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
+PL.BodyModule      = require('./modules/PublicLab.BodyModule.js');
+PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 
 
 PL.Editor = Class.extend({
@@ -28,46 +32,33 @@ PL.Editor = Class.extend({
     _editor.options = options;
 
 
-    /*########################
-     * Set up DOM stuff
-     */
+    // Validation:
+    // Count how many required modules remain for author to complete:
+    _editor.validate = function() {
 
-    _editor.growTextarea = require('grow-textarea');
+      var valid_modules    = 0,
+          required_modules = 0;
 
+      Object.keys(_editor.modules).forEach(function(key, i) {
 
-    // Make textarea match content height
-    _editor.resize = function() {
+        if (_editor.modules[key].options.required) {
+          required_modules += 1;
+          if (_editor.modules[key].valid()) valid_modules += 1;
+        }
 
-      _editor.growTextarea(options.textarea, { extra: 10 });
+      });
+
+      if (valid_modules == required_modules) {
+
+        $('.ple-publish').removeClass('disabled');
+
+      }
+
+      $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
 
     }
 
-// TEMPORARY: run during validations?
-$('.ple-title input').on('keydown', function(e) {
-  $('.ple-publish').removeClass('disabled');
-  $('.ple-steps-left').html(1);
-});
-
-    _editor.resize();
-
-    // once woofmark's done with the textarea, this is triggered
-    // using woofmark's special event system, crossvent
-    // -- move this into the Woofmark adapter initializer
-    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
-
-      _editor.resize();
-
-      // ensure document is scrolled to the same place:
-      document.body.scrollTop = _editor.scrollTop;
-      // might need to adjust for markdown/rich text not 
-      // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown") 
-
-    });
-
-    $(options.textarea).on('change keydown', function(e) {
-      _editor.resize();
-    });
+    $('.ple-editor *').focusout(_editor.validate);
 
 
     _editor.data = {
@@ -85,21 +76,16 @@ $('.ple-title input').on('keydown', function(e) {
     }
 
 
-    // Method to fetch the Markdown contents of the WYSIWYG textarea
-    _editor.value = function() {
-
-      return _editor.wysiwyg.value();
-
-    }
-
-
-    _editor.wysiwyg = PublicLab.Woofmark(options.textarea, _editor);
-
     _editor.history = new PublicLab.History(_editor);
+
+    _editor.modules = {};
+    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
+    _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
+    _editor.modules.bodyModule      = new PublicLab.BodyModule(     _editor, { textarea: _editor.options.textarea });
+    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
+
     _editor.help = new PublicLab.Help(_editor);
 
-    // testing plots2 bootstrap styling
-    $('table').addClass('table');
 
   }
 

@@ -25825,16 +25825,20 @@ var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', fu
 });
 
 var Class        = require('resig-class');
-    crossvent    = require('crossvent');
 
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util      = require('./core/Util.js');
-PL.Formatter = require('./adapters/PublicLab.Formatter.js');
-PL.Woofmark  = require('./adapters/PublicLab.Woofmark.js');
-PL.History   = require('./PublicLab.History.js');
-PL.Help      = require('./PublicLab.Help.js'); // ui?
+PL.Util            = require('./core/Util.js');
+PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
+PL.History         = require('./PublicLab.History.js');
+PL.Help            = require('./PublicLab.Help.js');
+PL.Module          = require('./modules/PublicLab.Module.js');
+PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
+PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
+PL.BodyModule      = require('./modules/PublicLab.BodyModule.js');
+PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 
 
 PL.Editor = Class.extend({
@@ -25845,46 +25849,33 @@ PL.Editor = Class.extend({
     _editor.options = options;
 
 
-    /*########################
-     * Set up DOM stuff
-     */
+    // Validation:
+    // Count how many required modules remain for author to complete:
+    _editor.validate = function() {
 
-    _editor.growTextarea = require('grow-textarea');
+      var valid_modules    = 0,
+          required_modules = 0;
 
+      Object.keys(_editor.modules).forEach(function(key, i) {
 
-    // Make textarea match content height
-    _editor.resize = function() {
+        if (_editor.modules[key].options.required) {
+          required_modules += 1;
+          if (_editor.modules[key].valid()) valid_modules += 1;
+        }
 
-      _editor.growTextarea(options.textarea, { extra: 10 });
+      });
+
+      if (valid_modules == required_modules) {
+
+        $('.ple-publish').removeClass('disabled');
+
+      }
+
+      $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
 
     }
 
-// TEMPORARY: run during validations?
-$('.ple-title input').on('keydown', function(e) {
-  $('.ple-publish').removeClass('disabled');
-  $('.ple-steps-left').html(1);
-});
-
-    _editor.resize();
-
-    // once woofmark's done with the textarea, this is triggered
-    // using woofmark's special event system, crossvent
-    // -- move this into the Woofmark adapter initializer
-    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
-
-      _editor.resize();
-
-      // ensure document is scrolled to the same place:
-      document.body.scrollTop = _editor.scrollTop;
-      // might need to adjust for markdown/rich text not 
-      // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown") 
-
-    });
-
-    $(options.textarea).on('change keydown', function(e) {
-      _editor.resize();
-    });
+    $('.ple-editor *').focusout(_editor.validate);
 
 
     _editor.data = {
@@ -25902,27 +25893,22 @@ $('.ple-title input').on('keydown', function(e) {
     }
 
 
-    // Method to fetch the Markdown contents of the WYSIWYG textarea
-    _editor.value = function() {
-
-      return _editor.wysiwyg.value();
-
-    }
-
-
-    _editor.wysiwyg = PublicLab.Woofmark(options.textarea, _editor);
-
     _editor.history = new PublicLab.History(_editor);
+
+    _editor.modules = {};
+    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
+    _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
+    _editor.modules.bodyModule      = new PublicLab.BodyModule(     _editor, { textarea: _editor.options.textarea });
+    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
+
     _editor.help = new PublicLab.Help(_editor);
 
-    // testing plots2 bootstrap styling
-    $('table').addClass('table');
 
   }
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"crossvent":3,"grow-textarea":8,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":1,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.BodyModule.js":185,"./modules/PublicLab.MainImageModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.TagsModule.js":188,"./modules/PublicLab.TitleModule.js":189,"jquery":16,"resig-class":109}],180:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -25935,23 +25921,24 @@ module.exports = PublicLab.Help = Class.extend({
 
     _help.options = options || {};
 
-    $("[rel=tooltip]").tooltip(false);
-    $("[rel=tooltip]").tooltip();
+    // enable tooltips
+    $(".pl-editor [rel=tooltip], .wk-commands button, .wk-switchboard button").tooltip();
 
 
     // this won't work in xs compact state...
 
-    $('.ple-body').mouseleave(function(e) {
+    $('.ple-module').mouseleave(function(e) {
 
-      $('.ple-body .ple-guide-minor').fadeOut();
+      $(this).find('.ple-guide-minor').fadeOut();
+
+    });
+
+    $('.ple-module').mouseenter(function(e) {
+
+      $(this).find('.ple-guide-minor').fadeIn();
 
     });
 
-    $('.ple-body').mouseenter(function(e) {
-
-      $('.ple-body .ple-guide-minor').fadeIn();
-
-    });
 
 
   }
@@ -26150,9 +26137,19 @@ var woofmark     = require('woofmark'),
     domador      = require('domador'),
     megamark     = require('megamark');
     
-module.exports = function(textarea, editor) {
+module.exports = function(textarea, _editor, _module) {
 
-  return woofmark(textarea, {
+  var icons = {
+
+    'quote': 'quote-right',
+    'ol': 'list-ol',
+    'ul': 'list-ul',
+    'heading': 'header',
+    'attachment': 'paperclip'
+
+  }
+
+  var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
     storage:     'ple-woofmark-mode',
@@ -26162,15 +26159,16 @@ module.exports = function(textarea, editor) {
 
       modes: function (button, id) {
         button.className = 'woofmark-mode-' + id;
-        if (id == 'html')     button.innerHTML = "Preview";
+        if (id == 'html')     $(button).remove();
         if (id == 'markdown') button.innerHTML = "Markdown";
         if (id == 'wysiwyg')  button.innerHTML = "Rich";
       },
 
       commands: function (button, id) {
         button.className = 'woofmark-command-' + id;
+        var icon = icons[id] || id;
+        button.innerHTML = '<i class="fa fa-' + icon + '"></i>';
       }
-
 
     },
 
@@ -26201,7 +26199,7 @@ module.exports = function(textarea, editor) {
 
     parseMarkdown: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
         tokenizers: [
@@ -26224,7 +26222,7 @@ module.exports = function(textarea, editor) {
 
     parseHTML: function (input) {
 
-      editor.scrollTop = document.body.scrollTop;
+      _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
         transform: function (el) {
@@ -26240,9 +26238,17 @@ module.exports = function(textarea, editor) {
         }
       });
 
-    }
+    } 
 
   });
+
+
+  $('.wk-commands, .wk-switchboard').addClass('btn-group');
+  $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
+  $('.wk-switchboard button').addClass('btn-sm');
+
+
+  return wysiwyg;
 
 }
 
@@ -26285,5 +26291,344 @@ module.exports = {
   }
 
 }
+
+},{}],185:[function(require,module,exports){
+var crossvent    = require('crossvent');
+
+/*
+ * Form module for post body
+ */
+
+module.exports = PublicLab.BodyModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name = "body";
+    _module.options.instructions = "Describe your work in a way that others can understand.";
+    _module.options.guides = [
+      { 
+        icon: "mouse-pointer", 
+        position: 30, 
+        text: "Drag images into the textarea to upload them."
+      },
+      { 
+        icon: "list-ul",
+        position: 90, 
+        text: "Show people how to do what you've done; list required materials and resources."
+      }
+    ];
+
+
+    _module._super(_editor, _module.options);
+
+    // customize options after Module defaults set in _super()
+    _module.options.required = true;
+
+    // should be switchable for other editors:
+    _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
+
+    _module.key = "body";
+    _module.value = function() { return _module.wysiwyg.value(); }
+
+
+    // construct HTML additions
+    _module.build();
+
+
+// bootstrap styling for plots2 (remove later)
+$('table').addClass('table');
+
+
+    var growTextarea = require('grow-textarea');
+
+    // Make textarea match content height
+    _module.resize = function() {
+
+      growTextarea(options.textarea, { extra: 10 });
+
+    }
+
+    _module.resize();
+
+    // once woofmark's done with the textarea, this is triggered
+    // using woofmark's special event system, crossvent
+    // -- move this into the Woofmark adapter initializer
+    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+
+      _module.resize();
+
+      // ensure document is scrolled to the same place:
+      document.body.scrollTop = _module.scrollTop;
+      // might need to adjust for markdown/rich text not 
+      // taking up same amount of space, if menu is below _editor...
+      //if (_editor.wysiwyg.mode == "markdown") 
+
+    });
+
+    $(options.textarea).on('change keydown', function(e) {
+      _module.resize();
+    });
+
+
+  }
+
+});
+
+},{"crossvent":3,"grow-textarea":8}],186:[function(require,module,exports){
+/*
+ * Form module for main post image
+ */
+
+module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name = 'main_image';
+    _module.options.instructions = 'Choose an image. <br /><a href="">Image tips &raquo;</a>';
+
+    _module._super(_editor, _module.options);
+
+    _module.key = 'main_image_url';
+    _module.value = function() {
+
+/////////// get this to return the image object?
+      return false;
+
+    }
+
+    // construct HTML additions
+    _module.build();
+
+
+  }
+
+});
+
+},{}],187:[function(require,module,exports){
+/*
+ * Form modules like title, tags, body, main image
+ */
+
+module.exports = PublicLab.Module = Class.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.required = false; // default
+    _module.options.guides = _module.options.guides || [];
+
+    _module.el = $('.ple-module-' + _module.options.name);
+
+
+    // Construct and insert HTML, including 
+    // instructions, help and tips
+    _module.build = function() {    
+
+      // standard instructions location is at start of ple-module-guide 
+      _module.el.find('.ple-module-guide')
+                .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
+                .append('<div class="ple-guide-minor hidden-xs hidden-sm" style="display:none;"></div>');
+
+      _module.options.guides.forEach(function(guide) {
+
+        _module.el.find('.ple-guide-minor')
+                  .append('<br style="position:absolute;top:' + guide.position + 'px;" class="hidden-xs hidden-sm" />')
+                  .append('<p><i class="fa fa-' + guide.icon + '"></i>' + guide.text + '</p>');
+
+      });
+ 
+    }
+
+
+    // All modules must have a module.valid() method
+    // which returns true by default (making them optional).
+    // Eventually, we might distinguish between empty and invalid.
+    _module.valid = function() {
+
+      return true;
+
+    }
+
+
+    // could wrap these in an events() method?
+    _module.el.find('.ple-help-minor').hide(); 
+
+
+    $(_module.el).mouseenter(function() { 
+
+      _module.el.find('.ple-help-minor').fadeIn(); 
+
+    });
+
+    $(_module.el).mouseleave(function() { 
+
+      _module.el.find('.ple-help-minor').fadeOut(); 
+
+    });
+
+
+  }
+
+});
+
+},{}],188:[function(require,module,exports){
+/*
+ * Form module for post tags
+ */
+
+module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name         = 'tags';
+    _module.options.instructions = 'Tags relate your work to others\' posts. <a href="">Read more &raquo;</a>';
+    _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
+
+    _module._super(_editor, _module.options);
+
+
+    _module.valid = function() {
+
+      // must not be empty
+      return _module.el.find('input').val() != "";
+
+    }
+
+
+    // Overrides default build method
+    _module.build = function() {    
+
+      // custom location -- just under the input
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(_module.options.instructions);
+
+      // insert recent and common ones here -- 
+      // (this is application-specific)
+
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help-minor">Recent tags: <span class="ple-recent-tags"></span></p>');
+
+      var tags = [];
+
+      _module.options.recentTags.forEach(function(tag) {
+
+        tags.push('<a>' + tag + '</a>');
+
+      });
+
+      _module.el.find('.ple-recent-tags')
+                .append(tags.join(', '))
+
+      _module.el.find('.ple-help-minor').hide(); 
+
+    }
+
+
+    // construct HTML additions
+    _module.build();
+
+
+  }
+
+});
+
+},{}],189:[function(require,module,exports){
+/*
+ * Form module for post title
+ */
+
+module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
+
+  init: function(_editor, options) {
+
+    var _module = this;
+
+    _module.options = options || {};
+    _module.options.name         = "title";
+    _module.options.required     = true;
+    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
+
+    _module._super(_editor, _module.options);
+
+
+    _module.valid = function() {
+
+      // must not be empty
+      return _module.el.find('input').val() != "";
+
+    }
+
+
+    // Overrides default build method
+    _module.build = function() {    
+
+      // custom location -- just under the title input
+      _module.el.find('.ple-module-content')
+                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(_module.options.instructions);
+
+      _module.el.find('.ple-help-minor').hide(); 
+
+    }
+
+
+    // construct HTML additions
+    _module.build();
+
+
+    // All the "related" behavior below is application-specific, 
+    // though perhaps it's a generalizable menu interface,
+    // like "ModuleSuggestion" or something. Anyhow, let's
+    // tuck it into a subclass or something...
+
+
+    // make an area for "related posts" to connect to
+    _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
+    _module.menuEl = _module.el.find('.ple-menu-more');
+    _module.menuEl.append('<a class="btn btn-default">...</a>');
+
+    
+    // make an area for "related posts" to connect to
+    _module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
+    _module.relatedEl = _module.el.find('.ple-title-related');
+    _module.relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
+
+    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+
+    $(_module.el).find('input').keydown(function(e) {
+
+      _module.relatedEl.fadeIn();
+
+    });
+
+    // make this hide only if another section is clicked, using a 'not' pseudoselector
+    $(_module.el).find('input').focusout(function(e) {
+
+      _module.relatedEl.fadeOut();
+
+    });
+
+
+  }
+
+});
 
 },{}]},{},[179]);

@@ -23,9 +23,10 @@
 
         <h1>Share</h1>
 
+        <!-- selector module -->
         <div class="container ple-type">
 
-          <div class="col-md-4 col-md-push-4">
+          <div class="col-md-5 col-md-push-4">
             <div class="row">
               <div class="col-xs-10">
                 <select class="form-control input-lg">
@@ -42,69 +43,59 @@
           </div>
 
         </div>
+        <!-- end selector module -->
 
       </div>
 
       <div class="ple-content">
 
 
-        <div class="ple-title ple-section container">
+        <!-- title module -->
+        <div class="ple-module-title ple-module container">
 
-          <div class="ple-section-guide col-md-3">
+          <div class="ple-module-guide col-md-3">
             <h2>1</h2>
           </div>
 
-          <div class="ple-section-content col-md-9">
+          <div class="ple-module-content col-md-9">
             <input class="form-control input-lg" type="text" placeholder="Title" />
-            <p class="ple-help-minor">The title is a very important thing. <a href="">Read more</a></p>
           </div>
 
         </div>
+        <!-- end title module -->
 
 
-        <div class="ple-main-image ple-section container">
+        <!-- main_image module -->
+        <div class="ple-module-main_image ple-module container">
 
-          <div class="ple-section-guide col-md-3">
+          <div class="ple-module-guide col-md-3">
             <h2>2</h2>
-            <p>Choose an image. <a href="">Read more</a></p>
           </div>
 
-          <div class="ple-section-content col-md-9 container">
+          <div class="ple-module-content col-md-9 container">
             <div class="ple-drag-drop col-md-6">
               Drag an image here to upload.
             </div>
             <div class="col-md-6 help">
 
               <p><input type="file" name="image[photo]" /></p>
-              <p class="ple-help">Select a main image for your post.</p>
+              <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
 
             </div>
           </div>
 
         </div>
+        <!-- end main_image module -->
 
 
-        <div class="ple-body ple-section container">
+        <!-- body module -->
+        <div class="ple-module-body ple-module container">
 
-          <div class="ple-section-guide col-md-3">
+          <div class="ple-module-guide col-md-3">
             <h2>3</h2>
-            <p>
-              Describe your work in a way that others can understand. 
-              <a class="visible-xs visible-sm" onClick="$('.ple-body .ple-section-guide div').toggleClass('hidden-xs').toggleClass('hidden-sm');">Read more</a>
-            </p>
-
-            <div class="ple-guide-minor hidden-xs hidden-sm" style="display:none;">
-
-              <br style="margin-top:30px;" class="hidden-xs hidden-sm" />
-              <p><i class="fa fa-mouse-pointer"></i>Drag images into the textarea to upload them.</p>
-
-              <br style="margin-top:60px;" class="hidden-xs hidden-sm" />
-              <p><i class="fa fa-list"></i>Show people how to do what you've done; list required materials and resources.</p>
-
-            </div>
           </div>
 
-          <div class="ple-section-content col-md-9 container">
+          <div class="ple-module-content col-md-9 container">
             <textarea class="ple-textarea form-control"># About my project
 
 I've been working on [this thing](/) and wanted to share.
@@ -114,6 +105,8 @@ My goals have been:
 * simple to make
 * ease of use
 * low cost
+
+And then, after #balloon-mapping with @eustatic, tables:
 
 | col1 | col2 | col3 |
 |------|------|------|
@@ -129,6 +122,22 @@ var myVariable = 4;
           </div>
 
         </div>
+        <!-- end body module -->
+
+
+        <!-- tags module -->
+        <div class="ple-module-tags ple-module container">
+
+          <div class="ple-module-guide col-md-3">
+            <h2>4</h2>
+          </div>
+
+          <div class="ple-module-content col-md-9">
+            <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality" />
+          </div>
+
+        </div>
+        <!-- end tags module -->
 
         
       </div>

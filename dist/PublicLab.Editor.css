@@ -42,28 +42,28 @@
   margin-bottom: 20px;
 }
 
-.ple-section {
+.ple-module {
   padding: 20px;
   border-top: 1px solid #ddd;
 }
 
-.ple-section-guide h2 {
+.ple-module-guide h2 {
   font-size: 4em;
   margin-top: 0;
 }
 
-.ple-section-guide p {
+.ple-module-guide p {
   color: #aaa;
   padding-bottom: 22px;
   padding-right: 30px;
   clear: left;
 }
 
-.ple-section-guide .ple-guide-minor p {
+.ple-module-guide .ple-guide-minor p {
   font-size: 12px;
 }
 
-.ple-section-guide p i.fa {
+.ple-module-guide p i.fa {
   color: #666;
   font-size: 18px;
   float:left;
@@ -109,35 +109,6 @@
 
 .wk-switchboard {
   float: right;
-}
-
-.wk-commands button, 
-.wk-switchboard button {
-  padding: 5px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
-  color: #333;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  display: inline-block;
-  margin-bottom: 0;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.42857143;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-image: none;
-}
-
-.woofmark-command-link {
-  color: blue;
 }
 
 .wk-container-drop {
