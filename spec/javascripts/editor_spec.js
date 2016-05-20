@@ -27,7 +27,20 @@ describe("Editor", function() {
   });
 
 
-  xit("counts valid modules and enables publish button", function() {
+  it("counts valid modules and enables publish button", function() {
+
+    expect(editor.modules.titleModule.el.find('input').val()).toBe("");
+    expect(editor.modules.titleModule.valid()).toBe(false);
+
+    expect(editor.validate()).toBe(false);
+
+    editor.modules.richTextModule.value(""); // empty it
+    expect(editor.modules.richTextModule.value()).toBe("");
+    expect(editor.modules.richTextModule.valid()).toBe(false);
+
+    editor.modules.titleModule.value("My title");
+    editor.modules.richTextModule.value("My content");
+    expect(editor.validate()).toBe(true);
 
   });
 

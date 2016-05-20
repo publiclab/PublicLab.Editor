@@ -1,11 +1,11 @@
 PublicLab.Editor
 ====
 
-**This library is incomplete -- this page is a very rough planning document.**
+**This library is incomplete -- this page is a rough planning document.**
 
 Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
 
-PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
+PublicLab.Editor is a general purpose, modular JavaScript/Bootstrap UI library for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
 
 PublicLab.Editor will provide author-friendly interfaces for:
 
@@ -40,9 +40,32 @@ https://publiclab.github.io/PublicLab.Editor/examples/
 ![Screenshot](https://i.publiclab.org/system/images/photos/000/015/865/original/Public_Lab_Rich_Editor_design_%281%29.png)
 
 
+## Modules
+
+The editor is built from different modules like:
+
+* TitleModule
+* BodyModule
+* TagsModule
+
+Each manages its own UI and validation, and which report their contents via a `module.value()` method. The BodyModule contains a WYSIWYG textarea, managed (by default) by Woofmark. 
+
+To add a new field, or new behavior, extend `PublicLab.Module` or customize an existing module by extending it -- for example:
+
+````js
+PublicLab.NewModule.extend({
+  init: function(_editor) {
+
+    this._super(_editor);
+
+  }
+});
+````
+
+
 ## Setup
 
-To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/), and use the following constructor:
+To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/index.html), and use the following constructor:
 
 ````js
 var editor = PublicLab.Editor({ 
@@ -91,7 +114,7 @@ To run tests, open /test.html in a browser. To add new tests, edit the `*_spec.j
 
 ### Integration with PublicLab.org
 
-The API we'll be working from will include several server URLs:
+The API we'll be working from will include several server URLs, which we'll be building into the file at `src/adaptors/PublicLab.Adaptors.js`:
 
 * publishing by `POST` (`CREATE`?) to `/notes` (will go to plots2's `notes_controller.rb#create`)
 * updating by `UPDATE` to `/notes` (will go to plots2's `notes_controller.rb#update`)

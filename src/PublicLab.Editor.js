@@ -20,7 +20,7 @@ PL.Help            = require('./PublicLab.Help.js');
 PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
-PL.BodyModule      = require('./modules/PublicLab.BodyModule.js');
+PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 
 
@@ -30,6 +30,7 @@ PL.Editor = Class.extend({
 
     var _editor = this;
     _editor.options = options;
+    _editor.options.history = (_editor.options.history !== false); // true by default
 
 
     // Validation:
@@ -56,6 +57,8 @@ PL.Editor = Class.extend({
 
       $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
 
+      return valid_modules == required_modules;
+
     }
 
     $('.ple-editor *').focusout(_editor.validate);
@@ -76,15 +79,39 @@ PL.Editor = Class.extend({
     }
 
 
-    _editor.history = new PublicLab.History(_editor);
+    // Returns an object which is a compilation of all module
+    // values, requested via module.value().
+    _editor.values = function() {
+
+      var valueObj = {};
+
+      Object.keys(_editor.modules).forEach(function(key, i) {
+        valueObj[key] = _editor.modules[key].value();
+      });
+
+      return valueObj;
+
+    }
+
+
+    $('.btn-more').click(function() {
+
+      // display more tools menu
+      $('.ple-menu-more').toggle();
+
+    });
+
 
     _editor.modules = {};
     _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
     _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.modules.bodyModule      = new PublicLab.BodyModule(     _editor, { textarea: _editor.options.textarea });
+    _editor.modules.richTextModule  = new PublicLab.RichTextModule( _editor, { textarea: _editor.options.textarea });
     _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
 
-    _editor.help = new PublicLab.Help(_editor);
+
+    // history must go after richTextModule, as it monitors that
+    if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+    _editor.help    = new PublicLab.Help(_editor);
 
 
   }

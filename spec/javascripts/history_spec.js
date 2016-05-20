@@ -31,8 +31,22 @@ describe("History", function() {
   });
 
 
+  it("can be flushed", function() {
+
+    expect(editor.history.fetch()).not.toEqual([]);
+    expect(editor.history.last()).not.toBe(null);
+
+    editor.history.flush();
+
+    expect(editor.history.fetch()).toEqual([]);
+    expect(editor.history.last()).toBe(null);
+
+  });
+
+
   it("adds, fetches, and stores", function() {
 
+    editor.history.flush();
     expect(editor.history.fetch()).toEqual([]);
     expect(editor.history.last()).toBe(null);
 

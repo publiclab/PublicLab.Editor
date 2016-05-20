@@ -28,16 +28,20 @@ module.exports = function(textarea, _editor, _module) {
     render: {
 
       modes: function (button, id) {
+
         button.className = 'woofmark-mode-' + id;
         if (id == 'html')     $(button).remove();
         if (id == 'markdown') button.innerHTML = "Markdown";
         if (id == 'wysiwyg')  button.innerHTML = "Rich";
+
       },
 
       commands: function (button, id) {
+
         button.className = 'woofmark-command-' + id;
         var icon = icons[id] || id;
         button.innerHTML = '<i class="fa fa-' + icon + '"></i>';
+
       }
 
     },
@@ -115,7 +119,23 @@ module.exports = function(textarea, _editor, _module) {
 
   $('.wk-commands, .wk-switchboard').addClass('btn-group');
   $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
-  $('.wk-switchboard button').addClass('btn-sm');
+
+  if (_editor.options.size == "xs") {
+
+    //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
+
+    // hide selectively, not by #:
+    $('.wk-commands button.woofmark-command-quote').hide();
+    $('.wk-commands button.woofmark-command-code').hide();
+    $('.wk-commands button.woofmark-command-ol').hide();
+    $('.wk-commands button.woofmark-command-ul').hide();
+    $('.wk-switchboard button.woofmark-mode-markdown').html("MD");
+
+  } else {
+
+    $('.wk-switchboard button').addClass('btn-sm');
+
+  }
 
 
   return wysiwyg;
