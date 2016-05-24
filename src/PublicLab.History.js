@@ -29,7 +29,7 @@ module.exports = PublicLab.History = Class.extend({
     // this would be the nid in Drupal
     // plus the username, or just a
     // unique id if it's a new post
-    _history.options.id       = _history.options.id || (new Date()).getTime();
+    _history.options.id       = _history.options.id || 0;// (new Date()).getTime();
     _history.options.interval = _history.options.interval || 10000; // ten second default
     _history.options.prefix   = _history.options.prefix || "publiclab-editor-history-";
     _history.options.element  = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
@@ -108,7 +108,7 @@ module.exports = PublicLab.History = Class.extend({
         if (_history.last() && text != _history.last().text) {
 
           _history.add(text);
-          console.log('history: new entry', _history.last());
+          console.log('history: entry saved');
 
         } else if (_history.last()) {
 
@@ -118,7 +118,7 @@ module.exports = PublicLab.History = Class.extend({
         } else {
 
           _history.add(text);
-          console.log('history: first entry saved', _history.last());
+          console.log('history: first entry saved');
 
         }
 
@@ -195,6 +195,13 @@ module.exports = PublicLab.History = Class.extend({
       _history.fetch();
 
       setInterval(_history.check, _history.options.interval);
+
+      $(_editor.modules.richTextModule.options.textarea).on('change', function() {
+
+        _history.check();
+
+      });
+
       _history.check();
 
 

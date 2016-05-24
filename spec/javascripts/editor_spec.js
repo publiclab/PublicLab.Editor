@@ -34,6 +34,7 @@ describe("Editor", function() {
 
     expect(editor.validate()).toBe(false);
 
+    editor.modules.richTextModule.wysiwyg.setMode('markdown');
     editor.modules.richTextModule.value(""); // empty it
     expect(editor.modules.richTextModule.value()).toBe("");
     expect(editor.modules.richTextModule.valid()).toBe(false);

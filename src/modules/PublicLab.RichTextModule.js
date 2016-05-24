@@ -40,37 +40,15 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // should be switchable for other editors:
     _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
 
+    _module.editable = _module.wysiwyg.editable;
+    _module.textarea = _module.wysiwyg.textarea;
+
     _module.key = 'body';
     _module.value = function(text) {
 
-      if (typeof text == 'string') {
-
-        // this section can/should be replaced once this:
-        // https://github.com/bevacqua/woofmark/issues/15
-        // is resolved. 
-
-        // consider what mode the wysiwyg is in, match that:
-        if (_module.wysiwyg.mode != 'markdown') {
-
-          _module.wysiwyg.runCommand(function(chunks, mode) {
-            chunks.after = '';
-            if (mode != 'html') {
-              chunks.before = editor.parseMarkdown(text);
-            } else {
-              chunks.before = text;
-            }
-          });
-
-        } else {
-
-          $(_module.wysiwyg.textarea).val(text);
-
-        }
-
-      }
-
       // woofmark automatically returns the markdown, not rich text:
-      return _module.wysiwyg.value();
+      if (typeof text === 'string') return _module.wysiwyg.value(text);
+      else                          return _module.wysiwyg.value();
 
     }
 
@@ -88,6 +66,13 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
 // bootstrap styling for plots2 (remove later)
 $('table').addClass('table');
+
+
+    _module.setMode = function(mode) {
+
+      return _module.wysiwyg.setMode(mode);
+
+    }
 
 
     _module.height = function() {

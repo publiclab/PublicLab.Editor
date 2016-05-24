@@ -22,6 +22,7 @@ module.exports = function(textarea, _editor, _module) {
   var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
+    fencing:     true,
     storage:     'ple-woofmark-mode',
     xhr:         require('xhr'),
 
@@ -99,6 +100,13 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
+        fencing:   true,
+        fencinglanguage: function (el) {
+          var match = el.className.match(/md-lang-((?:[^\s]|$)+)/);
+          if (match) {
+            return match.pop();
+          }
+        },
         transform: function (el) {
 
           if (el.tagName === 'A' && el.innerHTML[0] === '@') {

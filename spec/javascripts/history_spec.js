@@ -6,9 +6,6 @@ describe("History", function() {
 
     fixture = loadFixtures('index.html');
 
-    // clear out localstorage for testing purposes
-    //...
-
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
     });
@@ -67,10 +64,11 @@ describe("History", function() {
   });
 
 
-  xit("creates new log entry when textarea updated", function() {
+  it("creates new log entry when value() set", function() {
 
-    expect($('textarea.ple-textarea').length).toBeGreaterThan(0);
-    $('textarea.ple-textarea').val('changed textarea text');
+    expect($(editor.modules.richTextModule.options.textarea).length).toBeGreaterThan(0);
+    editor.modules.richTextModule.value('changed textarea text');
+    editor.history.check();
     expect(editor.history.last().text).toBe("changed textarea text");
 
   });

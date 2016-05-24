@@ -278,6 +278,18 @@ function processCode (text) {
   return text.replace(/`/g, '\\`');
 }
 
+function outputMapper (fn, tagName) {
+  return function bitProcessor (bit) {
+    if (bit.marker) {
+      return bit.marker;
+    }
+    if (!fn) {
+      return bit.text;
+    }
+    return fn(bit.text, tagName);
+  };
+}
+
 function noop () {}
 
 function parse (html, options) {
@@ -334,7 +346,7 @@ Domador.prototype.code = function code () {
 
 Domador.prototype.li = function li () {
   var result;
-  result = this.inOrderedList ? (this.order++) + '. ' : '* ';
+  result = this.inOrderedList ? (this.order++) + '. ' : '- ';
   result = padLeft(result, (this.listDepth - 1) * 2);
   return this.append(result);
 };
@@ -462,6 +474,7 @@ Domador.prototype.parse = function parse () {
     }
   }
   this.append('');
+  this.buffer = this.buffer.replace(/\n{3,}/g, '\n\n');
   return this.buffer = trim(this.buffer);
 };
 
@@ -537,46 +550,35 @@ Domador.prototype.process = function process (el) {
   }
 
   if (el.nodeType === this.windowContext.Node.TEXT_NODE) {
-    if (el.nodeValue.replace(/\n/g, '').length === 0) {
+    if (!this.inPre && el.nodeValue.replace(/\n/g, '').length === 0) {
       return;
     }
     interleaved = this.interleaveMarkers(el.nodeValue);
     if (this.inPre) {
-      return this.output(interleaved.map(maybeProcess()).join(''));
+      return this.output(interleaved.map(outputMapper()).join(''));
     }
     if (this.inCode) {
-      return this.output(interleaved.map(maybeProcess(processCode)).join(''));
+      return this.output(interleaved.map(outputMapper(processCode)).join(''));
     }
-    return this.output(interleaved.map(maybeProcess(processPlainText, el.parentElement && el.parentElement.tagName)).join(''));
-  }
-
-  function maybeProcess (fn, tagName) {
-    return function bitProcessor (bit) {
-      if (bit.marker) {
-        return bit.marker;
-      }
-      if (!fn) {
-        return bit.text;
-      }
-      return fn(bit.text, tagName);
-    };
+    return this.output(interleaved.map(outputMapper(processPlainText, el.parentElement && el.parentElement.tagName)).join(''));
   }
 
   if (el.nodeType !== this.windowContext.Node.ELEMENT_NODE) {
     return;
   }
 
-  if (this.lastElement) {
+  if (this.lastElement) { // i.e not the auto-inserted <div> wrapper
     this.insertMarkers();
     this.advanceHtmlIndex('<' + el.tagName);
     this.advanceHtmlIndex('>');
+
+    var transformed = this.options.transform(el);
+    if (transformed !== void 0) {
+      return this.output(transformed);
+    }
   }
   this.lastElement = el;
 
-  var transformed = this.options.transform(el);
-  if (transformed !== void 0) {
-    return this.output(transformed);
-  }
   if (shallowTags.indexOf(el.tagName) !== -1) {
     this.advanceHtmlIndex('\\/\\s?>');
     return;
@@ -667,7 +669,11 @@ Domador.prototype.process = function process (el) {
     case 'PRE':
       if (this.options.fencing) {
         this.append('\n\n');
-        this.output(['```', '\n'].join(this.options.fencinglanguage(el) || ''));
+        var fencinglanguage = this.options.fencinglanguage(el);
+        if (el.childNodes[0].tagName === 'CODE') {
+          fencinglanguage = fencinglanguage || this.options.fencinglanguage(el.childNodes[0]);
+        }
+        this.output('```' + (fencinglanguage || '') + '\n');
         after = [this.pre(), this.outputLater('\n```')];
       } else {
         after = [this.pushLeft('    '), this.pre()];
@@ -751,6 +757,7 @@ Domador.prototype.tables = function tables (el) {
 
   var name = el.tagName;
   if (name === 'TABLE') {
+    this.append('\n\n');
     this.tableCols = [];
     return;
   }
@@ -1781,7 +1788,7 @@ function uncamelize (string) {
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],16:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -1791,7 +1798,7 @@ function uncamelize (string) {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-05-20T17:23Z
  */
 
 (function( global, factory ) {
@@ -1847,7 +1854,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.4",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -6788,13 +6795,14 @@ jQuery.Event.prototype = {
 	isDefaultPrevented: returnFalse,
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse,
+	isSimulated: false,
 
 	preventDefault: function() {
 		var e = this.originalEvent;
 
 		this.isDefaultPrevented = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.preventDefault();
 		}
 	},
@@ -6803,7 +6811,7 @@ jQuery.Event.prototype = {
 
 		this.isPropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopPropagation();
 		}
 	},
@@ -6812,7 +6820,7 @@ jQuery.Event.prototype = {
 
 		this.isImmediatePropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopImmediatePropagation();
 		}
 
@@ -7742,19 +7750,6 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
 		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-	// Support: IE11 only
-	// In IE 11 fullscreen elements inside of an iframe have
-	// 100x too small dimensions (gh-1764).
-	if ( document.msFullscreenElement && window.top !== window ) {
-
-		// Support: IE11 only
-		// Running getBoundingClientRect on a disconnected node
-		// in IE throws an error.
-		if ( elem.getClientRects().length ) {
-			val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-		}
-	}
 
 	// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -9646,6 +9641,7 @@ jQuery.extend( jQuery.event, {
 	},
 
 	// Piggyback on a donor event to simulate a different one
+	// Used only for `focus(in | out)` events
 	simulate: function( type, elem, event ) {
 		var e = jQuery.extend(
 			new jQuery.Event(),
@@ -9653,27 +9649,10 @@ jQuery.extend( jQuery.event, {
 			{
 				type: type,
 				isSimulated: true
-
-				// Previously, `originalEvent: {}` was set here, so stopPropagation call
-				// would not be triggered on donor event, since in our own
-				// jQuery.event.stopPropagation function we had a check for existence of
-				// originalEvent.stopPropagation method, so, consequently it would be a noop.
-				//
-				// But now, this "simulate" function is used only for events
-				// for which stopPropagation() is noop, so there is no need for that anymore.
-				//
-				// For the 1.x branch though, guard for "click" and "submit"
-				// events is still used, but was moved to jQuery.event.stopPropagation function
-				// because `originalEvent` should point to the original event for the constancy
-				// with other events and for more focused logic
 			}
 		);
 
 		jQuery.event.trigger( e, null, elem );
-
-		if ( e.isDefaultPrevented() ) {
-			event.preventDefault();
-		}
 	}
 
 } );
@@ -27879,49 +27858,23 @@ module.exports = render;
 'use strict';
 
 var bullseye = require('bullseye');
-var ranchored = /^[#>*-]$/;
-var rboundary = /^[*_`#-]$/;
-var rbulletafter = /^\d+\. /;
-var rbulletline = /^\s*\d+\.$/;
-var rbulletleft = /^\s*\d+$/;
-var rbulletright = /\d|\./;
-var rwhitespace = /^\s*$/;
-var rhr = /^---+$/;
-var rend = /^$|\s|\n/;
-var rfootnotedeclaration = /^\[[^\]]+\]\s*:\s*[A-z\/]/;
-var rfootnotebegin = /^\s*\[[^\]]*$/;
-var rfootnotebegan = /^\s*\[[^\]]+$/;
-var rfootnoteleft = /^\s*\[[^\]]+\]\s*$/;
-var rfootnoteanchor = /^\s*\[[^\]]+\]\s*:$/;
-var rfootnotelink = /^\s*\[[^\]]+\]\s*:\s*[A-z\/]/;
-var rfootnotefull = /^\s*\[[^\]]+\]\s*:\s*[A-z\/].*\s*"[^"]*"/;
-var rspaceorquote = /\s|"/;
-var rspaceorcolon = /\s|:/;
-var rempty = /^(<p><\/p>)?\n?$/i;
 
 function rememberSelection (history) {
   var code = Math.random().toString(18).substr(2).replace(/\d+/g, '');
   var open = 'WoofmarkSelectionOpenMarker' + code;
   var close = 'WoofmarkSelectionCloseMarker' + code;
   var rmarkers = new RegExp(open + '|' + close, 'g');
-  mark();
-  return unmark;
+  return {
+    markers: markers(),
+    unmark: unmark
+  };
 
-  function mark () {
+  function markers () {
     var state = history.reset().inputState;
     var chunks = state.getChunks();
-    var mode = state.mode;
-    var all = chunks.before + chunks.selection + chunks.after;
-    if (rempty.test(all)) {
-      return;
-    }
-    if (mode === 'markdown') {
-      updateMarkdownChunks(chunks);
-    } else {
-      updateHTMLChunks(chunks);
-    }
-    state.setChunks(chunks);
-    state.restore(false);
+    var selectionStart = chunks.before.length;
+    var selectionEnd = selectionStart + chunks.selection.length;
+    return [[selectionStart, open], [selectionEnd, close]];
   }
 
   function unmark () {
@@ -27943,154 +27896,6 @@ function rememberSelection (history) {
     state.restore(false);
     state.scrollTop = el.scrollTop = eye.read().y - el.getBoundingClientRect().top - 50;
     eye.destroy();
-  }
-
-  function updateMarkdownChunks (chunks) {
-    var all = chunks.before + chunks.selection + chunks.after;
-    var originalStart = chunks.before.length;
-    var originalEnd = originalStart + chunks.selection.length;
-    var selectionStart = move(originalStart, 1);
-    var selectionEnd = move(originalEnd, -1);
-    var moved = originalStart !== selectionStart || originalEnd !== selectionEnd;
-
-    updateSelection(chunks, all, selectionStart, selectionEnd, moved);
-
-    function move (p, offset) {
-      var prev = all[p - 1] || '';
-      var next = all[p] || '';
-      var line = backtrace(p - 1, '\n');
-      var jumps = prev === '' || prev === '\n';
-
-      if (next === ' ' && (jumps || prev === ' ')) {
-        return again();
-      }
-
-      var close = backtrace(p - 1, ']');
-      var reopened = close.indexOf('[');
-
-      // these two handle anchored references '[foo][1]', or even '[bar]  \n [2]'
-      if (reopened !== -1 && rwhitespace.test(close.substr(0, reopened))) {
-        return again(-close.length);
-      } else {
-        reopened = all.substr(p).indexOf('[');
-        if (reopened !== -1 && rwhitespace.test(all.substr(p, reopened))) {
-          return again(-1);
-        }
-      }
-
-      // the seven following rules together handle footnote references
-      if ((jumps || rwhitespace.test(line)) && rfootnotedeclaration.test(all.substr(p))) {
-        return again(); // started with '', '\n', or '  ' and continued with '[a-1]: h'
-      }
-      if (rfootnotebegin.test(line) && next !== ']') {
-        return again(); // started with '[' and continued with 'a-1'
-      }
-      if (rfootnotebegan.test(line) && next === ']') {
-        return again(); // started with '[a-1' and continued with ']: h'
-      }
-      if (rfootnoteleft.test(line) && rspaceorcolon.test(next)) {
-        return again(); // started with '[a-1]  ' and continued with ':'
-      }
-      if (rfootnoteanchor.test(line) && next === ' ') {
-        return again(); // started with '[a-1]  :' and continued with ' '
-      }
-      if (rfootnotelink.test(line) && prev === ' ' && rspaceorquote.test(next) && offset === 1) {
-        return again(); // started with '[a-1]  :' and continued with ' ', or '"', on the left
-      }
-      if (rfootnotefull.test(line) && rend.test(next)) {
-        return again(-1); // started with '[a-1]  : something "something"' and continued with '', ' ', or '\n'
-      }
-
-      // the three following rules together handle ordered list items: '\n1. foo\n2. bar'
-      if ((jumps || rwhitespace.test(line)) && rbulletafter.test(all.substr(p))) {
-        return again(); // started with '', '\n', or '  ' and continued with '123. '
-      }
-      if (rbulletleft.test(line) && rbulletright.test(next)) {
-        return again(); // started with '  123' and ended in '4' or '.'
-      }
-      if (rbulletline.test(line) && next === ' ') {
-        return again(); // started with '  123.' and ended with ' '
-      }
-
-      if (ranchored.test(next) && jumps) {
-        return again();
-      }
-      if (ranchored.test(prev) && next === ' ') {
-        return again();
-      }
-      if (next === prev && rboundary.test(next)) {
-        return again();
-      }
-      if (rhr.test(line) && next === '\n') {
-        return again();
-      }
-      if (all.substr(p - 3, 3) === '```' && offset === 1) { // handles '```javascript\ncode\n```'
-        while (all[p - 1] && all[p - 1] !== '\n') {
-          p++;
-        }
-      }
-      return p;
-
-      function again (override) {
-        var diff = override || offset;
-        return move(p + diff, diff > 0 ? 1 : -1);
-      }
-      function backtrace (p, edge) {
-        var last = all[p];
-        var text = '';
-        while (last && last !== edge) {
-          text = last + text;
-          last = all[--p];
-        }
-        return text;
-      }
-    }
-  }
-
-  function updateHTMLChunks (chunks) {
-    var all = chunks.before + chunks.selection + chunks.after;
-    var selectionStart = chunks.before.length;
-    var selectionEnd = selectionStart + chunks.selection.length;
-    var leftClose = chunks.before.lastIndexOf('>');
-    var leftOpen = chunks.before.lastIndexOf('<');
-    var rightClose = chunks.after.indexOf('>');
-    var rightOpen = chunks.after.indexOf('<');
-    var prevOpen;
-    var nextClose;
-    var balanceTags;
-
-    // <fo[o]>bar</foo> into <foo>[]bar</foo>, <fo[o>ba]r</foo> into <foo>[ba]r</foo>
-    if (leftOpen > leftClose) {
-      nextClose = all.indexOf('>', leftClose + 1);
-      if (nextClose !== -1) {
-        selectionStart = nextClose + 1;
-        balanceTags = true;
-      }
-    }
-
-    // <foo>bar</[fo]o> into <foo>bar[]</foo>, <foo>b[ar</f]oo> into <foo>b[ar]</foo>
-    if (rightOpen === -1 || rightOpen > rightClose) {
-      prevOpen = all.substr(0, chunks.before.length + chunks.selection.length + rightClose).lastIndexOf('<');
-      if (prevOpen !== -1) {
-        selectionEnd = prevOpen;
-        selectionStart = Math.min(selectionStart, selectionEnd);
-        balanceTags = true;
-      }
-    }
-
-    updateSelection(chunks, all, selectionStart, selectionEnd, balanceTags);
-  }
-
-  function updateSelection (chunks, all, selectionStart, selectionEnd, balanceTags) {
-    if (selectionEnd < selectionStart) {
-      selectionEnd = selectionStart;
-    }
-    if (balanceTags) {
-      chunks.before = all.substr(0, selectionStart);
-      chunks.selection = all.substr(selectionStart, selectionEnd - selectionStart);
-      chunks.after = all.substr(selectionEnd);
-    }
-    chunks.selection = open + chunks.selection + close;
   }
 }
 
@@ -28358,7 +28163,7 @@ function woofmark (textarea, options) {
     parseMarkdown: o.parseMarkdown,
     parseHTML: o.parseHTML,
     destroy: destroy,
-    value: getMarkdown,
+    value: getOrSetValue,
     textarea: textarea,
     editable: o.wysiwyg ? editable : null,
     setMode: persistMode,
@@ -28472,7 +28277,7 @@ function woofmark (textarea, options) {
   function wysiwygMode (e) { persistMode('wysiwyg', e); }
 
   function persistMode (nextMode, e) {
-    var restoreSelection;
+    var remembrance;
     var currentMode = editor.mode;
     var old = modes[currentMode].button;
     var button = modes[nextMode].button;
@@ -28484,24 +28289,24 @@ function woofmark (textarea, options) {
       return;
     }
 
-    restoreSelection = focusing && rememberSelection(history, o);
+    remembrance = focusing && rememberSelection(history, o);
     textarea.blur(); // avert chrome repaint bugs
 
     if (nextMode === 'markdown') {
       if (currentMode === 'html') {
-        textarea.value = o.parseHTML(textarea.value).trim();
+        textarea.value = parse('parseHTML', textarea.value).trim();
       } else {
-        textarea.value = o.parseHTML(editable).trim();
+        textarea.value = parse('parseHTML', editable).trim();
       }
     } else if (nextMode === 'html') {
       if (currentMode === 'markdown') {
-        textarea.value = o.parseMarkdown(textarea.value).trim();
+        textarea.value = parse('parseMarkdown', textarea.value).trim();
       } else {
         textarea.value = editable.innerHTML.trim();
       }
     } else if (nextMode === 'wysiwyg') {
       if (currentMode === 'markdown') {
-        editable.innerHTML = o.parseMarkdown(textarea.value).replace(rparagraph, '').trim();
+        editable.innerHTML = parse('parseMarkdown', textarea.value).replace(rparagraph, '').trim();
       } else {
         editable.innerHTML = textarea.value.replace(rparagraph, '').trim();
       }
@@ -28529,8 +28334,14 @@ function woofmark (textarea, options) {
     if (o.storage) { ls.set(o.storage, nextMode); }
 
     history.setInputMode(nextMode);
-    if (restoreSelection) { restoreSelection(); }
+    if (remembrance) { remembrance.unmark(); }
     fireLater('woofmark-mode-change');
+
+    function parse (method, input) {
+      return o[method](input, {
+        markers: remembrance && remembrance.markers || []
+      });
+    }
   }
 
   function fireLater (type) {
@@ -28551,6 +28362,23 @@ function woofmark (textarea, options) {
       return o.parseHTML(textarea.value);
     }
     return textarea.value;
+  }
+
+  function getOrSetValue (input) {
+    var markdown = String(input);
+    var sets = arguments.length === 1;
+    if (sets) {
+      if (editor.mode === 'wysiwyg') {
+        editable.innerHTML = asHtml();
+      } else {
+        textarea.value = editor.mode === 'html' ? asHtml() : markdown;
+      }
+      history.reset();
+    }
+    return getMarkdown();
+    function asHtml () {
+      return o.parseMarkdown(markdown);
+    }
   }
 
   function addCommandButton (id, combo, fn) {
@@ -29200,7 +29028,7 @@ module.exports = PublicLab.History = Class.extend({
     // this would be the nid in Drupal
     // plus the username, or just a
     // unique id if it's a new post
-    _history.options.id       = _history.options.id || (new Date()).getTime();
+    _history.options.id       = _history.options.id || 0;// (new Date()).getTime();
     _history.options.interval = _history.options.interval || 10000; // ten second default
     _history.options.prefix   = _history.options.prefix || "publiclab-editor-history-";
     _history.options.element  = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
@@ -29279,7 +29107,7 @@ module.exports = PublicLab.History = Class.extend({
         if (_history.last() && text != _history.last().text) {
 
           _history.add(text);
-          console.log('history: new entry', _history.last());
+          console.log('history: entry saved');
 
         } else if (_history.last()) {
 
@@ -29289,7 +29117,7 @@ module.exports = PublicLab.History = Class.extend({
         } else {
 
           _history.add(text);
-          console.log('history: first entry saved', _history.last());
+          console.log('history: first entry saved');
 
         }
 
@@ -29366,6 +29194,13 @@ module.exports = PublicLab.History = Class.extend({
       _history.fetch();
 
       setInterval(_history.check, _history.options.interval);
+
+      $(_editor.modules.richTextModule.options.textarea).on('change', function() {
+
+        _history.check();
+
+      });
+
       _history.check();
 
 
@@ -29461,6 +29296,7 @@ module.exports = function(textarea, _editor, _module) {
   var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
+    fencing:     true,
     storage:     'ple-woofmark-mode',
     xhr:         require('xhr'),
 
@@ -29538,6 +29374,13 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
+        fencing:   true,
+        fencinglanguage: function (el) {
+          var match = el.className.match(/md-lang-((?:[^\s]|$)+)/);
+          if (match) {
+            return match.pop();
+          }
+        },
         transform: function (el) {
 
           if (el.tagName === 'A' && el.innerHTML[0] === '@') {
@@ -29766,37 +29609,15 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // should be switchable for other editors:
     _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
 
+    _module.editable = _module.wysiwyg.editable;
+    _module.textarea = _module.wysiwyg.textarea;
+
     _module.key = 'body';
     _module.value = function(text) {
 
-      if (typeof text == 'string') {
-
-        // this section can/should be replaced once this:
-        // https://github.com/bevacqua/woofmark/issues/15
-        // is resolved. 
-
-        // consider what mode the wysiwyg is in, match that:
-        if (_module.wysiwyg.mode != 'markdown') {
-
-          _module.wysiwyg.runCommand(function(chunks, mode) {
-            chunks.after = '';
-            if (mode != 'html') {
-              chunks.before = editor.parseMarkdown(text);
-            } else {
-              chunks.before = text;
-            }
-          });
-
-        } else {
-
-          $(_module.wysiwyg.textarea).val(text);
-
-        }
-
-      }
-
       // woofmark automatically returns the markdown, not rich text:
-      return _module.wysiwyg.value();
+      if (typeof text === 'string') return _module.wysiwyg.value(text);
+      else                          return _module.wysiwyg.value();
 
     }
 
@@ -29814,6 +29635,13 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
 // bootstrap styling for plots2 (remove later)
 $('table').addClass('table');
+
+
+    _module.setMode = function(mode) {
+
+      return _module.wysiwyg.setMode(mode);
+
+    }
 
 
     _module.height = function() {
