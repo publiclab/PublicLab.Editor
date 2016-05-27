@@ -10,10 +10,24 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name         = "title";
+
+    _module._super(_editor, _module.options);
+
     _module.options.required     = true;
     _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
 
-    _module._super(_editor, _module.options);
+    _module.key = 'title';
+    _module.value = function(text) {
+
+      if (typeof text == 'string') {
+
+        _module.el.find('input').val(text);
+
+      }
+
+      return _module.el.find('input').val();
+
+    }
 
 
     _module.valid = function() {

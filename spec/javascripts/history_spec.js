@@ -6,9 +6,6 @@ describe("History", function() {
 
     fixture = loadFixtures('index.html');
 
-    // clear out localstorage for testing purposes
-    //...
-
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
     });
@@ -31,11 +28,26 @@ describe("History", function() {
   });
 
 
-  it("adds, fetches, and stores", function() {
+  it("can be flushed", function() {
+
+    expect(editor.history.fetch()).not.toEqual([]);
+    expect(editor.history.last()).not.toBe(null);
+
+    editor.history.flush();
 
     expect(editor.history.fetch()).toEqual([]);
     expect(editor.history.last()).toBe(null);
 
+  });
+
+
+  it("adds, fetches, and stores", function() {
+
+    editor.history.flush();
+    expect(editor.history.fetch()).toEqual([]);
+    expect(editor.history.last()).toBe(null);
+
+    expect($('.ple-history-saving').is(':visible')).toBe(false);
     editor.history.add("some text");
     expect(editor.history.last().text).toBe("some text");
     expect(editor.history.last().timestamp).not.toBeUndefined();
@@ -53,10 +65,11 @@ describe("History", function() {
   });
 
 
-  xit("creates new log entry when textarea updated", function() {
+  it("creates new log entry when value() set", function() {
 
-    expect($('textarea.ple-textarea').length).toBeGreaterThan(0);
-    $('textarea.ple-textarea').val('changed textarea text');
+    expect($(editor.modules.richTextModule.options.textarea).length).toBeGreaterThan(0);
+    editor.modules.richTextModule.value("changed textarea text");
+    editor.history.check();
     expect(editor.history.last().text).toBe("changed textarea text");
 
   });

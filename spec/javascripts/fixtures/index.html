@@ -1,121 +1,150 @@
-<div class="pl-editor">
+    <div class="pl-editor">
 
-  <div class="ple-header">
+      <div class="ple-header">
 
-    <h1>Share</h1>
+        <h1>Share</h1>
 
-    <div class="container ple-type">
-      <div class="col-md-4 col-md-push-4">
-        <select class="form-control input-lg">
-          <option selected value="">a research note</option>
-          <option value="">a question or request</option>
-          <option value="">an event</option>
-        </select>
-      </div>
-    </div>
+        <!-- selector module -->
+        <div class="container ple-type">
 
-  </div>
-
-  <div class="ple-body">
-
-
-    <div class="ple-title ple-section container">
-
-      <div class="ple-section-guide col-md-3">
-        <h2>1</h2>
-        <p>The title is a very important thing. <a href="">Read more</a></p>
-      </div>
-
-      <div class="ple-section-content col-md-9">
-        <input class="form-control input-lg" type="text" placeholder="Title" />
-      </div>
-
-    </div>
-
-
-    <div class="ple-main-image ple-section container">
-
-      <div class="ple-section-guide col-md-3">
-        <h2>2</h2>
-        <p>Choose an image. <a href="">Read more</a></p>
-      </div>
-
-      <div class="ple-section-content col-md-9 container">
-        <div class="ple-drag-drop col-md-6">
-          Drag an image here to upload.
-        </div>
-        <div class="col-md-6 help">
-
-          <p><input type="file" name="image[photo]" /></p>
-          <p class="ple-help">Select a main image for your post.</p>
+          <div class="col-md-5 col-md-push-4">
+            <div class="row">
+              <div class="col-xs-10">
+                <select class="form-control input-lg">
+                  <option selected value="">a research note</option>
+                  <option value="">a question or request</option>
+                  <option value="">an event</option>
+                </select>
+              </div>
+              <div class="col-xs-2" style="padding-top:10px;text-align:left;">
+                <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
+                
+              </div>
+            </div>
+          </div>
 
         </div>
+        <!-- end selector module -->
+
       </div>
 
-    </div>
+      <div class="ple-content">
 
 
-    <div class="ple-body ple-section container">
+        <!-- title module -->
+        <div class="ple-module-title ple-module container">
 
-      <div class="ple-section-guide col-md-3">
-        <h2>3</h2>
-        <p>Your body text. <a href="">Read more</a></p>
-      </div>
+          <div class="ple-module-guide col-md-3">
+            <h2>1</h2>
+          </div>
 
-      <div class="ple-section-content col-md-9 container">
-        <textarea class="ple-textarea form-control">**This library is incomplete - this page is a very rough planning document.**
+          <div class="ple-module-content col-md-9">
+            <input class="form-control input-lg" type="text" placeholder="Title" />
+          </div>
 
-# About this editor
-
-Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
-
-PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
-
-PublicLab.Editor will provide author-friendly interfaces for:
-
-* titling
-* main image uploading
-* body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
-* tagging
-* edit history
-
-  
-| property | type | description |
-| `oldSize` | `[Point][6]` | The old size before resize event. |
-| `newSize` | `[Point][6]` | The new size after the resize event. |
+        </div>
+        <!-- end title module -->
 
 
-# Setup
+        <!-- main_image module -->
+        <div class="ple-module-main_image ple-module container">
 
-To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/), and use the following constructor:
+          <div class="ple-module-guide col-md-3">
+            <h2>2</h2>
+          </div>
+
+          <div class="ple-module-content col-md-9 container">
+            <div class="ple-drag-drop col-md-6">
+              Drag an image here to upload.
+            </div>
+            <div class="col-md-6 help">
+
+              <p><input type="file" name="image[photo]" /></p>
+              <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
+
+            </div>
+          </div>
+
+        </div>
+        <!-- end main_image module -->
+
+
+        <!-- body module -->
+        <div class="ple-module-body ple-module container">
+
+          <div class="ple-module-guide col-md-3">
+            <h2>3</h2>
+          </div>
+
+          <div class="ple-module-content col-md-9 container">
+            <textarea class="ple-textarea form-control"># About my project
+
+I've been working on [this thing](/) and wanted to share.
+
+My goals have been:
+
+* simple to make
+* ease of use
+* low cost
+
+And then, after #balloon-mapping with @eustatic, tables:
+
+| col1 | col2 | col3 |
+|------|------|------|
+| foo  | bar  | baz  |
+| food | bars | bats |
 
 ````js
-var editor = PL.Editor({
-  publishUrl:      "/notes",            // content will POST to this URL upon clicking "Publish"
-  updateUrl:       "/notes",            // content will UPDATE to this URL upon clicking "Save"
-  relatedTagsUrl:  "/notes",            // content will UPDATE to this URL upon clicking "Save"
-  newPost:         true,                // is it a new post, or are you editing an existing post?
-  title:           "Your post title",
-  body:            "Your post content",
-  tags:            "nice,cool"
-  // maybe more?
-});
+
+// Code could go here
+var myVariable = 4;
+
 ````</textarea>
+          </div>
+
+        </div>
+        <!-- end body module -->
+
+
+        <!-- tags module -->
+        <div class="ple-module-tags ple-module container">
+
+          <div class="ple-module-guide col-md-3">
+            <h2>4</h2>
+          </div>
+
+          <div class="ple-module-content col-md-9">
+            <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality" />
+          </div>
+
+        </div>
+        <!-- end tags module -->
+
+        
+      </div>
+
+      <div class="ple-footer">
+
+        <div class="ple-menu-more">
+          <b>History</b>
+          <div class="ple-history">
+          </div>
+          <hr />
+          <!--
+          <div class="form-control input-md ple-history">
+            <option selected value="">recent edits</option>
+          </div>
+          -->
+        </div>
+
+        <button class="btn btn-lg btn-default"><i class="fa fa-cog"></i></button>
+        <button class="btn btn-lg btn-default btn-more">...</button>
+
+        <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
+
+        <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
+        <span class="ple-help pull-right"><span class="ple-steps-left">2</span> steps left</span>
+        
       </div>
 
     </div>
-
-    
-  </div>
-
-  <div class="ple-footer">
-
-    <button class="btn btn-lg btn-default"><i class="fa fa-cog"></i></button>
-    <button class="btn btn-lg btn-default">...</button>
-
-    <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
-    <span class="ple-help pull-right"><span class="ple-steps-left">2</span> steps left</span>
-    
-  </div>
-
-</div>
