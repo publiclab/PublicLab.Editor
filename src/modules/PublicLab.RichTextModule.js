@@ -47,8 +47,12 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module.value = function(text) {
 
       // woofmark automatically returns the markdown, not rich text:
-      if (typeof text === 'string') return _module.wysiwyg.value(text);
-      else                          return _module.wysiwyg.value();
+      if (typeof text === 'string') {
+        _module.afterParse();
+        return _module.wysiwyg.value(text);
+      } else {
+        return _module.wysiwyg.value();
+      }
 
     }
 
@@ -60,12 +64,41 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     }
 
 
+    _module.html = function() {
+
+      return _module.wysiwyg.editable.innerHTML;
+
+    }
+
+
+    _module.markdown = function() {
+
+      return _module.value();
+
+    }
+
+
+    // converts to markdown and back to html, or the reverse,
+    // to trigger @callouts and such formatting
+    _module.parse = function() {
+
+      _module.value(_module.value());
+      _module.afterParse();
+
+    }
+
+
     // construct HTML additions
     _module.build();
 
 
-// bootstrap styling for plots2 (remove later)
-$('table').addClass('table');
+    _module.afterParse = function() {
+
+      // bootstrap styling for plots2
+      $(_module.wysiwyg.editable).find('table').addClass('table');
+
+    }
+    _module.afterParse();
 
 
     _module.setMode = function(mode) {
@@ -105,6 +138,8 @@ $('table').addClass('table');
 
       _module.resize();
 
+      _module.afterParse();
+
       // ensure document is scrolled to the same place:
       document.body.scrollTop = _module.scrollTop;
       // might need to adjust for markdown/rich text not 
@@ -117,6 +152,14 @@ $('table').addClass('table');
       _module.resize();
     });
 
+    // $('.wk-wysiwyg').on('change keydown', function(e) {
+    // should eventually trigger on any use of spacebar!
+    $('.wk-wysiwyg').on('change focusout', function(e) {
+      // need to preserve the insertion point, but bad browser quirks...
+      // could we use a Woofmark runCommand? 
+      _module.parse();
+
+    });
 
   }
 

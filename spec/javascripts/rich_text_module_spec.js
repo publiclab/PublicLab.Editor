@@ -15,10 +15,6 @@ describe("RichTextModule", function() {
   });
 
 
-  afterEach(function() {
-  });
-
-
   it("reports key, value, valid", function() {
 
     expect(module).not.toBeUndefined();
@@ -56,6 +52,20 @@ describe("RichTextModule", function() {
 
     module.setMode('markdown');
     expect($(module.textarea).val()).toBe('## Test title');
+
+  });
+
+
+  it("recognizes @callouts and #hashtags", function() {
+
+    module.setMode('markdown');
+    module.value('Hello, @jeff!');
+    // shouldn't actually add markdown link around a callout:
+    expect(module.value().match('[@jeff](/profile/jeff)')).toBe(null);
+    module.setMode('wysiwyg');
+    expect(module.html().match('<a href="/profile/jeff">@jeff</a>')).not.toBe(null);
+    module.value('Hi, #robots are cool!');
+    expect(module.html().match('<a href="/tag/robots">#robots</a>')).not.toBe(null);
 
   });
 

@@ -47,6 +47,7 @@ describe("History", function() {
     expect(editor.history.fetch()).toEqual([]);
     expect(editor.history.last()).toBe(null);
 
+    expect($('.ple-history-saving').is(':visible')).toBe(false);
     editor.history.add("some text");
     expect(editor.history.last().text).toBe("some text");
     expect(editor.history.last().timestamp).not.toBeUndefined();
@@ -67,7 +68,7 @@ describe("History", function() {
   it("creates new log entry when value() set", function() {
 
     expect($(editor.modules.richTextModule.options.textarea).length).toBeGreaterThan(0);
-    editor.modules.richTextModule.value('changed textarea text');
+    editor.modules.richTextModule.value("changed textarea text");
     editor.history.check();
     expect(editor.history.last().text).toBe("changed textarea text");
 

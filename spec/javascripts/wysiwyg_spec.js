@@ -40,7 +40,22 @@ describe("Wysiwyg", function() {
   });
 
 
-  xit("recognizes @callouts and #hashtags", function() {
+  // this doesn't pass :-/
+  // probably because wysiwyg.editable doesn't 
+  // exist in the dom by this time, for some reason
+  xit("runs post-conversion filter", function() {
+
+    wysiwyg.setMode('html');
+
+    var table = "<table><tr><td>Hi</td></tr></table>";
+    wysiwyg.value(table);
+    expect(wysiwyg.value(table)).toEqual("| Hi|");
+
+    expect($(wysiwyg.editable).find('table').hasClass('table')).not.toBe(true);
+    wysiwyg.setMode('wysiwyg');
+    expect($(wysiwyg.editable).find('table').hasClass('table')).toBe(true);
+    console.log($(wysiwyg.editable).find('table'));
+
   });
 
 

@@ -4,6 +4,7 @@
  * We could eventually do 'major' and 'minor' depending on how much changed.
 
 * [ ] if we want to recover while in rich mode, do we need to put markdown and convert it? 
+* [ ] saving could subtly fade in a small "saving" icon
 
 parsing back and forth (do this in the richTextModule?): 
 _editor.modules.richTextModule.wysiwyg.parseHTML('wysiwyg')
@@ -87,6 +88,11 @@ module.exports = PublicLab.History = Class.extend({
       // Add an item to the history (history.log)
       // and write to localStorage.
       _history.add = function(text) {
+
+        $('.ple-history-saving').fadeIn();
+        setTimeout(function() {
+          $('.ple-history-saving').fadeOut();
+        }, 500);
 
         var entry = {
 

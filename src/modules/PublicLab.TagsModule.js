@@ -1,3 +1,8 @@
+var typeahead = require("typeahead.js-browserify");
+var Bloodhound = typeahead.Bloodhound;
+// https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
+typeahead.loadjQueryPlugin();
+require('bootstrap-tokenfield');
 /*
  * Form module for post tags
  */
@@ -15,11 +20,27 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
     _module._super(_editor, _module.options);
 
+    _module.options.required     = false;
+    _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
 
+    _module.key = 'tags';
+    _module.value = function(text) {
+
+      if (typeof text == 'string') {
+
+        _module.el.find('input').val(text);
+
+      }
+
+      return _module.el.find('input').val();
+
+    }
+
+
+    // server-side validation for now, and not required, so no reqs
     _module.valid = function() {
 
-      // must not be empty
-      return _module.el.find('input').val() != "";
+      return true;
 
     }
 
@@ -33,6 +54,28 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.el.find('.ple-module-content .ple-help-minor')
                 .html(_module.options.instructions);
+
+      _module.engine = new Bloodhound({
+        local: [
+          'balloon-mapping',
+          'kite-mapping',
+          'air-quality',
+          'spectrometer',
+          'water-quality'
+        ],
+        datumTokenizer: Bloodhound.tokenizers.whitespace, 
+//        datumTokenizer: function(d) {
+//          return Bloodhound.tokenizers.whitespace(d.value);
+//        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+      });
+  
+      _module.engine.initialize();
+
+      _module.el.find('input').tokenfield({
+        typeahead: [null, { source: _module.engine.ttAdapter() }]
+      });
+
 
       // insert recent and common ones here -- 
       // (this is application-specific)
