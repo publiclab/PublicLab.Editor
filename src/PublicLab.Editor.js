@@ -31,6 +31,7 @@ PL.Editor = Class.extend({
     var _editor = this;
     _editor.options = options;
     _editor.options.history = (_editor.options.history !== false); // true by default
+    _editor.options.format = "publiclab";
 
 
     // Validation:
@@ -92,6 +93,49 @@ PL.Editor = Class.extend({
       return valueObj;
 
     }
+
+
+    _editor.publish = function() {
+
+      // Fetch values from modules and feed into corresponding editor.data.foo --
+      // Note that modules may attempt to write to the same key, 
+      // and would then overwrite one another.
+      Object.keys(editor.modules).forEach(function(name, i) {
+
+        var module = editor.modules[name];
+
+        _editor.data[module.key] = module.value();
+
+      });
+
+      var formatted = new PublicLab.Formatter().convert(_editor.data, _editor.options.format);
+
+      if (_editor.options.destination) {
+
+        $.ajax(
+          _editor.options.destination, 
+          {
+            data: formatted
+          }
+        ).done(function(response) {
+
+          console.log(response);
+
+        });
+
+      } else {
+
+        console.log('Editor requires a destination.');
+
+      }
+
+    }
+
+
+    $('.ple-publish').click(function() {
+      console.log('Publishing!', _editor.data);
+      _editor.publish();
+    });
 
 
     $('.btn-more').click(function() {

@@ -33960,6 +33960,7 @@ PL.Editor = Class.extend({
     var _editor = this;
     _editor.options = options;
     _editor.options.history = (_editor.options.history !== false); // true by default
+    _editor.options.format = "publiclab";
 
 
     // Validation:
@@ -34021,6 +34022,49 @@ PL.Editor = Class.extend({
       return valueObj;
 
     }
+
+
+    _editor.publish = function() {
+
+      // Fetch values from modules and feed into corresponding editor.data.foo --
+      // Note that modules may attempt to write to the same key, 
+      // and would then overwrite one another.
+      Object.keys(editor.modules).forEach(function(name, i) {
+
+        var module = editor.modules[name];
+
+        _editor.data[module.key] = module.value();
+
+      });
+
+      var formatted = new PublicLab.Formatter().convert(_editor.data, _editor.options.format);
+
+      if (_editor.options.destination) {
+
+        $.ajax(
+          _editor.options.destination, 
+          {
+            data: formatted
+          }
+        ).done(function(response) {
+
+          console.log(response);
+
+        });
+
+      } else {
+
+        console.log('Editor requires a destination.');
+
+      }
+
+    }
+
+
+    $('.ple-publish').click(function() {
+      console.log('Publishing!', _editor.data);
+      _editor.publish();
+    });
 
 
     $('.btn-more').click(function() {
@@ -34320,46 +34364,51 @@ module.exports = PublicLab.Formatter = Class.extend({
 
 
   // eventually we could accept both a format and a URL
-  init: function(data, destination) {
+  init: function() {
 
     var _formatter = this;
 
-    // return formatted version of data
-    return _formatter.schemas[destination](data);
 
-  },
+    // functions that accept standard <data> and output form data for known services
+    _formatter.schemas = {
+ 
+      "publiclab": function(data) {
+ 
+        var output = {};
+ 
+        output.title              = data.title || null; 
+        output.body               = data.body  || null; 
+ 
+        // we can remove this from server req, since we're authenticated
+        output.authenticity_token = data.token || null; 
+ 
+        // Optional:
+        output.tags               = data.tags           || null; // comma delimited
+        output.has_main_image     = data.has_main_image || null;
+        output.main_image         = data.main_image     || null; // to associate with pre-uploaded image
+        output.node_images        = data.node_images    || null; // comma-separated image.ids, I think
+        // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
+        output.image              = { };  
+        output.image.photo        = data.image          || null;
+ 
+        return output;
+ 
+      }//,
+ 
+      // "drupal": {
+      //   "title":           null,
+      //   "body":            null
+      // }
+ 
+    }
 
 
-  // functions that accept standard <data> and output form data for known services
-  schemas: {
+    _formatter.convert = function(data, destination) {
 
-    "publiclab": function(data) {
+      // return formatted version of data
+      return _formatter.schemas[destination](data);
 
-      var output = {};
-
-      output.title              = data.title || null; 
-      output.body               = data.body  || null; 
-
-      // we can remove this from server req, since we're authenticated
-      output.authenticity_token = data.token || null; 
-
-      // Optional:
-      output.tags               = data.tags           || null; // comma delimited
-      output.has_main_image     = data.has_main_image || null;
-      output.main_image         = data.main_image     || null; // to associate with pre-uploaded image
-      output.node_images        = data.node_images    || null; // comma-separated image.ids, I think
-      // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
-      output.image              = { };  
-      output.image.photo        = data.image          || null;
-
-      return output;
-
-    }//,
-
-    // "drupal": {
-    //   "title":           null,
-    //   "body":            null
-    // }
+    }
 
   }
 
