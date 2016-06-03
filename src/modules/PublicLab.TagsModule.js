@@ -73,7 +73,8 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.engine.initialize();
 
       _module.el.find('input').tokenfield({
-        typeahead: [null, { source: _module.engine.ttAdapter() }]
+        typeahead: [null, { source: _module.engine.ttAdapter() }],
+        delimiter: ', '
       });
 
 

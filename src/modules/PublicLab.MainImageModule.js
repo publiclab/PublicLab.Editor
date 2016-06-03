@@ -1,3 +1,4 @@
+require('blueimp-file-upload');
 /*
  * Form module for main post image
  */
@@ -18,12 +19,94 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.value = function() {
 
 /////////// get this to return the image object?
-      return false;
+      return _module.image;
 
     }
 
     // construct HTML additions
     _module.build();
+
+
+    _module.dropEl = _module.el.find('.ple-drag-drop');
+
+    _module.dropEl.bind('dragover',function(e) {
+      e.preventDefault();
+      // create relevant styles in sheet
+      _module.dropEl.addClass('hover');
+    });
+
+    _module.dropEl.bind('dragout',function(e) {
+      _module.dropEl.removeClass('hover');
+    });
+
+    _module.dropEl.bind('drop',function(e) {
+      e.preventDefault();
+    });
+
+
+    _module.dropEl.fileupload({
+
+      url: "/images",
+      paramName: "image[photo]",
+      dropZone: _module.dropEl,
+      dataType: 'json',
+
+      formData: {
+        'uid': _module.options.uid,
+        'nid': _module.options.nid
+      },
+
+      start: function(e) {
+
+        _module.el.find('.progress .progress-bar')
+                  .attr('aria-valuenow', '0')
+                  .css('width', '0%');
+        _module.dropEl.css('border-color','#ccc');
+        _module.dropEl.css('background','none');
+        _module.dropEl.removeClass('hover');
+        _module.el.find('.progress').show();
+
+      },
+
+      done: function (e, data) {
+
+        _module.el.find('.progress .progress-bar')
+                  .attr('aria-valuenow', '100')
+                  .css('width', '100%');
+        _module.el.find('.progress').hide();
+        _module.dropEl.show();
+        _module.el.find('.progress').hide();
+        _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
+
+        _module.image = new Image();
+// this doesn't run:
+        _module.image.onLoad = function() {
+          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
+console.log('height', _module.image.height / _module.image.width * _module.dropEl.height());
+        }
+        _module.image.src = data.result.url;
+
+        // here append the image id to the note as the lead image
+        $('#main_image').val(data.result.id)
+        $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+
+      },
+
+      // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
+      fileuploadfail: function(e,data) {
+      },
+
+      progressall: function (e, data) {
+
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        _module.el.find('.progress .progress-bar').css(
+          'width',
+          progress + '%'
+        ).attr('aria-valuenow', '100')
+
+      }
+
+    });
 
 
   }

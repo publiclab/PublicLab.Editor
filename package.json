@@ -36,6 +36,7 @@
     "bootstrap-tokenfield": "~0.12.0",
     "typeahead.js-browserify": "~1.0.7",
     "jquery": "~2",
+    "jquery-file-upload": "git://github.com/blueimp/jQuery-File-Upload.git#c72c93c3c005bbd0c849c2e35d01daaf7d23ee51",
     "moment": "~2.10.6",
     "grow-textarea": "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669"
   },
