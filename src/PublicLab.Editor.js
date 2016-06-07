@@ -56,7 +56,7 @@ PL.Editor = Class.extend({
 
       }
 
-      $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
+      $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
       return valid_modules == required_modules;
 
@@ -132,18 +132,45 @@ PL.Editor = Class.extend({
     }
 
 
-    $('.ple-publish').click(function() {
-      console.log('Publishing!', _editor.data);
-      _editor.publish();
-    });
+    _editor.tabIndices = function() {
+
+      // set tabindices:
+      var focusables = [];
+
+      Object.keys(_editor.modules).forEach(function(name, i) {
+ 
+        focusables = focusables.concat(_editor.modules[name].focusables);
+ 
+      });
+
+      focusables.push($('.ple-publish'));
+ 
+      focusables.forEach(function(focusable, i) {
+ 
+        focusable.attr('tabindex', i + 1);
+ 
+      });
+
+    }
 
 
-    $('.btn-more').click(function() {
+    _editor.eventSetup = function() {
 
-      // display more tools menu
-      $('.ple-menu-more').toggle();
 
-    });
+      $('.ple-publish').click(function() {
+        console.log('Publishing!', _editor.data);
+        _editor.publish();
+      });
+ 
+ 
+      $('.btn-more').click(function() {
+ 
+        // display more tools menu
+        $('.ple-menu-more').toggle();
+ 
+      });
+
+    }
 
 
     _editor.modules = {};
@@ -152,10 +179,16 @@ PL.Editor = Class.extend({
     _editor.modules.richTextModule  = new PublicLab.RichTextModule( _editor, { textarea: _editor.options.textarea });
     _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
 
-
     // history must go after richTextModule, as it monitors that
     if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
     _editor.help    = new PublicLab.Help(_editor);
+
+
+    _editor.validate();
+
+    _editor.eventSetup();
+
+    _editor.tabIndices();
 
 
   }

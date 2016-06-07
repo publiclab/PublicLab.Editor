@@ -11,9 +11,11 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name = 'main_image';
-    _module.options.instructions = 'Choose an image. <br /><a href="">Image tips &raquo;</a>';
+    _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
 
     _module._super(_editor, _module.options);
+
+    _module.focusables.push(_module.el.find('input'));
 
     _module.key = 'main_image_url';
     _module.value = function() {
@@ -78,16 +80,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
+// this attempt to resize the drop zone doesn't work, maybe misguided anyways:
+// onLoad never triggers
         _module.image = new Image();
-// this doesn't run:
         _module.image.onLoad = function() {
           _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-console.log('height', _module.image.height / _module.image.width * _module.dropEl.height());
         }
         _module.image.src = data.result.url;
 
-        // here append the image id to the note as the lead image
-        $('#main_image').val(data.result.id)
+        _editor.data.has_main_image = true;
+        _editor.data.main_image = data.result.id;
+
+        _editor.data.image_revision = data.result.url; // choose which image to use
+
+        _editor.validate();
+
+// refactor
         $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
 
       },

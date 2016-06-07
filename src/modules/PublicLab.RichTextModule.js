@@ -43,6 +43,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module.editable = _module.wysiwyg.editable;
     _module.textarea = _module.wysiwyg.textarea;
 
+    if (_module.wysiwyg.mode == "wysiwyg") _module.focusables.push($(_module.editable));
+    else                                   _module.focusables.push($(_module.textarea));
+
     _module.key = 'body';
     _module.value = function(text) {
 
@@ -145,6 +148,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       // might need to adjust for markdown/rich text not 
       // taking up same amount of space, if menu is below _editor...
       //if (_editor.wysiwyg.mode == "markdown") 
+
+      if (_module.wysiwyg.mode == "wysiwyg") _module.focusables[0] = $(_module.editable);
+      else                                   _module.focusables[0] = $(_module.textarea);
 
     });
 

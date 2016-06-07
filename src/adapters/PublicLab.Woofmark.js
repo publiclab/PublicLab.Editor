@@ -50,6 +50,8 @@ module.exports = function(textarea, _editor, _module) {
     },
 
     images: {
+
+      method: 'POST',
  
       // endpoint where the images will be uploaded to, required
       url: '/images',
@@ -58,7 +60,7 @@ module.exports = function(textarea, _editor, _module) {
       restriction: 'GIF, JPG, and PNG images',
  
       // what to call the FormData field?
-      key: 'main_image',
+      key: 'image[photo]',
  
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {

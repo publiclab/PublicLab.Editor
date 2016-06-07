@@ -34888,6 +34888,8 @@ function prompt (options, done) {
         classes.add(domup.failed, 'wk-prompt-error-show');
         return;
       }
+body = JSON.parse(body)
+console.log(body,body.href)
       dom.input.value = body.href + ' "' + body.title + '"';
       remove();
       done({ definition: dom.input.value, attachment: options.type === 'attachment' });
@@ -36038,7 +36040,7 @@ PL.Editor = Class.extend({
 
       }
 
-      $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
+      $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
       return valid_modules == required_modules;
 
@@ -36114,18 +36116,45 @@ PL.Editor = Class.extend({
     }
 
 
-    $('.ple-publish').click(function() {
-      console.log('Publishing!', _editor.data);
-      _editor.publish();
-    });
+    _editor.tabIndices = function() {
+
+      // set tabindices:
+      var focusables = [];
+
+      Object.keys(_editor.modules).forEach(function(name, i) {
+ 
+        focusables = focusables.concat(_editor.modules[name].focusables);
+ 
+      });
+
+      focusables.push($('.ple-publish'));
+ 
+      focusables.forEach(function(focusable, i) {
+ 
+        focusable.attr('tabindex', i + 1);
+ 
+      });
+
+    }
 
 
-    $('.btn-more').click(function() {
+    _editor.eventSetup = function() {
 
-      // display more tools menu
-      $('.ple-menu-more').toggle();
 
-    });
+      $('.ple-publish').click(function() {
+        console.log('Publishing!', _editor.data);
+        _editor.publish();
+      });
+ 
+ 
+      $('.btn-more').click(function() {
+ 
+        // display more tools menu
+        $('.ple-menu-more').toggle();
+ 
+      });
+
+    }
 
 
     _editor.modules = {};
@@ -36134,10 +36163,16 @@ PL.Editor = Class.extend({
     _editor.modules.richTextModule  = new PublicLab.RichTextModule( _editor, { textarea: _editor.options.textarea });
     _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
 
-
     // history must go after richTextModule, as it monitors that
     if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
     _editor.help    = new PublicLab.Help(_editor);
+
+
+    _editor.validate();
+
+    _editor.eventSetup();
+
+    _editor.tabIndices();
 
 
   }
@@ -36520,6 +36555,8 @@ module.exports = function(textarea, _editor, _module) {
     },
 
     images: {
+
+      method: 'POST',
  
       // endpoint where the images will be uploaded to, required
       url: '/images',
@@ -36528,7 +36565,7 @@ module.exports = function(textarea, _editor, _module) {
       restriction: 'GIF, JPG, and PNG images',
  
       // what to call the FormData field?
-      key: 'main_image',
+      key: 'image[photo]',
  
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {
@@ -36721,9 +36758,11 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.options = options || {};
     _module.options.name = 'main_image';
-    _module.options.instructions = 'Choose an image. <br /><a href="">Image tips &raquo;</a>';
+    _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
 
     _module._super(_editor, _module.options);
+
+    _module.focusables.push(_module.el.find('input'));
 
     _module.key = 'main_image_url';
     _module.value = function() {
@@ -36788,16 +36827,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
+// this attempt to resize the drop zone doesn't work, maybe misguided anyways:
+// onLoad never triggers
         _module.image = new Image();
-// this doesn't run:
         _module.image.onLoad = function() {
           _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-console.log('height', _module.image.height / _module.image.width * _module.dropEl.height());
         }
         _module.image.src = data.result.url;
 
-        // here append the image id to the note as the lead image
-        $('#main_image').val(data.result.id)
+        _editor.data.has_main_image = true;
+        _editor.data.main_image = data.result.id;
+
+        _editor.data.image_revision = data.result.url; // choose which image to use
+
+        _editor.validate();
+
+// refactor
         $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
 
       },
@@ -36837,6 +36882,7 @@ module.exports = PublicLab.Module = Class.extend({
     _module.options = options || {};
     _module.options.required = false; // default
     _module.options.guides = _module.options.guides || [];
+    _module.focusables = []; // tab-focusable elements
 
     _module.el = $('.ple-module-' + _module.options.name);
 
@@ -36937,6 +36983,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     _module.editable = _module.wysiwyg.editable;
     _module.textarea = _module.wysiwyg.textarea;
+
+    if (_module.wysiwyg.mode == "wysiwyg") _module.focusables.push($(_module.editable));
+    else                                   _module.focusables.push($(_module.textarea));
 
     _module.key = 'body';
     _module.value = function(text) {
@@ -37041,6 +37090,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       // taking up same amount of space, if menu is below _editor...
       //if (_editor.wysiwyg.mode == "markdown") 
 
+      if (_module.wysiwyg.mode == "wysiwyg") _module.focusables[0] = $(_module.editable);
+      else                                   _module.focusables[0] = $(_module.textarea);
+
     });
 
     $(options.textarea).on('change keydown', function(e) {
@@ -37082,6 +37134,8 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
 
     _module._super(_editor, _module.options);
+
+    _module.focusables.push(_module.el.find('input'));
 
     _module.options.required     = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
@@ -37187,6 +37241,8 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     _module._super(_editor, _module.options);
 
+    _module.focusables.push(_module.el.find('input'));
+
     _module.options.required     = true;
     _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
 
@@ -37204,10 +37260,46 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     }
 
 
+    _module.error = function(text, type) {
+
+      type = type || 'error';
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(text);
+      _module.el.find('input').parent()
+                .addClass('has-' + type);
+
+    }
+
+
     _module.valid = function() {
 
-      // must not be empty
-      return _module.el.find('input').val() != "";
+      // must not be empty, for starters
+      var value = _module.value(),
+          valid = (value != "");
+
+      //valid = valid && (value.match(/\.|,|"|'/) == null);
+      // we could discourage too much punctuation, or titles that are too long, here
+
+      if (!valid && value != "") {
+
+        _module.error('Must be formatted correctly.');
+ 
+      } else if (value.length > 45) {
+
+        _module.error('Getting a bit long!', 'warning');
+
+      } else {
+
+        _module.el.find('.ple-module-content .ple-help-minor')
+                  .html(_module.options.instructions);
+        _module.el.find('input').parent()
+                  .removeClass('has-error')
+                  .removeClass('has-warning');
+
+      }
+
+      return valid;
 
     }
 
@@ -37256,12 +37348,16 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
       _module.relatedEl.fadeIn();
 
+      _editor.validate();
+
     });
 
     // make this hide only if another section is clicked, using a 'not' pseudoselector
     $(_module.el).find('input').focusout(function(e) {
 
       _module.relatedEl.fadeOut();
+
+      _editor.validate();
 
     });
 
