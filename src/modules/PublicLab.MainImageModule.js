@@ -20,7 +20,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.key = 'main_image_url';
     _module.value = function() {
 
-/////////// get this to return the image object?
+/////////// get this to return the image object? No, the image ID
       return _module.image;
 
     }

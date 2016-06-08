@@ -20,8 +20,6 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
     _module._super(_editor, _module.options);
 
-    _module.focusables.push(_module.el.find('input'));
-
     _module.options.required     = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
 
@@ -78,6 +76,10 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
         typeahead: [null, { source: _module.engine.ttAdapter() }],
         delimiter: ', '
       });
+
+
+      // add to tabindex only after we've created the tokenfield instance
+      _module.focusables.push(_module.el.find('.tokenfield .tt-input'));
 
 
       // insert recent and common ones here -- 

@@ -84,7 +84,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // converts to markdown and back to html, or the reverse,
     // to trigger @callouts and such formatting
     _module.parse = function() {
-
+console.log('parse');
       _module.value(_module.value());
       _module.afterParse();
 
@@ -158,14 +158,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
-    // $('.wk-wysiwyg').on('change keydown', function(e) {
-    // should eventually trigger on any use of spacebar!
-    $('.wk-wysiwyg').on('change focusout', function(e) {
-      // need to preserve the insertion point, but bad browser quirks...
-      // could we use a Woofmark runCommand? 
-      _module.parse();
-
-    });
 
   }
 

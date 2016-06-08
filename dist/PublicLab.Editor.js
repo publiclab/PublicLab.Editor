@@ -36473,7 +36473,7 @@ module.exports = PublicLab.Formatter = Class.extend({
         // Optional:
         output.tags               = data.tags           || null; // comma delimited
         output.has_main_image     = data.has_main_image || null;
-        output.main_image         = data.main_image     || null; // to associate with pre-uploaded image
+        output.main_image         = data.main_image     || null; // id to associate with pre-uploaded image
         output.node_images        = data.node_images    || null; // comma-separated image.ids, I think
         // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
         output.image              = { };  
@@ -36767,7 +36767,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.key = 'main_image_url';
     _module.value = function() {
 
-/////////// get this to return the image object?
+/////////// get this to return the image object? No, the image ID
       return _module.image;
 
     }
@@ -37025,7 +37025,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // converts to markdown and back to html, or the reverse,
     // to trigger @callouts and such formatting
     _module.parse = function() {
-
+console.log('parse');
       _module.value(_module.value());
       _module.afterParse();
 
@@ -37099,14 +37099,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
-    // $('.wk-wysiwyg').on('change keydown', function(e) {
-    // should eventually trigger on any use of spacebar!
-    $('.wk-wysiwyg').on('change focusout', function(e) {
-      // need to preserve the insertion point, but bad browser quirks...
-      // could we use a Woofmark runCommand? 
-      _module.parse();
-
-    });
 
   }
 
@@ -37134,8 +37126,6 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
 
     _module._super(_editor, _module.options);
-
-    _module.focusables.push(_module.el.find('input'));
 
     _module.options.required     = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
@@ -37193,6 +37183,10 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
         typeahead: [null, { source: _module.engine.ttAdapter() }],
         delimiter: ', '
       });
+
+
+      // add to tabindex only after we've created the tokenfield instance
+      _module.focusables.push(_module.el.find('.tokenfield .tt-input'));
 
 
       // insert recent and common ones here -- 
