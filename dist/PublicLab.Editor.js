@@ -36526,6 +36526,16 @@ module.exports = function(textarea, _editor, _module) {
 
   }
 
+  _module.usernames = [
+    { value: '@hodor',  text: '@hodor; 1 note'   },
+    { value: '@sansa',  text: '@sansa; 2 notes'  },
+    { value: '@john',   text: '@john; 4 notes'   },
+    { value: '@rob',    text: '@rob; 1 note'     },
+    { value: '@rickon', text: '@rickon; 5 notes' },
+    { value: '@bran',   text: '@bran; 1 note'    },
+    { value: '@arya',   text: '@arya; 2 notes'   }
+  ];
+
   var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
@@ -36637,15 +36647,7 @@ module.exports = function(textarea, _editor, _module) {
   //wysiwyg.calloutHorse = horsey(textarea, {
   wysiwyg.calloutHorse = horsey(wysiwyg.editable, {
     anchor: '@',
-    suggestions: [
-      { value: '@hodor',  text: '@hodor; 1 note'   },
-      { value: '@sansa',  text: '@sansa; 2 notes'  },
-      { value: '@john',   text: '@john; 4 notes'   },
-      { value: '@rob',    text: '@rob; 1 note'     },
-      { value: '@rickon', text: '@rickon; 5 notes' },
-      { value: '@bran',   text: '@bran; 1 note'    },
-      { value: '@arya',   text: '@arya; 2 notes'   }
-    ],
+    suggestions: _module.usernames,
     set: function (value) {
       if (wysiwyg.mode === 'wysiwyg') {
         textarea.innerHTML = value;
@@ -36654,11 +36656,13 @@ module.exports = function(textarea, _editor, _module) {
       }
     }
   });
-  wysiwyg.bridge = banksy(textarea, {
+
+  wysiwyg.calloutBridge = banksy(textarea, {
     editor: wysiwyg,
     horse: wysiwyg.calloutHorse
   });
-/*
+
+
   wysiwyg.tagHorse = horsey(textarea, {
     anchor: '#',
     suggestions: [
@@ -36671,11 +36675,11 @@ module.exports = function(textarea, _editor, _module) {
       el.value = value + ', ';
     }
   });
-  wysiwyg.bridge = banksy(textarea, {
+
+  wysiwyg.tagBridge = banksy(textarea, {
     editor: wysiwyg,
     horse: wysiwyg.tagHorse
   });
-*/
 
 
   $('.wk-commands').after('<span style="padding:10px;display:none;" class="ple-history-saving"><i class="fa fa-clock-o"></i><span class="hidden-xs">Saving...</span></span>');
@@ -36980,6 +36984,12 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // should be switchable for other editors:
     _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
+    _module.wysiwyg.usernames = function(value, done) {
+      $.get('/users/recent.json', function(response) {
+        done(response.responseText)
+        console.log(response.responseText)
+      });
+    }
 
     _module.editable = _module.wysiwyg.editable;
     _module.textarea = _module.wysiwyg.textarea;
