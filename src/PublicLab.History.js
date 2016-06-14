@@ -7,7 +7,7 @@
 * [ ] saving could subtly fade in a small "saving" icon
 
 parsing back and forth (do this in the richTextModule?): 
-_editor.modules.richTextModule.wysiwyg.parseHTML('wysiwyg')
+_editor.richTextModule.wysiwyg.parseHTML('wysiwyg')
 
 
 * [ ] history could store values for each module, by keyname. state could be offered by editor.values(). But no, for now we'll just track the RichTextModule text
@@ -47,7 +47,7 @@ module.exports = PublicLab.History = Class.extend({
 
         _history.log = JSON.parse(localStorage.getItem(_history.key)) || [];
 
-        console.log('history: fetched', _history.log.length);
+        if (_history.options.debug) console.log('history: fetched', _history.log.length);
 
         return _history.log;
 
@@ -58,7 +58,7 @@ module.exports = PublicLab.History = Class.extend({
       // localstorage, so be careful
       _history.flush = function() {
 
-        console.log('history: flushing');
+        if (_history.options.debug) console.log('history: flushing');
         _history.log = [];
 
         localStorage.setItem(_history.key, false);
@@ -70,7 +70,7 @@ module.exports = PublicLab.History = Class.extend({
       // overwrites previous history, so be careful
       _history.write = function() {
 
-        console.log('history: overwriting');
+        if (_history.options.debug) console.log('history: overwriting');
         var string = JSON.stringify(_history.log)
 
         // minimal validation:
@@ -114,17 +114,17 @@ module.exports = PublicLab.History = Class.extend({
         if (_history.last() && text != _history.last().text) {
 
           _history.add(text);
-          console.log('history: entry saved');
+          if (_history.options.debug) console.log('history: entry saved');
 
         } else if (_history.last()) {
 
           _history.last().timestamp = (new Date()).getTime()
-          //console.log('history: last entry timestamp updated', _history.last());
+          //if (_history.options.debug) console.log('history: last entry timestamp updated', _history.last());
 
         } else {
 
           _history.add(text);
-          console.log('history: first entry saved');
+          if (_history.options.debug) console.log('history: first entry saved');
 
         }
 
@@ -150,7 +150,7 @@ module.exports = PublicLab.History = Class.extend({
       // Actually get the contents of the passed textarea and store
       _history.check = function() {
 
-        _history.addIfDifferent(_editor.modules.richTextModule.value());
+        _history.addIfDifferent(_editor.richTextModule.value());
         if (_history.options.element) _history.display(_history.options.element);
 
       }
@@ -188,7 +188,7 @@ module.exports = PublicLab.History = Class.extend({
 
             $(element).find(className).click(function(e) {
               console.log(log.text);
-              _editor.modules.richTextModule.value(log.text);
+              _editor.richTextModule.value(log.text);
             });
 
           });
@@ -202,7 +202,7 @@ module.exports = PublicLab.History = Class.extend({
 
       setInterval(_history.check, _history.options.interval);
 
-      $(_editor.modules.richTextModule.options.textarea).on('change', function() {
+      $(_editor.richTextModule.options.textarea).on('change', function() {
 
         _history.check();
 

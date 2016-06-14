@@ -10,9 +10,12 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
+    _module.key = 'body';
+    _module.options = options || _editor.options.richTextModule || {};
     _module.options.name = "body";
     _module.options.instructions = "Describe your work in a way that others can understand.";
+
+    // break into subclass common to all modules, perhaps:
     _module.options.guides = [
       { 
         icon: "mouse-pointer", 
@@ -35,14 +38,17 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module._super(_editor, _module.options);
 
     // customize options after Module defaults set in _super()
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('textarea').val();
     _module.options.required = true;
 
     // should be switchable for other editors:
-    _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
+    _module.wysiwyg = _module.options.wysiwyg || PublicLab.Woofmark(_module.options.textarea, _editor, _module);
+
+    // finish and test this
     _module.wysiwyg.usernames = function(value, done) {
       $.get('/users/recent.json', function(response) {
-        done(response.responseText)
-        console.log(response.responseText)
+        done(response.responseText);
+console.log(response.responseText);
       });
     }
 
@@ -52,18 +58,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     if (_module.wysiwyg.mode == "wysiwyg") _module.focusables.push($(_module.editable));
     else                                   _module.focusables.push($(_module.textarea));
 
-    _module.key = 'body';
     _module.value = function(text) {
 
       // woofmark automatically returns the markdown, not rich text:
       if (typeof text === 'string') {
-        _module.afterParse();
+        if (_module.afterParse) _module.afterParse();
         return _module.wysiwyg.value(text);
       } else {
         return _module.wysiwyg.value();
       }
 
     }
+
+    _module.value(_module.options.initialValue);
 
 
     _module.valid = function() {
@@ -134,7 +141,7 @@ console.log('parse');
     // Make textarea match content height
     _module.resize = function() {
 
-      growTextarea(options.textarea, { extra: 10 });
+      growTextarea(_module.options.textarea, { extra: 10 });
 
     }
 
@@ -143,7 +150,7 @@ console.log('parse');
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
-    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+    crossvent.add(_module.options.textarea, 'woofmark-mode-change', function (e) {
 
       _module.resize();
 
@@ -160,7 +167,7 @@ console.log('parse');
 
     });
 
-    $(options.textarea).on('change keydown', function(e) {
+    $(_module.options.textarea).on('change keydown', function(e) {
       _module.resize();
     });
 

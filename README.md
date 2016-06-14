@@ -106,7 +106,9 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html 
 
-To run tests, open /test.html in a browser. To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
+To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
+
+To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
 
 
 ****

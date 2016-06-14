@@ -8,17 +8,18 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
-    _module.options.name         = "title";
+    _module.key = 'title';
+    _module.options = options || _editor.options.titleModule || {};
+    _module.options.name = "title";
 
     _module._super(_editor, _module.options);
 
     _module.focusables.push(_module.el.find('input'));
 
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = true;
     _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
 
-    _module.key = 'title';
     _module.value = function(text) {
 
       if (typeof text == 'string') {
@@ -30,6 +31,8 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       return _module.el.find('input').val();
 
     }
+
+    _module.value(_module.options.initialValue);
 
 
     _module.error = function(text, type) {

@@ -9,7 +9,8 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
+    _module.key = 'main_image_url';
+    _module.options = options || _editor.options.mainImageModule || {};
     _module.options.name = 'main_image';
     _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
 
@@ -17,7 +18,6 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.focusables.push(_module.el.find('input'));
 
-    _module.key = 'main_image_url';
     _module.value = function() {
 
 /////////// get this to return the image object? No, the image ID

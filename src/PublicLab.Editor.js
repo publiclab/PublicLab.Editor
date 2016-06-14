@@ -41,11 +41,11 @@ PL.Editor = Class.extend({
       var valid_modules    = 0,
           required_modules = 0;
 
-      Object.keys(_editor.modules).forEach(function(key, i) {
+      _editor.modules.forEach(function(module, i) {
 
-        if (_editor.modules[key].options.required) {
+        if (module.options.required) {
           required_modules += 1;
-          if (_editor.modules[key].valid()) valid_modules += 1;
+          if (module.valid()) valid_modules += 1;
         }
 
       });
@@ -86,8 +86,8 @@ PL.Editor = Class.extend({
 
       var valueObj = {};
 
-      Object.keys(_editor.modules).forEach(function(key, i) {
-        valueObj[key] = _editor.modules[key].value();
+      _editor.modules.forEach(function(module, i) {
+        valueObj[key] = module.value();
       });
 
       return valueObj;
@@ -100,9 +100,7 @@ PL.Editor = Class.extend({
       // Fetch values from modules and feed into corresponding editor.data.foo --
       // Note that modules may attempt to write to the same key, 
       // and would then overwrite one another.
-      Object.keys(editor.modules).forEach(function(name, i) {
-
-        var module = editor.modules[name];
+      _editor.modules.forEach(function(module, i) {
 
         _editor.data[module.key] = module.value();
 
@@ -137,9 +135,9 @@ PL.Editor = Class.extend({
       // set tabindices:
       var focusables = [];
 
-      Object.keys(_editor.modules).forEach(function(name, i) {
+      _editor.modules.forEach(function(module, i) {
  
-        focusables = focusables.concat(_editor.modules[name].focusables);
+        focusables = focusables.concat(module.focusables);
  
       });
 
@@ -173,15 +171,26 @@ PL.Editor = Class.extend({
     }
 
 
-    _editor.modules = {};
-    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
-    _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.modules.richTextModule  = new PublicLab.RichTextModule( _editor, { textarea: _editor.options.textarea });
-    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
+    // options are passed via the corresponding _editor.options.fooModule object;
+    // however, we copy textarea (the most basic) in automatically:
+    _editor.options.richTextModule = {
+      textarea: _editor.options.textarea
+    }
+
+    _editor.titleModule     = new PublicLab.TitleModule(    _editor);
+    _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
+    _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+    _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+
+    _editor.modules = [];
+    _editor.modules.push(_editor.titleModule);
+    _editor.modules.push(_editor.mainImageModule);
+    _editor.modules.push(_editor.richTextModule);
+    _editor.modules.push(_editor.tagsModule);
 
     // history must go after richTextModule, as it monitors that
     if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
-    _editor.help    = new PublicLab.Help(_editor);
+    _editor.help = new PublicLab.Help(_editor);
 
 
     _editor.validate();

@@ -36025,11 +36025,11 @@ PL.Editor = Class.extend({
       var valid_modules    = 0,
           required_modules = 0;
 
-      Object.keys(_editor.modules).forEach(function(key, i) {
+      _editor.modules.forEach(function(module, i) {
 
-        if (_editor.modules[key].options.required) {
+        if (module.options.required) {
           required_modules += 1;
-          if (_editor.modules[key].valid()) valid_modules += 1;
+          if (module.valid()) valid_modules += 1;
         }
 
       });
@@ -36070,8 +36070,8 @@ PL.Editor = Class.extend({
 
       var valueObj = {};
 
-      Object.keys(_editor.modules).forEach(function(key, i) {
-        valueObj[key] = _editor.modules[key].value();
+      _editor.modules.forEach(function(module, i) {
+        valueObj[key] = module.value();
       });
 
       return valueObj;
@@ -36084,9 +36084,7 @@ PL.Editor = Class.extend({
       // Fetch values from modules and feed into corresponding editor.data.foo --
       // Note that modules may attempt to write to the same key, 
       // and would then overwrite one another.
-      Object.keys(editor.modules).forEach(function(name, i) {
-
-        var module = editor.modules[name];
+      _editor.modules.forEach(function(module, i) {
 
         _editor.data[module.key] = module.value();
 
@@ -36121,9 +36119,9 @@ PL.Editor = Class.extend({
       // set tabindices:
       var focusables = [];
 
-      Object.keys(_editor.modules).forEach(function(name, i) {
+      _editor.modules.forEach(function(module, i) {
  
-        focusables = focusables.concat(_editor.modules[name].focusables);
+        focusables = focusables.concat(module.focusables);
  
       });
 
@@ -36157,15 +36155,26 @@ PL.Editor = Class.extend({
     }
 
 
-    _editor.modules = {};
-    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
-    _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.modules.richTextModule  = new PublicLab.RichTextModule( _editor, { textarea: _editor.options.textarea });
-    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
+    // options are passed via the corresponding _editor.options.fooModule object;
+    // however, we copy textarea (the most basic) in automatically:
+    _editor.options.richTextModule = {
+      textarea: _editor.options.textarea
+    }
+
+    _editor.titleModule     = new PublicLab.TitleModule(    _editor);
+    _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
+    _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+    _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+
+    _editor.modules = [];
+    _editor.modules.push(_editor.titleModule);
+    _editor.modules.push(_editor.mainImageModule);
+    _editor.modules.push(_editor.richTextModule);
+    _editor.modules.push(_editor.tagsModule);
 
     // history must go after richTextModule, as it monitors that
     if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
-    _editor.help    = new PublicLab.Help(_editor);
+    _editor.help = new PublicLab.Help(_editor);
 
 
     _editor.validate();
@@ -36226,7 +36235,7 @@ module.exports = PublicLab.Help = Class.extend({
 * [ ] saving could subtly fade in a small "saving" icon
 
 parsing back and forth (do this in the richTextModule?): 
-_editor.modules.richTextModule.wysiwyg.parseHTML('wysiwyg')
+_editor.richTextModule.wysiwyg.parseHTML('wysiwyg')
 
 
 * [ ] history could store values for each module, by keyname. state could be offered by editor.values(). But no, for now we'll just track the RichTextModule text
@@ -36266,7 +36275,7 @@ module.exports = PublicLab.History = Class.extend({
 
         _history.log = JSON.parse(localStorage.getItem(_history.key)) || [];
 
-        console.log('history: fetched', _history.log.length);
+        if (_history.options.debug) console.log('history: fetched', _history.log.length);
 
         return _history.log;
 
@@ -36277,7 +36286,7 @@ module.exports = PublicLab.History = Class.extend({
       // localstorage, so be careful
       _history.flush = function() {
 
-        console.log('history: flushing');
+        if (_history.options.debug) console.log('history: flushing');
         _history.log = [];
 
         localStorage.setItem(_history.key, false);
@@ -36289,7 +36298,7 @@ module.exports = PublicLab.History = Class.extend({
       // overwrites previous history, so be careful
       _history.write = function() {
 
-        console.log('history: overwriting');
+        if (_history.options.debug) console.log('history: overwriting');
         var string = JSON.stringify(_history.log)
 
         // minimal validation:
@@ -36333,17 +36342,17 @@ module.exports = PublicLab.History = Class.extend({
         if (_history.last() && text != _history.last().text) {
 
           _history.add(text);
-          console.log('history: entry saved');
+          if (_history.options.debug) console.log('history: entry saved');
 
         } else if (_history.last()) {
 
           _history.last().timestamp = (new Date()).getTime()
-          //console.log('history: last entry timestamp updated', _history.last());
+          //if (_history.options.debug) console.log('history: last entry timestamp updated', _history.last());
 
         } else {
 
           _history.add(text);
-          console.log('history: first entry saved');
+          if (_history.options.debug) console.log('history: first entry saved');
 
         }
 
@@ -36369,7 +36378,7 @@ module.exports = PublicLab.History = Class.extend({
       // Actually get the contents of the passed textarea and store
       _history.check = function() {
 
-        _history.addIfDifferent(_editor.modules.richTextModule.value());
+        _history.addIfDifferent(_editor.richTextModule.value());
         if (_history.options.element) _history.display(_history.options.element);
 
       }
@@ -36407,7 +36416,7 @@ module.exports = PublicLab.History = Class.extend({
 
             $(element).find(className).click(function(e) {
               console.log(log.text);
-              _editor.modules.richTextModule.value(log.text);
+              _editor.richTextModule.value(log.text);
             });
 
           });
@@ -36421,7 +36430,7 @@ module.exports = PublicLab.History = Class.extend({
 
       setInterval(_history.check, _history.options.interval);
 
-      $(_editor.modules.richTextModule.options.textarea).on('change', function() {
+      $(_editor.richTextModule.options.textarea).on('change', function() {
 
         _history.check();
 
@@ -36760,7 +36769,8 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
+    _module.key = 'main_image_url';
+    _module.options = options || _editor.options.mainImageModule || {};
     _module.options.name = 'main_image';
     _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
 
@@ -36768,7 +36778,6 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.focusables.push(_module.el.find('input'));
 
-    _module.key = 'main_image_url';
     _module.value = function() {
 
 /////////// get this to return the image object? No, the image ID
@@ -36955,9 +36964,12 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
+    _module.key = 'body';
+    _module.options = options || _editor.options.richTextModule || {};
     _module.options.name = "body";
     _module.options.instructions = "Describe your work in a way that others can understand.";
+
+    // break into subclass common to all modules, perhaps:
     _module.options.guides = [
       { 
         icon: "mouse-pointer", 
@@ -36980,14 +36992,17 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module._super(_editor, _module.options);
 
     // customize options after Module defaults set in _super()
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('textarea').val();
     _module.options.required = true;
 
     // should be switchable for other editors:
-    _module.wysiwyg = options.wysiwyg || PublicLab.Woofmark(options.textarea, _editor, _module);
+    _module.wysiwyg = _module.options.wysiwyg || PublicLab.Woofmark(_module.options.textarea, _editor, _module);
+
+    // finish and test this
     _module.wysiwyg.usernames = function(value, done) {
       $.get('/users/recent.json', function(response) {
-        done(response.responseText)
-        console.log(response.responseText)
+        done(response.responseText);
+console.log(response.responseText);
       });
     }
 
@@ -36997,18 +37012,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     if (_module.wysiwyg.mode == "wysiwyg") _module.focusables.push($(_module.editable));
     else                                   _module.focusables.push($(_module.textarea));
 
-    _module.key = 'body';
     _module.value = function(text) {
 
       // woofmark automatically returns the markdown, not rich text:
       if (typeof text === 'string') {
-        _module.afterParse();
+        if (_module.afterParse) _module.afterParse();
         return _module.wysiwyg.value(text);
       } else {
         return _module.wysiwyg.value();
       }
 
     }
+
+    _module.value(_module.options.initialValue);
 
 
     _module.valid = function() {
@@ -37079,7 +37095,7 @@ console.log('parse');
     // Make textarea match content height
     _module.resize = function() {
 
-      growTextarea(options.textarea, { extra: 10 });
+      growTextarea(_module.options.textarea, { extra: 10 });
 
     }
 
@@ -37088,7 +37104,7 @@ console.log('parse');
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
-    crossvent.add(options.textarea, 'woofmark-mode-change', function (e) {
+    crossvent.add(_module.options.textarea, 'woofmark-mode-change', function (e) {
 
       _module.resize();
 
@@ -37105,7 +37121,7 @@ console.log('parse');
 
     });
 
-    $(options.textarea).on('change keydown', function(e) {
+    $(_module.options.textarea).on('change keydown', function(e) {
       _module.resize();
     });
 
@@ -37130,17 +37146,18 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
+    _module.key = 'tags';
+    _module.options = options || _editor.options.tagsModule || {};
     _module.options.name         = 'tags';
     _module.options.instructions = 'Tags relate your work to others\' posts. <a href="">Read more &raquo;</a>';
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
 
     _module._super(_editor, _module.options);
 
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
 
-    _module.key = 'tags';
     _module.value = function(text) {
 
       if (typeof text == 'string') {
@@ -37152,6 +37169,8 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       return _module.el.find('input').val();
 
     }
+
+    _module.value(_module.options.initialValue);
 
 
     // server-side validation for now, and not required, so no reqs
@@ -37240,17 +37259,18 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
-    _module.options.name         = "title";
+    _module.key = 'title';
+    _module.options = options || _editor.options.titleModule || {};
+    _module.options.name = "title";
 
     _module._super(_editor, _module.options);
 
     _module.focusables.push(_module.el.find('input'));
 
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = true;
     _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
 
-    _module.key = 'title';
     _module.value = function(text) {
 
       if (typeof text == 'string') {
@@ -37262,6 +37282,8 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       return _module.el.find('input').val();
 
     }
+
+    _module.value(_module.options.initialValue);
 
 
     _module.error = function(text, type) {

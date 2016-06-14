@@ -13,17 +13,18 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
+    _module.key = 'tags';
+    _module.options = options || _editor.options.tagsModule || {};
     _module.options.name         = 'tags';
     _module.options.instructions = 'Tags relate your work to others\' posts. <a href="">Read more &raquo;</a>';
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
 
     _module._super(_editor, _module.options);
 
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
 
-    _module.key = 'tags';
     _module.value = function(text) {
 
       if (typeof text == 'string') {
@@ -35,6 +36,8 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       return _module.el.find('input').val();
 
     }
+
+    _module.value(_module.options.initialValue);
 
 
     // server-side validation for now, and not required, so no reqs
