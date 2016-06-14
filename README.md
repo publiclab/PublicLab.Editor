@@ -7,11 +7,11 @@ Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) t
 
 PublicLab.Editor is a general purpose, modular JavaScript/Bootstrap UI library for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
 
-PublicLab.Editor will provide author-friendly interfaces for:
+PublicLab.Editor provides author-friendly interfaces for:
 
 * titling
 * main image uploading
-* body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
+* text body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
 * tagging
 * edit history
 
@@ -31,7 +31,7 @@ Some, or many of the above may be optionally based on [Public Lab Powertags](htt
 
 ## Design process
 
-Early design discussion is [happening on PublicLab.org](https://publiclab.org/tag/rich-editor).
+Design updates are [viewable on PublicLab.org](https://publiclab.org/tag/rich-editor).
 
 You can try a very early, rough prototype here: 
 
