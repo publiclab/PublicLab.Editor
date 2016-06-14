@@ -36106,7 +36106,7 @@ PL.Editor = Class.extend({
           // this could be an error or a success; could redirect in either case?
           window.location = response;
 
-// is this right, or redunant with above?
+// is this wrong, or redunant with above?
         }).fail(function(response) {
 
           $('.ple-publish').removeClass('btn-success')
@@ -36833,7 +36833,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     });
 
 
-    _module.dropEl.fileupload({
+    _module.el.find('input').fileupload({
 
       url: "/images",
       paramName: "image[photo]",

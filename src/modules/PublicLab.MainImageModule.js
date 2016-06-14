@@ -46,7 +46,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     });
 
 
-    _module.dropEl.fileupload({
+    _module.el.find('input').fileupload({
 
       url: "/images",
       paramName: "image[photo]",
