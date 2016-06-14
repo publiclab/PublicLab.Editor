@@ -120,11 +120,9 @@ PL.Editor = Class.extend({
         ).done(function(response) {
 
           // this could be an error or a success; could redirect in either case?
-          console.log(response);
-          $('.ple-publish').html('Publish');
-                           
+          window.location = response;
 
-// is this right?
+// is this wrong, or redunant with above?
         }).fail(function(response) {
 
           $('.ple-publish').removeClass('btn-success')

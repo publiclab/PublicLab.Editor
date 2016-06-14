@@ -82,6 +82,11 @@ var editor = PublicLab.Editor({
 });
 ````
 
+## Server
+
+PublicLab.Editor expects a response from the server upon sending a request to `publishUrl` that is a URL which it will follow. 
+
+
 ## Developers
 
 Help improve Public Lab software!
