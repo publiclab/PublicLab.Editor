@@ -44,7 +44,7 @@ describe("Editor", function() {
 
   xit("sends AJAX request on editor.publish()", function() {
 
-    //
+    editor.publish();
 
   });
 

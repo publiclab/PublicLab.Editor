@@ -49,7 +49,7 @@ describe("Prepopulated editor", function() {
   });
 
 
-  xit("submits update() with new values", function() {
+  xit("submits update request with new values on publish()", function() {
 
     var title = 'My original title',
         body  = 'My **boring** original post.',

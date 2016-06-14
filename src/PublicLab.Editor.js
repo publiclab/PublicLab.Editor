@@ -110,6 +110,8 @@ PL.Editor = Class.extend({
 
       if (_editor.options.destination) {
 
+        $('.ple-publish').html('<i class="fa fa-circle-notched fa-spin"></i>');
+
         $.ajax(
           _editor.options.destination, 
           {
@@ -117,7 +119,16 @@ PL.Editor = Class.extend({
           }
         ).done(function(response) {
 
+          // this could be an error or a success; could redirect in either case?
           console.log(response);
+          $('.ple-publish').html('Publish');
+                           
+
+// is this right?
+        }).fail(function(response) {
+
+          $('.ple-publish').removeClass('btn-success')
+                           .addClass('btn-danger');
 
         });
 
