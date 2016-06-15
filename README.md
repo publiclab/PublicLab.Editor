@@ -1,6 +1,8 @@
 PublicLab.Editor
 ====
 
+![tests](https://travis-ci.org/publiclab/PublicLab.Editor.svg)
+
 **This library is incomplete -- this page is a rough planning document.**
 
 Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.

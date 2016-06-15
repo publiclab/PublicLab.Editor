@@ -36799,6 +36799,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.key = 'main_image_url';
     _module.options = options || _editor.options.mainImageModule || {};
     _module.options.name = 'main_image';
+    _module.options.url = _editor.options.mainImageUrl;
     _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
 
     _module._super(_editor, _module.options);
@@ -36807,8 +36808,8 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.value = function() {
 
-/////////// get this to return the image object? No, the image ID
-      return _module.image;
+      // a unique identifier for the image, from the server
+      return _module.options.id;
 
     }
 
@@ -36817,6 +36818,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 
     _module.dropEl = _module.el.find('.ple-drag-drop');
+    _module.dropEl.css('background-image', 'url("' + _module.options.url + '")');
 
     _module.dropEl.bind('dragover',function(e) {
       e.preventDefault();
@@ -36882,8 +36884,8 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
         _editor.validate();
 
-// refactor
-        $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+// refactor versioning of main image
+// $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
 
       },
 
