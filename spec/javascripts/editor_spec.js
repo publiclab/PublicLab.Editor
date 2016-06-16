@@ -42,9 +42,36 @@ describe("Editor", function() {
   });
 
 
-  xit("sends AJAX request on editor.publish()", function() {
+  it("sends AJAX request on editor.publish()", function(done) {
 
-    editor.publish();
+    jasmine.Ajax.install();
+
+    editor.options.destination = '/post';
+
+    var ajaxSpy = spyOn($, "ajax").and.callFake(function(options) {
+
+      if (options === editor.options.destination) {
+
+        // http://stackoverflow.com/questions/13148356/how-to-properly-unit-test-jquerys-ajax-promises-using-jasmine-and-or-sinon
+        var d = $.Deferred();
+        d.resolve(options);
+        d.reject(options);
+        return d.promise();
+
+      }
+
+    });
+
+    function onPublish(response) {
+
+      expect(response).not.toBeUndefined();
+ 
+      jasmine.Ajax.uninstall();
+      done();
+ 
+    }
+
+    editor.publish(onPublish);
 
   });
 

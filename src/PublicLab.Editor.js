@@ -70,7 +70,7 @@ PL.Editor = Class.extend({
       title: null,
       body:  null,
       tags:  null,          // comma-delimited list; this should be added by a PL.Editor.MainImage module
-      main_image_url: null // this should be added by a PL.Editor.MainImage module
+      main_image_url: null
 
     }
 
@@ -95,34 +95,42 @@ PL.Editor = Class.extend({
     }
 
 
-    _editor.publish = function() {
+    // Fetch values from modules and feed into corresponding editor.data.foo --
+    // Note that modules may attempt to write to the same key, 
+    // and would then overwrite one another.
+    _editor.collectData = function() {
 
-      // Fetch values from modules and feed into corresponding editor.data.foo --
-      // Note that modules may attempt to write to the same key, 
-      // and would then overwrite one another.
       _editor.modules.forEach(function(module, i) {
 
         _editor.data[module.key] = module.value();
 
       });
 
-      var formatted = new PublicLab.Formatter().convert(_editor.data, _editor.options.format);
+    }
+
+
+    // executes <callback> on completion, or (by default) navigates to returned URL
+    _editor.publish = function(callback) {
+
+      _editor.collectData();
+
+      var formatted = new PublicLab.Formatter().convert(
+                        _editor.data, 
+                        _editor.options.format
+                      );
 
       if (_editor.options.destination) {
 
-        $('.ple-publish').html('<i class="fa fa-circle-notched fa-spin"></i>');
+        $('.ple-publish').html('<i class="fa fa-circle-notch fa-spin"></i>');
 
         $.ajax(
           _editor.options.destination, 
-          {
-            data: formatted
-          }
+          { data: formatted }
         ).done(function(response) {
 
-          // this could be an error or a success; could redirect in either case?
-          window.location = response;
+          if (callback) callback(response);
+          else window.location = response;
 
-// is this wrong, or redunant with above?
         }).fail(function(response) {
 
           $('.ple-publish').removeClass('btn-success')
