@@ -187,9 +187,14 @@ var myVariable = 4;
 
         editor = new PL.Editor({
           textarea:     $('.ple-textarea')[0],
+          editing:      true, // i.e. an existing post, not a new one
           mainImageUrl: 'example.gif',
-          destination:  '/notes/create',
-          format:       'publiclab'
+          destination:  '/notes/update',
+          format:       'publiclab',
+          mainImageModule: {
+            nid: 3,
+            uid: 4
+          }
         });
 
       })();

@@ -46,12 +46,20 @@ describe("Prepopulated editor", function() {
       mainImageUrl: mainImageUrl
     });
 
-    expect(editor.titleModule.value()).toBe(title);
-    expect(editor.richTextModule.value()).toBe(body);
-    expect(editor.tagsModule.value()).toBe(tags);
+    expect(editor.titleModule.value()        ).toBe(title);
+    expect(editor.richTextModule.value()     ).toBe(body);
+    expect(editor.tagsModule.value()         ).toBe(tags);
     expect(editor.mainImageModule.options.url).toBe(mainImageUrl);
+
     var url = editor.mainImageModule.el.find('.ple-drag-drop').css('background-image').replace(/"/g, ''); // phantomjs removes quotation marks
     expect(url).toBe('url(' + mainImageUrl + ')');
+
+    editor.collectData();
+    expect(editor.data.title         ).toBe(title);
+    expect(editor.data.body          ).toBe(body);
+    expect(editor.data.tags          ).toBe(tags);
+    expect(editor.data.main_image_url).toBe(mainImageUrl);
+
   });
 
 
