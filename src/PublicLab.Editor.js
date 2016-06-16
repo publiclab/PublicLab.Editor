@@ -109,7 +109,8 @@ PL.Editor = Class.extend({
     }
 
 
-    _editor.publish = function() {
+    // executes <callback> on completion, or (by default) navigates to returned URL
+    _editor.publish = function(callback) {
 
       _editor.collectData();
 
@@ -127,7 +128,8 @@ PL.Editor = Class.extend({
           { data: formatted }
         ).done(function(response) {
 
-          window.location = response;
+          if (callback) callback(response);
+          else window.location = response;
 
         }).fail(function(response) {
 

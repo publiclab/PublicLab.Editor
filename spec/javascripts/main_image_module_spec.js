@@ -21,6 +21,7 @@ describe("MainImageModule", function() {
     expect(module.options.required).toBe(false);
 
     expect(module.valid()).toBe(true);
+
   });
 
 
@@ -41,8 +42,11 @@ describe("MainImageModule", function() {
       }
     });
 
-    jasmine.Ajax.install();
+    var module = editor.mainImageModule;
 
+    expect(module.el.find('.progress-bar')).toBeHidden();
+
+    jasmine.Ajax.install();
 
     var ajaxSpy = spyOn($, "ajax").and.callFake(function(options) {
 
@@ -63,28 +67,27 @@ describe("MainImageModule", function() {
       expect(data.url).toBe('/img');
       expect(data.formData.nid).toBe(nid);
       expect(data.formData.uid).toBe(uid);
+      expect(module.el.find('.progress-bar')).not.toBeHidden();
 
     }
 
-    editor.mainImageModule.el.find('input').bind('fileuploadsend', fileuploadsend);
+    module.el.find('input').bind('fileuploadsend', fileuploadsend);
 
     function fileuploaddone(e, data) {
 
       expect(data).not.toBeUndefined();
  
-      done();
       jasmine.Ajax.uninstall();
+      done();
  
     }
 
-    editor.mainImageModule.el.find('input').bind('fileuploaddone', fileuploaddone);
-
-    var blob = new Blob(["fakedata"]);
+    module.el.find('input').bind('fileuploaddone', fileuploaddone);
 
     // https://github.com/blueimp/jQuery-File-Upload/wiki/API#programmatic-file-upload
-    editor.mainImageModule.el.find('input').fileupload('add', {
+    module.el.find('input').fileupload('add', {
       files: [
-        blob
+        new Blob(["fakedata"])
       ]
     });
 
