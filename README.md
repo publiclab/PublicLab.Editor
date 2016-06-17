@@ -1,17 +1,19 @@
 PublicLab.Editor
 ====
 
+![tests](https://travis-ci.org/publiclab/PublicLab.Editor.svg)
+
 **This library is incomplete -- this page is a rough planning document.**
 
 Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
 
 PublicLab.Editor is a general purpose, modular JavaScript/Bootstrap UI library for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
 
-PublicLab.Editor will provide author-friendly interfaces for:
+PublicLab.Editor provides author-friendly interfaces for:
 
 * titling
 * main image uploading
-* body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
+* text body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
 * tagging
 * edit history
 
@@ -31,7 +33,7 @@ Some, or many of the above may be optionally based on [Public Lab Powertags](htt
 
 ## Design process
 
-Early design discussion is [happening on PublicLab.org](https://publiclab.org/tag/rich-editor).
+Design updates are [viewable on PublicLab.org](https://publiclab.org/tag/rich-editor).
 
 You can try a very early, rough prototype here: 
 
@@ -82,6 +84,11 @@ var editor = PublicLab.Editor({
 });
 ````
 
+## Server
+
+PublicLab.Editor expects a response from the server upon sending a request to `publishUrl` that is a URL which it will follow. 
+
+
 ## Developers
 
 Help improve Public Lab software!
@@ -106,7 +113,9 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html 
 
-To run tests, open /test.html in a browser. To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
+To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
+
+To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
 
 
 ****

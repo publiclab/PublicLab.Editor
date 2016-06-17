@@ -11,6 +11,7 @@ module.exports = PublicLab.Module = Class.extend({
     _module.options = options || {};
     _module.options.required = false; // default
     _module.options.guides = _module.options.guides || [];
+    _module.focusables = []; // tab-focusable elements
 
     _module.el = $('.ple-module-' + _module.options.name);
 
