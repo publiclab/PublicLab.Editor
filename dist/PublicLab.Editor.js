@@ -36622,7 +36622,7 @@ module.exports = function(textarea, _editor, _module) {
       return megamark(input, {
         tokenizers: [
           {
-            token: /(^|\s)@([A-z]+)\b/g,
+            token: /(^|\s)@([A-z\_]+)\b/g,
             transform: function (all, separator, id) {
               return separator + '<a href="/profile/' + id + '">@' + id + '</a>';
             }

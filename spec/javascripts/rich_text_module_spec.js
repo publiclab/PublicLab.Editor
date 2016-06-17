@@ -56,16 +56,21 @@ describe("RichTextModule", function() {
   });
 
 
-  it("recognizes @callouts and #hashtags", function() {
+  it("recognizes @callouts and #hashtags and #hash-tags", function() {
 
     module.setMode('markdown');
     module.value('Hello, @jeff!');
     // shouldn't actually add markdown link around a callout:
-    expect(module.value().match('[@jeff](/profile/jeff)')).toBe(null);
+    expect(module.value()).not.toContain('[@jeff](/profile/jeff)');
+
     module.setMode('wysiwyg');
-    expect(module.html().match('<a href="/profile/jeff">@jeff</a>')).not.toBe(null);
+    expect(module.html()).toContain('<a href="/profile/jeff">@jeff</a>');
+
     module.value('Hi, #robots are cool!');
-    expect(module.html().match('<a href="/tag/robots">#robots</a>')).not.toBe(null);
+    expect(module.html()).toContain('<a href="/tag/robots">#robots</a>');
+
+    module.value('#balloon-mapping');
+    expect(module.html()).toContain('<a href="/tag/balloon-mapping">#balloon-mapping</a>');
 
   });
 
