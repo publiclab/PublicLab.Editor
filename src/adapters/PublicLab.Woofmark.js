@@ -99,7 +99,7 @@ module.exports = function(textarea, _editor, _module) {
             }
           },
           {
-            token: /(^|\s)#([A-z]+)\b/g,
+            token: /(^|\s)#([A-z\-]+)\b/g,
             transform: function (all, separator, id) {
               return separator + '<a href="/tag/' + id + '">#' + id + '</a>';
             }
