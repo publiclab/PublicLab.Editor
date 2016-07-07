@@ -36015,7 +36015,6 @@ PL.Editor = Class.extend({
     _editor.options.history = (_editor.options.history !== false); // true by default
     _editor.options.format = "publiclab";
 
-
     // Validation:
     // Count how many required modules remain for author to complete:
     _editor.validate = function() {
@@ -36172,9 +36171,8 @@ PL.Editor = Class.extend({
 
     // options are passed via the corresponding _editor.options.fooModule object;
     // however, we copy textarea (the most basic) in automatically:
-    _editor.options.richTextModule = {
-      textarea: _editor.options.textarea
-    }
+    _editor.options.richTextModule = _editor.options.richTextModule || {};
+    _editor.options.richTextModule.textarea = _editor.options.textarea;
 
     _editor.titleModule     = new PublicLab.TitleModule(    _editor);
     _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
@@ -36550,15 +36548,29 @@ module.exports = function(textarea, _editor, _module) {
 
   }
 
-  _module.usernames = [
-    { value: '@hodor',  text: '@hodor; 1 note'   },
-    { value: '@sansa',  text: '@sansa; 2 notes'  },
-    { value: '@john',   text: '@john; 4 notes'   },
-    { value: '@rob',    text: '@rob; 1 note'     },
-    { value: '@rickon', text: '@rickon; 5 notes' },
-    { value: '@bran',   text: '@bran; 1 note'    },
-    { value: '@arya',   text: '@arya; 2 notes'   }
-  ];
+
+  _module.options.tags = _module.options.tags || function(value, done) {
+    done([
+      '#spectrometer', 
+      '#air-quality', 
+      '#water-quality', 
+      '#balloon-mapping' 
+    ]);
+  }
+
+
+  _module.options.authors = _module.options.authors || function(value, done) {
+    done([
+      { value: '@hodor',  text: '@hodor; 1 note'   },
+      { value: '@sansa',  text: '@sansa; 2 notes'  },
+      { value: '@john',   text: '@john; 4 notes'   },
+      { value: '@rob',    text: '@rob; 1 note'     },
+      { value: '@rickon', text: '@rickon; 5 notes' },
+      { value: '@bran',   text: '@bran; 1 note'    },
+      { value: '@arya',   text: '@arya; 2 notes'   }
+    ]);
+  }
+
 
   var wysiwyg = woofmark(textarea, {
 
@@ -36671,7 +36683,7 @@ module.exports = function(textarea, _editor, _module) {
   //wysiwyg.calloutHorse = horsey(textarea, {
   wysiwyg.calloutHorse = horsey(wysiwyg.editable, {
     anchor: '@',
-    suggestions: _module.usernames,
+    suggestions: _module.options.authors,
     set: function (value) {
       if (wysiwyg.mode === 'wysiwyg') {
         textarea.innerHTML = value;
@@ -36689,12 +36701,7 @@ module.exports = function(textarea, _editor, _module) {
 
   wysiwyg.tagHorse = horsey(textarea, {
     anchor: '#',
-    suggestions: [
-      '#spectrometer', 
-      '#air-quality', 
-      '#water-quality', 
-      '#balloon-mapping' 
-    ],
+    suggestions: _module.options.tags,
     set: function (value) {
       el.value = value + ', ';
     }
@@ -37037,14 +37044,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // should be switchable for other editors:
     _module.wysiwyg = _module.options.wysiwyg || PublicLab.Woofmark(_module.options.textarea, _editor, _module);
-
-    // finish and test this
-    _module.wysiwyg.usernames = function(value, done) {
-      $.get('/users/recent.json', function(response) {
-        done(response.responseText);
-console.log(response.responseText);
-      });
-    }
 
     _module.editable = _module.wysiwyg.editable;
     _module.textarea = _module.wysiwyg.textarea;

@@ -4,7 +4,7 @@ describe("RichTextModule", function() {
 
   beforeAll(function() {
 
-    fixture = loadFixtures('index.html');
+    var fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
@@ -71,6 +71,29 @@ describe("RichTextModule", function() {
 
     module.value('#balloon-mapping');
     expect(module.html()).toContain('<a href="/tag/balloon-mapping">#balloon-mapping</a>');
+
+  });
+
+
+  it("accepts customized authors method as constructor option for @callouts", function() {
+
+    module = new PL.RichTextModule( editor, { 
+      textarea: editor.options.textarea,
+      authors: function(value, done) {
+        done([
+          { value: '@kirk',    text: '@kirk; 1 note'    },
+          { value: '@spock',   text: '@spock; 2 notes'  },
+          { value: '@uhura',   text: '@uhura; 4 notes'  },
+          { value: '@bones',   text: '@bones; 1 note'   },
+          { value: '@sulu',    text: '@sulu; 5 notes'   },
+          { value: '@checkov', text: '@checkov; 1 note' }
+        ]);
+      }
+    });
+
+    module.options.authors('', function(list) {
+      expect(list[0].value).toBe('@kirk');
+    })
 
   });
 

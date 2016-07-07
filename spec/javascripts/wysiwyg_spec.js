@@ -6,7 +6,11 @@ describe("Wysiwyg", function() {
 
     fixture = loadFixtures('index.html');
 
-    wysiwyg = PublicLab.Woofmark($('.ple-textarea')[0], editor, {});
+    wysiwyg = PublicLab.Woofmark(
+      $('.ple-textarea')[0],
+      { options: {} },
+      { options: {}
+    });
 
   });
 
