@@ -44,14 +44,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // should be switchable for other editors:
     _module.wysiwyg = _module.options.wysiwyg || PublicLab.Woofmark(_module.options.textarea, _editor, _module);
 
-    // finish and test this
-    _module.wysiwyg.usernames = function(value, done) {
-      $.get('/users/recent.json', function(response) {
-        done(response.responseText);
-console.log(response.responseText);
-      });
-    }
-
     _module.editable = _module.wysiwyg.editable;
     _module.textarea = _module.wysiwyg.textarea;
 

@@ -63,24 +63,4 @@ describe("Prepopulated editor", function() {
   });
 
 
-  xit("submits update request with new values on publish()", function() {
-
-    var title = 'My original title',
-        body  = 'My **boring** original post.',
-        tags  = 'my,old, tags';
-
-    editor = new PL.Editor({
-      textarea: $('.ple-textarea')[0],
-      title: title,
-      body: body,
-      tags: tags
-    });
-
-    editor.titleModule.value('My fancy new title');
-
-    editor.publish();
-
-  });
-
-
 });

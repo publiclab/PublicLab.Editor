@@ -3,9 +3,7 @@
 // if (!this.hasOwnProperty('document') document 
 
 window.$ = window.jQuery = require('jquery')
-var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() {
-  
-});
+var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() { });
 
 var Class        = require('resig-class');
 
@@ -32,7 +30,6 @@ PL.Editor = Class.extend({
     _editor.options = options;
     _editor.options.history = (_editor.options.history !== false); // true by default
     _editor.options.format = "publiclab";
-
 
     // Validation:
     // Count how many required modules remain for author to complete:
@@ -190,9 +187,8 @@ PL.Editor = Class.extend({
 
     // options are passed via the corresponding _editor.options.fooModule object;
     // however, we copy textarea (the most basic) in automatically:
-    _editor.options.richTextModule = {
-      textarea: _editor.options.textarea
-    }
+    _editor.options.richTextModule = _editor.options.richTextModule || {};
+    _editor.options.richTextModule.textarea = _editor.options.textarea;
 
     _editor.titleModule     = new PublicLab.TitleModule(    _editor);
     _editor.mainImageModule = new PublicLab.MainImageModule(_editor);

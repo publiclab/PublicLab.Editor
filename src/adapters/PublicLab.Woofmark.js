@@ -21,15 +21,29 @@ module.exports = function(textarea, _editor, _module) {
 
   }
 
-  _module.usernames = [
-    { value: '@hodor',  text: '@hodor; 1 note'   },
-    { value: '@sansa',  text: '@sansa; 2 notes'  },
-    { value: '@john',   text: '@john; 4 notes'   },
-    { value: '@rob',    text: '@rob; 1 note'     },
-    { value: '@rickon', text: '@rickon; 5 notes' },
-    { value: '@bran',   text: '@bran; 1 note'    },
-    { value: '@arya',   text: '@arya; 2 notes'   }
-  ];
+
+  _module.options.tags = _module.options.tags || function(value, done) {
+    done([
+      '#spectrometer', 
+      '#air-quality', 
+      '#water-quality', 
+      '#balloon-mapping' 
+    ]);
+  }
+
+
+  _module.options.authors = _module.options.authors || function(value, done) {
+    done([
+      { value: '@hodor',  text: '@hodor; 1 note'   },
+      { value: '@sansa',  text: '@sansa; 2 notes'  },
+      { value: '@john',   text: '@john; 4 notes'   },
+      { value: '@rob',    text: '@rob; 1 note'     },
+      { value: '@rickon', text: '@rickon; 5 notes' },
+      { value: '@bran',   text: '@bran; 1 note'    },
+      { value: '@arya',   text: '@arya; 2 notes'   }
+    ]);
+  }
+
 
   var wysiwyg = woofmark(textarea, {
 
@@ -93,13 +107,13 @@ module.exports = function(textarea, _editor, _module) {
       return megamark(input, {
         tokenizers: [
           {
-            token: /(^|\s)@([A-z]+)\b/g,
+            token: /(^|\s)@([A-z\_]+)\b/g,
             transform: function (all, separator, id) {
               return separator + '<a href="/profile/' + id + '">@' + id + '</a>';
             }
           },
           {
-            token: /(^|\s)#([A-z]+)\b/g,
+            token: /(^|\s)#([A-z\-]+)\b/g,
             transform: function (all, separator, id) {
               return separator + '<a href="/tag/' + id + '">#' + id + '</a>';
             }
@@ -142,7 +156,7 @@ module.exports = function(textarea, _editor, _module) {
   //wysiwyg.calloutHorse = horsey(textarea, {
   wysiwyg.calloutHorse = horsey(wysiwyg.editable, {
     anchor: '@',
-    suggestions: _module.usernames,
+    suggestions: _module.options.authors,
     set: function (value) {
       if (wysiwyg.mode === 'wysiwyg') {
         textarea.innerHTML = value;
@@ -160,12 +174,7 @@ module.exports = function(textarea, _editor, _module) {
 
   wysiwyg.tagHorse = horsey(textarea, {
     anchor: '#',
-    suggestions: [
-      '#spectrometer', 
-      '#air-quality', 
-      '#water-quality', 
-      '#balloon-mapping' 
-    ],
+    suggestions: _module.options.tags,
     set: function (value) {
       el.value = value + ', ';
     }

@@ -4,7 +4,7 @@ describe("RichTextModule", function() {
 
   beforeAll(function() {
 
-    fixture = loadFixtures('index.html');
+    var fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
@@ -56,16 +56,44 @@ describe("RichTextModule", function() {
   });
 
 
-  it("recognizes @callouts and #hashtags", function() {
+  it("recognizes @callouts and #hashtags and #hash-tags", function() {
 
     module.setMode('markdown');
     module.value('Hello, @jeff!');
     // shouldn't actually add markdown link around a callout:
-    expect(module.value().match('[@jeff](/profile/jeff)')).toBe(null);
+    expect(module.value()).not.toContain('[@jeff](/profile/jeff)');
+
     module.setMode('wysiwyg');
-    expect(module.html().match('<a href="/profile/jeff">@jeff</a>')).not.toBe(null);
+    expect(module.html()).toContain('<a href="/profile/jeff">@jeff</a>');
+
     module.value('Hi, #robots are cool!');
-    expect(module.html().match('<a href="/tag/robots">#robots</a>')).not.toBe(null);
+    expect(module.html()).toContain('<a href="/tag/robots">#robots</a>');
+
+    module.value('#balloon-mapping');
+    expect(module.html()).toContain('<a href="/tag/balloon-mapping">#balloon-mapping</a>');
+
+  });
+
+
+  it("accepts customized authors method as constructor option for @callouts", function() {
+
+    module = new PL.RichTextModule( editor, { 
+      textarea: editor.options.textarea,
+      authors: function(value, done) {
+        done([
+          { value: '@kirk',    text: '@kirk; 1 note'    },
+          { value: '@spock',   text: '@spock; 2 notes'  },
+          { value: '@uhura',   text: '@uhura; 4 notes'  },
+          { value: '@bones',   text: '@bones; 1 note'   },
+          { value: '@sulu',    text: '@sulu; 5 notes'   },
+          { value: '@checkov', text: '@checkov; 1 note' }
+        ]);
+      }
+    });
+
+    module.options.authors('', function(list) {
+      expect(list[0].value).toBe('@kirk');
+    })
 
   });
 
