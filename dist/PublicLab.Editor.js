@@ -36571,6 +36571,72 @@ module.exports = function(textarea, _editor, _module) {
     ]);
   }
 
+  /*
+   Table generation:
+
+  | col1 | col2 | col3 |
+  |------|------|------|
+  | cell | cell | cell |
+  | cell | cell | cell |
+  */
+
+  _module.createTable = function(cols, rows) {
+
+    function generateTableMarkdown() {
+
+      var table = "|";
+ 
+      for (var col = 0; col < cols; col++) {
+ 
+        table = table + " col" + col + " |";
+ 
+      }
+ 
+      table = table + "\n|";
+ 
+      for (var col = 0; col < cols; col++) {
+ 
+        table = table + "------|";
+ 
+      }
+ 
+      table = table + "\n";
+ 
+      for (var row = 0; row < rows; row++) {
+ 
+        table = table + "|";
+ 
+        for (var col = 0; col < cols; col++) {
+       
+          table = table + " cell |";
+       
+        }
+ 
+        table = table + "\n";
+ 
+      }
+
+      return table + "\n";
+
+    }
+
+    wysiwyg.runCommand(function runner(chunks, mode) {
+
+      if (mode === 'markdown') chunks.before += generateTableMarkdown(rows, cols);
+      else {
+
+        chunks.before += _module.wysiwyg.parseMarkdown(generateTableMarkdown(rows, cols));
+        setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
+
+      }
+
+    });
+
+  }
+
+
+  // create button for table here
+
 
   var wysiwyg = woofmark(textarea, {
 
