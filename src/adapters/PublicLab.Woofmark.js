@@ -1,6 +1,7 @@
 /*
  * Wrapped woofmark() constructor with 
- * customizations for our use case
+ * customizations for our use case.
+ * Should improve organization of this vs. RichTextModule
  */
 
 var woofmark     = require('woofmark'),
@@ -13,11 +14,12 @@ module.exports = function(textarea, _editor, _module) {
 
   var icons = {
 
-    'quote': 'quote-right',
-    'ol': 'list-ol',
-    'ul': 'list-ul',
-    'heading': 'header',
-    'attachment': 'paperclip'
+    'quote':      'quote-right',
+    'ol':         'list-ol',
+    'ul':         'list-ul',
+    'heading':    'header',
+    'attachment': 'paperclip',
+    'table':      'table'
 
   }
 
@@ -43,72 +45,6 @@ module.exports = function(textarea, _editor, _module) {
       { value: '@arya',   text: '@arya; 2 notes'   }
     ]);
   }
-
-  /*
-   Table generation:
-
-  | col1 | col2 | col3 |
-  |------|------|------|
-  | cell | cell | cell |
-  | cell | cell | cell |
-  */
-
-  _module.createTable = function(cols, rows) {
-
-    function generateTableMarkdown() {
-
-      var table = "|";
- 
-      for (var col = 0; col < cols; col++) {
- 
-        table = table + " col" + col + " |";
- 
-      }
- 
-      table = table + "\n|";
- 
-      for (var col = 0; col < cols; col++) {
- 
-        table = table + "------|";
- 
-      }
- 
-      table = table + "\n";
- 
-      for (var row = 0; row < rows; row++) {
- 
-        table = table + "|";
- 
-        for (var col = 0; col < cols; col++) {
-       
-          table = table + " cell |";
-       
-        }
- 
-        table = table + "\n";
- 
-      }
-
-      return table + "\n";
-
-    }
-
-    wysiwyg.runCommand(function runner(chunks, mode) {
-
-      if (mode === 'markdown') chunks.before += generateTableMarkdown(rows, cols);
-      else {
-
-        chunks.before += _module.wysiwyg.parseMarkdown(generateTableMarkdown(rows, cols));
-        setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
-
-      }
-
-    });
-
-  }
-
-
-  // create button for table here
 
 
   var wysiwyg = woofmark(textarea, {
@@ -252,9 +188,13 @@ module.exports = function(textarea, _editor, _module) {
   });
 
 
+  // set up table generation tools:
+  require('../modules/PublicLab.RichTextModule.Table.js')(_module, wysiwyg);
+
+
   // styling: 
 
-  $('.wk-commands').after('<span style="padding:10px;display:none;" class="ple-history-saving"><i class="fa fa-clock-o"></i><span class="hidden-xs">Saving...</span></span>');
+  $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
   $('.wk-commands, .wk-switchboard').addClass('btn-group');
   $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
 
