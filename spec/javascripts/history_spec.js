@@ -67,8 +67,8 @@ describe("History", function() {
 
   it("creates new log entry when value() set", function() {
 
-    expect($(editor.modules.richTextModule.options.textarea).length).toBeGreaterThan(0);
-    editor.modules.richTextModule.value("changed textarea text");
+    expect($(editor.richTextModule.options.textarea).length).toBeGreaterThan(0);
+    editor.richTextModule.value("changed textarea text");
     editor.history.check();
     expect(editor.history.last().text).toBe("changed textarea text");
 

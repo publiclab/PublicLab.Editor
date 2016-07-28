@@ -3,9 +3,7 @@
 // if (!this.hasOwnProperty('document') document 
 
 window.$ = window.jQuery = require('jquery')
-var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() {
-  
-});
+var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() { });
 
 var Class        = require('resig-class');
 
@@ -31,7 +29,7 @@ PL.Editor = Class.extend({
     var _editor = this;
     _editor.options = options;
     _editor.options.history = (_editor.options.history !== false); // true by default
-
+    _editor.options.format = "publiclab";
 
     // Validation:
     // Count how many required modules remain for author to complete:
@@ -40,11 +38,11 @@ PL.Editor = Class.extend({
       var valid_modules    = 0,
           required_modules = 0;
 
-      Object.keys(_editor.modules).forEach(function(key, i) {
+      _editor.modules.forEach(function(module, i) {
 
-        if (_editor.modules[key].options.required) {
+        if (module.options.required) {
           required_modules += 1;
-          if (_editor.modules[key].valid()) valid_modules += 1;
+          if (module.valid()) valid_modules += 1;
         }
 
       });
@@ -55,7 +53,7 @@ PL.Editor = Class.extend({
 
       }
 
-      $('.ple-steps-left').html(valid_modules + ' of ' + required_modules);
+      $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
       return valid_modules == required_modules;
 
@@ -69,7 +67,7 @@ PL.Editor = Class.extend({
       title: null,
       body:  null,
       tags:  null,          // comma-delimited list; this should be added by a PL.Editor.MainImage module
-      main_image_url: null // this should be added by a PL.Editor.MainImage module
+      main_image_url: null
 
     }
 
@@ -85,8 +83,8 @@ PL.Editor = Class.extend({
 
       var valueObj = {};
 
-      Object.keys(_editor.modules).forEach(function(key, i) {
-        valueObj[key] = _editor.modules[key].value();
+      _editor.modules.forEach(function(module, i) {
+        valueObj[key] = module.value();
       });
 
       return valueObj;
@@ -94,24 +92,125 @@ PL.Editor = Class.extend({
     }
 
 
-    $('.btn-more').click(function() {
+    // Fetch values from modules and feed into corresponding editor.data.foo --
+    // Note that modules may attempt to write to the same key, 
+    // and would then overwrite one another.
+    _editor.collectData = function() {
 
-      // display more tools menu
-      $('.ple-menu-more').toggle();
+      _editor.modules.forEach(function(module, i) {
 
-    });
+        _editor.data[module.key] = module.value();
+
+      });
+
+    }
 
 
-    _editor.modules = {};
-    _editor.modules.titleModule     = new PublicLab.TitleModule(    _editor);
-    _editor.modules.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.modules.richTextModule  = new PublicLab.RichTextModule( _editor, { textarea: _editor.options.textarea });
-    _editor.modules.tagsModule      = new PublicLab.TagsModule(     _editor);
+    // executes <callback> on completion, or (by default) navigates to returned URL
+    _editor.publish = function(callback) {
 
+      _editor.collectData();
+
+      var formatted = new PublicLab.Formatter().convert(
+                        _editor.data, 
+                        _editor.options.format
+                      );
+
+      if (_editor.options.destination) {
+
+        $('.ple-publish').html('<i class="fa fa-circle-notch fa-spin"></i>');
+
+        $.ajax(
+          _editor.options.destination, 
+          { data: formatted }
+        ).done(function(response) {
+
+          if (callback) callback(response);
+          else window.location = response;
+
+        }).fail(function(response) {
+
+          $('.ple-publish').removeClass('btn-success')
+                           .addClass('btn-danger');
+
+        });
+
+      } else {
+
+        console.log('Editor requires a destination.');
+
+      }
+
+    }
+
+
+    _editor.tabIndices = function() {
+
+      // set tabindices:
+      var focusables = [];
+
+      _editor.modules.forEach(function(module, i) {
+ 
+        focusables = focusables.concat(module.focusables);
+ 
+      });
+
+      focusables.push($('.ple-publish'));
+ 
+      focusables.forEach(function(focusable, i) {
+ 
+        focusable.attr('tabindex', i + 1);
+ 
+      });
+
+    }
+
+
+    _editor.eventSetup = function() {
+
+
+      $('.ple-publish').click(function() {
+        console.log('Publishing!', _editor.data);
+        _editor.publish();
+      });
+ 
+ 
+      $('.btn-more').click(function() {
+ 
+        // display more tools menu
+        $('.ple-menu-more').toggle();
+ 
+      });
+
+    }
+
+
+    // options are passed via the corresponding _editor.options.fooModule object;
+    // however, we copy textarea (the most basic) in automatically:
+    _editor.options.richTextModule = _editor.options.richTextModule || {};
+    _editor.options.richTextModule.textarea = _editor.options.textarea;
+
+    _editor.titleModule     = new PublicLab.TitleModule(    _editor);
+    _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
+    _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+    _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+
+    _editor.modules = [];
+    _editor.modules.push(_editor.titleModule);
+    _editor.modules.push(_editor.mainImageModule);
+    _editor.modules.push(_editor.richTextModule);
+    _editor.modules.push(_editor.tagsModule);
 
     // history must go after richTextModule, as it monitors that
     if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
-    _editor.help    = new PublicLab.Help(_editor);
+    _editor.help = new PublicLab.Help(_editor);
+
+
+    _editor.validate();
+
+    _editor.eventSetup();
+
+    _editor.tabIndices();
 
 
   }

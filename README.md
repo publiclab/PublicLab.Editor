@@ -1,17 +1,19 @@
 PublicLab.Editor
 ====
 
+![tests](https://travis-ci.org/publiclab/PublicLab.Editor.svg)
+
 **This library is incomplete -- this page is a rough planning document.**
 
 Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
 
 PublicLab.Editor is a general purpose, modular JavaScript/Bootstrap UI library for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
 
-PublicLab.Editor will provide author-friendly interfaces for:
+PublicLab.Editor provides author-friendly interfaces for:
 
 * titling
 * main image uploading
-* body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
+* text body editing using [Woofmark](https://bevacqua.github.io/woofmark/) (markdown/WYSIWYG)
 * tagging
 * edit history
 
@@ -31,13 +33,13 @@ Some, or many of the above may be optionally based on [Public Lab Powertags](htt
 
 ## Design process
 
-Early design discussion is [happening on PublicLab.org](https://publiclab.org/tag/rich-editor).
+Design updates are [viewable on PublicLab.org](https://publiclab.org/tag/rich-editor).
 
 You can try a very early, rough prototype here: 
 
 https://publiclab.github.io/PublicLab.Editor/examples/
 
-![Screenshot](https://i.publiclab.org/system/images/photos/000/015/865/original/Public_Lab_Rich_Editor_design_%281%29.png)
+![Screenshot](https://i.publiclab.org/system/images/photos/000/016/883/original/preview.png)
 
 
 ## Modules
@@ -53,7 +55,7 @@ Each manages its own UI and validation, and which report their contents via a `m
 To add a new field, or new behavior, extend `PublicLab.Module` or customize an existing module by extending it -- for example:
 
 ````js
-PublicLab.NewModule.extend({
+PublicLab.Module.extend({
   init: function(_editor) {
 
     this._super(_editor);
@@ -68,7 +70,7 @@ PublicLab.NewModule.extend({
 To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/index.html), and use the following constructor:
 
 ````js
-var editor = PublicLab.Editor({ 
+var editor = new PublicLab.Editor({ 
   textarea: document.getElementById('my-textarea'),
   id:                "username", // optional unique id for localStorage history
   publishUrl:        "/notes",   // content will POST to this URL upon clicking "Publish"
@@ -81,6 +83,14 @@ var editor = PublicLab.Editor({
   }
 });
 ````
+
+To customize the @author and #tag autocompletes with your own suggestions, or with AJAX calls to your server, see the autocomplete example in `/examples/autocomplete.html`.
+
+
+## Server
+
+PublicLab.Editor expects a response from the server upon sending a request to `publishUrl` that is a URL which it will follow. 
+
 
 ## Developers
 
@@ -106,13 +116,15 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html 
 
-To run tests, open /test.html in a browser. To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
+To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
+
+To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
 
 
 ****
 
 
-### Integration with PublicLab.org
+### Integration with PublicLab.org or other servers
 
 The API we'll be working from will include several server URLs, which we'll be building into the file at `src/adaptors/PublicLab.Adaptors.js`:
 
@@ -120,11 +132,24 @@ The API we'll be working from will include several server URLs, which we'll be b
 * updating by `UPDATE` to `/notes` (will go to plots2's `notes_controller.rb#update`)
 * uploading images by `POST` to `/images` (will go to plots2's `images_controller.rb#create`)
 
-The tagging module may make `GET` requests to:
+The tags module may make `GET` requests to:
 
 * fetching recent tags from `/tags/recent.json`
+
+The richText module (which wraps the Woofmark adaptor) may make `GET` requests to:
+
 * fetching relevant tags from `/tags/related.json` with whatever relevant content to base "relatedness" on
 * fetching relevant authors from `/authors/<foo>.json` with `<foo>` being the typeahead stub, like `@jyw` for `@jywarren`
 
+These can be overridden within the options in a `richTextModule` object, like:
 
+```js
+var editor = new PublicLab.Editor({ 
+  textarea: document.getElementById('my-textarea'),
+  richTextModule: {
+    tagsUrl:    '/tags.json',
+    authorsUrl: '/authors.json'
+  }
+});
+```
 

@@ -8,15 +8,18 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     var _module = this;
 
-    _module.options = options || {};
-    _module.options.name         = "title";
+    _module.key = 'title';
+    _module.options = options || _editor.options.titleModule || {};
+    _module.options.name = "title";
 
     _module._super(_editor, _module.options);
 
+    _module.focusables.push(_module.el.find('input'));
+
+    _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = true;
     _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
 
-    _module.key = 'title';
     _module.value = function(text) {
 
       if (typeof text == 'string') {
@@ -29,11 +32,49 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     }
 
+    _module.value(_module.options.initialValue);
+
+
+    _module.error = function(text, type) {
+
+      type = type || 'error';
+
+      _module.el.find('.ple-module-content .ple-help-minor')
+                .html(text);
+      _module.el.find('input').parent()
+                .addClass('has-' + type);
+
+    }
+
 
     _module.valid = function() {
 
-      // must not be empty
-      return _module.el.find('input').val() != "";
+      // must not be empty, for starters
+      var value = _module.value(),
+          valid = (value != "");
+
+      //valid = valid && (value.match(/\.|,|"|'/) == null);
+      // we could discourage too much punctuation, or titles that are too long, here
+
+      if (!valid && value != "") {
+
+        _module.error('Must be formatted correctly.');
+ 
+      } else if (value.length > 45) {
+
+        _module.error('Getting a bit long!', 'warning');
+
+      } else {
+
+        _module.el.find('.ple-module-content .ple-help-minor')
+                  .html(_module.options.instructions);
+        _module.el.find('input').parent()
+                  .removeClass('has-error')
+                  .removeClass('has-warning');
+
+      }
+
+      return valid;
 
     }
 
@@ -82,12 +123,16 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
       _module.relatedEl.fadeIn();
 
+      _editor.validate();
+
     });
 
     // make this hide only if another section is clicked, using a 'not' pseudoselector
     $(_module.el).find('input').focusout(function(e) {
 
       _module.relatedEl.fadeOut();
+
+      _editor.validate();
 
     });
 

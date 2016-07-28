@@ -28,6 +28,20 @@ module.exports = function(grunt) {
                 ],
                 dest: 'dist/PublicLab.Editor.js'
             }
+        },
+
+        jasmine: {
+          publiclabeditor: {
+            src: 'dist/*.js',
+            options: {
+              specs: 'spec/javascripts/*spec.js',
+              vendor: [
+                'node_modules/jquery/dist/jquery.min.js',
+                'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+                'node_modules/jasmine-ajax/lib/mock-ajax.js'
+              ]
+            }
+          }
         }
 
     });
@@ -38,5 +52,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'browserify:dist'
     ]);
+
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 };

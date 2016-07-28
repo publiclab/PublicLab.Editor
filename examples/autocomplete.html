@@ -1,3 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>PublicLab.Editor</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../node_modules/woofmark/dist/woofmark.min.css" rel="stylesheet">
+    <link href="../node_modules/horsey/dist/horsey.min.css" rel="stylesheet">
+    <link href="../node_modules/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
+    <link href="../node_modules/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+
+    <link href="../dist/PublicLab.Editor.css" rel="stylesheet">
+
+    <script src="../dist/PublicLab.Editor.js"></script>
+
+  </head>
+
+  <body>
+
     <div class="pl-editor">
 
       <div class="ple-header">
@@ -118,7 +141,7 @@ var myVariable = 4;
           </div>
 
           <div class="ple-module-content col-md-9">
-            <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality" />
+            <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." />
           </div>
 
         </div>
@@ -129,7 +152,7 @@ var myVariable = 4;
 
       <div class="ple-footer">
 
-        <div class="ple-menu-more">
+        <div class="ple-menu-more" style="display:none;">
           <b>History</b>
           <div class="ple-history">
           </div>
@@ -141,14 +164,66 @@ var myVariable = 4;
           -->
         </div>
 
-        <button class="btn btn-lg btn-default"><i class="fa fa-cog"></i></button>
         <button class="btn btn-lg btn-default btn-more">...</button>
 
-        <span> &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a> so that others may use it.</span>
+        <span>
+          &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a>
+          <span class="hidden-xs"> so that others may use it.</span>
+        </span>
 
         <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
-        <span class="ple-help pull-right"><span class="ple-steps-left">2</span> steps left</span>
+
+        <span class="ple-help pull-right">
+          <span class="ple-steps-left">X</span>
+          <span class="hidden-xs"> steps left</span>
+        </span>
         
       </div>
 
     </div>
+
+
+    <script>
+
+      var editor;
+
+      (function() {
+
+        editor = new PL.Editor({
+          textarea:    $('.ple-textarea')[0],
+          destination: '/notes/create',
+          format:      'publiclab',
+          richTextModule: {
+
+            // These include a done() callback, so
+            // we can use ajax requests to fulfill them.
+            authors: function(value, done) {
+              done([
+                { value: '@kirk',    text: '@kirk; 1 note'    },
+                { value: '@spock',   text: '@spock; 2 notes'  },
+                { value: '@uhura',   text: '@uhura; 4 notes'  },
+                { value: '@bones',   text: '@bones; 1 note'   },
+                { value: '@sulu',    text: '@sulu; 5 notes'   },
+                { value: '@checkov', text: '@checkov; 1 note' }
+              ]);
+            },
+            tags: function(value, done) {
+              done([
+                '#constitution',
+                '#excelsior',
+                '#nebula',
+                '#galaxy',
+                '#intrepid'
+              ]);
+            },
+
+          }
+        });
+
+      })();
+
+    </script>
+
+
+  </body>
+</html>
