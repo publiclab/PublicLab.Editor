@@ -1,6 +1,7 @@
 /*
  * Wrapped woofmark() constructor with 
- * customizations for our use case
+ * customizations for our use case.
+ * Should improve organization of this vs. RichTextModule
  */
 
 var woofmark     = require('woofmark'),
@@ -13,11 +14,12 @@ module.exports = function(textarea, _editor, _module) {
 
   var icons = {
 
-    'quote': 'quote-right',
-    'ol': 'list-ol',
-    'ul': 'list-ul',
-    'heading': 'header',
-    'attachment': 'paperclip'
+    'quote':      'quote-right',
+    'ol':         'list-ol',
+    'ul':         'list-ul',
+    'heading':    'header',
+    'attachment': 'paperclip',
+    'table':      'table'
 
   }
 
@@ -186,9 +188,13 @@ module.exports = function(textarea, _editor, _module) {
   });
 
 
+  // set up table generation tools:
+  require('../modules/PublicLab.RichTextModule.Table.js')(_module, wysiwyg);
+
+
   // styling: 
 
-  $('.wk-commands').after('<span style="padding:10px;display:none;" class="ple-history-saving"><i class="fa fa-clock-o"></i><span class="hidden-xs">Saving...</span></span>');
+  $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
   $('.wk-commands, .wk-switchboard').addClass('btn-group');
   $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
 

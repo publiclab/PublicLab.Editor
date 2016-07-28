@@ -36201,7 +36201,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":5,"./PublicLab.Help.js":202,"./PublicLab.History.js":203,"./adapters/PublicLab.Formatter.js":204,"./adapters/PublicLab.Woofmark.js":205,"./core/Util.js":206,"./modules/PublicLab.MainImageModule.js":207,"./modules/PublicLab.Module.js":208,"./modules/PublicLab.RichTextModule.js":209,"./modules/PublicLab.TagsModule.js":210,"./modules/PublicLab.TitleModule.js":211,"jquery":34,"resig-class":128}],202:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":5,"./PublicLab.Help.js":202,"./PublicLab.History.js":203,"./adapters/PublicLab.Formatter.js":204,"./adapters/PublicLab.Woofmark.js":205,"./core/Util.js":206,"./modules/PublicLab.MainImageModule.js":207,"./modules/PublicLab.Module.js":208,"./modules/PublicLab.RichTextModule.js":210,"./modules/PublicLab.TagsModule.js":211,"./modules/PublicLab.TitleModule.js":212,"jquery":34,"resig-class":128}],202:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -36527,7 +36527,8 @@ module.exports = PublicLab.Formatter = Class.extend({
 },{"resig-class":128}],205:[function(require,module,exports){
 /*
  * Wrapped woofmark() constructor with 
- * customizations for our use case
+ * customizations for our use case.
+ * Should improve organization of this vs. RichTextModule
  */
 
 var woofmark     = require('woofmark'),
@@ -36540,11 +36541,12 @@ module.exports = function(textarea, _editor, _module) {
 
   var icons = {
 
-    'quote': 'quote-right',
-    'ol': 'list-ol',
-    'ul': 'list-ul',
-    'heading': 'header',
-    'attachment': 'paperclip'
+    'quote':      'quote-right',
+    'ol':         'list-ol',
+    'ul':         'list-ul',
+    'heading':    'header',
+    'attachment': 'paperclip',
+    'table':      'table'
 
   }
 
@@ -36713,9 +36715,13 @@ module.exports = function(textarea, _editor, _module) {
   });
 
 
+  // set up table generation tools:
+  require('../modules/PublicLab.RichTextModule.Table.js')(_module, wysiwyg);
+
+
   // styling: 
 
-  $('.wk-commands').after('<span style="padding:10px;display:none;" class="ple-history-saving"><i class="fa fa-clock-o"></i><span class="hidden-xs">Saving...</span></span>');
+  $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
   $('.wk-commands, .wk-switchboard').addClass('btn-group');
   $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
 
@@ -36757,7 +36763,7 @@ module.exports = function(textarea, _editor, _module) {
 
 }
 
-},{"banksy":1,"domador":9,"horsey":20,"megamark":36,"woofmark":191,"xhr":193}],206:[function(require,module,exports){
+},{"../modules/PublicLab.RichTextModule.Table.js":209,"banksy":1,"domador":9,"horsey":20,"megamark":36,"woofmark":191,"xhr":193}],206:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -37000,6 +37006,105 @@ module.exports = PublicLab.Module = Class.extend({
 
 },{}],209:[function(require,module,exports){
 /*
+ Table generation:
+
+| col1 | col2 | col3 |
+|------|------|------|
+| cell | cell | cell |
+| cell | cell | cell |
+*/
+
+module.exports = function initTables(_module, wysiwyg) {
+
+  function createTable(cols, rows) {
+
+    cols = cols || 3;
+    rows = rows || 2;
+
+    var table = "|";
+
+    for (var col = 0; col < cols; col++) {
+
+      table = table + " col" + col + " |";
+
+    }
+
+    table = table + "\n|";
+
+    for (var col = 0; col < cols; col++) {
+
+      table = table + "------|";
+
+    }
+
+    table = table + "\n";
+
+    for (var row = 0; row < rows; row++) {
+
+      table = table + "|";
+
+      for (var col = 0; col < cols; col++) {
+     
+        table = table + " cell |";
+     
+      }
+
+      table = table + "\n";
+
+    }
+
+    return table + "\n";
+
+  }
+
+
+  // create a submenu for sizing tables
+  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default"><i class="fa fa-table"></i></a>');
+
+  var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
+      builder += '<input value="4" class="form-control rows" style="width:75px;" />';
+      builder += ' x ';
+      builder += '<input value="3" class="form-control cols" style="width:85px;" /> ';
+      builder += '<a class="ple-table-size btn btn-default"><i class="fa fa-plus"></i></a>';
+      builder += '</div>';
+
+  $('.woofmark-command-table').attr('data-content', builder);
+  $('.woofmark-command-table').attr('data-container', 'body');
+  $('.woofmark-command-table').attr('data-placement','top');
+
+  $('.woofmark-command-table').popover({ html : true });
+
+  $('.wk-commands .woofmark-command-table').click(function() {
+
+    $('.ple-table-size').click(function() {
+
+      wysiwyg.runCommand(function(chunks, mode) {
+
+        var table = createTable(
+          +$('.ple-table-popover .cols').val(),
+          +$('.ple-table-popover .rows').val()
+        );
+
+        if (mode === 'markdown') chunks.before += table;
+        else {
+
+          chunks.before += _module.wysiwyg.parseMarkdown(table);
+          setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
+
+        }
+
+        $('.woofmark-command-table').popover('toggle');
+
+      });
+
+    });
+
+  });
+
+}
+
+},{}],210:[function(require,module,exports){
+/*
  * Form module for rich text entry
  */
 
@@ -37014,7 +37119,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module.key = 'body';
     _module.options = options || _editor.options.richTextModule || {};
     _module.options.name = "body";
-    _module.options.instructions = "Describe your work in a way that others can understand.";
+    _module.options.instructions = "Guide others through the steps to reproduce your work.";
 
     // break into subclass common to all modules, perhaps:
     _module.options.guides = [
@@ -37026,7 +37131,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       { 
         icon: "list-ul",
         position: 90, 
-        text: "Show people how to do what you've done; list required materials and resources."
+        text: "Be sure to list required materials and resources."
       },
       { 
         icon: "clock-o",
@@ -37169,7 +37274,7 @@ console.log('parse');
 
 });
 
-},{"crossvent":7,"grow-textarea":12}],210:[function(require,module,exports){
+},{"crossvent":7,"grow-textarea":12}],211:[function(require,module,exports){
 var typeahead = require("typeahead.js-browserify");
 var Bloodhound = typeahead.Bloodhound;
 // https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
@@ -37287,7 +37392,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{"bootstrap-tokenfield":4,"typeahead.js-browserify":129}],211:[function(require,module,exports){
+},{"bootstrap-tokenfield":4,"typeahead.js-browserify":129}],212:[function(require,module,exports){
 /*
  * Form module for post title
  */

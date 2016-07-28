@@ -13,7 +13,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module.key = 'body';
     _module.options = options || _editor.options.richTextModule || {};
     _module.options.name = "body";
-    _module.options.instructions = "Describe your work in a way that others can understand.";
+    _module.options.instructions = "Guide others through the steps to reproduce your work.";
 
     // break into subclass common to all modules, perhaps:
     _module.options.guides = [
@@ -25,7 +25,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       { 
         icon: "list-ul",
         position: 90, 
-        text: "Show people how to do what you've done; list required materials and resources."
+        text: "Be sure to list required materials and resources."
       },
       { 
         icon: "clock-o",

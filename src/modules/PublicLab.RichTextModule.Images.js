@@ -1,3 +1,4 @@
+// this is incomplete and seemingly unusued:
 // for inline images:
 
 $('.dropzone').fileupload({
