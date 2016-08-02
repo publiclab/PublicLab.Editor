@@ -2,7 +2,7 @@
  * Form module for rich text entry
  */
 
-var crossvent    = require('crossvent');
+var crossvent = require('crossvent');
 
 module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
