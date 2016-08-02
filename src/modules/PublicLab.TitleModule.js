@@ -98,30 +98,13 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.build();
 
 
-    // All the "related" behavior below is application-specific, 
-    // though perhaps it's a generalizable menu interface,
-    // like "ModuleSuggestion" or something. Anyhow, let's
-    // tuck it into a subclass or something...
-
-
-    // make an area for "related posts" to connect to
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
     _module.menuEl = _module.el.find('.ple-menu-more');
-    _module.menuEl.append('<a class="btn btn-default">...</a>');
 
-    
-    // make an area for "related posts" to connect to
-    _module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
-    _module.relatedEl = _module.el.find('.ple-title-related');
-    _module.relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
-
-    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
-    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
-    _module.relatedEl.append('<div class="related"><a class=""><i class="fa fa-plus-circle"></i></a> <a>Suggestion</a> by <a>@eustatic</a> - <span class="ple-help">3 comments</span></div>');
+    // a "more tools" menu, not currently used:
+    //_module.menuEl.append('<a class="btn btn-default">...</a>');
 
     $(_module.el).find('input').keydown(function(e) {
-
-      _module.relatedEl.fadeIn();
 
       _editor.validate();
 
@@ -130,13 +113,13 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     // make this hide only if another section is clicked, using a 'not' pseudoselector
     $(_module.el).find('input').focusout(function(e) {
 
-      _module.relatedEl.fadeOut();
-
       _editor.validate();
 
     });
 
+    _module.relatedEl = require('./PublicLab.TitleModule.Related.js')(_module);
 
   }
 
 });
+

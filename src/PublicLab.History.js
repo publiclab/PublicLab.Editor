@@ -3,6 +3,9 @@
  * 
  * We could eventually do 'major' and 'minor' depending on how much changed.
 
+* [ ] height scrollability
+* [ ] not very responsive "display" link
+
 * [ ] if we want to recover while in rich mode, do we need to put markdown and convert it? 
 * [ ] saving could subtly fade in a small "saving" icon
 
@@ -116,15 +119,21 @@ module.exports = PublicLab.History = Class.extend({
           _history.add(text);
           if (_history.options.debug) console.log('history: entry saved');
 
+          return true;
+
         } else if (_history.last()) {
 
           _history.last().timestamp = (new Date()).getTime()
           //if (_history.options.debug) console.log('history: last entry timestamp updated', _history.last());
 
+          return false;
+
         } else {
 
           _history.add(text);
           if (_history.options.debug) console.log('history: first entry saved');
+
+          return true;
 
         }
 
@@ -150,8 +159,11 @@ module.exports = PublicLab.History = Class.extend({
       // Actually get the contents of the passed textarea and store
       _history.check = function() {
 
-        _history.addIfDifferent(_editor.richTextModule.value());
-        if (_history.options.element) _history.display(_history.options.element);
+        var changed = _history.addIfDifferent(_editor.richTextModule.value());
+        var element = _history.options.element;
+
+        // only if it's changed, or if it hasn't yet been created
+        if (element && ($(element).find('*').length === 0 || changed)) _history.display(element);
 
       }
 
@@ -162,33 +174,49 @@ module.exports = PublicLab.History = Class.extend({
 
         $(element).html(''); // empty it
 
+        // SELECT element mode is not yet used
         if (element.nodeName == 'SELECT') {
 
           _history.log.forEach(function(log, i) {
-         
+
             var time = moment(new Date(log.timestamp)).fromNow();
             $(element).append('<option value="' + log.timestamp + '">' + time + '</option>');
-         
+
           });
 
         } else if (element.nodeName == 'DIV') {
 
-//console.log("saving in div");
           _history.log.forEach(function(log, i) {
-         
+
+            log.formattedDate = log.formattedDate || moment(new Date(log.timestamp)).format("MMM Do YYYY"); // Aug 2nd 2016
+            log.dateClass = log.dateClass || log.formattedDate.replace(/ /g, '-');
+
             var time      = moment(new Date(log.timestamp)).fromNow(),
                 className = 'ple-history-' + log.timestamp,
-                html      = '<p class="' + className + '">';
+                html = '';
+
+            if (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate) {
+
+              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> <a href="#">display</a></p>';
+
+            }
+
+            html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
             html += '<b>' + i + '</b>: ';
+            html += '<a class="btn btn-xs btn-default revert">revert</a> ';
             html += time;
-            html += ' <a href="">revert</a>';
+            html += ' -- <i class="preview">' + log.text.substr(0, 30) + '...</i>';
             html += '</p>';
 
             $(element).append(html);
 
-            $(element).find(className).click(function(e) {
-              console.log(log.text);
+            $('.day.day-' + log.dateClass).click(function showDay() {
+              $('.log.day-' + log.dateClass).toggle();
+            });
+
+            $(element).find('.' + className + ' a.revert').click(function(e) {
               _editor.richTextModule.value(log.text);
+              $('.ple-menu-more').hide();
             });
 
           });

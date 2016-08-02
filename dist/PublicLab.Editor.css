@@ -33,6 +33,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 99;
 }
 
 .ple-footer .ple-help {
@@ -127,7 +128,8 @@
 }
 
 .ple-history {
-  
+  height: 75%;
+  overflow: scroll;
 }
 
 /* Following may be removed if this is resolved:
