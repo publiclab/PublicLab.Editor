@@ -1,22 +1,5 @@
 /*
- * History of edits, in markdown
- * 
- * We could eventually do 'major' and 'minor' depending on how much changed.
-
-* [ ] height scrollability
-* [ ] not very responsive "display" link
-
-* [ ] if we want to recover while in rich mode, do we need to put markdown and convert it? 
-* [ ] saving could subtly fade in a small "saving" icon
-
-parsing back and forth (do this in the richTextModule?): 
-_editor.richTextModule.wysiwyg.parseHTML('wysiwyg')
-
-
-* [ ] history could store values for each module, by keyname. state could be offered by editor.values(). But no, for now we'll just track the RichTextModule text
-* [ ] show only 10 history items, then a "history options" a full table log - plus a "flush older than week old"
-* [ ] set last check, and then trigger checking on typing or mouse actions...
-
+ * History of edits, sorted by day. 
  */
 
 var Class  = require('resig-class'),
@@ -172,6 +155,8 @@ module.exports = PublicLab.History = Class.extend({
       // element, after emptying it.
       _history.display = function(element) {
 
+        element = element || _history.options.element;
+
         $(element).html(''); // empty it
 
         // SELECT element mode is not yet used
@@ -186,6 +171,8 @@ module.exports = PublicLab.History = Class.extend({
 
         } else if (element.nodeName == 'DIV') {
 
+          var dateClasses = [];
+
           _history.log.forEach(function(log, i) {
 
             log.formattedDate = log.formattedDate || moment(new Date(log.timestamp)).format("MMM Do YYYY"); // Aug 2nd 2016
@@ -195,31 +182,66 @@ module.exports = PublicLab.History = Class.extend({
                 className = 'ple-history-' + log.timestamp,
                 html = '';
 
+            // before a day's log entries:
             if (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate) {
 
-              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> <a href="#">display</a></p>';
+              
+              dateClasses.push(log.dateClass);
+              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="clear">clear</a></p>';
 
             }
 
             html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
             html += '<b>' + i + '</b>: ';
-            html += '<a class="btn btn-xs btn-default revert">revert</a> ';
+            html += '<a class="btn btn-xs btn-default revert">revert</a> <a class="btn btn-xs btn-default clear">clear</a> | Preview: ';
             html += time;
             html += ' -- <i class="preview">' + log.text.substr(0, 30) + '...</i>';
             html += '</p>';
 
             $(element).append(html);
 
-            $('.day.day-' + log.dateClass).click(function showDay() {
-              $('.log.day-' + log.dateClass).toggle();
-            });
-
             $(element).find('.' + className + ' a.revert').click(function(e) {
               _editor.richTextModule.value(log.text);
               $('.ple-menu-more').hide();
             });
 
+            $(element).find('.' + className + ' a.clear').click(function(e) {
+              _editor.history.log.splice(_editor.history.log.indexOf(log), 1);
+              $(element).find('.' + className).remove();
+            });
+
           });
+
+          // now go through by day
+          dateClasses.forEach(function countDateClasses(dateClass, i) {
+
+            // count how many of each there are
+            $('.day.day-' + dateClass).find('.count').html($('.log.day-' + dateClass).length + ' entries')
+
+            $('.day.day-' + dateClass + ' .count').click(function showDay() {
+
+              $('.log.day-' + dateClass).toggle();
+
+            });
+
+            // clear these log entries
+            $('.day.day-' + dateClass + ' .clear').click(function clearDay() {
+
+              if (confirm('Are you sure? There is no undo.')) {
+                // in both history module and DOM elements
+                $('.log.day-' + dateClass + ' .clear').trigger('click');
+                // refresh
+                _editor.history.display(element);
+              }
+
+            });
+
+          });
+
+          // open last day by default
+          $('.day:last .count').trigger('click');
+
+          $(element).height(parseInt($(window).height() * 0.5));
 
         }
 
