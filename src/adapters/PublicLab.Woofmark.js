@@ -99,6 +99,18 @@ module.exports = function(textarea, _editor, _module) {
     // for handling non-image uploads
     // -- need to insert icon, maybe, or do it in CSS
     attachments: {
+
+      method: 'POST',
+ 
+      // endpoint where the images will be uploaded to, required
+      url: '/images',
+ 
+      // optional text describing the kind of files that can be uploaded
+      restriction: 'Not all filetypes are accepted; please email web@publiclab.org if yours does not work.',
+ 
+      // what to call the FormData field?
+      key: 'image[photo]'
+
     },
 
 
