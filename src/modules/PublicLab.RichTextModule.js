@@ -89,7 +89,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // converts to markdown and back to html, or the reverse,
     // to trigger @callouts and such formatting
     _module.parse = function() {
-console.log('parse');
+
       _module.value(_module.value());
       _module.afterParse();
 

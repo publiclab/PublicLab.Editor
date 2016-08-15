@@ -204,45 +204,58 @@ module.exports = function(textarea, _editor, _module) {
   require('../modules/PublicLab.RichTextModule.Table.js')(_module, wysiwyg);
 
 
-  // styling: 
+  wysiwyg.stylePrompt = function() {
+    $('.wk-prompt button, span.wk-prompt-browse').addClass('btn btn-default');
+    $('.wk-prompt input').addClass('input form-control')
+                         .css('margin-bottom','5px');
+  }
 
-  $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
-  $('.wk-commands, .wk-switchboard').addClass('btn-group');
-  $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
+  $('.wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image').click(wysiwyg.stylePrompt);
 
-  $('.wk-commands button.woofmark-command-quote').addClass('hidden-xs');
-  $('.wk-commands button.woofmark-command-code').addClass('hidden-xs');
-  $('.wk-commands button.woofmark-command-ol').addClass('hidden-xs');
-  $('.wk-commands button.woofmark-command-attachment').addClass('hidden-xs');
 
-  $('.wk-switchboard button.woofmark-mode-markdown').parent().removeClass('btn-group');
-  $('.wk-switchboard button.woofmark-mode-markdown').html('<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>');
-  $('.wk-switchboard button.woofmark-mode-wysiwyg').html('<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>');
+  wysiwyg.style = function() {
 
-  if (wysiwyg.mode === 'wysiwyg') $('.wk-switchboard button.woofmark-mode-wysiwyg').hide();
-  else                            $('.wk-switchboard button.woofmark-mode-markdown').hide();
-
-  $('.wk-switchboard button').click(function() {
-    $('.wk-switchboard button.woofmark-mode-markdown').toggle();
-    $('.wk-switchboard button.woofmark-mode-wysiwyg').toggle();
-  });
-
-  if (_editor.options.size == "xs") {
-
-    //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
-
-    // hide selectively, not by #:
-    $('.wk-commands button.woofmark-command-quote').hide();
-    $('.wk-commands button.woofmark-command-code').hide();
-    $('.wk-commands button.woofmark-command-ol').hide();
-    $('.wk-commands button.woofmark-command-ul').hide();
-
-  } else {
-
-    $('.wk-switchboard button').addClass('btn-sm');
+    $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
+    $('.wk-commands, .wk-switchboard').addClass('btn-group');
+    $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
+ 
+    $('.wk-commands button.woofmark-command-quote').addClass('hidden-xs');
+    $('.wk-commands button.woofmark-command-code').addClass('hidden-xs');
+    $('.wk-commands button.woofmark-command-ol').addClass('hidden-xs');
+    $('.wk-commands button.woofmark-command-attachment').addClass('hidden-xs');
+ 
+    $('.wk-switchboard button.woofmark-mode-markdown').parent().removeClass('btn-group');
+    $('.wk-switchboard button.woofmark-mode-markdown').html('<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>');
+    $('.wk-switchboard button.woofmark-mode-wysiwyg').html('<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>');
+ 
+    if (wysiwyg.mode === 'wysiwyg') $('.wk-switchboard button.woofmark-mode-wysiwyg').hide();
+    else                            $('.wk-switchboard button.woofmark-mode-markdown').hide();
+ 
+    $('.wk-switchboard button').click(function() {
+      $('.wk-switchboard button.woofmark-mode-markdown').toggle();
+      $('.wk-switchboard button.woofmark-mode-wysiwyg').toggle();
+    });
+ 
+    if (_editor.options.size == "xs") {
+ 
+      //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
+ 
+      // hide selectively, not by #:
+      $('.wk-commands button.woofmark-command-quote').hide();
+      $('.wk-commands button.woofmark-command-code').hide();
+      $('.wk-commands button.woofmark-command-ol').hide();
+      $('.wk-commands button.woofmark-command-ul').hide();
+ 
+    } else {
+ 
+      $('.wk-switchboard button').addClass('btn-sm');
+ 
+    }
 
   }
 
+
+  wysiwyg.style();
 
   return wysiwyg;
 

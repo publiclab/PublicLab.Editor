@@ -100,6 +100,10 @@
   min-height: 31px;
 }
 
+.ple-history {
+  overflow: scroll;
+}
+
 .ple-textarea,
 .ple-textarea:focus,
 .wk-wysiwyg {
@@ -127,8 +131,9 @@
   background: #eee;
 }
 
-.ple-history {
-  overflow: scroll;
+.wk-prompt {
+  border-radius: 10px;
+  padding: 20px;
 }
 
 /* Following may be removed if this is resolved:

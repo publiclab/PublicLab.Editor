@@ -201,13 +201,18 @@ module.exports = PublicLab.History = Class.extend({
             $(element).append(html);
 
             $(element).find('.' + className + ' a.revert').click(function(e) {
+
               _editor.richTextModule.value(log.text);
               $('.ple-menu-more').hide();
+              setTimeout(_editor.richTextModule.afterParse, 0);
+
             });
 
             $(element).find('.' + className + ' a.clear').click(function(e) {
+
               _editor.history.log.splice(_editor.history.log.indexOf(log), 1);
               $(element).find('.' + className).remove();
+
             });
 
           });
