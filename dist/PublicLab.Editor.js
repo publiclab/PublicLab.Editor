@@ -33688,25 +33688,12 @@ function handleModeChange (state, e) {
   }
 }
 
-function handlePaste (state, e) {
-console.log(state,state.inputState, state.inputState.text, state.surface.read(state.inputMode), state.refreshing)
+function handlePaste (state) {
   if (state.inputState && state.inputState.text !== state.surface.read(state.inputMode) && state.refreshing === null) {
-    var pastedText;
-    if (window.clipboardData && window.clipboardData.getData) { // IE
-      pastedText = window.clipboardData.getData('Text');
-    } else if (e.clipboardData && e.clipboardData.getData) {
-      pastedText = e.clipboardData.getData('text/plain');
-    }
-    var chunks = state.inputState.getChunks();
-    pastedText = pastedText.replace(/(\A<br\s?\/?\w?>)|(<br\s?\/?\w?>\z)/g, '');
-    chunks.before += pastedText;
-    state.inputState.setChunks(chunks);
-console.log(state);
     state.historyMode = 'paste';
     state.saveState();
     state.refreshState();
   }
-  return false;
 }
 
 function preventCtrlYZ (e) {
