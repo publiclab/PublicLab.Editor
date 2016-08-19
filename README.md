@@ -1,7 +1,7 @@
 PublicLab.Editor
 ====
 
-![tests](https://travis-ci.org/publiclab/PublicLab.Editor.svg)
+[![Build Status](https://travis-ci.org/publiclab/PublicLab.Editor.svg)](https://travis-ci.org/publiclab/PublicLab.Editor)
 
 **This library is incomplete -- this page is a rough planning document.**
 
@@ -47,10 +47,13 @@ https://publiclab.github.io/PublicLab.Editor/examples/
 The editor is built from different modules like:
 
 * TitleModule
-* BodyModule
+* MainImageModule
+* EditorModule
 * TagsModule
+* HistoryModule
+* RichTextModule
 
-Each manages its own UI and validation, and which report their contents via a `module.value()` method. The BodyModule contains a WYSIWYG textarea, managed (by default) by Woofmark. 
+Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
 
 To add a new field, or new behavior, extend `PublicLab.Module` or customize an existing module by extending it -- for example:
 
@@ -64,18 +67,25 @@ PublicLab.Module.extend({
 });
 ````
 
+## Installation
+
+To install PublicLab.Editor for development, you'll need [NodeJS](https://nodejs.org). You can get the detailed instruction on installing node and npm in its official [documentation](https://docs.npmjs.com/getting-started/installing-node).
+
+After installing node and npm run `npm install` from the root directory.
+
+PublicLab.Editor uses grunt - the javascript task runner for compilation of the modules. To install grunt run `npm install -g grunt-cli`. You may have to use `sudo` for root privileges.
+
+Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out in `/examples/index.html`. Run `grunt` and leave it running to build as you go.
+
 
 ## Setup
 
 To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/index.html), and use the following constructor:
 
 ````js
-var editor = new PublicLab.Editor({ 
+var editor = new PL.Editor({ 
   textarea: document.getElementById('my-textarea'),
-  id:                "username", // optional unique id for localStorage history
-  publishUrl:        "/notes",   // content will POST to this URL upon clicking "Publish"
-  updateUrl:         "/notes",   // content will UPDATE to this URL upon clicking "Save"
-  relatedTagsUrl:    "/notes",   // content will UPDATE to this URL upon clicking "Save"
+  destination:        "/notes/create",   // content will Submit to this URL upon clicking "Publish"
   data: { // prepopulate fields:
     title:           "Your post title",
     body:            "Your post content",
@@ -86,10 +96,12 @@ var editor = new PublicLab.Editor({
 
 To customize the @author and #tag autocompletes with your own suggestions, or with AJAX calls to your server, see the autocomplete example in `/examples/autocomplete.html`.
 
+The editor toolbar comes in two differnt formats. You can use a smaller version by using a `size` property in the constructor. Refer to example given in `/examples/comment.html` 
+
 
 ## Server
 
-PublicLab.Editor expects a response from the server upon sending a request to `publishUrl` that is a URL which it will follow. 
+PublicLab.Editor expects a response from the server upon sending a request to `destination` that is a URL which it will follow. 
 
 
 ## Developers
@@ -97,10 +109,6 @@ PublicLab.Editor expects a response from the server upon sending a request to `p
 Help improve Public Lab software!
 
 To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/PublicLab.Editor/issues 
-
-To install PublicLab.Editor for development, you'll need [NodeJS](https://nodejs.org), then run `npm install` from the root directory.
-
-Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out in `/examples/index.html`. Run `grunt` and leave it running to build as you go.
 
 For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
 
@@ -118,6 +126,8 @@ Automated tests are an essential way to ensure that new changes don't break exis
 
 To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
 
+You can find the installation instructions for phantomjs in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there.
+
 To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
 
 
@@ -126,25 +136,23 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 
 ### Integration with PublicLab.org or other servers
 
-The API we'll be working from will include several server URLs, which we'll be building into the file at `src/adaptors/PublicLab.Adaptors.js`:
+The API we'll be working from will include several server URLs, which we'll be building into the file at `src/adapters/PublicLab.Adaptors.js`:
 
-* publishing by `POST` (`CREATE`?) to `/notes` (will go to plots2's `notes_controller.rb#create`)
-* updating by `UPDATE` to `/notes` (will go to plots2's `notes_controller.rb#update`)
-* uploading images by `POST` to `/images` (will go to plots2's `images_controller.rb#create`)
+* publishing by `POST` (`CREATE`) to `/notes/create` (will go to plots2's `notes_controller.rb#create`)
+* updating by `UPDATE` to `/notes/update` (will go to plots2's `notes_controller.rb#update`)
+* uploading images by `POST` to `/images/create` (will go to plots2's `images_controller.rb#create`)
 
-The tags module may make `GET` requests to:
+The TagsModule uses Bloodhound for tag suggestions.It can make `GET` requests to the server to fetch recent tag suggestion, which returns data in json format like `/tags/recent.json`. You can also give your own suggestions in an array. Refer to the example given in `/examples/autocomplete.html`.
 
-* fetching recent tags from `/tags/recent.json`
+Similarly the RichText module (which wraps the Woofmark adaptor) may make `GET` requests to:
 
-The richText module (which wraps the Woofmark adaptor) may make `GET` requests to:
-
-* fetching relevant tags from `/tags/related.json` with whatever relevant content to base "relatedness" on
-* fetching relevant authors from `/authors/<foo>.json` with `<foo>` being the typeahead stub, like `@jyw` for `@jywarren`
+* fetch relevant tags from `/tags/related.json` with whatever relevant content to base "relatedness" on
+* fetch relevant authors from `/authors/<foo>.json` with `<foo>` being the typeahead stub, like `@jyw` for `@jywarren`
 
 These can be overridden within the options in a `richTextModule` object, like:
 
 ```js
-var editor = new PublicLab.Editor({ 
+var editor = new PL.Editor({ 
   textarea: document.getElementById('my-textarea'),
   richTextModule: {
     tagsUrl:    '/tags.json',
