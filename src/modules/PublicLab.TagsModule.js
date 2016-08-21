@@ -18,7 +18,9 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
     _module.options.name         = 'tags';
     _module.options.instructions = 'Tags relate your work to others\' posts. <a href="">Read more &raquo;</a>';
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
-
+    _module.options.local = _module.options.local || ['balloon-mapping','kite-mapping','air-quality','spectrometer','water-quality'];
+    _module.options.prefetch = _module.options.prefetch || null;
+    
     _module._super(_editor, _module.options);
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
@@ -59,20 +61,15 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
                 .html(_module.options.instructions);
 
       _module.engine = new Bloodhound({
-        local: [
-          'balloon-mapping',
-          'kite-mapping',
-          'air-quality',
-          'spectrometer',
-          'water-quality'
-        ],
+        local: _module.options.local,
         datumTokenizer: Bloodhound.tokenizers.whitespace, 
 //        datumTokenizer: function(d) {
 //          return Bloodhound.tokenizers.whitespace(d.value);
 //        },
-        queryTokenizer: Bloodhound.tokenizers.whitespace
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: _module.options.prefetch
       });
-  
+
       _module.engine.initialize();
 
       _module.el.find('input').tokenfield({
