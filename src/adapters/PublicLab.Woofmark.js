@@ -24,18 +24,18 @@ module.exports = function(textarea, _editor, _module) {
   }
 
 
-  _module.options.tags = _module.options.tags || function(value, done) {
-    done([
+  _module.options.tags = _module.options.tags || function(data, done) {
+    done(null, [{ list: [
       '#spectrometer', 
       '#air-quality', 
       '#water-quality', 
       '#balloon-mapping' 
-    ]);
+    ]}]);
   }
 
 
-  _module.options.authors = _module.options.authors || function(value, done) {
-    done([
+  _module.options.authors = _module.options.authors || function(data, done) {
+    done(null, [{ list: [
       { value: '@hodor',  text: '@hodor; 1 note'   },
       { value: '@sansa',  text: '@sansa; 2 notes'  },
       { value: '@john',   text: '@john; 4 notes'   },
@@ -43,7 +43,7 @@ module.exports = function(textarea, _editor, _module) {
       { value: '@rickon', text: '@rickon; 5 notes' },
       { value: '@bran',   text: '@bran; 1 note'    },
       { value: '@arya',   text: '@arya; 2 notes'   }
-    ]);
+    ]}]);
   }
 
 
@@ -87,7 +87,10 @@ module.exports = function(textarea, _editor, _module) {
  
       // what to call the FormData field?
       key: 'image[photo]',
- 
+
+      // additional form fields
+      formData: { name: 'uploads' },
+
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {
         return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
@@ -167,18 +170,20 @@ module.exports = function(textarea, _editor, _module) {
   });
 
 
-  //wysiwyg.calloutHorse = horsey(textarea, {
   wysiwyg.calloutHorse = horsey(wysiwyg.editable, {
     anchor: '@',
-    suggestions: _module.options.authors,
-    set: function (value) {
-      if (wysiwyg.mode === 'wysiwyg') {
-        textarea.innerHTML = value;
-      } else {
-        textarea.value = value;
-      }
-    }
+    source: _module.options.authors,
+    getText: 'text',
+    getValue: 'value'
   });
+
+  wysiwyg.calloutHorse.defaultSetter = function (value) {
+    if (wysiwyg.mode === 'wysiwyg') {
+      textarea.innerHTML = value;
+    } else {
+      textarea.value = value;
+    }
+  }
 
   wysiwyg.calloutBridge = banksy(textarea, {
     editor: wysiwyg,
@@ -188,11 +193,12 @@ module.exports = function(textarea, _editor, _module) {
 
   wysiwyg.tagHorse = horsey(textarea, {
     anchor: '#',
-    suggestions: _module.options.tags,
-    set: function (value) {
-      el.value = value + ', ';
-    }
+    source: _module.options.tags
   });
+
+  wysiwyg.tagHorse.defaultSetter = function (value) {
+    el.value = value + ', ';
+  }
 
   wysiwyg.tagBridge = banksy(textarea, {
     editor: wysiwyg,
