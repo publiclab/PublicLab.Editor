@@ -84,12 +84,12 @@ module.exports = function(textarea, _editor, _module) {
  
       // optional text describing the kind of files that can be uploaded
       restriction: 'GIF, JPG, and PNG images',
- 
-      // what to call the FormData field?
-      key: 'image[photo]',
+
+      // image field key
+      fieldKey: 'image[photo]',
 
       // additional form fields
-      formData: { name: 'uploads' },
+      formData: { nid: null },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {

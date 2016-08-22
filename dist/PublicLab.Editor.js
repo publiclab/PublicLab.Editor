@@ -33868,6 +33868,7 @@ function setup (fileinput, options) {
 function create (options) {
   var o = options || {};
   o.formData = o.formData || {};
+  o.fieldKey = o.fieldKey || 'uploads';
   var bureaucrat = emitter({
     submit: submit
   });
@@ -33900,7 +33901,7 @@ function create (options) {
     xhr(req, handleResponse);
 
     function appendFile (file) {
-      form.append('uploads', file, file.name);
+      form.append(o.fieldKey, file, file.name);
     }
 
     function handleResponse (err, res, body) {
@@ -36687,6 +36688,7 @@ function prompt (options, done) {
     var bureaucrat = bureaucracy.setup(domup.fileinput, {
       method: upload.method,
       formData: upload.formData,
+      fieldKey: upload.fieldKey,
       endpoint: upload.url,
       validate: 'image'
     });
@@ -38361,12 +38363,12 @@ module.exports = function(textarea, _editor, _module) {
  
       // optional text describing the kind of files that can be uploaded
       restriction: 'GIF, JPG, and PNG images',
- 
-      // what to call the FormData field?
-      key: 'image[photo]',
+
+      // image field key
+      fieldKey: 'image[photo]',
 
       // additional form fields
-      formData: { name: 'uploads' },
+      formData: { nid: null },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {
