@@ -33868,6 +33868,7 @@ function setup (fileinput, options) {
 function create (options) {
   var o = options || {};
   o.formData = o.formData || {};
+  o.xhrOptions = o.xhrOptions || {};
   o.fieldKey = o.fieldKey || 'uploads';
   var bureaucrat = emitter({
     submit: submit
@@ -33896,6 +33897,9 @@ function create (options) {
       url: o.endpoint || '/api/files',
       body: form
     };
+    Object.keys(o.xhrOptions).forEach(function copyXhrOptions(key) {
+      req.append(key, o.xhrOptions[key]);
+    });
 
     validFiles.forEach(appendFile);
     xhr(req, handleResponse);
@@ -34492,8 +34496,81 @@ module.exports = {
 };
 
 },{"crossvent":7,"sektor":168}],168:[function(require,module,exports){
-arguments[4][48][0].apply(exports,arguments)
-},{"dup":48}],169:[function(require,module,exports){
+(function (global){
+'use strict';
+
+var expando = 'sektor-' + Date.now();
+var rsiblings = /[+~]/;
+var document = global.document;
+var del = (document && document.documentElement) || {};
+var match = (
+  del.matches ||
+  del.webkitMatchesSelector ||
+  del.mozMatchesSelector ||
+  del.oMatchesSelector ||
+  del.msMatchesSelector ||
+  never
+);
+
+module.exports = sektor;
+
+sektor.matches = matches;
+sektor.matchesSelector = matchesSelector;
+
+function qsa (selector, context) {
+  var existed, id, prefix, prefixed, adapter, hack = context !== document;
+  if (hack) { // id hack for context-rooted queries
+    existed = context.getAttribute('id');
+    id = existed || expando;
+    prefix = '#' + id + ' ';
+    prefixed = prefix + selector.replace(/,/g, ',' + prefix);
+    adapter = rsiblings.test(selector) && context.parentNode;
+    if (!existed) { context.setAttribute('id', id); }
+  }
+  try {
+    return (adapter || context).querySelectorAll(prefixed || selector);
+  } catch (e) {
+    return [];
+  } finally {
+    if (existed === null) { context.removeAttribute('id'); }
+  }
+}
+
+function sektor (selector, ctx, collection, seed) {
+  var element;
+  var context = ctx || document;
+  var results = collection || [];
+  var i = 0;
+  if (typeof selector !== 'string') {
+    return results;
+  }
+  if (context.nodeType !== 1 && context.nodeType !== 9) {
+    return []; // bail if context is not an element or document
+  }
+  if (seed) {
+    while ((element = seed[i++])) {
+      if (matchesSelector(element, selector)) {
+        results.push(element);
+      }
+    }
+  } else {
+    results.push.apply(results, qsa(selector, context));
+  }
+  return results;
+}
+
+function matches (selector, elements) {
+  return sektor(selector, null, null, elements);
+}
+
+function matchesSelector (element, selector) {
+  return match.call(element, selector);
+}
+
+function never () { return false; }
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],169:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -36689,6 +36766,7 @@ function prompt (options, done) {
       method: upload.method,
       formData: upload.formData,
       fieldKey: upload.fieldKey,
+      xhrOptions: upload.xhrOptions,
       endpoint: upload.url,
       validate: 'image'
     });
@@ -37430,255 +37508,6 @@ module.exports = woofmark;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./InputHistory":180,"./bindCommands":182,"./classes":186,"./getCommandHandler":189,"./getSurface":190,"./prompts/close":214,"./prompts/prompt":215,"./rememberSelection":217,"./renderers":218,"./setText":219,"./strings":220,"./uploads":221,"crossvent":7,"kanye":167,"local-storage":169}],223:[function(require,module,exports){
-"use strict";
-var window = require("global/window")
-var isFunction = require("is-function")
-var parseHeaders = require("parse-headers")
-var xtend = require("xtend")
-
-module.exports = createXHR
-createXHR.XMLHttpRequest = window.XMLHttpRequest || noop
-createXHR.XDomainRequest = "withCredentials" in (new createXHR.XMLHttpRequest()) ? createXHR.XMLHttpRequest : window.XDomainRequest
-
-forEachArray(["get", "put", "post", "patch", "head", "delete"], function(method) {
-    createXHR[method === "delete" ? "del" : method] = function(uri, options, callback) {
-        options = initParams(uri, options, callback)
-        options.method = method.toUpperCase()
-        return _createXHR(options)
-    }
-})
-
-function forEachArray(array, iterator) {
-    for (var i = 0; i < array.length; i++) {
-        iterator(array[i])
-    }
-}
-
-function isEmpty(obj){
-    for(var i in obj){
-        if(obj.hasOwnProperty(i)) return false
-    }
-    return true
-}
-
-function initParams(uri, options, callback) {
-    var params = uri
-
-    if (isFunction(options)) {
-        callback = options
-        if (typeof uri === "string") {
-            params = {uri:uri}
-        }
-    } else {
-        params = xtend(options, {uri: uri})
-    }
-
-    params.callback = callback
-    return params
-}
-
-function createXHR(uri, options, callback) {
-    options = initParams(uri, options, callback)
-    return _createXHR(options)
-}
-
-function _createXHR(options) {
-    if(typeof options.callback === "undefined"){
-        throw new Error("callback argument missing")
-    }
-
-    var called = false
-    var callback = function cbOnce(err, response, body){
-        if(!called){
-            called = true
-            options.callback(err, response, body)
-        }
-    }
-
-    function readystatechange() {
-        if (xhr.readyState === 4) {
-            loadFunc()
-        }
-    }
-
-    function getBody() {
-        // Chrome with requestType=blob throws errors arround when even testing access to responseText
-        var body = undefined
-
-        if (xhr.response) {
-            body = xhr.response
-        } else {
-            body = xhr.responseText || getXml(xhr)
-        }
-
-        if (isJson) {
-            try {
-                body = JSON.parse(body)
-            } catch (e) {}
-        }
-
-        return body
-    }
-
-    var failureResponse = {
-                body: undefined,
-                headers: {},
-                statusCode: 0,
-                method: method,
-                url: uri,
-                rawRequest: xhr
-            }
-
-    function errorFunc(evt) {
-        clearTimeout(timeoutTimer)
-        if(!(evt instanceof Error)){
-            evt = new Error("" + (evt || "Unknown XMLHttpRequest Error") )
-        }
-        evt.statusCode = 0
-        return callback(evt, failureResponse)
-    }
-
-    // will load the data & process the response in a special response object
-    function loadFunc() {
-        if (aborted) return
-        var status
-        clearTimeout(timeoutTimer)
-        if(options.useXDR && xhr.status===undefined) {
-            //IE8 CORS GET successful response doesn't have a status field, but body is fine
-            status = 200
-        } else {
-            status = (xhr.status === 1223 ? 204 : xhr.status)
-        }
-        var response = failureResponse
-        var err = null
-
-        if (status !== 0){
-            response = {
-                body: getBody(),
-                statusCode: status,
-                method: method,
-                headers: {},
-                url: uri,
-                rawRequest: xhr
-            }
-            if(xhr.getAllResponseHeaders){ //remember xhr can in fact be XDR for CORS in IE
-                response.headers = parseHeaders(xhr.getAllResponseHeaders())
-            }
-        } else {
-            err = new Error("Internal XMLHttpRequest Error")
-        }
-        return callback(err, response, response.body)
-    }
-
-    var xhr = options.xhr || null
-
-    if (!xhr) {
-        if (options.cors || options.useXDR) {
-            xhr = new createXHR.XDomainRequest()
-        }else{
-            xhr = new createXHR.XMLHttpRequest()
-        }
-    }
-
-    var key
-    var aborted
-    var uri = xhr.url = options.uri || options.url
-    var method = xhr.method = options.method || "GET"
-    var body = options.body || options.data || null
-    var headers = xhr.headers = options.headers || {}
-    var sync = !!options.sync
-    var isJson = false
-    var timeoutTimer
-
-    if ("json" in options) {
-        isJson = true
-        headers["accept"] || headers["Accept"] || (headers["Accept"] = "application/json") //Don't override existing accept header declared by user
-        if (method !== "GET" && method !== "HEAD") {
-            headers["content-type"] || headers["Content-Type"] || (headers["Content-Type"] = "application/json") //Don't override existing accept header declared by user
-            body = JSON.stringify(options.json)
-        }
-    }
-
-    xhr.onreadystatechange = readystatechange
-    xhr.onload = loadFunc
-    xhr.onerror = errorFunc
-    // IE9 must have onprogress be set to a unique function.
-    xhr.onprogress = function () {
-        // IE must die
-    }
-    xhr.ontimeout = errorFunc
-    xhr.open(method, uri, !sync, options.username, options.password)
-    //has to be after open
-    if(!sync) {
-        xhr.withCredentials = !!options.withCredentials
-    }
-    // Cannot set timeout with sync request
-    // not setting timeout on the xhr object, because of old webkits etc. not handling that correctly
-    // both npm's request and jquery 1.x use this kind of timeout, so this is being consistent
-    if (!sync && options.timeout > 0 ) {
-        timeoutTimer = setTimeout(function(){
-            aborted=true//IE9 may still call readystatechange
-            xhr.abort("timeout")
-            var e = new Error("XMLHttpRequest timeout")
-            e.code = "ETIMEDOUT"
-            errorFunc(e)
-        }, options.timeout )
-    }
-
-    if (xhr.setRequestHeader) {
-        for(key in headers){
-            if(headers.hasOwnProperty(key)){
-                xhr.setRequestHeader(key, headers[key])
-            }
-        }
-    } else if (options.headers && !isEmpty(options.headers)) {
-        throw new Error("Headers cannot be set on an XDomainRequest object")
-    }
-
-    if ("responseType" in options) {
-        xhr.responseType = options.responseType
-    }
-
-    if ("beforeSend" in options &&
-        typeof options.beforeSend === "function"
-    ) {
-        options.beforeSend(xhr)
-    }
-
-    xhr.send(body)
-
-    return xhr
-
-
-}
-
-function getXml(xhr) {
-    if (xhr.responseType === "document") {
-        return xhr.responseXML
-    }
-    var firefoxBugTakenEffect = xhr.status === 204 && xhr.responseXML && xhr.responseXML.documentElement.nodeName === "parsererror"
-    if (xhr.responseType === "" && !firefoxBugTakenEffect) {
-        return xhr.responseXML
-    }
-
-    return null
-}
-
-function noop() {}
-
-},{"global/window":224,"is-function":225,"parse-headers":228,"xtend":229}],224:[function(require,module,exports){
-arguments[4][161][0].apply(exports,arguments)
-},{"dup":161}],225:[function(require,module,exports){
-arguments[4][162][0].apply(exports,arguments)
-},{"dup":162}],226:[function(require,module,exports){
-arguments[4][163][0].apply(exports,arguments)
-},{"dup":163,"is-function":225}],227:[function(require,module,exports){
-arguments[4][164][0].apply(exports,arguments)
-},{"dup":164}],228:[function(require,module,exports){
-arguments[4][165][0].apply(exports,arguments)
-},{"dup":165,"for-each":226,"trim":227}],229:[function(require,module,exports){
-arguments[4][166][0].apply(exports,arguments)
-},{"dup":166}],230:[function(require,module,exports){
 // can we require things that rely on 
 // document, but still be runnable in nodejs?
 // if (!this.hasOwnProperty('document') document 
@@ -37898,7 +37727,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":5,"./PublicLab.Help.js":231,"./PublicLab.History.js":232,"./adapters/PublicLab.Formatter.js":233,"./adapters/PublicLab.Woofmark.js":234,"./core/Util.js":235,"./modules/PublicLab.MainImageModule.js":236,"./modules/PublicLab.Module.js":237,"./modules/PublicLab.RichTextModule.js":239,"./modules/PublicLab.TagsModule.js":240,"./modules/PublicLab.TitleModule.js":242,"jquery":50,"resig-class":144}],231:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":5,"./PublicLab.Help.js":224,"./PublicLab.History.js":225,"./adapters/PublicLab.Formatter.js":226,"./adapters/PublicLab.Woofmark.js":227,"./core/Util.js":228,"./modules/PublicLab.MainImageModule.js":229,"./modules/PublicLab.Module.js":230,"./modules/PublicLab.RichTextModule.js":232,"./modules/PublicLab.TagsModule.js":233,"./modules/PublicLab.TitleModule.js":235,"jquery":50,"resig-class":144}],224:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -37935,7 +37764,7 @@ module.exports = PublicLab.Help = Class.extend({
 
 });
 
-},{}],232:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 /*
  * History of edits, sorted by day. 
  */
@@ -38214,7 +38043,7 @@ module.exports = PublicLab.History = Class.extend({
 
 });
 
-},{"moment":143,"resig-class":144}],233:[function(require,module,exports){
+},{"moment":143,"resig-class":144}],226:[function(require,module,exports){
 /*
  * Formatters package the post content for a specific
  * application, like PublicLab.org or Drupal.
@@ -38276,7 +38105,7 @@ module.exports = PublicLab.Formatter = Class.extend({
 
 });
 
-},{"resig-class":144}],234:[function(require,module,exports){
+},{"resig-class":144}],227:[function(require,module,exports){
 /*
  * Wrapped woofmark() constructor with 
  * customizations for our use case.
@@ -38329,9 +38158,7 @@ module.exports = function(textarea, _editor, _module) {
   var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
-    fencing:     true,
     storage:     'ple-woofmark-mode',
-    xhr:         require('xhr'),
 
     render: {
 
@@ -38370,6 +38197,11 @@ module.exports = function(textarea, _editor, _module) {
       // additional form fields
       formData: { nid: null },
 
+      // xhr upload options like CSRF token
+      xhrOptions: { 
+        beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+      },
+
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {
         return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
@@ -38389,9 +38221,22 @@ module.exports = function(textarea, _editor, _module) {
  
       // optional text describing the kind of files that can be uploaded
       restriction: 'Not all filetypes are accepted; please email web@publiclab.org if yours does not work.',
- 
-      // what to call the FormData field?
-      key: 'image[photo]'
+
+      // image field key
+      fieldKey: 'image[photo]',
+
+      // additional form fields
+      formData: { nid: null },
+
+      // xhr upload options like CSRF token
+      xhrOptions: { 
+        beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+      },
+
+      // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
+      validate: function isItAnImageFile (file) {
+        return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+      }
 
     },
 
@@ -38554,7 +38399,7 @@ module.exports = function(textarea, _editor, _module) {
 
 }
 
-},{"../modules/PublicLab.RichTextModule.Table.js":238,"banksy":1,"domador":9,"horsey":20,"megamark":52,"woofmark":222,"xhr":223}],235:[function(require,module,exports){
+},{"../modules/PublicLab.RichTextModule.Table.js":231,"banksy":1,"domador":9,"horsey":20,"megamark":52,"woofmark":222}],228:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -38594,7 +38439,7 @@ module.exports = {
 
 }
 
-},{}],236:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 require('blueimp-file-upload');
 /*
  * Form module for main post image
@@ -38725,7 +38570,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 });
 
-},{"blueimp-file-upload":2}],237:[function(require,module,exports){
+},{"blueimp-file-upload":2}],230:[function(require,module,exports){
 /*
  * Form modules like title, tags, body, main image
  */
@@ -38795,7 +38640,7 @@ module.exports = PublicLab.Module = Class.extend({
 
 });
 
-},{}],238:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 /*
  Table generation:
 
@@ -38894,7 +38739,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 }
 
-},{}],239:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -39065,7 +38910,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
 });
 
-},{"crossvent":7,"grow-textarea":12}],240:[function(require,module,exports){
+},{"crossvent":7,"grow-textarea":12}],233:[function(require,module,exports){
 var typeahead = require("typeahead.js-browserify");
 var Bloodhound = typeahead.Bloodhound;
 // https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
@@ -39180,7 +39025,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{"bootstrap-tokenfield":4,"typeahead.js-browserify":145}],241:[function(require,module,exports){
+},{"bootstrap-tokenfield":4,"typeahead.js-browserify":145}],234:[function(require,module,exports){
 /* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -39275,7 +39120,7 @@ module.exports = function relatedNodes(module) {
 
 }
 
-},{}],242:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -39406,4 +39251,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":241}]},{},[230]);
+},{"./PublicLab.TitleModule.Related.js":234}]},{},[223]);

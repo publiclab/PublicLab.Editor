@@ -50,9 +50,7 @@ module.exports = function(textarea, _editor, _module) {
   var wysiwyg = woofmark(textarea, {
 
     defaultMode: 'wysiwyg',
-    fencing:     true,
     storage:     'ple-woofmark-mode',
-    xhr:         require('xhr'),
 
     render: {
 
@@ -91,6 +89,11 @@ module.exports = function(textarea, _editor, _module) {
       // additional form fields
       formData: { nid: null },
 
+      // xhr upload options like CSRF token
+      xhrOptions: { 
+        beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+      },
+
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnImageFile (file) {
         return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
@@ -110,9 +113,22 @@ module.exports = function(textarea, _editor, _module) {
  
       // optional text describing the kind of files that can be uploaded
       restriction: 'Not all filetypes are accepted; please email web@publiclab.org if yours does not work.',
- 
-      // what to call the FormData field?
-      key: 'image[photo]'
+
+      // image field key
+      fieldKey: 'image[photo]',
+
+      // additional form fields
+      formData: { nid: null },
+
+      // xhr upload options like CSRF token
+      xhrOptions: { 
+        beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+      },
+
+      // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
+      validate: function isItAnImageFile (file) {
+        return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+      }
 
     },
 
