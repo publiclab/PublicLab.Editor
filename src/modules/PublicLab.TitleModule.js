@@ -12,6 +12,10 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.options = options || _editor.options.titleModule || {};
     _module.options.name = "title";
 
+    // override defaults in TitleModule.Related:
+    _module.options.suggestRelated = _module.options.suggestRelated || true; // boolean
+    _module.options.fetchRelated = _module.options.fetchRelated || false; // expects function
+
     _module._super(_editor, _module.options);
 
     _module.focusables.push(_module.el.find('input'));

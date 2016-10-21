@@ -170,40 +170,48 @@ module.exports = function(textarea, _editor, _module) {
   });
 
 
-  wysiwyg.calloutHorse = horsey(wysiwyg.editable, {
-    anchor: '@',
-    source: _module.options.authors,
-    getText: 'text',
-    getValue: 'value'
-  });
+  // allow toggling off:
+  if (_module.options.authorsAutocomplete !== false) {
 
-  wysiwyg.calloutHorse.defaultSetter = function (value) {
-    if (wysiwyg.mode === 'wysiwyg') {
-      textarea.innerHTML = value;
-    } else {
-      textarea.value = value;
+    wysiwyg.calloutHorse = horsey(wysiwyg.editable, {
+      anchor: '@',
+      source: _module.options.authors,
+      getText: 'text',
+      getValue: 'value'
+    });
+ 
+    wysiwyg.calloutHorse.defaultSetter = function (value) {
+      if (wysiwyg.mode === 'wysiwyg') {
+        textarea.innerHTML = value;
+      } else {
+        textarea.value = value;
+      }
     }
+ 
+    wysiwyg.calloutBridge = banksy(textarea, {
+      editor: wysiwyg,
+      horse: wysiwyg.calloutHorse
+    });
+
   }
 
-  wysiwyg.calloutBridge = banksy(textarea, {
-    editor: wysiwyg,
-    horse: wysiwyg.calloutHorse
-  });
+  if (_module.options.tagsAutocomplete !== false) {
 
+    wysiwyg.tagHorse = horsey(textarea, {
+      anchor: '#',
+      source: _module.options.tags
+    });
+ 
+    wysiwyg.tagHorse.defaultSetter = function (value) {
+      el.value = value + ', ';
+    }
+ 
+    wysiwyg.tagBridge = banksy(textarea, {
+      editor: wysiwyg,
+      horse: wysiwyg.tagHorse
+    });
 
-  wysiwyg.tagHorse = horsey(textarea, {
-    anchor: '#',
-    source: _module.options.tags
-  });
-
-  wysiwyg.tagHorse.defaultSetter = function (value) {
-    el.value = value + ', ';
   }
-
-  wysiwyg.tagBridge = banksy(textarea, {
-    editor: wysiwyg,
-    horse: wysiwyg.tagHorse
-  });
 
 
   // set up table generation tools:
