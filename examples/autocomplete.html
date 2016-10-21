@@ -217,10 +217,21 @@ var myVariable = 4;
               ]);
             },
 
+            // uncomment these to disable autocompletion:
+            tagsAutocomplete: false,
+            authorsAutocomplete: false
+
           },
+
           tagsModule: {
-            local: ["balloon-mapping", "water-quality", "rich-editor"],
+
+            local: [
+              "balloon-mapping", 
+              "water-quality", 
+              "rich-editor"
+            ],
             prefetch: '../examples/data/text.json'
+
           }
         });
 

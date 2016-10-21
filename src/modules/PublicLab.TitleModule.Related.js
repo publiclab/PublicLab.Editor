@@ -23,12 +23,21 @@ Results should be in following JSON format:
 ]
 
  */
-module.exports = function relatedNodes(module, fetchRelated) {
+module.exports = function relatedNodes(module) {
+
+  var relatedEl;
+
+  build();
+  bindEvents()
 
   // make an area for "related posts" to connect to
-  module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
-  var relatedEl = module.el.find('.ple-title-related');
-  relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
+  function build() { 
+
+    module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
+    relatedEl = module.el.find('.ple-title-related');
+    relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
+
+  }
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
@@ -48,7 +57,7 @@ module.exports = function relatedNodes(module, fetchRelated) {
 
   }
 
-  fetchRelated = fetchRelated || function fetchRelated() {
+  var fetchRelated = module.options.fetchRelated || function fetchRelated() {
 
     show([
       { id: 1, title: 'A related post',       url: '/', author: 'eustatic'},
@@ -58,18 +67,26 @@ module.exports = function relatedNodes(module, fetchRelated) {
 
   }
 
-  $(module.el).find('input').keydown(function(e) {
+  function bindEvents() {
 
-    relatedEl.fadeIn();
-    fetchRelated();
+    $(module.el).find('input').keydown(function(e) {
+ 
+      if (module.options.suggestRelated) {
+        relatedEl.fadeIn();
+        fetchRelated();
+      }
+ 
+    });
+ 
+    $(module.el).find('input').focusout(function(e) {
+ 
+      if (module.options.suggestRelated) {
+        relatedEl.fadeOut();
+      }
+ 
+    });
 
-  });
-
-  $(module.el).find('input').focusout(function(e) {
-
-    relatedEl.fadeOut();
-
-  });
+  }
 
   return relatedEl;
 
