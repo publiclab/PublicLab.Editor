@@ -37803,7 +37803,10 @@ PL.Editor = Class.extend({
 
         $.ajax(
           _editor.options.destination, 
-          { data: formatted }
+          { 
+            data: formatted,
+            method: 'POST'
+          }
         ).done(function(response) {
 
           if (callback) callback(response);
