@@ -33886,7 +33886,7 @@ function create (options) {
     bureaucrat.emit('valid', validFiles);
     var form = new FormData();
     Object.keys(o.formData).forEach(function copyFormData(key) {
-      form.append(key, o.formData[key]);
+      form[key] = o.formData[key];
     });
     var req = {
       'Content-Type': 'multipart/form-data',
@@ -33898,7 +33898,7 @@ function create (options) {
       body: form
     };
     Object.keys(o.xhrOptions).forEach(function copyXhrOptions(key) {
-      req.append(key, o.xhrOptions[key]);
+      req[key] = o.xhrOptions[key];
     });
 
     validFiles.forEach(appendFile);
