@@ -67,6 +67,16 @@ PublicLab.Module.extend({
 });
 ````
 
+Module output is collected (by `editor.collectData()`) in the `editor.data` object -- a collection of values based on each `module.key`, assigning the value of `module.value()` to that key. So a module with a `key` of `nid`, for example, which returned `6` from `module.value()`, would result in `editor.data` being:
+
+```js
+{
+  nid: 6
+}
+```
+
+Because of this, each module must have a `key` property and a `value()` method.
+
 ## Installation
 
 To install PublicLab.Editor for development, you'll need [NodeJS](https://nodejs.org). You can get the detailed instruction on installing node and npm in its official [documentation](https://docs.npmjs.com/getting-started/installing-node).
