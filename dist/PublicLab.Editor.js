@@ -37587,21 +37587,6 @@ PL.Editor = Class.extend({
     }
 
 
-    // Returns an object which is a compilation of all module
-    // values, requested via module.value().
-    _editor.values = function() {
-
-      var valueObj = {};
-
-      _editor.modules.forEach(function(module, i) {
-        valueObj[key] = module.value();
-      });
-
-      return valueObj;
-
-    }
-
-
     // Fetch values from modules and feed into corresponding editor.data.foo --
     // Note that modules may attempt to write to the same key, 
     // and would then overwrite one another.
