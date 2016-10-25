@@ -103,7 +103,7 @@ PL.Editor = Class.extend({
 
       if (_editor.options.destination) {
 
-        $('.ple-publish').html('<i class="fa fa-circle-notch fa-spin"></i>');
+        $('.ple-publish').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         $.ajax(
           _editor.options.destination, 
