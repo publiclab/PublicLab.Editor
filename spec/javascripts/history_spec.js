@@ -89,11 +89,15 @@ describe("History", function() {
   });
 
 
-  xit("writes out history to a DOM element", function() {
+  it("writes out history to a DOM element", function() {
 
-    $('html').append("<div id='history'></div>");
+    $('body').append("<div id='history'></div>");
 
-    editor.history.display($('#history'));
+    editor.history.display($('#history')[0]);
+
+    expect(editor.history.log.length).not.toBe(0);
+    expect($('#history').html()).not.toBe('');
+    expect($('#history p').length).toBe(20);
 
   });
 
