@@ -75,7 +75,7 @@ Module output is collected (by `editor.collectData()`) in the `editor.data` obje
 }
 ```
 
-Because of this, each module must have a `key` property and a `value()` method.
+Because of this, each module must have a `key` property and a `value()` method. Some modules, like the TagsModule, will return their own value added to the existing value of `key`, so that multiple modules may add to the `tags` property of `editor.data`.
 
 ## Installation
 

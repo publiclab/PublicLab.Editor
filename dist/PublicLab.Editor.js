@@ -38936,7 +38936,15 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       }
 
-      return _module.el.find('input').val();
+      var tags = _module.el.find('input').val();
+
+      if (_editor.data.hasOwnProperty(_module.key) 
+       && _editor.data[_module.key] !== null 
+       && _editor.data[_module.key] !== '') {
+        tags = _editor.data[_module.key] + ',' + tags;
+      }
+
+      return tags;
 
     }
 
