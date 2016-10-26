@@ -75,4 +75,31 @@ describe("History", function() {
   });
 
 
+  it("stores only 20 items until we optimize it", function() {
+
+    editor.history.flush();
+    for (var i = 0; i < 20; i++) {
+      editor.history.add("some text");
+    }
+    expect(editor.history.log.length).toBe(20);
+
+    editor.history.fetch();
+    expect(editor.history.log.length).toBe(20);
+
+  });
+
+
+  it("writes out history to a DOM element", function() {
+
+    $('body').append("<div id='history'></div>");
+
+    editor.history.display($('#history')[0]);
+
+    expect(editor.history.log.length).not.toBe(0);
+    expect($('#history').html()).not.toBe('');
+    expect($('#history p').length).toBe(20);
+
+  });
+
+
 });
