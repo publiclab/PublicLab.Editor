@@ -38449,8 +38449,24 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module._super(_editor, _module.options);
 
     _module.focusables.push(_module.el.find('input'));
+    _module.image = new Image();
 
-    _module.value = function() {
+    _module.value = function(url, id) {
+
+      if (typeof url == 'string') {
+
+        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
+        // onLoad never triggers
+        _module.image.onLoad = function() {
+          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
+        }
+        _module.image.src = url;
+        _module.options.url = url;
+        _editor.data.has_main_image = true;
+        _editor.data.image_revision = url; // choose which image to use
+      }
+
+      if (id) _editor.data.main_image = id;
 
       return _module.options.url;
 
@@ -38477,6 +38493,16 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       e.preventDefault();
     });
 
+
+    // read in previous main images to enable reverting back
+    if (_module.options.previousMainImages) {
+
+    // $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+
+    }
+
+
+    // jQuery File Upload integration:
 
     _module.el.find('input').fileupload({
 
@@ -38512,25 +38538,9 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
-// this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-// onLoad never triggers
-        _module.image = new Image();
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
-
-        _module.image.src = data.result.url;
-        _module.options.url = data.result.url;
-
-        _editor.data.has_main_image = true;
-        _editor.data.main_image = data.result.id;
-
-        _editor.data.image_revision = data.result.url; // choose which image to use
+        _module.value(data.result.url, data.result.id);
 
         _editor.validate();
-
-// refactor versioning of main image
-// $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
 
         // primarily for testing: 
         if (_module.options.callback) _module.options.callback();
@@ -38941,7 +38951,9 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       if (_editor.data.hasOwnProperty(_module.key) 
        && _editor.data[_module.key] !== null 
        && _editor.data[_module.key] !== '') {
+
         tags = _editor.data[_module.key] + ',' + tags;
+
       }
 
       return tags;
