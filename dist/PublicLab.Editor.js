@@ -38225,8 +38225,12 @@ module.exports = function(textarea, _editor, _module) {
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
-      validate: function isItAnImageFile (file) {
-        return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+      validate: function isItAnUploadableFile (file) {
+        var valid = true,
+            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt'],
+            filetype = file.name.split('.')[file.name.split('.').length - 1];
+        if (formats.indexOf(filetype) === -1) valid = false;
+        return valid;
       }
 
     },
