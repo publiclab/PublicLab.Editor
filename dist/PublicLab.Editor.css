@@ -117,6 +117,11 @@
   outline: none;
 }
 
+.ple-textarea img,
+.wk-wysiwyg img{
+  max-width: 100%
+}
+
 .wk-commands {
   float: left;
 }
