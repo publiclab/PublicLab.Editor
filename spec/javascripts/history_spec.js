@@ -75,4 +75,27 @@ describe("History", function() {
   });
 
 
+  it("stores only 20 items until we optimize it", function() {
+
+    editor.history.flush();
+    for (var i = 0; i < 20; i++) {
+      editor.history.add("some text");
+    }
+    expect(editor.history.log.length).toBe(20);
+
+    editor.history.fetch();
+    expect(editor.history.log.length).toBe(20);
+
+  });
+
+
+  xit("writes out history to a DOM element", function() {
+
+    $('html').append("<div id='history'></div>");
+
+    editor.history.display($('#history'));
+
+  });
+
+
 });

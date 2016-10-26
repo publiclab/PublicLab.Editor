@@ -56,6 +56,9 @@ module.exports = PublicLab.History = Class.extend({
       // overwrites previous history, so be careful
       _history.write = function() {
 
+        // truncate history to 20 items
+        _history.log = _history.log.slice(0, 20);
+
         if (_history.options.debug) console.log('history: overwriting');
         var string = JSON.stringify(_history.log)
 
