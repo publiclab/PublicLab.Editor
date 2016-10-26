@@ -15,6 +15,7 @@ PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
 PL.History         = require('./PublicLab.History.js');
 PL.Help            = require('./PublicLab.Help.js');
+PL.Errors          = require('./PublicLab.Errors.js');
 PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
@@ -205,6 +206,8 @@ PL.Editor = Class.extend({
     }
 
     _editor.help = new PublicLab.Help(_editor);
+
+    _editor.errors = new PublicLab.Errors(_editor, _editor.options.errors);
 
 
     _editor.validate();
