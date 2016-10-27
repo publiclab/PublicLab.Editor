@@ -114,6 +114,28 @@ The editor toolbar comes in two differnt formats. You can use a smaller version 
 PublicLab.Editor expects a response from the server upon sending a request to `destination` that is a URL which it will follow. 
 
 
+****
+
+## Modules
+
+Various modules have different configurable options to be added to the options object, as seen in the [Integration section](#integration).
+
+### Rich Text Module
+
+**formats** -- provide an array of strings specifying allowed file extensions that may be uploaded inline in the rich text input area:
+
+```js
+var editor = new PL.Editor({ 
+  textarea: document.getElementById('my-textarea'),
+  richTextModule: {
+    formats: ['xml', 'pdf', 'csv', 'stl']
+  }
+});
+```
+
+
+****
+
 ## Developers
 
 Help improve Public Lab software!
@@ -144,7 +166,9 @@ To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 ****
 
 
-### Integration with PublicLab.org or other servers
+### Integration
+
+Connect this editor to a parent server-side app, such as [PublicLab.org](https://github.com/publiclab/plots2) or other servers.
 
 The API we'll be working from will include several server URLs, which we'll be building into the file at `src/adapters/PublicLab.Adaptors.js`:
 

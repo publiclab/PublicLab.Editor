@@ -78,8 +78,18 @@ describe("History", function() {
   it("stores only 20 items until we optimize it", function() {
 
     editor.history.flush();
-    for (var i = 0; i < 20; i++) {
-      editor.history.add("some text");
+    for (var i = 0; i < 10; i++) {
+      editor.history.add("some text" + i);
+    }
+    expect(editor.history.log.length).toBe(10);
+
+    for (var i = 0; i < 10; i++) {
+      editor.history.add("some text" + i);
+    }
+    expect(editor.history.log.length).toBe(20);
+
+    for (var i = 0; i < 10; i++) {
+      editor.history.add("some text " + i);
     }
     expect(editor.history.log.length).toBe(20);
 

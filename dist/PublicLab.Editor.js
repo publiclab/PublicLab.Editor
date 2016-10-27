@@ -37525,6 +37525,7 @@ PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
 PL.History         = require('./PublicLab.History.js');
 PL.Help            = require('./PublicLab.Help.js');
+PL.Errors          = require('./PublicLab.Errors.js');
 PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
@@ -37683,25 +37684,40 @@ PL.Editor = Class.extend({
     }
 
 
-    // options are passed via the corresponding _editor.options.fooModule object;
-    // however, we copy textarea (the most basic) in automatically:
-    _editor.options.richTextModule = _editor.options.richTextModule || {};
-    _editor.options.richTextModule.textarea = _editor.options.textarea;
-
-    _editor.titleModule     = new PublicLab.TitleModule(    _editor);
-    _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
-    _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
-
     _editor.modules = [];
-    _editor.modules.push(_editor.titleModule);
-    _editor.modules.push(_editor.mainImageModule);
-    _editor.modules.push(_editor.richTextModule);
-    _editor.modules.push(_editor.tagsModule);
 
-    // history must go after richTextModule, as it monitors that
-    if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+    // default modules:
+    if (_editor.options.titleModule !== false) {
+      _editor.titleModule = new PublicLab.TitleModule(_editor);
+      _editor.modules.push(_editor.titleModule);
+    }
+
+    if (_editor.options.mainImageModule !== false) {
+      _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
+      _editor.modules.push(_editor.mainImageModule);
+    }
+
+    if (_editor.options.richTextModule  !== false) {
+      // options are normally passed via the corresponding _editor.options.fooModule object;
+      // however, we copy textarea (the most basic) in automatically:
+      _editor.options.richTextModule = _editor.options.richTextModule || {};
+      _editor.options.richTextModule.textarea = _editor.options.textarea;
+
+      _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+      _editor.modules.push(_editor.richTextModule);
+
+      // history must go after richTextModule, as it monitors that
+      if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+    }
+
+    if (_editor.options.tagsModule !== false) {
+      _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+      _editor.modules.push(_editor.tagsModule);
+    }
+
     _editor.help = new PublicLab.Help(_editor);
+
+    _editor.errors = new PublicLab.Errors(_editor, _editor.options.errors);
 
 
     _editor.validate();
@@ -37715,7 +37731,41 @@ PL.Editor = Class.extend({
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":5,"./PublicLab.Help.js":224,"./PublicLab.History.js":225,"./adapters/PublicLab.Formatter.js":226,"./adapters/PublicLab.Woofmark.js":227,"./core/Util.js":228,"./modules/PublicLab.MainImageModule.js":229,"./modules/PublicLab.Module.js":230,"./modules/PublicLab.RichTextModule.js":232,"./modules/PublicLab.TagsModule.js":233,"./modules/PublicLab.TitleModule.js":235,"jquery":50,"resig-class":144}],224:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":5,"./PublicLab.Errors.js":224,"./PublicLab.Help.js":225,"./PublicLab.History.js":226,"./adapters/PublicLab.Formatter.js":227,"./adapters/PublicLab.Woofmark.js":228,"./core/Util.js":229,"./modules/PublicLab.MainImageModule.js":230,"./modules/PublicLab.Module.js":231,"./modules/PublicLab.RichTextModule.js":233,"./modules/PublicLab.TagsModule.js":234,"./modules/PublicLab.TitleModule.js":236,"jquery":50,"resig-class":144}],224:[function(require,module,exports){
+/*
+ * Error display; error format is:
+ * "title": ["can't be blank"]
+ */
+
+module.exports = PublicLab.Errors = Class.extend({
+
+  init: function(_editor, options) {
+
+    var _errors = this;
+
+    _errors.options = options || {};
+
+    if (_errors.options) {
+
+      $('.ple-errors').append('<div class="alert alert-danger"></div>');
+
+      Object.keys(_errors.options).forEach(function eachField(key, i) {
+
+        _errors.options[key].forEach(function eachError(error, j) {
+
+          $('.ple-errors .alert').append('<p><b>Error:</b> ' + key + ' ' + error + '.</p>');
+
+        });
+
+      });
+
+    }
+
+  }
+
+});
+
+},{}],225:[function(require,module,exports){
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
@@ -37752,7 +37802,7 @@ module.exports = PublicLab.Help = Class.extend({
 
 });
 
-},{}],225:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 /*
  * History of edits, sorted by day. 
  */
@@ -38034,7 +38084,7 @@ module.exports = PublicLab.History = Class.extend({
 
 });
 
-},{"moment":143,"resig-class":144}],226:[function(require,module,exports){
+},{"moment":143,"resig-class":144}],227:[function(require,module,exports){
 /*
  * Formatters package the post content for a specific
  * application, like PublicLab.org or Drupal.
@@ -38096,7 +38146,7 @@ module.exports = PublicLab.Formatter = Class.extend({
 
 });
 
-},{"resig-class":144}],227:[function(require,module,exports){
+},{"resig-class":144}],228:[function(require,module,exports){
 /*
  * Wrapped woofmark() constructor with 
  * customizations for our use case.
@@ -38225,8 +38275,12 @@ module.exports = function(textarea, _editor, _module) {
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
-      validate: function isItAnImageFile (file) {
-        return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+      validate: function isItAnUploadableFile (file) {
+        var valid = true,
+            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt'],
+            filetype = file.name.split('.')[file.name.split('.').length - 1];
+        if (formats.indexOf(filetype) === -1) valid = false;
+        return valid;
       }
 
     },
@@ -38390,7 +38444,7 @@ module.exports = function(textarea, _editor, _module) {
 
 }
 
-},{"../modules/PublicLab.RichTextModule.Table.js":231,"banksy":1,"domador":9,"horsey":20,"megamark":52,"woofmark":222}],228:[function(require,module,exports){
+},{"../modules/PublicLab.RichTextModule.Table.js":232,"banksy":1,"domador":9,"horsey":20,"megamark":52,"woofmark":222}],229:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -38430,7 +38484,7 @@ module.exports = {
 
 }
 
-},{}],229:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 require('blueimp-file-upload');
 /*
  * Form module for main post image
@@ -38571,7 +38625,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 });
 
-},{"blueimp-file-upload":2}],230:[function(require,module,exports){
+},{"blueimp-file-upload":2}],231:[function(require,module,exports){
 /*
  * Form modules like title, tags, body, main image
  */
@@ -38641,7 +38695,7 @@ module.exports = PublicLab.Module = Class.extend({
 
 });
 
-},{}],231:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 /*
  Table generation:
 
@@ -38740,7 +38794,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 }
 
-},{}],232:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -38911,7 +38965,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
 });
 
-},{"crossvent":7,"grow-textarea":12}],233:[function(require,module,exports){
+},{"crossvent":7,"grow-textarea":12}],234:[function(require,module,exports){
 var typeahead = require("typeahead.js-browserify");
 var Bloodhound = typeahead.Bloodhound;
 // https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
@@ -39036,7 +39090,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{"bootstrap-tokenfield":4,"typeahead.js-browserify":145}],234:[function(require,module,exports){
+},{"bootstrap-tokenfield":4,"typeahead.js-browserify":145}],235:[function(require,module,exports){
 /* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -39131,7 +39185,7 @@ module.exports = function relatedNodes(module) {
 
 }
 
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -39262,4 +39316,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":234}]},{},[223]);
+},{"./PublicLab.TitleModule.Related.js":235}]},{},[223]);

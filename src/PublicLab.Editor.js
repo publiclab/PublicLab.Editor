@@ -15,6 +15,7 @@ PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
 PL.History         = require('./PublicLab.History.js');
 PL.Help            = require('./PublicLab.Help.js');
+PL.Errors          = require('./PublicLab.Errors.js');
 PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
@@ -173,25 +174,40 @@ PL.Editor = Class.extend({
     }
 
 
-    // options are passed via the corresponding _editor.options.fooModule object;
-    // however, we copy textarea (the most basic) in automatically:
-    _editor.options.richTextModule = _editor.options.richTextModule || {};
-    _editor.options.richTextModule.textarea = _editor.options.textarea;
-
-    _editor.titleModule     = new PublicLab.TitleModule(    _editor);
-    _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
-    _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
-
     _editor.modules = [];
-    _editor.modules.push(_editor.titleModule);
-    _editor.modules.push(_editor.mainImageModule);
-    _editor.modules.push(_editor.richTextModule);
-    _editor.modules.push(_editor.tagsModule);
 
-    // history must go after richTextModule, as it monitors that
-    if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+    // default modules:
+    if (_editor.options.titleModule !== false) {
+      _editor.titleModule = new PublicLab.TitleModule(_editor);
+      _editor.modules.push(_editor.titleModule);
+    }
+
+    if (_editor.options.mainImageModule !== false) {
+      _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
+      _editor.modules.push(_editor.mainImageModule);
+    }
+
+    if (_editor.options.richTextModule  !== false) {
+      // options are normally passed via the corresponding _editor.options.fooModule object;
+      // however, we copy textarea (the most basic) in automatically:
+      _editor.options.richTextModule = _editor.options.richTextModule || {};
+      _editor.options.richTextModule.textarea = _editor.options.textarea;
+
+      _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+      _editor.modules.push(_editor.richTextModule);
+
+      // history must go after richTextModule, as it monitors that
+      if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+    }
+
+    if (_editor.options.tagsModule !== false) {
+      _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+      _editor.modules.push(_editor.tagsModule);
+    }
+
     _editor.help = new PublicLab.Help(_editor);
+
+    _editor.errors = new PublicLab.Errors(_editor, _editor.options.errors);
 
 
     _editor.validate();
