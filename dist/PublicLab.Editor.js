@@ -37746,7 +37746,7 @@ module.exports = PublicLab.Errors = Class.extend({
 
     _errors.options = options || {};
 
-    if (_errors.options) {
+    if (_errors.options && typeof _errors.options === 'object' && Object.keys(_errors.options).length > 0) {
 
       $('.ple-errors').append('<div class="alert alert-danger"></div>');
 
