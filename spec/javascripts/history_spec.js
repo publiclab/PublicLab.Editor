@@ -13,10 +13,6 @@ describe("History", function() {
   });
 
 
-  afterEach(function() {
-  });
-
-
   it("has log, key, interval, and id", function() {
 
     expect(editor.history.log).not.toBeUndefined();
@@ -85,6 +81,7 @@ describe("History", function() {
 
     for (var i = 0; i < 10; i++) {
       editor.history.add("some text" + i);
+      expect(editor.history.log[editor.history.log.length - 1].text).toBe("some text" + i);
     }
     expect(editor.history.log.length).toBe(20);
 
@@ -108,6 +105,16 @@ describe("History", function() {
     expect(editor.history.log.length).not.toBe(0);
     expect($('#history').html()).not.toBe('');
     expect($('#history p').length).toBe(20);
+
+    // start over and build DOM, checking as we go:
+    editor.history.log = [];
+
+    for (var i = 0; i < 10; i++) {
+      editor.history.add("some text" + i);
+      editor.history.display($('#history')[0]);
+      expect($('#history p').length).toBe(1 + i);
+      expect($('#history p:last .preview').html()).toBe("some text" + i + "...");
+    }
 
   });
 
