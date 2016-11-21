@@ -93,7 +93,7 @@ PL.Editor = Class.extend({
 
 
     // executes <callback> on completion, or (by default) navigates to returned URL
-    _editor.publish = function(callback) {
+    _editor.publish = _editor.options.publish || function publish(callback) {
 
       _editor.collectData();
 
@@ -160,7 +160,7 @@ PL.Editor = Class.extend({
 
       $('.ple-publish').click(function() {
         console.log('Publishing!', _editor.data);
-        _editor.publish();
+        _editor.publish(_editor.options.publishCallback);
       });
  
  
