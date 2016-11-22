@@ -128,7 +128,7 @@ module.exports = function(textarea, _editor, _module) {
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnUploadableFile (file) {
         var valid = true,
-            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt'],
+            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt'],
             filetype = file.name.split('.')[file.name.split('.').length - 1];
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;

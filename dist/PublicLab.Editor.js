@@ -35083,13 +35083,21 @@ function bindCommands (surface, options, editor) {
         prompts: options.prompts,
         upload: options[type + 's'],
         classes: options.classes,
-        mergeHtmlAndAttachment: options.mergeHtmlAndAttachment,
+        mergeHtmlAndAttachment: options.mergeHtmlAndAttachment || mergeHtmlAndAttachment,
         autoUpload: autoUpload
       });
     };
   }
   function bind (id, combo, fn) {
     return editor.addCommandButton(id, combo, suppress(fn));
+  }
+  function mergeHtmlAndAttachment (chunks, link) {
+    var linkText = chunks.selection || link.title;
+    return {
+      before: chunks.before,
+      selection: '<a href="' + link.href + '">' + linkText + '</a>',
+      after: chunks.after,
+    };
   }
   function router (method) {
     return function routed (mode, chunks) { commands[mode][method].call(this, chunks); };
@@ -36769,7 +36777,7 @@ function prompt (options, done) {
       fieldKey: upload.fieldKey,
       xhrOptions: upload.xhrOptions,
       endpoint: upload.url,
-      validate: 'image'
+      validate: upload.validate || 'image'
     });
 
     bureaucrat.on('started', function () {
@@ -38278,7 +38286,7 @@ module.exports = function(textarea, _editor, _module) {
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnUploadableFile (file) {
         var valid = true,
-            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt'],
+            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt'],
             filetype = file.name.split('.')[file.name.split('.').length - 1];
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
