@@ -160,6 +160,7 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   -moz-background-clip: padding;
   background-clip: padding-box;
 }
-.tooltip.bottom .tooltip-arrow{
+
+.tooltip.bottom .tooltip-arrow {
   display:none;
 }
