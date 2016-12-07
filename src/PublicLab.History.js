@@ -186,7 +186,7 @@ module.exports = PublicLab.History = Class.extend({
                 html = '';
 
             // before a day's log entries:
-            if (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate) {
+            if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
 
               
               dateClasses.push(log.dateClass);
