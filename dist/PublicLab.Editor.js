@@ -38000,7 +38000,7 @@ module.exports = PublicLab.History = Class.extend({
                 html = '';
 
             // before a day's log entries:
-            if (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate) {
+            if (i == 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
 
               
               dateClasses.push(log.dateClass);
@@ -39210,8 +39210,8 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.options.name = "title";
 
     // override defaults in TitleModule.Related:
-    _module.options.suggestRelated = _module.options.suggestRelated || true; // boolean
-    _module.options.fetchRelated = _module.options.fetchRelated || false; // expects function
+    _module.options.suggestRelated = _module.options.suggestRelated === false || true; // boolean
+    _module.options.fetchRelated = _module.options.fetchRelated === true || false; // expects function
 
     _module._super(_editor, _module.options);
 
