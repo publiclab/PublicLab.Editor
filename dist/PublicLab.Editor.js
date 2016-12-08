@@ -37870,8 +37870,8 @@ module.exports = PublicLab.History = Class.extend({
       // overwrites previous history, so be careful
       _history.write = function() {
 
-        // truncate history to 20 items
-        _history.log = _history.log.slice(0, 20);
+        // maintain history length at 20 items
+        if (_history.log.length > 20) _history.log.shift();
 
         if (_history.options.debug) console.log('history: overwriting');
         var string = JSON.stringify(_history.log)
@@ -38000,7 +38000,7 @@ module.exports = PublicLab.History = Class.extend({
                 html = '';
 
             // before a day's log entries:
-            if (i == 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
+            if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
 
               
               dateClasses.push(log.dateClass);

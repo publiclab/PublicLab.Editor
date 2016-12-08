@@ -79,19 +79,20 @@ describe("History", function() {
     }
     expect(editor.history.log.length).toBe(10);
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 10; i < 20; i++) {
       editor.history.add("some text " + i);
       expect(editor.history.log[editor.history.log.length - 1].text).toBe("some text " + i);
     }
     expect(editor.history.log.length).toBe(20);
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 20; i < 30; i++) {
       editor.history.add("some text " + i);
     }
     expect(editor.history.log.length).toBe(20);
 
     editor.history.fetch();
     expect(editor.history.log.length).toBe(20);
+    expect(editor.history.log[0].text).toBe('some text 10');
 
   });
 
