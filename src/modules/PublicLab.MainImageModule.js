@@ -12,7 +12,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.key = 'main_image_url';
     _module.options = options || _editor.options.mainImageModule || {};
     _module.options.name = 'main_image';
-    _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
+    _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a target="_blank" href="https://publiclab.org/wiki/authoring-help#Images">Image tips &raquo;</a>';
     _module.options.url = _editor.options.mainImageUrl;
     _module.options.uploadUrl = _module.options.uploadUrl || "/images";
 
