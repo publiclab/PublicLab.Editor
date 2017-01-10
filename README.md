@@ -3,8 +3,6 @@ PublicLab.Editor
 
 [![Build Status](https://travis-ci.org/publiclab/PublicLab.Editor.svg)](https://travis-ci.org/publiclab/PublicLab.Editor)
 
-**This library is incomplete -- this page is a rough planning document.**
-
 Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
 
 PublicLab.Editor is a general purpose, modular JavaScript/Bootstrap UI library for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
@@ -54,6 +52,21 @@ The editor is built from different modules like:
 * RichTextModule
 
 Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
+
+To input content into a module, the convention is to use that module's `value()` method, like this:
+
+```js
+editor.richTextModule.value('hello there'); // sets the richTextModule's content
+```
+
+You can also use `module.value()` as a getter, like this:
+
+```js
+var content = editor.richTextModule.value(); // get the richTextModule's content
+
+editor.richTextModule.value(content + ' and then some'); // sets the richTextModule's content
+```
+
 
 To add a new field, or new behavior, extend `PublicLab.Module` or customize an existing module by extending it -- for example:
 
