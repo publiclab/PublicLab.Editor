@@ -16,16 +16,16 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
     _module.key = 'tags';
     _module.options = options || _editor.options.tagsModule || {};
     _module.options.name         = 'tags';
-    _module.options.instructions = 'Tags relate your work to others\' posts. <a href="">Read more &raquo;</a>';
+    _module.options.instructions = 'Tags relate your work to others\' posts. <a href="" target="_blank">Read more &raquo;</a>';
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
     _module.options.local = _module.options.local || ['balloon-mapping','kite-mapping','air-quality','spectrometer','water-quality'];
     _module.options.prefetch = _module.options.prefetch || null;
-    
+
     _module._super(_editor, _module.options);
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = false;
-    _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="">Read more &raquo;</a>';
+    _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="" target="_blank">Read more &raquo;</a>';
 
     _module.value = function(text) {
 
@@ -37,8 +37,8 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       var tags = _module.el.find('input').val();
 
-      if (_editor.data.hasOwnProperty(_module.key) 
-       && _editor.data[_module.key] !== null 
+      if (_editor.data.hasOwnProperty(_module.key)
+       && _editor.data[_module.key] !== null
        && _editor.data[_module.key] !== '') {
 
         tags = _editor.data[_module.key] + ',' + tags;
@@ -61,7 +61,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 
     // Overrides default build method
-    _module.build = function() {    
+    _module.build = function() {
 
       // custom location -- just under the input
       _module.el.find('.ple-module-content')
@@ -72,7 +72,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.engine = new Bloodhound({
         local: _module.options.local,
-        datumTokenizer: Bloodhound.tokenizers.whitespace, 
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
 //        datumTokenizer: function(d) {
 //          return Bloodhound.tokenizers.whitespace(d.value);
 //        },
@@ -92,7 +92,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.focusables.push(_module.el.find('.tokenfield .tt-input'));
 
 
-      // insert recent and common ones here -- 
+      // insert recent and common ones here --
       // (this is application-specific)
 
       _module.el.find('.ple-module-content')
@@ -109,7 +109,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.el.find('.ple-recent-tags')
                 .append(tags.join(', '))
 
-      _module.el.find('.ple-help-minor').hide(); 
+      _module.el.find('.ple-help-minor').hide();
 
     }
 
