@@ -165,6 +165,7 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
+        inline: true,
         fencing:   true,
         fencinglanguage: function (el) {
           var match = el.className.match(/md-lang-((?:[^\s]|$)+)/);
