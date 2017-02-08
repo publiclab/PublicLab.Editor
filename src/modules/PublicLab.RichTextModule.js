@@ -20,7 +20,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       { 
         icon: "mouse-pointer", 
         position: 30, 
-        text: "Drag images into the textarea to upload them."
+        text: "Drag images into the text area to upload them."
       },
       { 
         icon: "list-ul",
