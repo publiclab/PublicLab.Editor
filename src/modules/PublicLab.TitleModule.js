@@ -64,7 +64,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
         _module.error('Must be formatted correctly.');
  
-      } else if (value.length > 45) {
+      } else if (value && value.length > 45) {
 
         _module.error('Getting a bit long!', 'warning');
 
