@@ -238,6 +238,9 @@ module.exports = function(textarea, _editor, _module) {
   // set up table generation tools:
   require('../modules/PublicLab.RichTextModule.Table.js')(_module, wysiwyg);
 
+  // set up horizontal rule insertion tool:
+  require('../modules/PublicLab.RichTextModule.HorizontalRule.js')(_module, wysiwyg);
+
 
   wysiwyg.stylePrompt = function() {
     $('.wk-prompt button, span.wk-prompt-browse').addClass('btn btn-default');
