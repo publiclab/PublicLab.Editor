@@ -189,7 +189,11 @@ The API we'll be working from will include several server URLs, which we'll be b
 * updating by `UPDATE` to `/notes/update` (will go to plots2's `notes_controller.rb#update`)
 * uploading images by `POST` to `/images/create` (will go to plots2's `images_controller.rb#create`)
 
-The TagsModule uses Bloodhound for tag suggestions.It can make `GET` requests to the server to fetch recent tag suggestion, which returns data in json format like `/tags/recent.json`. You can also give your own suggestions in an array. Refer to the example given in `/examples/autocomplete.html`.
+#### Tags integration
+
+The TagsModule uses Bloodhound for tag suggestions. It can make `GET` requests to the server to fetch recent tag suggestion, which returns data in json format like `/tags/recent.json`. You can also give your own suggestions in an array. Refer to the example given in `/examples/autocomplete.html`.
+
+#### RichText integration
 
 Similarly the RichText module (which wraps the Woofmark adaptor) may make `GET` requests to:
 
@@ -208,3 +212,8 @@ var editor = new PL.Editor({
 });
 ```
 
+#### Title integration
+
+The TitleModule can make requests to find "related" content and suggest it be attached. Documentation on this can be found at:
+
+https://github.com/publiclab/PublicLab.Editor/blob/master/src/modules/PublicLab.TitleModule.Related.js
