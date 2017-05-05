@@ -39145,7 +39145,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     // override defaults in TitleModule.Related:
     _module.options.suggestRelated = _module.options.suggestRelated === true || false; // boolean
-    _module.options.fetchRelated = _module.options.fetchRelated === true || false; // expects function
+    _module.options.fetchRelated = _module.options.fetchRelated || false; // expects function
 
     _module._super(_editor, _module.options);
 
