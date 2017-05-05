@@ -146,6 +146,12 @@ var editor = new PL.Editor({
 });
 ```
 
+### Tags Module
+
+The Tags module uses [Bootstrap Tokenfield](https://github.com/sliptree/bootstrap-tokenfield). To add tags after initialization, use:
+
+`editor.tagsModule.el.find('input').tokenfield('createToken', 'purple');`
+
 
 ****
 
