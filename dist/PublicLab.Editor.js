@@ -39031,7 +39031,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
  * Example:
 
 ```js
-function fetchRelated() {
+function fetchRelated(show) {
 
   $.getJSON('/some/url', function(response) {
 
@@ -39092,7 +39092,7 @@ module.exports = function relatedNodes(module) {
 
   }
 
-  var fetchRelated = module.options.fetchRelated || function fetchRelated() {
+  var fetchRelated = module.options.fetchRelated || function fetchRelated(show) {
 
     // example
     show([
@@ -39109,7 +39109,7 @@ module.exports = function relatedNodes(module) {
  
       if (module.options.suggestRelated) {
         relatedEl.fadeIn();
-        fetchRelated();
+        fetchRelated(show);
       }
  
     });
