@@ -238,8 +238,8 @@ module.exports = function(textarea, _editor, _module) {
   // set up table generation tools:
   require('../modules/PublicLab.RichTextModule.Table.js')(_module, wysiwyg);
 
-  // set up codefences insertion tools:
-  require('../modules/PublicLab.RichTextModule.CodeFences.js')(_module, wysiwyg);
+  // set up horizontal rule insertion tool:
+  require('../modules/PublicLab.RichTextModule.HorizontalRule.js')(_module, wysiwyg);
 
 
   wysiwyg.stylePrompt = function() {
