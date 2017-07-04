@@ -72,6 +72,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.engine = new Bloodhound({
         local: _module.options.local,
+        remote: _module.options.remote,
         datumTokenizer: Bloodhound.tokenizers.whitespace,
 //        datumTokenizer: function(d) {
 //          return Bloodhound.tokenizers.whitespace(d.value);

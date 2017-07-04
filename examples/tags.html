@@ -54,7 +54,22 @@
         editor = new PL.Editor({
           titleModule:     false,
           mainImageModule: false,
-          richTextModule:  false
+          richTextModule:  false,
+          tagsModule: {
+
+            local: [
+              "balloon-mapping", 
+              "water-quality", 
+              "rich-editor"
+            ],
+            prefetch: '../examples/data/text.json',
+            remote: {
+              url: '../examples/data/suggestions.json',
+              prepare: function prepareRemote(x) {
+                return "../examples/data/suggestions.json?" + x
+              }
+            }
+          }
         });
 
       })();
