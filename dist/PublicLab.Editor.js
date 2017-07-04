@@ -38975,6 +38975,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.engine = new Bloodhound({
         local: _module.options.local,
+        remote: _module.options.remote,
         datumTokenizer: Bloodhound.tokenizers.whitespace,
 //        datumTokenizer: function(d) {
 //          return Bloodhound.tokenizers.whitespace(d.value);
@@ -39073,7 +39074,7 @@ module.exports = function relatedNodes(module) {
 
     relatedEl.find('.result').remove();
 
-    relatedResults.forEach(function(result) {
+    relatedResults.slice(0, 8).forEach(function(result) {
 
       relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
       relatedEl.find('.result-' + result.id + ' .title').html(result.title);
