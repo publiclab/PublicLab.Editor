@@ -37447,7 +37447,7 @@ PL.Editor = Class.extend({
 
     var _editor = this;
     _editor.options = options;
-    _editor.options.history = (_editor.options.history !== false); // true by default
+    _editor.options.history = _editor.options.history || true;
     _editor.options.format = "publiclab";
 
     // Validation:
@@ -37615,7 +37615,7 @@ PL.Editor = Class.extend({
       _editor.modules.push(_editor.richTextModule);
 
       // history must go after richTextModule, as it monitors that
-      if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+      if (_editor.options.history) _editor.history = new PublicLab.History(_editor, _editor.options.history);
     }
 
     if (_editor.options.tagsModule !== false) {
@@ -37724,6 +37724,7 @@ module.exports = PublicLab.History = Class.extend({
 
     var _history = this;
 
+    if (options === true) options = {};
     _history.options = options || {};
 
     // this would be the nid in Drupal
@@ -38152,47 +38153,21 @@ module.exports = function(textarea, _editor, _module) {
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
-      validate: function isItAnImageFile (file) {
-        return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
-      }
-
-    },
-
-
-    // for handling non-image uploads
-    // -- need to insert icon, maybe, or do it in CSS
-    attachments: {
-
-      method: 'POST',
- 
-      // endpoint where the images will be uploaded to, required
-      url: '/images',
- 
-      // optional text describing the kind of files that can be uploaded
-      restriction: 'Not all filetypes are accepted; please email web@publiclab.org if yours does not work.',
-
-      // image field key
-      fieldKey: 'image[photo]',
-
-      // additional form fields
-      formData: { nid: null },
-
-      // xhr upload options like CSRF token
-      xhrOptions: { 
-        beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
-      },
-
-      // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isItAnUploadableFile (file) {
+        // previously used, just for images:
+        // return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
+        // however we found in https://github.com/publiclab/plots2/issues/1561 that woofmark
+        // treats "attachments" as footnotes, which do not render in our markdown parsers
+        // but we can pass non-image attachments through under "images" and they appear as <a> links
         var valid = true,
-            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt'],
+            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
             filetype = file.name.split('.')[file.name.split('.').length - 1];
+            filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
       }
 
     },
-
 
     parseMarkdown: function (input) {
 
@@ -38201,13 +38176,13 @@ module.exports = function(textarea, _editor, _module) {
       return megamark(input, {
         tokenizers: [
           {
-            token: /(^|\s)@([A-z\_]+)\b/g,
+            token: /(^|\s)@([A-z\_]+)\b/g, // @callouts
             transform: function (all, separator, id) {
               return separator + '<a href="/profile/' + id + '">@' + id + '</a>';
             }
           },
           {
-            token: /(^|\s)#([A-z\-]+)\b/g,
+            token: /(^|\s)#([A-z\-]+)\b/g, // #hashtags
             transform: function (all, separator, id) {
               return separator + '<a href="/tag/' + id + '">#' + id + '</a>';
             }
