@@ -38160,7 +38160,11 @@ module.exports = function(textarea, _editor, _module) {
         // treats "attachments" as footnotes, which do not render in our markdown parsers
         // but we can pass non-image attachments through under "images" and they appear as <a> links
         var valid = true,
+<<<<<<< HEAD
             formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+=======
+            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt'],
+>>>>>>> 7f2db756485e255c468ee74e7691269e7b9a2c82
             filetype = file.name.split('.')[file.name.split('.').length - 1];
             filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
