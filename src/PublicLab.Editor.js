@@ -29,7 +29,7 @@ PL.Editor = Class.extend({
 
     var _editor = this;
     _editor.options = options;
-    _editor.options.history = (_editor.options.history !== false); // true by default
+    _editor.options.history = _editor.options.history || true;
     _editor.options.format = "publiclab";
 
     // Validation:
@@ -197,7 +197,7 @@ PL.Editor = Class.extend({
       _editor.modules.push(_editor.richTextModule);
 
       // history must go after richTextModule, as it monitors that
-      if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+      if (_editor.options.history) _editor.history = new PublicLab.History(_editor, _editor.options.history);
     }
 
     if (_editor.options.tagsModule !== false) {

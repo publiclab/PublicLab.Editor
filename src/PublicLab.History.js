@@ -11,6 +11,7 @@ module.exports = PublicLab.History = Class.extend({
 
     var _history = this;
 
+    if (options === true) options = {};
     _history.options = options || {};
 
     // this would be the nid in Drupal
