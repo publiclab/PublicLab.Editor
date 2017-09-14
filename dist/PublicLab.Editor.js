@@ -38845,6 +38845,14 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     _module.resize();
 
+    crossvent.add(_module.options.textarea, 'blur', function (e) {
+      _editor.validate();
+    });
+
+    crossvent.add(_module.options.textarea, 'keydown', function (e) {
+      _editor.validate();
+    });
+
     crossvent.add(_module.wysiwyg.editable, 'blur', function (e) {
       _editor.validate();
     });
