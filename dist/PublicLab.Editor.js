@@ -38845,6 +38845,14 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     _module.resize();
 
+    crossvent.add(_module.wysiwyg.editable, 'blur', function (e) {
+      _editor.validate();
+    });
+
+    crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
+      _editor.validate();
+    });
+
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
