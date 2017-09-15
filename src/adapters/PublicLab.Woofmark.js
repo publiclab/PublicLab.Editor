@@ -116,6 +116,12 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
+        sanitizer: {
+          allowedTags: [ "a", "article", "b", "blockquote", "br", "caption", "code", "del", "details", "div", "em",
+                         "h1", "h2", "h3", "h4", "h5", "h6", "hr", "i", "img", "ins", "kbd", "li", "main", "ol",
+                         "p", "pre", "section", "span", "strike", "strong", "sub", "summary", "sup", "table",
+                         "tbody", "td", "th", "thead", "tr", "u", "ul", "iframe" ]
+        },
         tokenizers: [
           {
             token: /(^|\s)@([A-z\_]+)\b/g, // @callouts
@@ -139,6 +145,7 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
+        allowFrame: true,
         inline: true,
         fencing:   true,
         fencinglanguage: function (el) {
