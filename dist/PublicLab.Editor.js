@@ -38173,6 +38173,18 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
+        sanitizer: {
+          allowedTags: [ "a", "article", "b", "blockquote", "br", "caption", "code", "del", "details", "div", "em",
+                         "h1", "h2", "h3", "h4", "h5", "h6", "hr", "i", "img", "ins", "kbd", "li", "main", "ol",
+                         "p", "pre", "section", "span", "strike", "strong", "sub", "summary", "sup", "table",
+                         "tbody", "td", "th", "thead", "tr", "u", "ul", "iframe" ],
+
+          allowedAttributes: {
+            a: ['href', 'name', 'target', 'title', 'aria-label'],
+            iframe: ['allowfullscreen', 'frameborder', 'src', 'width', 'height', 'style', 'border'],
+            img: ['src', 'alt', 'title', 'aria-label']
+          },
+        },
         tokenizers: [
           {
             token: /(^|\s)@([A-z\_]+)\b/g, // @callouts
@@ -38196,6 +38208,7 @@ module.exports = function(textarea, _editor, _module) {
       _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
+        allowFrame: true,
         inline: true,
         fencing:   true,
         fencinglanguage: function (el) {
@@ -38205,6 +38218,10 @@ module.exports = function(textarea, _editor, _module) {
           }
         },
         transform: function (el) {
+
+          if (el.tagName === 'IFRAME') {
+            return '\n\n\n' + el.outerHTML;
+          }
 
           if (el.tagName === 'A' && el.innerHTML[0] === '@') {
             return el.innerHTML;
