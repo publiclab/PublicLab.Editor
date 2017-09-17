@@ -9,7 +9,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
 
   $('.wk-commands .woofmark-command-embed').click(function() {
     wysiwyg.runCommand(function(chunks, mode) {
-      chunks.before += _module.wysiwyg.parseMarkdown("\n" + prompt("Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>") + "\n"); // newlines before and after
+      chunks.before += _module.wysiwyg.parseMarkdown("\n\n\n" + prompt("Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>") + "\n"); // newlines before and after
       _module.afterParse(); // tell editor we're done here
     });
 
