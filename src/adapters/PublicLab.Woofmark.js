@@ -232,6 +232,8 @@ module.exports = function(textarea, _editor, _module) {
   // set up horizontal rule insertion tool:
   require('../modules/PublicLab.RichTextModule.HorizontalRule.js')(_module, wysiwyg);
 
+  // set up embed insertion tool:
+  require('../modules/PublicLab.RichTextModule.Embed.js')(_module, wysiwyg);
 
   wysiwyg.stylePrompt = function() {
     $('.wk-prompt button, span.wk-prompt-browse').addClass('btn btn-default');
