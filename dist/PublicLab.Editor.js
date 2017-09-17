@@ -37831,7 +37831,6 @@ function extend() {
 // document, but still be runnable in nodejs?
 // if (!this.hasOwnProperty('document') document 
 
-window.$ = window.jQuery = require('jquery')
 var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() { });
 
 var Class        = require('resig-class');
@@ -38049,7 +38048,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":7,"./PublicLab.Errors.js":208,"./PublicLab.Help.js":209,"./PublicLab.History.js":210,"./adapters/PublicLab.Formatter.js":211,"./adapters/PublicLab.Woofmark.js":212,"./core/Util.js":213,"./modules/PublicLab.MainImageModule.js":214,"./modules/PublicLab.Module.js":215,"./modules/PublicLab.RichTextModule.js":219,"./modules/PublicLab.TagsModule.js":220,"./modules/PublicLab.TitleModule.js":222,"jquery":55,"resig-class":139}],208:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":7,"./PublicLab.Errors.js":208,"./PublicLab.Help.js":209,"./PublicLab.History.js":210,"./adapters/PublicLab.Formatter.js":211,"./adapters/PublicLab.Woofmark.js":212,"./core/Util.js":213,"./modules/PublicLab.MainImageModule.js":214,"./modules/PublicLab.Module.js":215,"./modules/PublicLab.RichTextModule.js":219,"./modules/PublicLab.TagsModule.js":220,"./modules/PublicLab.TitleModule.js":222,"resig-class":139}],208:[function(require,module,exports){
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
