@@ -37638,7 +37638,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":7,"./PublicLab.Errors.js":208,"./PublicLab.Help.js":209,"./PublicLab.History.js":210,"./adapters/PublicLab.Formatter.js":211,"./adapters/PublicLab.Woofmark.js":212,"./core/Util.js":213,"./modules/PublicLab.MainImageModule.js":214,"./modules/PublicLab.Module.js":215,"./modules/PublicLab.RichTextModule.js":218,"./modules/PublicLab.TagsModule.js":219,"./modules/PublicLab.TitleModule.js":221,"jquery":55,"resig-class":139}],208:[function(require,module,exports){
+},{"../node_modules/bootstrap/dist/js/bootstrap.min.js":7,"./PublicLab.Errors.js":208,"./PublicLab.Help.js":209,"./PublicLab.History.js":210,"./adapters/PublicLab.Formatter.js":211,"./adapters/PublicLab.Woofmark.js":212,"./core/Util.js":213,"./modules/PublicLab.MainImageModule.js":214,"./modules/PublicLab.Module.js":215,"./modules/PublicLab.RichTextModule.js":219,"./modules/PublicLab.TagsModule.js":220,"./modules/PublicLab.TitleModule.js":222,"jquery":55,"resig-class":139}],208:[function(require,module,exports){
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -38289,6 +38289,8 @@ module.exports = function(textarea, _editor, _module) {
   // set up horizontal rule insertion tool:
   require('../modules/PublicLab.RichTextModule.HorizontalRule.js')(_module, wysiwyg);
 
+  // set up embed insertion tool:
+  require('../modules/PublicLab.RichTextModule.Embed.js')(_module, wysiwyg);
 
   wysiwyg.stylePrompt = function() {
     $('.wk-prompt button, span.wk-prompt-browse').addClass('btn btn-default');
@@ -38347,7 +38349,7 @@ module.exports = function(textarea, _editor, _module) {
 
 }
 
-},{"../modules/PublicLab.RichTextModule.HorizontalRule.js":216,"../modules/PublicLab.RichTextModule.Table.js":217,"banksy":3,"domador":22,"horsey":41,"megamark":134,"woofmark":205}],213:[function(require,module,exports){
+},{"../modules/PublicLab.RichTextModule.Embed.js":216,"../modules/PublicLab.RichTextModule.HorizontalRule.js":217,"../modules/PublicLab.RichTextModule.Table.js":218,"banksy":3,"domador":22,"horsey":41,"megamark":134,"woofmark":205}],213:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -38600,6 +38602,26 @@ module.exports = PublicLab.Module = Class.extend({
 
 },{}],216:[function(require,module,exports){
 /* 
+   Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
+*/   
+
+module.exports = function initEmbed(_module, wysiwyg) {
+
+  // create a menu option for embeds:
+  $('.wk-commands').append('<a class="woofmark-command-embed btn btn-default"><i class="fa fa-youtube"></i></a>');
+
+  $('.wk-commands .woofmark-command-embed').click(function() {
+    wysiwyg.runCommand(function(chunks, mode) {
+      chunks.before += _module.wysiwyg.parseMarkdown("\n\n\n" + prompt("Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>") + "\n"); // newlines before and after
+      _module.afterParse(); // tell editor we're done here
+    });
+
+  });
+
+}
+
+},{}],217:[function(require,module,exports){
+/* 
    Horizontal Rule insertion: ****
 */   
 
@@ -38621,7 +38643,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
 
 }
 
-},{}],217:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 /*
  Table generation:
 
@@ -38720,7 +38742,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 }
 
-},{}],218:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -38907,7 +38929,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
 });
 
-},{"crossvent":19,"grow-textarea":28}],219:[function(require,module,exports){
+},{"crossvent":19,"grow-textarea":28}],220:[function(require,module,exports){
 var typeahead = require("typeahead.js-browserify");
 var Bloodhound = typeahead.Bloodhound;
 // https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
@@ -39033,7 +39055,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{"bootstrap-tokenfield":6,"typeahead.js-browserify":157}],220:[function(require,module,exports){
+},{"bootstrap-tokenfield":6,"typeahead.js-browserify":157}],221:[function(require,module,exports){
 /* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -39136,7 +39158,7 @@ module.exports = function relatedNodes(module) {
 
 }
 
-},{}],221:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -39267,4 +39289,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":220}]},{},[207]);
+},{"./PublicLab.TitleModule.Related.js":221}]},{},[207]);
