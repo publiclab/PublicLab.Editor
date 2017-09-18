@@ -121,6 +121,26 @@ To customize the @author and #tag autocompletes with your own suggestions, or wi
 
 The editor toolbar comes in two differnt formats. You can use a smaller version by using a `size` property in the constructor. Refer to example given in `/examples/comment.html` 
 
+## Dependencies
+
+As of `v1`, `PublicLab.Editor` requires `jQuery` to be included on the page, and some external `jQuery` plugins for the `TagsModule` and `MainImageModule`:
+
+```html
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
+<!-- required for TagsModule -->
+<script src="../node_modules/typeahead.js/dist/typeahead.jquery.js"></script>
+<script src="../node_modules/typeahead.js/dist/bloodhound.js"></script>
+<script src="../node_modules/bootstrap-tokenfield/dist/bootstrap-tokenfield.js"></script>
+
+<!-- required for MainImageModule -->
+<script src="../node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="../node_modules/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="../node_modules/blueimp-file-upload/js/jquery.fileupload.js"></script>
+```
+
+These used to be compiled into `PublicLab.Editor` but are now external so that `jQuery` does not get included twice when using the editor in a page which already has `jQuery. 
+
 
 ## Server
 

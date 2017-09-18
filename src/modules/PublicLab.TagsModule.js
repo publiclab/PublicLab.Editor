@@ -1,8 +1,3 @@
-var typeahead = require("typeahead.js-browserify");
-var Bloodhound = typeahead.Bloodhound;
-// https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
-typeahead.loadjQueryPlugin();
-require('bootstrap-tokenfield');
 /*
  * Form module for post tags
  */
@@ -70,6 +65,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.el.find('.ple-module-content .ple-help-minor')
                 .html(_module.options.instructions);
 
+      // https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
       _module.engine = new Bloodhound({
         local: _module.options.local,
         remote: _module.options.remote,
