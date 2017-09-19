@@ -243,3 +243,9 @@ var editor = new PL.Editor({
 The TitleModule can make requests to find "related" content and suggest it be attached. Documentation on this can be found at:
 
 https://github.com/publiclab/PublicLab.Editor/blob/master/src/modules/PublicLab.TitleModule.Related.js
+
+****
+
+### Compatibility
+
+PublicLab.Editor uses jQuery 1.7+ or 2, and tests run on Node v5+. Other versions depended on are noted in the package.json file. 
