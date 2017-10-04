@@ -11,6 +11,9 @@
     <link href="../node_modules/woofmark/dist/woofmark.min.css" rel="stylesheet">
     <link href="../dist/PublicLab.Editor.css" rel="stylesheet">
 
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <script src="../dist/PublicLab.Editor.js"></script>
 
   </head>
@@ -53,7 +56,10 @@ I've been working on [this thing](/) and wanted to share.</textarea>
 
         editor = new PL.Editor({
           textarea: $('.ple-textarea')[0],
-          size: 'xs'
+          size: 'xs',
+          mainImageModule: false,
+          tagsModule: false,
+          titleModule: false
         });
 
       })();
