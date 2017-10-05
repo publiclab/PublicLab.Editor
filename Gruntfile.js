@@ -37,6 +37,7 @@ module.exports = function(grunt) {
               specs: 'spec/javascripts/*spec.js',
               vendor: [
                 'node_modules/jquery/dist/jquery.min.js',
+                'node_modules/bootstrap/dist/js/bootstrap.min.js',
                 'node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
                 'node_modules/blueimp-file-upload/js/jquery.iframe-transport.js',
                 'node_modules/blueimp-file-upload/js/jquery.fileupload.js',
