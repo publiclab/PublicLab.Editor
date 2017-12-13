@@ -82,6 +82,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       dataType: 'json',
 
       formData: {
+        'authenticity_token': _module.options.token,
         'uid': _module.options.uid,
         'nid': _module.options.nid
       },
