@@ -1,4 +1,3 @@
-require('blueimp-file-upload');
 /*
  * Form module for main post image
  */

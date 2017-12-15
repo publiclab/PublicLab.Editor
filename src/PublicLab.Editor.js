@@ -1,10 +1,3 @@
-// can we require things that rely on 
-// document, but still be runnable in nodejs?
-// if (!this.hasOwnProperty('document') document 
-
-window.$ = window.jQuery = require('jquery')
-var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() { });
-
 var Class        = require('resig-class');
 
 PL = PublicLab = {};
