@@ -18,14 +18,14 @@ module.exports = PublicLab.Help = Class.extend({
 
     $('.ple-module').mouseleave(function(e) {
 
-      $(this).find('.ple-guide-minor').fadeOut();
+      $(this).find('.ple-guide-minor').fadeTo(400,0);
 
     });
 
     $('.ple-module').mouseenter(function(e) {
 
-      $(this).find('.ple-guide-minor').fadeIn();
-
+      $(this).find('.ple-guide-minor').fadeTo(400,1);
+      
     });
 
 

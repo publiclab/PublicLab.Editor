@@ -93,7 +93,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       _module.el.find('.ple-module-content .ple-help-minor')
                 .html(_module.options.instructions);
 
-      _module.el.find('.ple-help-minor').hide(); 
+      _module.el.find('.ple-help-minor').css('opacity','0');
 
     }
 
@@ -103,6 +103,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
+    
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
