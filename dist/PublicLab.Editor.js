@@ -23041,9 +23041,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     });
 
-    // $(_module.options.textarea).on('change keydown', function(e) {
-    //   _module.resize();
-    // });
+    $(_module.options.textarea).on('change keydown', function(e) {
+      _module.resize();
+    });
 
 
   }
