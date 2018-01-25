@@ -106,7 +106,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.el.find('.ple-recent-tags')
                 .append(tags.join(', '))
 
-      _module.el.find('.ple-help-minor').hide();
+      _module.el.find('.ple-help-minor').css('opacity','0');
 
     }
 
