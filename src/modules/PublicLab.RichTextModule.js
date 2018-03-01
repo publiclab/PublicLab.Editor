@@ -153,6 +153,13 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
       _editor.validate();
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(/\\\]\(|\\##|\\\*\\\*/g) && $('.markdown-warning').length === 0) {
+        var message = "Looks like you're using <a href='http://wikipedia.org/en/Markdown'>Markdown</a> while in Rich Text mode. If you'd like to continue in Markdown mode, <a class='alert-change-mode' href='javascript:void();'>click here</a>.";
+        $(_module.wysiwyg.editable).after("<div class='markdown-warning alert alert-warning'>" + message + "</div>");
+        $('.alert-change-mode').click(function alertChangeMode() {
+          _module.setMode('markdown');
+	});
+      }
     });
 
     // once woofmark's done with the textarea, this is triggered
@@ -175,6 +182,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     });
 
+    // this may not work due to our using crossvent library, see above event handlers
     $(_module.options.textarea).on('change keydown', function(e) {
       _module.resize();
     });
