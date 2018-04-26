@@ -26,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/publiclab/PublicLab.Editor/issues"
   },
-  "homepage": "https://github.com/publiclab/PublicLab.Editor#readme"
+  "homepage": "https://github.com/publiclab/PublicLab.Editor#readme",
+  "_source": "git://github.com/publiclab/PublicLab.Editor.git"
 }
