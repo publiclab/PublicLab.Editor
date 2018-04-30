@@ -125,7 +125,8 @@ module.exports = function(textarea, _editor, _module) {
           allowedAttributes: {
             a: ['href', 'name', 'target', 'title', 'aria-label'],
             iframe: ['allowfullscreen', 'frameborder', 'src', 'width', 'height', 'style', 'border'],
-            img: ['src', 'alt', 'title', 'aria-label']
+            img: ['src', 'alt', 'title', 'aria-label'],
+            div: ['class']
           },
         },
         tokenizers: [
@@ -139,6 +140,12 @@ module.exports = function(textarea, _editor, _module) {
             token: /(^|\s)#([A-z\-]+)\b/g, // #hashtags
             transform: function (all, separator, id) {
               return separator + '<a href="/tag/' + id + '">#' + id + '</a>';
+            }
+          },
+          {
+            token: /\[([\S\:\/]+)\]/, // [power:tags]
+            transform: function (all, keywords) {
+              return '<div class="powertags">Power tag: ' + keywords + '</div>';
             }
           }
         ]
@@ -172,6 +179,10 @@ module.exports = function(textarea, _editor, _module) {
 
           if (el.tagName === 'A' && el.innerHTML[0] === '#') {
             return el.innerHTML;
+          }
+
+          if (el.tagName === 'DIV' && $(el).hasClass('powertags')) {
+            return '[' + el.innerHTML.replace('Power tag: ', '') + ']';
           }
 
         }
