@@ -9,6 +9,18 @@
   font-family: "Junction Light", serif;
 }
 
+.pl-editor .powertags {
+  background: #dee;
+  border: 2px solid #aac;
+  padding: 10px;
+  border-radius: 5px;
+  color: #556;
+  font-size: 90%;
+  font-style: italic;
+  font-weight: bold;
+  margin: 10px auto;
+}
+
 .ple-help {
   color: #aaa;
 }
