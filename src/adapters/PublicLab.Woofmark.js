@@ -139,10 +139,14 @@ module.exports = function(textarea, _editor, _module) {
 
     mergeHtmlAndAttachment: function (chunks, link) {
        var linkText = chunks.selection || link.title;
+       console.log(link, chunks)
+       if (false) console.log(link)
        if (link.href.match('.csv')) { // displaying csvs in graphs
+         if (wysiwyg.mode === 'markdown') var output = '[graph:' + link.href + ']';
+         else              var output = '<div class="powertags">Power tag: graph:' + link.href + '</div>';
          return {
            before: chunks.before,
-           selection: '[graph:' + link.href + ']',
+           selection: output,
            after: chunks.after,
          }
        } else {
