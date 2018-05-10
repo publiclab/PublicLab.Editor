@@ -22143,9 +22143,6 @@ module.exports = PublicLab.Formatter = Class.extend({
         // we can remove this from server req, since we're authenticated
         output.authenticity_token = data.token || null;
 
-        // Whether note will be draft or not
-        output.draft = data.draft || false;
-        
         // Optional:
         output.tags               = data.tags           || null; // comma delimited
         output.has_main_image     = data.has_main_image || null;
