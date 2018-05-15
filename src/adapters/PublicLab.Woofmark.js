@@ -95,14 +95,10 @@ module.exports = function(textarea, _editor, _module) {
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
-      validate: function isItAnUploadableFile (file) {
-        // previously used, just for images:
-        // return /^image\/(gif|png|p?jpe?g)$/i.test(file.type);
-        // however we found in https://github.com/publiclab/plots2/issues/1561 that woofmark
-        // treats "attachments" as footnotes, which do not render in our markdown parsers
-        // but we can pass non-image attachments through under "images" and they appear as <a> links
+      validate: function isImage (file) {
         var valid = true,
-            formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+            // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+            formats = _module.options.formats || ['gif', 'png', 'jpg', 'jpeg'],
             filetype = file.name.split('.')[file.name.split('.').length - 1];
             filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
@@ -110,6 +106,57 @@ module.exports = function(textarea, _editor, _module) {
       }
 
     },
+
+    attachments: {
+
+      method: 'POST',
+ 
+      // endpoint where the images will be uploaded to, required
+      url: '/images',
+
+      // image field key
+      fieldKey: 'image[photo]',
+
+      // additional form fields
+      formData: { nid: null },
+
+      // xhr upload options like CSRF token
+      xhrOptions: { 
+        beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
+      },
+
+      // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
+      validate: function isAttachment (file) {
+        var valid = true,
+            formats = _module.options.attachmentFormats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt'],
+            filetype = file.name.split('.')[file.name.split('.').length - 1];
+            filetype = filetype.toLowerCase();
+        if (formats.indexOf(filetype) === -1) valid = false;
+        return valid;
+      }
+
+    },
+
+    mergeHtmlAndAttachment: function (chunks, link) {
+       var linkText = chunks.selection || link.title;
+       console.log(link, chunks)
+       if (false) console.log(link)
+       if (link.href.match('.csv')) { // displaying csvs in graphs
+         if (wysiwyg.mode === 'markdown') var output = '[graph:' + link.href + ']';
+         else              var output = '<div class="powertags">Power tag: graph:' + link.href + '</div>';
+         return {
+           before: chunks.before,
+           selection: output,
+           after: chunks.after,
+         }
+       } else {
+         return {
+           before: chunks.before,
+           selection: '<a href="' + link.href + '">' + linkText + '</a>',
+           after: chunks.after,
+         }
+       };
+     },
 
     parseMarkdown: function (input) {
 

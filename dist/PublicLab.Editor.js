@@ -948,9 +948,9 @@ function isBuffer(obj) {
 
 /**
  * Get the computed style of a DOM element
- *
+ * 
  *   style(document.body) // => {width:'500px', ...}
- *
+ * 
  * @param {Element} element
  * @return {Object}
  */
@@ -1896,7 +1896,7 @@ function forEach(list, iterator, context) {
     if (arguments.length < 3) {
         context = this
     }
-
+    
     if (toString.call(list) === '[object Array]')
         forEachArray(list, iterator, context)
     else if (typeof list === 'string')
@@ -17695,57 +17695,57 @@ module.exports = function (headers) {
   var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
   // The base Class implementation (does nothing)
   this.Class = function(){};
-
+  
   // Create a new Class that inherits from this class
   Class.extend = function(prop) {
     var _super = this.prototype;
-
+    
     // Instantiate a base class (but only create the instance,
     // don't run the init constructor)
     initializing = true;
     var prototype = new this();
     initializing = false;
-
+    
     // Copy the properties over onto the new prototype
     for (var name in prop) {
       // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" &&
+      prototype[name] = typeof prop[name] == "function" && 
         typeof _super[name] == "function" && fnTest.test(prop[name]) ?
         (function(name, fn){
           return function() {
             var tmp = this._super;
-
+            
             // Add a new ._super() method that is the same method
             // but on the super-class
             this._super = _super[name];
-
+            
             // The method only need to be bound temporarily, so we
             // remove it when we're done executing
-            var ret = fn.apply(this, arguments);
+            var ret = fn.apply(this, arguments);        
             this._super = tmp;
-
+            
             return ret;
           };
         })(name, prop[name]) :
         prop[name];
     }
-
+    
     // The dummy class constructor
     function Class() {
       // All construction is actually done in the init method
       if ( !initializing && this.init )
         this.init.apply(this, arguments);
     }
-
+    
     // Populate our constructed prototype object
     Class.prototype = prototype;
-
+    
     // Enforce the constructor to be what we expect
     Class.constructor = Class;
 
     // And make this class extendable
     Class.extend = arguments.callee;
-
+    
     return Class;
   };
 })();
@@ -21617,7 +21617,7 @@ PL.Editor = Class.extend({
 
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
-    // Note that modules may attempt to write to the same key,
+    // Note that modules may attempt to write to the same key, 
     // and would then overwrite one another.
     _editor.collectData = function() {
 
@@ -21636,7 +21636,7 @@ PL.Editor = Class.extend({
       _editor.collectData();
 
       var formatted = new PublicLab.Formatter().convert(
-                        _editor.data,
+                        _editor.data, 
                         _editor.options.format
                       );
 
@@ -21645,8 +21645,8 @@ PL.Editor = Class.extend({
         $('.ple-publish').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         $.ajax(
-          _editor.options.destination,
-          {
+          _editor.options.destination, 
+          { 
             data: formatted,
             method: 'POST'
           }
@@ -21677,17 +21677,17 @@ PL.Editor = Class.extend({
       var focusables = [];
 
       _editor.modules.forEach(function(module, i) {
-
+ 
         focusables = focusables.concat(module.focusables);
-
+ 
       });
 
       focusables.push($('.ple-publish'));
-
+ 
       focusables.forEach(function(focusable, i) {
-
+ 
         focusable.attr('tabindex', i + 1);
-
+ 
       });
 
     }
@@ -21700,13 +21700,13 @@ PL.Editor = Class.extend({
         console.log('Publishing!', _editor.data);
         _editor.publish(_editor.options.publishCallback);
       });
-
-
+ 
+ 
       $('.btn-more').click(function() {
-
+ 
         // display more tools menu
         $('.ple-menu-more').toggle();
-
+ 
       });
 
     }
@@ -21821,7 +21821,7 @@ module.exports = PublicLab.Help = Class.extend({
     $('.ple-module').mouseenter(function(e) {
 
       $(this).find('.ple-guide-minor').fadeTo(400,1);
-
+      
     });
 
 
@@ -21832,7 +21832,7 @@ module.exports = PublicLab.Help = Class.extend({
 
 },{}],202:[function(require,module,exports){
 /*
- * History of edits, sorted by day.
+ * History of edits, sorted by day. 
  */
 
 var Class  = require('resig-class'),
@@ -21856,7 +21856,7 @@ module.exports = PublicLab.History = Class.extend({
     _history.options.element  = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
 
     // unique key to fetch storage
-    _history.key = _history.options.prefix + _history.options.id;
+    _history.key = _history.options.prefix + _history.options.id; 
 
 
     if (window.hasOwnProperty('localStorage')) {
@@ -21897,8 +21897,8 @@ module.exports = PublicLab.History = Class.extend({
         var string = JSON.stringify(_history.log)
 
         // minimal validation:
-        if (_history.log instanceof Array
-            && typeof string    == 'string'
+        if (_history.log instanceof Array  
+            && typeof string    == 'string' 
             && string[0]        == '[') {
 
           localStorage.setItem(_history.key, string);
@@ -22022,7 +22022,7 @@ module.exports = PublicLab.History = Class.extend({
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
 
-
+              
               dateClasses.push(log.dateClass);
               html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="clear">clear</a></p>';
 
@@ -22132,35 +22132,35 @@ module.exports = PublicLab.Formatter = Class.extend({
 
     // functions that accept standard <data> and output form data for known services
     _formatter.schemas = {
-
+ 
       "publiclab": function(data) {
-
+ 
         var output = {};
-
-        output.title              = data.title || null;
-        output.body               = data.body  || null;
-
+ 
+        output.title              = data.title || null; 
+        output.body               = data.body  || null; 
+ 
         // we can remove this from server req, since we're authenticated
-        output.authenticity_token = data.token || null;
-
+        output.authenticity_token = data.token || null; 
+ 
         // Optional:
         output.tags               = data.tags           || null; // comma delimited
         output.has_main_image     = data.has_main_image || null;
         output.main_image         = data.main_image     || null; // id to associate with pre-uploaded image
         output.node_images        = data.node_images    || null; // comma-separated image.ids, I think
         // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
-        output.image              = { };
+        output.image              = { };  
         output.image.photo        = data.image          || null;
-
+ 
         return output;
-
+ 
       }//,
-
+ 
       // "drupal": {
       //   "title":           null,
       //   "body":            null
       // }
-
+ 
     }
 
 
@@ -22177,7 +22177,7 @@ module.exports = PublicLab.Formatter = Class.extend({
 
 },{"resig-class":134}],204:[function(require,module,exports){
 /*
- * Wrapped woofmark() constructor with
+ * Wrapped woofmark() constructor with 
  * customizations for our use case.
  * Should improve organization of this vs. RichTextModule
  */
@@ -22187,7 +22187,7 @@ var woofmark     = require('woofmark'),
     megamark     = require('megamark'),
     horsey       = require('horsey'),
     banksy       = require('banksy');
-
+    
 module.exports = function(textarea, _editor, _module) {
 
   var icons = {
@@ -22204,10 +22204,10 @@ module.exports = function(textarea, _editor, _module) {
 
   _module.options.tags = _module.options.tags || function(data, done) {
     done(null, [{ list: [
-      '#spectrometer',
-      '#air-quality',
-      '#water-quality',
-      '#balloon-mapping'
+      '#spectrometer', 
+      '#air-quality', 
+      '#water-quality', 
+      '#balloon-mapping' 
     ]}]);
   }
 
@@ -22254,10 +22254,10 @@ module.exports = function(textarea, _editor, _module) {
     images: {
 
       method: 'POST',
-
+ 
       // endpoint where the images will be uploaded to, required
       url: '/images',
-
+ 
       // optional text describing the kind of files that can be uploaded
       restriction: 'GIF, JPG, and PNG images',
 
@@ -22268,7 +22268,7 @@ module.exports = function(textarea, _editor, _module) {
       formData: { nid: null },
 
       // xhr upload options like CSRF token
-      xhrOptions: {
+      xhrOptions: { 
         beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
       },
 
@@ -22288,7 +22288,7 @@ module.exports = function(textarea, _editor, _module) {
     attachments: {
 
       method: 'POST',
-
+ 
       // endpoint where the images will be uploaded to, required
       url: '/images',
 
@@ -22299,7 +22299,7 @@ module.exports = function(textarea, _editor, _module) {
       formData: { nid: null },
 
       // xhr upload options like CSRF token
-      xhrOptions: {
+      xhrOptions: { 
         beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
       },
 
@@ -22413,7 +22413,7 @@ module.exports = function(textarea, _editor, _module) {
         }
       });
 
-    }
+    } 
 
   });
 
@@ -22427,7 +22427,7 @@ module.exports = function(textarea, _editor, _module) {
       getText: 'text',
       getValue: 'value'
     });
-
+ 
     wysiwyg.calloutHorse.defaultSetter = function (value) {
       if (wysiwyg.mode === 'wysiwyg') {
         textarea.innerHTML = value;
@@ -22435,7 +22435,7 @@ module.exports = function(textarea, _editor, _module) {
         textarea.value = value;
       }
     }
-
+ 
     wysiwyg.calloutBridge = banksy(textarea, {
       editor: wysiwyg,
       horse: wysiwyg.calloutHorse
@@ -22449,11 +22449,11 @@ module.exports = function(textarea, _editor, _module) {
       anchor: '#',
       source: _module.options.tags
     });
-
+ 
     wysiwyg.tagHorse.defaultSetter = function (value) {
       el.value = value + ', ';
     }
-
+ 
     wysiwyg.tagBridge = banksy(textarea, {
       editor: wysiwyg,
       horse: wysiwyg.tagHorse
@@ -22485,38 +22485,38 @@ module.exports = function(textarea, _editor, _module) {
     $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
     $('.wk-commands, .wk-switchboard').addClass('btn-group');
     $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
-
+ 
     $('.wk-commands button.woofmark-command-quote').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-code').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-ol').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-attachment').addClass('hidden-xs');
-
+ 
     $('.wk-switchboard button.woofmark-mode-markdown').parent().removeClass('btn-group');
     $('.wk-switchboard button.woofmark-mode-markdown').html('<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>');
     $('.wk-switchboard button.woofmark-mode-wysiwyg').html('<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>');
-
+ 
     if (wysiwyg.mode === 'wysiwyg') $('.wk-switchboard button.woofmark-mode-wysiwyg').hide();
     else                            $('.wk-switchboard button.woofmark-mode-markdown').hide();
-
+ 
     $('.wk-switchboard button').click(function() {
       $('.wk-switchboard button.woofmark-mode-markdown').toggle();
       $('.wk-switchboard button.woofmark-mode-wysiwyg').toggle();
     });
-
+ 
     if (_editor.options.size == "xs") {
-
+ 
       //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
-
+ 
       // hide selectively, not by #:
       $('.wk-commands button.woofmark-command-quote').hide();
       $('.wk-commands button.woofmark-command-code').hide();
       $('.wk-commands button.woofmark-command-ol').hide();
       $('.wk-commands button.woofmark-command-ul').hide();
-
+ 
     } else {
-
+ 
       $('.wk-switchboard button').addClass('btn-sm');
-
+ 
     }
 
   }
@@ -22683,7 +22683,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
         _editor.validate();
 
-        // primarily for testing:
+        // primarily for testing: 
         if (_module.options.callback) _module.options.callback();
 
       },
@@ -22728,11 +22728,11 @@ module.exports = PublicLab.Module = Class.extend({
     _module.el = $('.ple-module-' + _module.options.name);
 
 
-    // Construct and insert HTML, including
+    // Construct and insert HTML, including 
     // instructions, help and tips
-    _module.build = function() {
+    _module.build = function() {    
 
-      // standard instructions location is at start of ple-module-guide
+      // standard instructions location is at start of ple-module-guide 
       _module.el.find('.ple-module-guide')
                 .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
                 .append('<div class="ple-guide-minor hidden-xs hidden-sm" style = "opacity:0;"></div>');
@@ -22744,7 +22744,7 @@ module.exports = PublicLab.Module = Class.extend({
                   .append('<p><i class="fa fa-' + guide.icon + '"></i>' + guide.text + '</p>');
 
       });
-
+ 
     }
 
 
@@ -22759,19 +22759,19 @@ module.exports = PublicLab.Module = Class.extend({
 
 
     // could wrap these in an events() method?
-    _module.el.find('.ple-help-minor').hide();
+    _module.el.find('.ple-help-minor').hide(); 
 
 
-    $(_module.el).mouseenter(function() {
+    $(_module.el).mouseenter(function() { 
 
       _module.el.find('.ple-help-minor').fadeTo(400,1);
 
     });
 
-    $(_module.el).mouseleave(function() {
+    $(_module.el).mouseleave(function() { 
 
       _module.el.find('.ple-help-minor').fadeTo(400,0);
-
+      
     });
 
 
@@ -22780,9 +22780,9 @@ module.exports = PublicLab.Module = Class.extend({
 });
 
 },{}],208:[function(require,module,exports){
-/*
+/* 
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
-*/
+*/   
 
 module.exports = function initEmbed(_module, wysiwyg) {
 
@@ -22800,9 +22800,9 @@ module.exports = function initEmbed(_module, wysiwyg) {
 }
 
 },{}],209:[function(require,module,exports){
-/*
+/* 
    Horizontal Rule insertion: ****
-*/
+*/   
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
 
@@ -22813,7 +22813,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
     wysiwyg.runCommand(function(chunks, mode) {
       chunks.before += _module.wysiwyg.parseMarkdown("\n****\n"); // newlines before and after
       _module.afterParse(); // tell editor we're done here
-
+  
       // setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
 
     });
@@ -22862,9 +22862,9 @@ module.exports = function initTables(_module, wysiwyg) {
       table = table + "|";
 
       for (var col = 0; col < cols; col++) {
-
+     
         table = table + " cell |";
-
+     
       }
 
       table = table + "\n";
@@ -22941,19 +22941,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // break into subclass common to all modules, perhaps:
     _module.options.guides = [
-      {
-        icon: "mouse-pointer",
-        position: 30,
+      { 
+        icon: "mouse-pointer", 
+        position: 30, 
         text: "Drag images into the text area to upload them."
       },
-      {
+      { 
         icon: "list-ul",
-        position: 90,
+        position: 90, 
         text: "Be sure to list required materials and resources."
       },
-      {
+      { 
         icon: "clock-o",
-        position: 90,
+        position: 90, 
         text: "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
       }
     ];
@@ -23097,9 +23097,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
       // ensure document is scrolled to the same place:
       document.body.scrollTop = _module.scrollTop;
-      // might need to adjust for markdown/rich text not
+      // might need to adjust for markdown/rich text not 
       // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown")
+      //if (_editor.wysiwyg.mode == "markdown") 
 
       if (_module.wysiwyg.mode == "wysiwyg") _module.focusables[0] = $(_module.editable);
       else                                   _module.focusables[0] = $(_module.textarea);
@@ -23238,7 +23238,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 });
 
 },{}],213:[function(require,module,exports){
-/* Displays related posts to associate this one with.
+/* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
 
@@ -23271,7 +23271,7 @@ module.exports = function relatedNodes(module) {
   bindEvents()
 
   // make an area for "related posts" to connect to
-  function build() {
+  function build() { 
 
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
@@ -23281,7 +23281,7 @@ module.exports = function relatedNodes(module) {
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
-  function show(relatedResults) {
+  function show(relatedResults) { 
 
     relatedEl.find('.result').remove();
 
@@ -23318,20 +23318,20 @@ module.exports = function relatedNodes(module) {
   function bindEvents() {
 
     $(module.el).find('input').keydown(function(e) {
-
+ 
       if (module.options.suggestRelated) {
         relatedEl.fadeIn();
         fetchRelated(show);
       }
-
+ 
     });
-
+ 
     $(module.el).find('input').focusout(function(e) {
-
+ 
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
       }
-
+ 
     });
 
   }
@@ -23406,7 +23406,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       if (!valid && value != "") {
 
         _module.error('Must be formatted correctly.');
-
+ 
       } else if (value && value.length > 45) {
 
         _module.error('Getting a bit long!', 'warning');
@@ -23427,7 +23427,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     // Overrides default build method
-    _module.build = function() {
+    _module.build = function() {    
 
       // custom location -- just under the title input
       _module.el.find('.ple-module-content')
@@ -23446,7 +23446,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
-
+    
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
