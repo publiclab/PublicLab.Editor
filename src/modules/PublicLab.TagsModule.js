@@ -11,7 +11,11 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
     _module.key = 'tags';
     _module.options = options || _editor.options.tagsModule || {};
     _module.options.name         = 'tags';
+<<<<<<< HEAD
     _module.options.instructions = 'Tags relate your work to others\' posts. <a href="https://publiclab.org/wiki/power-tags" target="_blank">Read more &raquo;</a>';
+=======
+    _module.options.instructions = 'Tags relate your work to others\' posts. <a href="https://publiclab.org/wiki/power-tags" target="_blank" target="_blank">Read more &raquo;</a>';
+>>>>>>> cb40002884d5e409df4cf74762b104bc104b48ee
     _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
     _module.options.local = _module.options.local || ['balloon-mapping','kite-mapping','air-quality','spectrometer','water-quality'];
     _module.options.prefetch = _module.options.prefetch || null;
@@ -20,7 +24,11 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = false;
+<<<<<<< HEAD
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="https://publiclab.org/wiki/power-tags" target="_blank">Read more &raquo;</a>';
+=======
+    _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="https://publiclab.org/wiki/power-tags" target="_blank" target="_blank">Read more &raquo;</a>';
+>>>>>>> cb40002884d5e409df4cf74762b104bc104b48ee
 
     _module.value = function(text) {
 
