@@ -21,7 +21,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="https://publiclab.org/wiki/power-tags" target="_blank">Read more &raquo;</a>';
-    
+
     _module.value = function(text) {
 
       if (typeof text == 'string') {
