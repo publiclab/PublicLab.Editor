@@ -1,4 +1,3 @@
-require('blueimp-file-upload');
 /*
  * Form module for main post image
  */
@@ -12,15 +11,31 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.key = 'main_image_url';
     _module.options = options || _editor.options.mainImageModule || {};
     _module.options.name = 'main_image';
-    _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a href="">Image tips &raquo;</a>';
+    _module.options.instructions = 'Choose an image to be used as a thumbnail for your post. <br /><a target="_blank" href="https://publiclab.org/wiki/authoring-help#Images">Image tips &raquo;</a>';
     _module.options.url = _editor.options.mainImageUrl;
     _module.options.uploadUrl = _module.options.uploadUrl || "/images";
 
     _module._super(_editor, _module.options);
 
     _module.focusables.push(_module.el.find('input'));
+    _module.image = new Image();
 
-    _module.value = function() {
+    _module.value = function(url, id) {
+
+      if (typeof url == 'string') {
+
+        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
+        // onLoad never triggers
+        _module.image.onLoad = function() {
+          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
+        }
+        _module.image.src = url;
+        _module.options.url = url;
+        _editor.data.has_main_image = true;
+        _editor.data.image_revision = url; // choose which image to use
+      }
+
+      if (id) _editor.data.main_image = id;
 
       return _module.options.url;
 
@@ -31,7 +46,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 
     _module.dropEl = _module.el.find('.ple-drag-drop');
-    _module.dropEl.css('background-image', 'url("' + _module.options.url + '")');
+    _module.dropEl.css('background', 'url("' + _module.options.url + '") center no-repeat');
 
     _module.dropEl.bind('dragover',function(e) {
       e.preventDefault();
@@ -48,6 +63,16 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     });
 
 
+    // read in previous main images to enable reverting back
+    if (_module.options.previousMainImages) {
+
+    // $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+
+    }
+
+
+    // jQuery File Upload integration:
+
     _module.el.find('input').fileupload({
 
       url: _module.options.uploadUrl,
@@ -56,6 +81,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       dataType: 'json',
 
       formData: {
+        'authenticity_token': _module.options.token,
         'uid': _module.options.uid,
         'nid': _module.options.nid
       },
@@ -82,25 +108,9 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
-// this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-// onLoad never triggers
-        _module.image = new Image();
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
-
-        _module.image.src = data.result.url;
-        _module.options.url = data.result.url;
-
-        _editor.data.has_main_image = true;
-        _editor.data.main_image = data.result.id;
-
-        _editor.data.image_revision = data.result.url; // choose which image to use
+        _module.value(data.result.url, data.result.id);
 
         _editor.validate();
-
-// refactor versioning of main image
-// $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
 
         // primarily for testing: 
         if (_module.options.callback) _module.options.callback();

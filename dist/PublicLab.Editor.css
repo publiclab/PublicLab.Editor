@@ -9,6 +9,18 @@
   font-family: "Junction Light", serif;
 }
 
+.pl-editor .powertags {
+  background: #dee;
+  border: 2px solid #aac;
+  padding: 10px;
+  border-radius: 5px;
+  color: #556;
+  font-size: 90%;
+  font-style: italic;
+  font-weight: bold;
+  margin: 10px auto;
+}
+
 .ple-help {
   color: #aaa;
 }
@@ -95,9 +107,14 @@
 /********************/
 /* Rich text module */
 
-.ple-textarea {
+textarea.ple-textarea {
   box-sizing: border-box;
   min-height: 31px;
+  height: 800px;
+}
+
+.ple-history {
+  overflow: scroll;
 }
 
 .ple-textarea,
@@ -111,6 +128,11 @@
   -moz-border-radius:    8px;
   border-radius:         8px;
   outline: none;
+}
+
+.ple-textarea img,
+.wk-wysiwyg img{
+  max-width: 100%
 }
 
 .wk-commands {
@@ -127,9 +149,9 @@
   background: #eee;
 }
 
-.ple-history {
-  height: 75%;
-  overflow: scroll;
+.wk-prompt {
+  border-radius: 10px;
+  padding: 20px;
 }
 
 /* Following may be removed if this is resolved:
@@ -150,4 +172,8 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  display:none;
 }

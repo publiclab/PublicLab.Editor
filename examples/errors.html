@@ -66,6 +66,15 @@
 
       <div class="ple-content">
 
+        <!-- errors module -->
+        <div class="ple-module container">
+
+          <div class="col-md-3"></div>
+          <div class="ple-errors col-md-9"></div>
+
+        </div>
+        <!-- end errors module -->
+
 
         <!-- title module -->
         <div class="ple-module-title ple-module container">
@@ -238,7 +247,10 @@ var myVariable = 4;
         editor = new PL.Editor({
           textarea:    $('.ple-textarea')[0],
           destination: '/notes/create',
-          format:      'publiclab'
+          format:      'publiclab',
+          errors: {
+            "title": ["can't be blank"]
+          }
         });
 
       })();

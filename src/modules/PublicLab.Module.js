@@ -23,7 +23,7 @@ module.exports = PublicLab.Module = Class.extend({
       // standard instructions location is at start of ple-module-guide 
       _module.el.find('.ple-module-guide')
                 .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
-                .append('<div class="ple-guide-minor hidden-xs hidden-sm" style="display:none;"></div>');
+                .append('<div class="ple-guide-minor hidden-xs hidden-sm" style = "opacity:0;"></div>');
 
       _module.options.guides.forEach(function(guide) {
 
@@ -52,14 +52,14 @@ module.exports = PublicLab.Module = Class.extend({
 
     $(_module.el).mouseenter(function() { 
 
-      _module.el.find('.ple-help-minor').fadeIn(); 
+      _module.el.find('.ple-help-minor').fadeTo(400,1);
 
     });
 
     $(_module.el).mouseleave(function() { 
 
-      _module.el.find('.ple-help-minor').fadeOut(); 
-
+      _module.el.find('.ple-help-minor').fadeTo(400,0);
+      
     });
 
 

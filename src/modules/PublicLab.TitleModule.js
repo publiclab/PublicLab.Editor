@@ -12,13 +12,17 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.options = options || _editor.options.titleModule || {};
     _module.options.name = "title";
 
+    // override defaults in TitleModule.Related:
+    _module.options.suggestRelated = _module.options.suggestRelated === true || false; // boolean
+    _module.options.fetchRelated = _module.options.fetchRelated || false; // expects function
+
     _module._super(_editor, _module.options);
 
     _module.focusables.push(_module.el.find('input'));
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = true;
-    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="">Read more &raquo;</a>';
+    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="" target="_blank">Read more &raquo;</a>';
 
     _module.value = function(text) {
 
@@ -60,7 +64,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
         _module.error('Must be formatted correctly.');
  
-      } else if (value.length > 45) {
+      } else if (value && value.length > 45) {
 
         _module.error('Getting a bit long!', 'warning');
 
@@ -89,7 +93,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       _module.el.find('.ple-module-content .ple-help-minor')
                 .html(_module.options.instructions);
 
-      _module.el.find('.ple-help-minor').hide(); 
+      _module.el.find('.ple-help-minor').css('opacity','0');
 
     }
 
@@ -99,6 +103,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
+    
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:

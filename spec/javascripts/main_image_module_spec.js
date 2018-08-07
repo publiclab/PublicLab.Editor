@@ -22,6 +22,12 @@ describe("MainImageModule", function() {
 
     expect(module.valid()).toBe(true);
 
+    expect(module.value('/image/url.jpg', 34)).toBe('/image/url.jpg');
+    expect(editor.data.has_main_image).toBe(true);
+    expect(editor.data.image_revision).toBe('/image/url.jpg');
+    expect(module.image.src).toBe('file:///image/url.jpg');
+    expect(module.options.url).toBe('/image/url.jpg');
+
   });
 
 

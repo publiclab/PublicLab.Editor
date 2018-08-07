@@ -1,10 +1,3 @@
-// can we require things that rely on 
-// document, but still be runnable in nodejs?
-// if (!this.hasOwnProperty('document') document 
-
-window.$ = window.jQuery = require('jquery')
-var bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.min.js', function() { });
-
 var Class        = require('resig-class');
 
 PL = PublicLab = {};
@@ -15,6 +8,7 @@ PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
 PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
 PL.History         = require('./PublicLab.History.js');
 PL.Help            = require('./PublicLab.Help.js');
+PL.Errors          = require('./PublicLab.Errors.js');
 PL.Module          = require('./modules/PublicLab.Module.js');
 PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
@@ -28,7 +22,7 @@ PL.Editor = Class.extend({
 
     var _editor = this;
     _editor.options = options;
-    _editor.options.history = (_editor.options.history !== false); // true by default
+    _editor.options.history = _editor.options.history || true;
     _editor.options.format = "publiclab";
 
     // Validation:
@@ -59,8 +53,7 @@ PL.Editor = Class.extend({
 
     }
 
-    $('.ple-editor *').focusout(_editor.validate);
-
+    $('.ple-editor *').on('focusout keypress blur change keyup', _editor.validate);
 
     _editor.data = {
 
@@ -74,21 +67,6 @@ PL.Editor = Class.extend({
     // Update data based on passed options.data
     for (var attrname in options.data) {
       _editor.data[attrname] = options.data[attrname];
-    }
-
-
-    // Returns an object which is a compilation of all module
-    // values, requested via module.value().
-    _editor.values = function() {
-
-      var valueObj = {};
-
-      _editor.modules.forEach(function(module, i) {
-        valueObj[key] = module.value();
-      });
-
-      return valueObj;
-
     }
 
 
@@ -107,7 +85,7 @@ PL.Editor = Class.extend({
 
 
     // executes <callback> on completion, or (by default) navigates to returned URL
-    _editor.publish = function(callback) {
+    _editor.publish = _editor.options.publish || function publish(callback) {
 
       _editor.collectData();
 
@@ -118,11 +96,14 @@ PL.Editor = Class.extend({
 
       if (_editor.options.destination) {
 
-        $('.ple-publish').html('<i class="fa fa-circle-notch fa-spin"></i>');
+        $('.ple-publish').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         $.ajax(
           _editor.options.destination, 
-          { data: formatted }
+          { 
+            data: formatted,
+            method: 'POST'
+          }
         ).done(function(response) {
 
           if (callback) callback(response);
@@ -171,7 +152,7 @@ PL.Editor = Class.extend({
 
       $('.ple-publish').click(function() {
         console.log('Publishing!', _editor.data);
-        _editor.publish();
+        _editor.publish(_editor.options.publishCallback);
       });
  
  
@@ -185,25 +166,40 @@ PL.Editor = Class.extend({
     }
 
 
-    // options are passed via the corresponding _editor.options.fooModule object;
-    // however, we copy textarea (the most basic) in automatically:
-    _editor.options.richTextModule = _editor.options.richTextModule || {};
-    _editor.options.richTextModule.textarea = _editor.options.textarea;
-
-    _editor.titleModule     = new PublicLab.TitleModule(    _editor);
-    _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
-    _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
-    _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
-
     _editor.modules = [];
-    _editor.modules.push(_editor.titleModule);
-    _editor.modules.push(_editor.mainImageModule);
-    _editor.modules.push(_editor.richTextModule);
-    _editor.modules.push(_editor.tagsModule);
 
-    // history must go after richTextModule, as it monitors that
-    if (_editor.options.history) _editor.history = new PublicLab.History(_editor);
+    // default modules:
+    if (_editor.options.titleModule !== false) {
+      _editor.titleModule = new PublicLab.TitleModule(_editor);
+      _editor.modules.push(_editor.titleModule);
+    }
+
+    if (_editor.options.mainImageModule !== false) {
+      _editor.mainImageModule = new PublicLab.MainImageModule(_editor);
+      _editor.modules.push(_editor.mainImageModule);
+    }
+
+    if (_editor.options.richTextModule  !== false) {
+      // options are normally passed via the corresponding _editor.options.fooModule object;
+      // however, we copy textarea (the most basic) in automatically:
+      _editor.options.richTextModule = _editor.options.richTextModule || {};
+      _editor.options.richTextModule.textarea = _editor.options.textarea;
+
+      _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+      _editor.modules.push(_editor.richTextModule);
+
+      // history must go after richTextModule, as it monitors that
+      if (_editor.options.history) _editor.history = new PublicLab.History(_editor, _editor.options.history);
+    }
+
+    if (_editor.options.tagsModule !== false) {
+      _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+      _editor.modules.push(_editor.tagsModule);
+    }
+
     _editor.help = new PublicLab.Help(_editor);
+
+    _editor.errors = new PublicLab.Errors(_editor, _editor.options.errors);
 
 
     _editor.validate();

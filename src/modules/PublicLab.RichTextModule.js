@@ -20,7 +20,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       { 
         icon: "mouse-pointer", 
         position: 30, 
-        text: "Drag images into the textarea to upload them."
+        text: "Drag images into the text area to upload them."
       },
       { 
         icon: "list-ul",
@@ -89,7 +89,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // converts to markdown and back to html, or the reverse,
     // to trigger @callouts and such formatting
     _module.parse = function() {
-console.log('parse');
+
       _module.value(_module.value());
       _module.afterParse();
 
@@ -127,17 +127,37 @@ console.log('parse');
 
     }
 
-
-    var growTextarea = require('grow-textarea');
-
+    // caused wild jumpy behavior - https://github.com/publiclab/PublicLab.Editor/issues/114
+    //var growTextarea = require('grow-textarea');
     // Make textarea match content height
     _module.resize = function() {
-
-      growTextarea(_module.options.textarea, { extra: 10 });
-
+      //growTextarea(_module.options.textarea, { extra: 10 });
     }
 
     _module.resize();
+
+    crossvent.add(_module.options.textarea, 'blur', function (e) {
+      _editor.validate();
+    });
+
+    crossvent.add(_module.options.textarea, 'keydown', function (e) {
+      _editor.validate();
+    });
+
+    crossvent.add(_module.wysiwyg.editable, 'blur', function (e) {
+      _editor.validate();
+    });
+
+    crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
+      _editor.validate();
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(/\\\]\(|\\##|\\\*\\\*/g) && $('.markdown-warning').length === 0) {
+        var message = "Looks like you're using <a href='http://wikipedia.org/en/Markdown'>Markdown</a> while in Rich Text mode. If you'd like to continue in Markdown mode, <a class='alert-change-mode' href='javascript:void();'>click here</a>.";
+        $(_module.wysiwyg.editable).after("<div class='markdown-warning alert alert-warning'>" + message + "</div>");
+        $('.alert-change-mode').click(function alertChangeMode() {
+          _module.setMode('markdown');
+        });
+      }
+    });
 
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
