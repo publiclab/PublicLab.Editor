@@ -107,7 +107,7 @@
 /********************/
 /* Rich text module */
 
-.ple-textarea {
+textarea.ple-textarea {
   box-sizing: border-box;
   min-height: 31px;
   height: 800px;
