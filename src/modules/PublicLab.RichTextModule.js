@@ -127,14 +127,11 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     }
 
-
-    var growTextarea = require('grow-textarea');
-
+    // caused wild jumpy behavior - https://github.com/publiclab/PublicLab.Editor/issues/114
+    //var growTextarea = require('grow-textarea');
     // Make textarea match content height
     _module.resize = function() {
-
-      growTextarea(_module.options.textarea, { extra: 10 });
-
+      //growTextarea(_module.options.textarea, { extra: 10 });
     }
 
     _module.resize();

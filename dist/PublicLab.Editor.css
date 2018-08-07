@@ -110,6 +110,7 @@
 .ple-textarea {
   box-sizing: border-box;
   min-height: 31px;
+  height: 800px;
 }
 
 .ple-history {
