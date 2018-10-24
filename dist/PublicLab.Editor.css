@@ -37,15 +37,6 @@
 .ple-header {
   text-align: center;
 }
-@media (max-width:550px) {
-  a {
-      font-size: 0px !important;
-  }
-
-   a i {
-      font-size: 20px !important;
-   }
-}
 
 .ple-footer {
   padding: 10px;
@@ -188,4 +179,13 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 
 .tooltip.bottom .tooltip-arrow {
   display:none;
+}
+
+@media (max-width:550px) {
+  a {
+      font-size: 0px !important;
+  }
+    a i {
+      font-size: 20px !important;
+   }
 }
