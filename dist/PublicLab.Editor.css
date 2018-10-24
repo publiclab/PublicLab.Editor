@@ -37,6 +37,15 @@
 .ple-header {
   text-align: center;
 }
+@media (max-width:550px) {
+  a {
+      font-size: 0px !important;
+  }
+
+   a i {
+      font-size: 20px !important;
+   }
+}
 
 .ple-footer {
   padding: 10px;
