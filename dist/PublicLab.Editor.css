@@ -180,12 +180,11 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tooltip.bottom .tooltip-arrow {
   display:none;
 }
-
 @media (max-width:550px) {
-  a {
+  .ple-module-content a.btn {
       font-size: 0px !important;
   }
-    a i {
+    .ple-module-content a.btn i.fa {
       font-size: 20px !important;
    }
 }
