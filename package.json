@@ -36,7 +36,7 @@
     "jquery": "~3",
     "megamark": "3.2.2",
     "moment": "~2.19.3",
-    "resig-class": "~0.1.0",
+    "resig-class": "~1.0.0",
     "typeahead.js-browserify": "~1.0.7",
     "woofmark": "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy",
     "xhr": "~2.2.0"
