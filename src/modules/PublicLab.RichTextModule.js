@@ -163,7 +163,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _editor.validate();
       if (_module.wysiwyg.mode == "wysiwyg" && _module.value().includes("data:image/") && $('.data-urls-warning').length === 0) {
         var dataImageIndex = _module.value().indexOf("data:image/");
-        var message = "Looks like you're using <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs'>Data-URL images</a> They can overload our servers, so we encourage you to first <a target='_blank' href='"+ _module.value().substring(dataImageIndex, dataImageIndex + _module.value().substring(dataImageIndex).indexOf(" ") - 1) +"'>download the image</a> and the reupload it in a file format.</a>.";
+        var message = "Looks like you're using <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs'>Data-URL images</a> Instead of file images. They can overload our servers, so we encourage you to first <a download href='"+ _module.value().substring(dataImageIndex, dataImageIndex + _module.value().substring(dataImageIndex).indexOf(" ") - 1) +"'>download the image</a> and the reupload it in a file format.</a>.";
         $(_module.wysiwyg.editable).after("<div class='data-urls-warning alert alert-warning'>" + message + "</div>");
       }
     });
