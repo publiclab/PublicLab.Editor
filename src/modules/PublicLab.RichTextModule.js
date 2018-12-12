@@ -172,7 +172,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
     crossvent.add(_module.options.textarea, 'woofmark-mode-change', function (e) {
-
       _module.resize();
 
       _module.afterParse();
