@@ -34,7 +34,7 @@
     "grow-textarea": "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669",
     "horsey": "4.2.2",
     "jquery": "~3",
-    "megamark": "3.2.2",
+    "megamark": "3.3.0",
     "moment": "~2.19.3",
     "resig-class": "~1.0.0",
     "typeahead.js-browserify": "~1.0.7",
