@@ -159,11 +159,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
+    crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
+      _editor.validate();
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().includes("data:image/") && $('.data-urls-warning').length === 0) {
+        var dataImageIndex = _module.value().indexOf("data:image/");
+        var message = "Looks like you're using <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs'>Data-URL images</a> Instead of file images. They can overload our servers, so we encourage you to first <a download href='"+ _module.value().substring(dataImageIndex, dataImageIndex + _module.value().substring(dataImageIndex).indexOf(" ") - 1) +"'>download the image</a> and the reupload it in a file format.</a>.";
+        $(_module.wysiwyg.editable).after("<div class='data-urls-warning alert alert-warning'>" + message + "</div>");
+      }
+    });
+
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
     crossvent.add(_module.options.textarea, 'woofmark-mode-change', function (e) {
-
       _module.resize();
 
       _module.afterParse();
