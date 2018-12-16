@@ -26,7 +26,7 @@
     "banksy": "1.0.0",
     "blueimp-file-upload": "git://github.com/blueimp/jQuery-File-Upload.git#c72c93c3c005bbd0c849c2e35d01daaf7d23ee51",
     "bootstrap": "~3.4.0",
-    "bootstrap-datepicker": "~1.6.0",
+    "bootstrap-datepicker": "~1.8.0",
     "bootstrap-tokenfield": "~0.12.0",
     "crossvent": "1.5.5",
     "domador": "2.4.2",
