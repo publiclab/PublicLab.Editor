@@ -150,12 +150,16 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
       _editor.validate();
-      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(/\\\]\(|\\##|\\\*\\\*/g) && $('.markdown-warning').length === 0) {
+      var regexp = /\\\]\(|\\##|\\\*\\\*/g;
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(regexp) && $('.markdown-warning').length === 0) {
         var message = "Looks like you're using <a href='http://wikipedia.org/en/Markdown'>Markdown</a> while in Rich Text mode. If you'd like to continue in Markdown mode, <a class='alert-change-mode' href='javascript:void();'>click here</a>.";
-        $(_module.wysiwyg.editable).after("<div class='markdown-warning alert alert-warning'>" + message + "</div>");
+        $(_module.wysiwyg.editable).after("<div id='scrollpointMD' class='markdown-warning alert alert-warning'>" + message + "</div>");
         $('.alert-change-mode').click(function alertChangeMode() {
           _module.setMode('markdown');
         });
+        $('html, body').animate({
+          scrollTop: $("#scrollpointMD").offset().top
+      }, 2000);
       }
     });
 
@@ -166,9 +170,22 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         var diRegEx=_module.value().match(regexp);
         var message = "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='"+diRegEx[0]+"'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
         _module.wysiwyg.editable.innerHTML = (_module.wysiwyg.editable.innerHTML).replace(regexp,'');
-        $(_module.wysiwyg.editable).after("<div id='scrollpoint' class='data-urls-warning alert alert-warning'>" + message + "</div>");
+        $(_module.wysiwyg.editable).after("<div id='scrollpointDURI' class='data-urls-warning alert alert-warning'>" + message + "</div>");
         $('html, body').animate({
-        scrollTop: $("#scrollpoint").offset().top
+        scrollTop: $("#scrollpointDURI").offset().top
+    }, 2000);
+      }
+    });
+
+    crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
+      var regexp= /\*\*[\n]+\*\*/g;
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
+         var message = "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
+        _module.wysiwyg.textarea.innerHTML = (_module.wysiwyg.textarea.innerHTML).replace(regexp,'');
+        $(_module.wysiwyg.textarea).after("<div id='scrollpointBold' class='invalid-bold-tags-warning alert alert-warning'>" + message + "</div>");
+        $('html, body').animate({
+        scrollTop: $("#scrollpointBold").offset().top
     }, 2000);
       }
     });
