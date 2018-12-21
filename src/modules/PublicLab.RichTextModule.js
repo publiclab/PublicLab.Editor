@@ -159,12 +159,17 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
-    crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
+    crossvent.add(_module.wysiwyg.editable, 'keyup', function (e) {
       _editor.validate();
-      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().includes("data:image/") && $('.data-urls-warning').length === 0) {
-        var dataImageIndex = _module.value().indexOf("data:image/");
-        var message = "Looks like you're using <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs'>Data-URL images</a> Instead of file images. They can overload our servers, so we encourage you to first <a download href='"+ _module.value().substring(dataImageIndex, dataImageIndex + _module.value().substring(dataImageIndex).indexOf(" ") - 1) +"'>download the image</a> and the reupload it in a file format.</a>.";
-        $(_module.wysiwyg.editable).after("<div class='data-urls-warning alert alert-warning'>" + message + "</div>");
+      var regexp= /data:image\/[^\s]+/i;
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().search(regexp) && $('.data-urls-warning').length === 0) {
+        var diRegEx=_module.value().match(regexp);
+        var message = "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='"+diRegEx[0]+"'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
+        _module.wysiwyg.editable.innerHTML = (_module.wysiwyg.editable.innerHTML).replace(regexp,'');
+        $(_module.wysiwyg.editable).after("<div id='scrollpoint' class='data-urls-warning alert alert-warning'>" + message + "</div>");
+        $('html, body').animate({
+        scrollTop: $("#scrollpoint").offset().top
+    }, 2000);
       }
     });
 
