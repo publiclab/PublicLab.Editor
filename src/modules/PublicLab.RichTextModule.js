@@ -17,19 +17,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // break into subclass common to all modules, perhaps:
     _module.options.guides = [
-      { 
-        icon: "mouse-pointer", 
-        position: 30, 
+      {
+        icon: "mouse-pointer",
+        position: 30,
         text: "Drag images into the text area to upload them."
       },
-      { 
+      {
         icon: "list-ul",
-        position: 90, 
+        position: 90,
         text: "Be sure to list required materials and resources."
       },
-      { 
+      {
         icon: "clock-o",
-        position: 90, 
+        position: 90,
         text: "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
       }
     ];
@@ -159,7 +159,20 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
-    crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
+    var autocenterCheck = function () {
+      _editor.validate()
+      var openingTag = /-&gt;/g;
+      var closingTag = /&lt;-/g;
+      if (_module.wysiwyg.mode == "wysiwyg" && (_module.wysiwyg.editable.innerHTML).match(closingTag)) {
+      _module.wysiwyg.editable.innerHTML=(_module.wysiwyg.editable.innerHTML).replace(openingTag,'<center>')
+      _module.wysiwyg.editable.innerHTML=(_module.wysiwyg.editable.innerHTML).replace(closingTag,'</center>')
+    }}
+
+    setInterval(autocenterCheck,100)
+
+    crossvent.add(_module.wysiwyg.editable, 'keydown', autocenterCheck)
+
+    crossvent.add(_module.wysiwyg.editable, 'keyup', function (e) {
       _editor.validate();
       if (_module.wysiwyg.mode == "wysiwyg" && _module.value().includes("data:image/") && $('.data-urls-warning').length === 0) {
         var dataImageIndex = _module.value().indexOf("data:image/");
@@ -178,9 +191,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
       // ensure document is scrolled to the same place:
       document.body.scrollTop = _module.scrollTop;
-      // might need to adjust for markdown/rich text not 
+      // might need to adjust for markdown/rich text not
       // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown") 
+      //if (_editor.wysiwyg.mode == "markdown")
 
       if (_module.wysiwyg.mode == "wysiwyg") _module.focusables[0] = $(_module.editable);
       else                                   _module.focusables[0] = $(_module.textarea);
