@@ -17,19 +17,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // break into subclass common to all modules, perhaps:
     _module.options.guides = [
-      { 
-        icon: "mouse-pointer", 
-        position: 30, 
+      {
+        icon: "mouse-pointer",
+        position: 30,
         text: "Drag images into the text area to upload them."
       },
-      { 
+      {
         icon: "list-ul",
-        position: 90, 
+        position: 90,
         text: "Be sure to list required materials and resources."
       },
-      { 
+      {
         icon: "clock-o",
-        position: 90, 
+        position: 90,
         text: "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
       }
     ];
@@ -151,14 +151,16 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
       _editor.validate();
       var regexp = /\\\]\(|\\##|\\\*\\\*/g;
+      var timestamp = Date.now()
       if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(regexp) && $('.markdown-warning').length === 0) {
         var message = "Looks like you're using <a href='http://wikipedia.org/en/Markdown'>Markdown</a> while in Rich Text mode. If you'd like to continue in Markdown mode, <a class='alert-change-mode' href='javascript:void();'>click here</a>.";
-        $(_module.wysiwyg.editable).after("<div id='scrollpointMD' class='markdown-warning alert alert-warning'>" + message + "</div>");
+        $(_module.wysiwyg.editable).after("<div id='scrollpointMD_"+timestamp+"' class='markdown-warning alert alert-warning'>" + message + "</div>");
         $('.alert-change-mode').click(function alertChangeMode() {
           _module.setMode('markdown');
         });
+        var refer = "#scrollpointMD_" + timestamp
         $('html, body').animate({
-          scrollTop: $("#scrollpointMD").offset().top
+          scrollTop: $(refer).offset().top
       }, 2000);
       }
     });
@@ -166,13 +168,15 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     crossvent.add(_module.wysiwyg.editable, 'keyup', function (e) {
       _editor.validate();
       var regexp= /data:image\/[^\s]+/i;
+      var timestamp = Date.now()
       if (_module.wysiwyg.mode == "wysiwyg" && _module.value().search(regexp) && $('.data-urls-warning').length === 0) {
         var diRegEx=_module.value().match(regexp);
         var message = "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='"+diRegEx[0]+"'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
         _module.wysiwyg.editable.innerHTML = (_module.wysiwyg.editable.innerHTML).replace(regexp,'');
-        $(_module.wysiwyg.editable).after("<div id='scrollpointDURI' class='data-urls-warning alert alert-warning'>" + message + "</div>");
+        $(_module.wysiwyg.editable).after("<div id='scrollpointDURI_"+timestamp+"' class='data-urls-warning alert alert-warning'>" + message + "</div>");
+        var refer = "#scrollpointDURI_" + timestamp
         $('html, body').animate({
-        scrollTop: $("#scrollpointDURI").offset().top
+        scrollTop: $(refer).offset().top
     }, 2000);
       }
     });
@@ -187,9 +191,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
       // ensure document is scrolled to the same place:
       document.body.scrollTop = _module.scrollTop;
-      // might need to adjust for markdown/rich text not 
+      // might need to adjust for markdown/rich text not
       // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown") 
+      //if (_editor.wysiwyg.mode == "markdown")
 
       if (_module.wysiwyg.mode == "wysiwyg") _module.focusables[0] = $(_module.editable);
       else                                   _module.focusables[0] = $(_module.textarea);
