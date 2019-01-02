@@ -15566,9 +15566,9 @@ module.exports = tokenizeLinks;
             config._isValid = false;
         }
     }
-
     // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
     var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
 
     function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
         var result = [
@@ -15696,6 +15696,7 @@ module.exports = tokenizeLinks;
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+
         }
     );
 
@@ -17826,7 +17827,6 @@ module.exports = tokenizeLinks;
         WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
-
     return hooks;
 
 })));
@@ -22370,6 +22370,7 @@ PL.Editor = Class.extend({
 });
 
 },{"./PublicLab.Errors.js":197,"./PublicLab.Help.js":198,"./PublicLab.History.js":199,"./adapters/PublicLab.Formatter.js":200,"./adapters/PublicLab.Woofmark.js":201,"./core/Util.js":202,"./modules/PublicLab.MainImageModule.js":203,"./modules/PublicLab.Module.js":204,"./modules/PublicLab.RichTextModule.js":209,"./modules/PublicLab.TagsModule.js":210,"./modules/PublicLab.TitleModule.js":212,"resig-class":132}],197:[function(require,module,exports){
+
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -23149,6 +23150,7 @@ module.exports = function(textarea, _editor, _module) {
 }
 
 },{"../modules/PublicLab.RichTextModule.AutoCenter.js":205,"../modules/PublicLab.RichTextModule.Embed.js":206,"../modules/PublicLab.RichTextModule.HorizontalRule.js":207,"../modules/PublicLab.RichTextModule.Table.js":208,"banksy":3,"domador":18,"horsey":36,"megamark":127,"woofmark":194}],202:[function(require,module,exports){
+
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -23610,7 +23612,9 @@ module.exports = function initTables(_module, wysiwyg) {
 
 }
 
+
 },{}],209:[function(require,module,exports){
+
 /*
  * Form module for rich text entry
  */
@@ -23763,12 +23767,18 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     crossvent.add(_module.wysiwyg.editable, 'keydown', function (e) {
       _editor.validate();
-      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(/\\\]\(|\\##|\\\*\\\*/g) && $('.markdown-warning').length === 0) {
+      var regexp = /\\\]\(|\\##|\\\*\\\*/g;
+      var timestamp = Date.now()
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().match(regexp) && $('.markdown-warning').length === 0) {
         var message = "Looks like you're using <a href='http://wikipedia.org/en/Markdown'>Markdown</a> while in Rich Text mode. If you'd like to continue in Markdown mode, <a class='alert-change-mode' href='javascript:void();'>click here</a>.";
-        $(_module.wysiwyg.editable).after("<div class='markdown-warning alert alert-warning'>" + message + "</div>");
+        $(_module.wysiwyg.editable).after("<div id='scrollpointMD_"+timestamp+"' class='markdown-warning alert alert-warning'>" + message + "</div>");
         $('.alert-change-mode').click(function alertChangeMode() {
           _module.setMode('markdown');
         });
+        var refer = "#scrollpointMD_" + timestamp
+        $('html, body').animate({
+          scrollTop: $(refer).offset().top
+      }, 2000);
       }
     });
 
@@ -23787,10 +23797,17 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     crossvent.add(_module.wysiwyg.editable, 'keyup', function (e) {
       _editor.validate();
-      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().includes("data:image/") && $('.data-urls-warning').length === 0) {
-        var dataImageIndex = _module.value().indexOf("data:image/");
-        var message = "Looks like you're using <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs'>Data-URL images</a> Instead of file images. They can overload our servers, so we encourage you to first <a download href='"+ _module.value().substring(dataImageIndex, dataImageIndex + _module.value().substring(dataImageIndex).indexOf(" ") - 1) +"'>download the image</a> and the reupload it in a file format.</a>.";
-        $(_module.wysiwyg.editable).after("<div class='data-urls-warning alert alert-warning'>" + message + "</div>");
+      var regexp= /data:image\/[^\s]+/i;
+      var timestamp = Date.now()
+      if (_module.wysiwyg.mode == "wysiwyg" && _module.value().search(regexp) && $('.data-urls-warning').length === 0) {
+        var diRegEx=_module.value().match(regexp);
+        var message = "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='"+diRegEx[0]+"'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
+        _module.wysiwyg.editable.innerHTML = (_module.wysiwyg.editable.innerHTML).replace(regexp,'');
+        $(_module.wysiwyg.editable).after("<div id='scrollpointDURI_"+timestamp+"' class='data-urls-warning alert alert-warning'>" + message + "</div>");
+        var refer = "#scrollpointDURI_" + timestamp
+        $('html, body').animate({
+        scrollTop: $(refer).offset().top
+    }, 2000);
       }
     });
 
@@ -23823,6 +23840,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 });
 
 },{"crossvent":15}],210:[function(require,module,exports){
+
 /*
  * Form module for post tags
  */
@@ -23945,6 +23963,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 });
 
 },{}],211:[function(require,module,exports){
+
 /* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -24047,7 +24066,9 @@ module.exports = function relatedNodes(module) {
 
 }
 
+
 },{}],212:[function(require,module,exports){
+
 /*
  * Form module for post title
  */
@@ -24180,3 +24201,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
 },{"./PublicLab.TitleModule.Related.js":211}]},{},[196]);
+
