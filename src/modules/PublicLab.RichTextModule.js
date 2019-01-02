@@ -17,19 +17,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // break into subclass common to all modules, perhaps:
     _module.options.guides = [
-      { 
-        icon: "mouse-pointer", 
-        position: 30, 
+      {
+        icon: "mouse-pointer",
+        position: 30,
         text: "Drag images into the text area to upload them."
       },
-      { 
+      {
         icon: "list-ul",
-        position: 90, 
+        position: 90,
         text: "Be sure to list required materials and resources."
       },
-      { 
+      {
         icon: "clock-o",
-        position: 90, 
+        position: 90,
         text: "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
       }
     ];
@@ -171,12 +171,14 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
       _editor.validate();
       var regexp= /\*\*[\n]+\*\*/g;
+      var timestamp = Date.now()
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
          var message = "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
         _module.wysiwyg.textarea.innerHTML = (_module.wysiwyg.textarea.innerHTML).replace(regexp,'');
-        $(_module.wysiwyg.textarea).after("<div id='scrollpointBold' class='invalid-bold-tags-warning alert alert-warning'>" + message + "</div>");
+        $(_module.wysiwyg.textarea).after("<div id='scrollpointBold_"+timestamp+"' class='invalid-bold-tags-warning alert alert-warning'>" + message + "</div>");
+        var refer = "#scrollpointBold_" + timestamp
         $('html, body').animate({
-        scrollTop: $("#scrollpointBold").offset().top
+        scrollTop: $(refer).offset().top
     }, 2000);
       }
     });
@@ -191,9 +193,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
       // ensure document is scrolled to the same place:
       document.body.scrollTop = _module.scrollTop;
-      // might need to adjust for markdown/rich text not 
+      // might need to adjust for markdown/rich text not
       // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown") 
+      //if (_editor.wysiwyg.mode == "markdown")
 
       if (_module.wysiwyg.mode == "wysiwyg") _module.focusables[0] = $(_module.editable);
       else                                   _module.focusables[0] = $(_module.textarea);
