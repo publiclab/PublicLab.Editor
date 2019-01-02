@@ -77,7 +77,7 @@ describe("RichTextModule", function() {
 
   it("accepts customized authors method as constructor option for @callouts", function() {
 
-    module = new PL.RichTextModule( editor, { 
+    module = new PL.RichTextModule( editor, {
       textarea: editor.options.textarea,
       authors: function(value, done) {
         done([
@@ -95,6 +95,22 @@ describe("RichTextModule", function() {
       expect(list[0].value).toBe('@kirk');
     })
 
+  });
+
+  it("detects data-urls",function(){
+
+    //switch to rich-text mode
+    module.setMode('wysiwyg');
+
+    //enter data-url
+    module.value('data:image/x');
+
+    //simulate enter press
+    var e = jQuery.Event("keyup", {keyCode:13});
+    jQuery('.ple-textarea').trigger(e);
+
+    //detect data-urls
+    expect($('.data-urls-warning').length).not.toBeNull();
   });
 
 
