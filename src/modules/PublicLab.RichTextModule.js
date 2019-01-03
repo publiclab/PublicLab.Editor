@@ -181,6 +181,21 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
+        crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
+      var regexp= /\*\*[\n]+\*\*/g;
+      var timestamp = Date.now()
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
+         var message = "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
+        _module.wysiwyg.textarea.innerHTML = (_module.wysiwyg.textarea.innerHTML).replace(regexp,'');
+        $(_module.wysiwyg.textarea).after("<div id='scrollpointBold_"+timestamp+"' class='invalid-bold-tags-warning alert alert-warning'>" + message + "</div>");
+        var refer = "#scrollpointBold_" + timestamp
+        $('html, body').animate({
+        scrollTop: $(refer).offset().top
+    }, 2000);
+      }
+    });
+
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer

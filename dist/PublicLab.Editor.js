@@ -15696,6 +15696,7 @@ module.exports = tokenizeLinks;
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+
         }
     );
 
@@ -16210,6 +16211,7 @@ module.exports = tokenizeLinks;
             this._isUTC = true;
             if (localAdjust != null) {
                 this.add(localAdjust, 'm');
+
             }
             if (offset !== input) {
                 if (!keepLocalTime || this._changeInProgress) {
@@ -16294,6 +16296,7 @@ module.exports = tokenizeLinks;
 
         var c = {};
 
+
         copyConfig(c, this);
         c = prepareConfig(c);
 
@@ -16335,6 +16338,7 @@ module.exports = tokenizeLinks;
             sign,
             ret,
             diffRes;
+
 
         if (isDuration(input)) {
             duration = {
@@ -17499,6 +17503,7 @@ module.exports = tokenizeLinks;
         var months;
         var milliseconds = this._milliseconds;
 
+
         units = normalizeUnits(units);
 
         if (units === 'month' || units === 'year') {
@@ -17677,6 +17682,7 @@ module.exports = tokenizeLinks;
         if (!this.isValid()) {
             return this.localeData().invalidDate();
         }
+
 
         var seconds = abs$1(this._milliseconds) / 1000;
         var days         = abs$1(this._days);
@@ -23741,6 +23747,21 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         _module.wysiwyg.editable.innerHTML = (_module.wysiwyg.editable.innerHTML).replace(regexp,'');
         $(_module.wysiwyg.editable).after("<div id='scrollpointDURI_"+timestamp+"' class='data-urls-warning alert alert-warning'>" + message + "</div>");
         var refer = "#scrollpointDURI_" + timestamp
+        $('html, body').animate({
+        scrollTop: $(refer).offset().top
+    }, 2000);
+      }
+    });
+
+        crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
+      var regexp= /\*\*[\n]+\*\*/g;
+      var timestamp = Date.now()
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
+         var message = "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
+        _module.wysiwyg.textarea.innerHTML = (_module.wysiwyg.textarea.innerHTML).replace(regexp,'');
+        $(_module.wysiwyg.textarea).after("<div id='scrollpointBold_"+timestamp+"' class='invalid-bold-tags-warning alert alert-warning'>" + message + "</div>");
+        var refer = "#scrollpointBold_" + timestamp
         $('html, body').animate({
         scrollTop: $(refer).offset().top
     }, 2000);
