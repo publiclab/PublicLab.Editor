@@ -227,7 +227,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
   bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
   bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
 ) {
-  document.getElementsByClassName('wk-commands')[0].style.position = "relative";
+  document.getElementsByClassName('wk-commands')[0].style.position = "relative";document.getElementsByClassName('wk-commands')[0].style.bottom = 0 + "px";
 } else {
   document.getElementsByClassName('wk-commands')[0].style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
   document.getElementsByClassName('wk-commands')[0].style.position = "fixed";
