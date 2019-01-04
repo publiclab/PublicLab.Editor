@@ -15696,7 +15696,6 @@ module.exports = tokenizeLinks;
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
-
         }
     );
 
@@ -16211,7 +16210,6 @@ module.exports = tokenizeLinks;
             this._isUTC = true;
             if (localAdjust != null) {
                 this.add(localAdjust, 'm');
-
             }
             if (offset !== input) {
                 if (!keepLocalTime || this._changeInProgress) {
@@ -16296,7 +16294,6 @@ module.exports = tokenizeLinks;
 
         var c = {};
 
-
         copyConfig(c, this);
         c = prepareConfig(c);
 
@@ -16338,7 +16335,6 @@ module.exports = tokenizeLinks;
             sign,
             ret,
             diffRes;
-
 
         if (isDuration(input)) {
             duration = {
@@ -17503,7 +17499,6 @@ module.exports = tokenizeLinks;
         var months;
         var milliseconds = this._milliseconds;
 
-
         units = normalizeUnits(units);
 
         if (units === 'month' || units === 'year') {
@@ -17682,7 +17677,6 @@ module.exports = tokenizeLinks;
         if (!this.isValid()) {
             return this.localeData().invalidDate();
         }
-
 
         var seconds = abs$1(this._milliseconds) / 1000;
         var days         = abs$1(this._days);
@@ -23790,6 +23784,22 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     $(_module.options.textarea).on('change keydown', function(e) {
       _module.resize();
     });
+
+    $(window).scroll(function() {
+      var bounding = document.getElementsByClassName('wk-commands')[0].getBoundingClientRect();
+      if (
+  bounding.top >= 0 &&
+  bounding.left >= 0 &&
+  bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+  bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+) {
+  document.getElementsByClassName('wk-commands')[0].style.position = "relative";
+} else {
+  document.getElementsByClassName('wk-commands')[0].style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
+  document.getElementsByClassName('wk-commands')[0].style.position = "fixed";
+  document.getElementsByClassName('wk-commands')[0].style.zIndex = 999;
+}
+    })
 
 
   }

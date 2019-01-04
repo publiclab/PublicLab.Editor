@@ -219,6 +219,22 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
+    $(window).scroll(function() {
+      var bounding = document.getElementsByClassName('wk-commands')[0].getBoundingClientRect();
+      if (
+  bounding.top >= 0 &&
+  bounding.left >= 0 &&
+  bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+  bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+) {
+  document.getElementsByClassName('wk-commands')[0].style.position = "relative";
+} else {
+  document.getElementsByClassName('wk-commands')[0].style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
+  document.getElementsByClassName('wk-commands')[0].style.position = "fixed";
+  document.getElementsByClassName('wk-commands')[0].style.zIndex = 999;
+}
+    })
+
 
   }
 
