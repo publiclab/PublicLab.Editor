@@ -23785,19 +23785,25 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
+    var wk_c = document.getElementsByClassName('wk-commands')[0]
+
     $(window).scroll(function() {
-      var bounding = document.getElementsByClassName('wk-commands')[0].getBoundingClientRect();
+    var bounding = document.getElementsByClassName('woofmark-mode-markdown')[0].getBoundingClientRect();
+
       if (
   bounding.top >= 0 &&
   bounding.left >= 0 &&
   bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
   bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
 ) {
-  document.getElementsByClassName('wk-commands')[0].style.position = "relative";document.getElementsByClassName('wk-commands')[0].style.bottom = 0 + "px";
+  wk_c.style.position = "relative";
+  wk_c.style.bottom = 0 + "px";
+  console.log('in')
 } else {
-  document.getElementsByClassName('wk-commands')[0].style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
-  document.getElementsByClassName('wk-commands')[0].style.position = "fixed";
-  document.getElementsByClassName('wk-commands')[0].style.zIndex = 999;
+  wk_c.style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
+  wk_c.style.position = "fixed";
+  wk_c.style.zIndex = 999;
+  console.log('out')
 }
     })
 
