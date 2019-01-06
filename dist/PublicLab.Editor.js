@@ -15566,9 +15566,9 @@ module.exports = tokenizeLinks;
             config._isValid = false;
         }
     }
-
     // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
     var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
 
     function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
         var result = [
@@ -15696,6 +15696,7 @@ module.exports = tokenizeLinks;
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+
         }
     );
 
@@ -17826,7 +17827,6 @@ module.exports = tokenizeLinks;
         WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
-
     return hooks;
 
 })));
@@ -22369,7 +22369,8 @@ PL.Editor = Class.extend({
 
 });
 
-},{"./PublicLab.Errors.js":197,"./PublicLab.Help.js":198,"./PublicLab.History.js":199,"./adapters/PublicLab.Formatter.js":200,"./adapters/PublicLab.Woofmark.js":201,"./core/Util.js":202,"./modules/PublicLab.MainImageModule.js":203,"./modules/PublicLab.Module.js":204,"./modules/PublicLab.RichTextModule.js":208,"./modules/PublicLab.TagsModule.js":209,"./modules/PublicLab.TitleModule.js":211,"resig-class":132}],197:[function(require,module,exports){
+},{"./PublicLab.Errors.js":197,"./PublicLab.Help.js":198,"./PublicLab.History.js":199,"./adapters/PublicLab.Formatter.js":200,"./adapters/PublicLab.Woofmark.js":201,"./core/Util.js":202,"./modules/PublicLab.MainImageModule.js":203,"./modules/PublicLab.Module.js":204,"./modules/PublicLab.RichTextModule.js":209,"./modules/PublicLab.TagsModule.js":210,"./modules/PublicLab.TitleModule.js":212,"resig-class":132}],197:[function(require,module,exports){
+
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -22790,7 +22791,7 @@ module.exports = PublicLab.Formatter = Class.extend({
 
 },{"resig-class":132}],201:[function(require,module,exports){
 /*
- * Wrapped woofmark() constructor with 
+ * Wrapped woofmark() constructor with
  * customizations for our use case.
  * Should improve organization of this vs. RichTextModule
  */
@@ -22800,7 +22801,7 @@ var woofmark     = require('woofmark'),
     megamark     = require('megamark'),
     horsey       = require('horsey'),
     banksy       = require('banksy');
-    
+
 module.exports = function(textarea, _editor, _module) {
 
   var icons = {
@@ -22817,10 +22818,10 @@ module.exports = function(textarea, _editor, _module) {
 
   _module.options.tags = _module.options.tags || function(data, done) {
     done(null, [{ list: [
-      '#spectrometer', 
-      '#air-quality', 
-      '#water-quality', 
-      '#balloon-mapping' 
+      '#spectrometer',
+      '#air-quality',
+      '#water-quality',
+      '#balloon-mapping'
     ]}]);
   }
 
@@ -22867,10 +22868,10 @@ module.exports = function(textarea, _editor, _module) {
     images: {
 
       method: 'POST',
- 
+
       // endpoint where the images will be uploaded to, required
       url: '/images',
- 
+
       // optional text describing the kind of files that can be uploaded
       restriction: 'GIF, JPG, and PNG images',
 
@@ -22881,7 +22882,7 @@ module.exports = function(textarea, _editor, _module) {
       formData: { nid: null },
 
       // xhr upload options like CSRF token
-      xhrOptions: { 
+      xhrOptions: {
         beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
       },
 
@@ -22901,7 +22902,7 @@ module.exports = function(textarea, _editor, _module) {
     attachments: {
 
       method: 'POST',
- 
+
       // endpoint where the images will be uploaded to, required
       url: '/images',
 
@@ -22912,7 +22913,7 @@ module.exports = function(textarea, _editor, _module) {
       formData: { nid: null },
 
       // xhr upload options like CSRF token
-      xhrOptions: { 
+      xhrOptions: {
         beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
       },
 
@@ -22955,7 +22956,7 @@ module.exports = function(textarea, _editor, _module) {
 
       return megamark(input, {
         sanitizer: {
-          allowedTags: [ "a", "article", "b", "blockquote", "br", "caption", "code", "del", "details", "div", "em",
+          allowedTags: [ "a", "article", "b", "blockquote", "br", "caption", "center", "code", "del", "details", "div", "em",
                          "h1", "h2", "h3", "h4", "h5", "h6", "hr", "i", "img", "ins", "kbd", "li", "main", "ol",
                          "p", "pre", "section", "span", "strike", "strong", "sub", "summary", "sup", "table",
                          "tbody", "td", "th", "thead", "tr", "u", "ul", "iframe" ],
@@ -23011,6 +23012,10 @@ module.exports = function(textarea, _editor, _module) {
             return '\n\n\n' + el.outerHTML;
           }
 
+          if (el.tagName === 'CENTER') {
+            return '->' + el.innerHTML + '<-'
+          }
+
           if (el.tagName === 'A' && el.innerHTML[0] === '@') {
             return el.innerHTML;
           }
@@ -23026,7 +23031,7 @@ module.exports = function(textarea, _editor, _module) {
         }
       });
 
-    } 
+    }
 
   });
 
@@ -23040,7 +23045,7 @@ module.exports = function(textarea, _editor, _module) {
       getText: 'text',
       getValue: 'value'
     });
- 
+
     wysiwyg.calloutHorse.defaultSetter = function (value) {
       if (wysiwyg.mode === 'wysiwyg') {
         textarea.innerHTML = value;
@@ -23048,7 +23053,7 @@ module.exports = function(textarea, _editor, _module) {
         textarea.value = value;
       }
     }
- 
+
     wysiwyg.calloutBridge = banksy(textarea, {
       editor: wysiwyg,
       horse: wysiwyg.calloutHorse
@@ -23062,11 +23067,11 @@ module.exports = function(textarea, _editor, _module) {
       anchor: '#',
       source: _module.options.tags
     });
- 
+
     wysiwyg.tagHorse.defaultSetter = function (value) {
       el.value = value + ', ';
     }
- 
+
     wysiwyg.tagBridge = banksy(textarea, {
       editor: wysiwyg,
       horse: wysiwyg.tagHorse
@@ -23080,6 +23085,9 @@ module.exports = function(textarea, _editor, _module) {
 
   // set up horizontal rule insertion tool:
   require('../modules/PublicLab.RichTextModule.HorizontalRule.js')(_module, wysiwyg);
+
+  // set up auto center insertion tool:
+  require('../modules/PublicLab.RichTextModule.AutoCenter.js')(_module, wysiwyg);
 
   // set up embed insertion tool:
   require('../modules/PublicLab.RichTextModule.Embed.js')(_module, wysiwyg);
@@ -23098,38 +23106,38 @@ module.exports = function(textarea, _editor, _module) {
     $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
     $('.wk-commands, .wk-switchboard').addClass('btn-group');
     $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
- 
+
     $('.wk-commands button.woofmark-command-quote').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-code').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-ol').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-attachment').addClass('hidden-xs');
- 
+
     $('.wk-switchboard button.woofmark-mode-markdown').parent().removeClass('btn-group');
     $('.wk-switchboard button.woofmark-mode-markdown').html('<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>');
     $('.wk-switchboard button.woofmark-mode-wysiwyg').html('<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>');
- 
+
     if (wysiwyg.mode === 'wysiwyg') $('.wk-switchboard button.woofmark-mode-wysiwyg').hide();
     else                            $('.wk-switchboard button.woofmark-mode-markdown').hide();
- 
+
     $('.wk-switchboard button').click(function() {
       $('.wk-switchboard button.woofmark-mode-markdown').toggle();
       $('.wk-switchboard button.woofmark-mode-wysiwyg').toggle();
     });
- 
+
     if (_editor.options.size == "xs") {
- 
+
       //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
- 
+
       // hide selectively, not by #:
       $('.wk-commands button.woofmark-command-quote').hide();
       $('.wk-commands button.woofmark-command-code').hide();
       $('.wk-commands button.woofmark-command-ol').hide();
       $('.wk-commands button.woofmark-command-ul').hide();
- 
+
     } else {
- 
+
       $('.wk-switchboard button').addClass('btn-sm');
- 
+
     }
 
   }
@@ -23141,7 +23149,8 @@ module.exports = function(textarea, _editor, _module) {
 
 }
 
-},{"../modules/PublicLab.RichTextModule.Embed.js":205,"../modules/PublicLab.RichTextModule.HorizontalRule.js":206,"../modules/PublicLab.RichTextModule.Table.js":207,"banksy":3,"domador":18,"horsey":36,"megamark":127,"woofmark":194}],202:[function(require,module,exports){
+},{"../modules/PublicLab.RichTextModule.AutoCenter.js":205,"../modules/PublicLab.RichTextModule.Embed.js":206,"../modules/PublicLab.RichTextModule.HorizontalRule.js":207,"../modules/PublicLab.RichTextModule.Table.js":208,"banksy":3,"domador":18,"horsey":36,"megamark":127,"woofmark":194}],202:[function(require,module,exports){
+
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -23396,6 +23405,46 @@ module.exports = PublicLab.Module = Class.extend({
 });
 
 },{}],205:[function(require,module,exports){
+/*
+   Auto Center insertion: ****
+*/
+
+module.exports = function initAutoCenter(_module, wysiwyg) {
+
+  // $('.woofmark-mode-markdown').removeClass('disabled')
+
+  // create a menu option for auto center:
+  $('.wk-commands').append('<button class="btn-autocenter"><a class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></a></button>');
+  //since chunk.selection returns null for images
+
+  $('.btn-autocenter').css({
+    padding: 0,
+    border: 0
+  });
+
+  $(document).ready(function(){
+    $('[data-toggle="autocenter"]').tooltip();
+  });
+
+  $('.wk-commands .woofmark-command-autocenter').click(function() {
+    wysiwyg.runCommand(function(chunks,mode) {
+      if(mode == "wysiwyg") { //first convert then replace
+        chunks.selection = ("->"+chunks.selection+"<-")
+        var openingTag = /->/g;
+        var closingTag = /<-/g;
+        chunks.selection = chunks.selection.replace(openingTag,"<center>")
+        chunks.selection = chunks.selection.replace(closingTag,"</center>")
+      }
+      else if (mode == "markdown") {
+        chunks.selection = _module.wysiwyg.parseHTML("<center>"+chunks.selection+"</center>")
+      }
+
+      _module.afterParse();
+      })
+  })
+}
+
+},{}],206:[function(require,module,exports){
 /* 
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
 */   
@@ -23423,7 +23472,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
 
 }
 
-},{}],206:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 /* 
    Horizontal Rule insertion: ****
 */   
@@ -23455,7 +23504,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
 
 }
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 /*
  Table generation:
 
@@ -23563,7 +23612,9 @@ module.exports = function initTables(_module, wysiwyg) {
 
 }
 
-},{}],208:[function(require,module,exports){
+
+},{}],209:[function(require,module,exports){
+
 /*
  * Form module for rich text entry
  */
@@ -23731,6 +23782,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
+    var autocenterCheck = function () {
+      _editor.validate()
+      var openingTag = /-&gt;/g;
+      var closingTag = /&lt;-/g;
+      if (_module.wysiwyg.mode == "wysiwyg" && (_module.wysiwyg.editable.innerHTML).match(closingTag)) {
+      _module.wysiwyg.editable.innerHTML=(_module.wysiwyg.editable.innerHTML).replace(openingTag,'<center>')
+      _module.wysiwyg.editable.innerHTML=(_module.wysiwyg.editable.innerHTML).replace(closingTag,'</center>')
+    }}
+
+    setInterval(autocenterCheck,100)
+
+    crossvent.add(_module.wysiwyg.editable, 'keydown', autocenterCheck)
+
     crossvent.add(_module.wysiwyg.editable, 'keyup', function (e) {
       _editor.validate();
       var regexp= /data:image\/[^\s]+/i;
@@ -23812,7 +23876,8 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
 });
 
-},{"crossvent":15}],209:[function(require,module,exports){
+},{"crossvent":15}],210:[function(require,module,exports){
+
 /*
  * Form module for post tags
  */
@@ -23934,7 +23999,8 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{}],210:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
+
 /* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -24037,7 +24103,9 @@ module.exports = function relatedNodes(module) {
 
 }
 
-},{}],211:[function(require,module,exports){
+
+},{}],212:[function(require,module,exports){
+
 /*
  * Form module for post title
  */
@@ -24169,4 +24237,5 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":210}]},{},[196]);
+},{"./PublicLab.TitleModule.Related.js":211}]},{},[196]);
+

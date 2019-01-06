@@ -165,6 +165,19 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
+    var autocenterCheck = function () {
+      _editor.validate()
+      var openingTag = /-&gt;/g;
+      var closingTag = /&lt;-/g;
+      if (_module.wysiwyg.mode == "wysiwyg" && (_module.wysiwyg.editable.innerHTML).match(closingTag)) {
+      _module.wysiwyg.editable.innerHTML=(_module.wysiwyg.editable.innerHTML).replace(openingTag,'<center>')
+      _module.wysiwyg.editable.innerHTML=(_module.wysiwyg.editable.innerHTML).replace(closingTag,'</center>')
+    }}
+
+    setInterval(autocenterCheck,100)
+
+    crossvent.add(_module.wysiwyg.editable, 'keydown', autocenterCheck)
+
     crossvent.add(_module.wysiwyg.editable, 'keyup', function (e) {
       _editor.validate();
       var regexp= /data:image\/[^\s]+/i;
