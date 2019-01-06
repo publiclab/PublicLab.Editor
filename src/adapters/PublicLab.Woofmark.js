@@ -1,5 +1,5 @@
 /*
- * Wrapped woofmark() constructor with 
+ * Wrapped woofmark() constructor with
  * customizations for our use case.
  * Should improve organization of this vs. RichTextModule
  */
@@ -9,7 +9,7 @@ var woofmark     = require('woofmark'),
     megamark     = require('megamark'),
     horsey       = require('horsey'),
     banksy       = require('banksy');
-    
+
 module.exports = function(textarea, _editor, _module) {
 
   var icons = {
@@ -26,10 +26,10 @@ module.exports = function(textarea, _editor, _module) {
 
   _module.options.tags = _module.options.tags || function(data, done) {
     done(null, [{ list: [
-      '#spectrometer', 
-      '#air-quality', 
-      '#water-quality', 
-      '#balloon-mapping' 
+      '#spectrometer',
+      '#air-quality',
+      '#water-quality',
+      '#balloon-mapping'
     ]}]);
   }
 
@@ -76,10 +76,10 @@ module.exports = function(textarea, _editor, _module) {
     images: {
 
       method: 'POST',
- 
+
       // endpoint where the images will be uploaded to, required
       url: '/images',
- 
+
       // optional text describing the kind of files that can be uploaded
       restriction: 'GIF, JPG, and PNG images',
 
@@ -90,7 +90,7 @@ module.exports = function(textarea, _editor, _module) {
       formData: { nid: null },
 
       // xhr upload options like CSRF token
-      xhrOptions: { 
+      xhrOptions: {
         beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
       },
 
@@ -110,7 +110,7 @@ module.exports = function(textarea, _editor, _module) {
     attachments: {
 
       method: 'POST',
- 
+
       // endpoint where the images will be uploaded to, required
       url: '/images',
 
@@ -121,7 +121,7 @@ module.exports = function(textarea, _editor, _module) {
       formData: { nid: null },
 
       // xhr upload options like CSRF token
-      xhrOptions: { 
+      xhrOptions: {
         beforeSend: function(xhr) { xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content')) }
       },
 
@@ -164,7 +164,7 @@ module.exports = function(textarea, _editor, _module) {
 
       return megamark(input, {
         sanitizer: {
-          allowedTags: [ "a", "article", "b", "blockquote", "br", "caption", "code", "del", "details", "div", "em",
+          allowedTags: [ "a", "article", "b", "blockquote", "br", "caption", "center", "code", "del", "details", "div", "em",
                          "h1", "h2", "h3", "h4", "h5", "h6", "hr", "i", "img", "ins", "kbd", "li", "main", "ol",
                          "p", "pre", "section", "span", "strike", "strong", "sub", "summary", "sup", "table",
                          "tbody", "td", "th", "thead", "tr", "u", "ul", "iframe" ],
@@ -220,6 +220,10 @@ module.exports = function(textarea, _editor, _module) {
             return '\n\n\n' + el.outerHTML;
           }
 
+          if (el.tagName === 'CENTER') {
+            return '->' + el.innerHTML + '<-'
+          }
+
           if (el.tagName === 'A' && el.innerHTML[0] === '@') {
             return el.innerHTML;
           }
@@ -235,7 +239,7 @@ module.exports = function(textarea, _editor, _module) {
         }
       });
 
-    } 
+    }
 
   });
 
@@ -249,7 +253,7 @@ module.exports = function(textarea, _editor, _module) {
       getText: 'text',
       getValue: 'value'
     });
- 
+
     wysiwyg.calloutHorse.defaultSetter = function (value) {
       if (wysiwyg.mode === 'wysiwyg') {
         textarea.innerHTML = value;
@@ -257,7 +261,7 @@ module.exports = function(textarea, _editor, _module) {
         textarea.value = value;
       }
     }
- 
+
     wysiwyg.calloutBridge = banksy(textarea, {
       editor: wysiwyg,
       horse: wysiwyg.calloutHorse
@@ -271,11 +275,11 @@ module.exports = function(textarea, _editor, _module) {
       anchor: '#',
       source: _module.options.tags
     });
- 
+
     wysiwyg.tagHorse.defaultSetter = function (value) {
       el.value = value + ', ';
     }
- 
+
     wysiwyg.tagBridge = banksy(textarea, {
       editor: wysiwyg,
       horse: wysiwyg.tagHorse
@@ -289,6 +293,9 @@ module.exports = function(textarea, _editor, _module) {
 
   // set up horizontal rule insertion tool:
   require('../modules/PublicLab.RichTextModule.HorizontalRule.js')(_module, wysiwyg);
+
+  // set up auto center insertion tool:
+  require('../modules/PublicLab.RichTextModule.AutoCenter.js')(_module, wysiwyg);
 
   // set up embed insertion tool:
   require('../modules/PublicLab.RichTextModule.Embed.js')(_module, wysiwyg);
@@ -307,38 +314,38 @@ module.exports = function(textarea, _editor, _module) {
     $('.wk-commands').after('&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>');
     $('.wk-commands, .wk-switchboard').addClass('btn-group');
     $('.wk-commands button, .wk-switchboard button').addClass('btn btn-default');
- 
+
     $('.wk-commands button.woofmark-command-quote').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-code').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-ol').addClass('hidden-xs');
     $('.wk-commands button.woofmark-command-attachment').addClass('hidden-xs');
- 
+
     $('.wk-switchboard button.woofmark-mode-markdown').parent().removeClass('btn-group');
     $('.wk-switchboard button.woofmark-mode-markdown').html('<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>');
     $('.wk-switchboard button.woofmark-mode-wysiwyg').html('<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>');
- 
+
     if (wysiwyg.mode === 'wysiwyg') $('.wk-switchboard button.woofmark-mode-wysiwyg').hide();
     else                            $('.wk-switchboard button.woofmark-mode-markdown').hide();
- 
+
     $('.wk-switchboard button').click(function() {
       $('.wk-switchboard button.woofmark-mode-markdown').toggle();
       $('.wk-switchboard button.woofmark-mode-wysiwyg').toggle();
     });
- 
+
     if (_editor.options.size == "xs") {
- 
+
       //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
- 
+
       // hide selectively, not by #:
       $('.wk-commands button.woofmark-command-quote').hide();
       $('.wk-commands button.woofmark-command-code').hide();
       $('.wk-commands button.woofmark-command-ol').hide();
       $('.wk-commands button.woofmark-command-ul').hide();
- 
+
     } else {
- 
+
       $('.wk-switchboard button').addClass('btn-sm');
- 
+
     }
 
   }
