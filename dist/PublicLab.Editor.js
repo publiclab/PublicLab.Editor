@@ -23811,6 +23811,21 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
+        crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
+      var regexp= /\*\*[\n]+\*\*/g;
+      var timestamp = Date.now()
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
+         var message = "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
+        _module.wysiwyg.textarea.innerHTML = (_module.wysiwyg.textarea.innerHTML).replace(regexp,'');
+        $(_module.wysiwyg.textarea).after("<div id='scrollpointBold_"+timestamp+"' class='invalid-bold-tags-warning alert alert-warning'>" + message + "</div>");
+        var refer = "#scrollpointBold_" + timestamp
+        $('html, body').animate({
+        scrollTop: $(refer).offset().top
+    }, 2000);
+      }
+    });
+
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
@@ -23833,6 +23848,28 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     $(_module.options.textarea).on('change keydown', function(e) {
       _module.resize();
     });
+
+    var wk_c = document.getElementsByClassName('wk-commands')[0]
+
+    $(window).scroll(function() {
+    var bounding = document.getElementsByClassName('woofmark-mode-markdown')[0].getBoundingClientRect();
+
+      if (
+  bounding.top >= 0 &&
+  bounding.left >= 0 &&
+  bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+  bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+) {
+  wk_c.style.position = "relative";
+  wk_c.style.bottom = 0 + "px";
+  console.log('in')
+} else {
+  wk_c.style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
+  wk_c.style.position = "fixed";
+  wk_c.style.zIndex = 999;
+  console.log('out')
+}
+    })
 
 
   }
