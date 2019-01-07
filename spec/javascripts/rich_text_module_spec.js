@@ -1,5 +1,7 @@
 var editor, module;
 
+//var jQ = require('../node_modules/jquery/dist/jquery.min.js')
+
 describe("RichTextModule", function() {
 
   beforeAll(function() {
@@ -112,6 +114,19 @@ describe("RichTextModule", function() {
     //detect data-urls
     expect($('.data-urls-warning').length).not.toBeNull();
   });
+
+  it("does not alter new line spaced lists", function() {
+
+    module.setMode('wysiwyg')
+
+    module.value('<p>1. first</p><p>2. second</p><p>3. third</p>')
+
+    module.setMode('markdown')
+
+    expect(module.html()).toContain('<p>1. first</p><p>2. second</p><p>3. third</p>')
+    //-----desired input------------desired output---------------------------------
+
+  })
 
 
 });
