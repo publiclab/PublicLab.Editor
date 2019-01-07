@@ -1,7 +1,5 @@
 var editor, module;
 
-//var jQ = require('../node_modules/jquery/dist/jquery.min.js')
-
 describe("RichTextModule", function() {
 
   beforeAll(function() {
