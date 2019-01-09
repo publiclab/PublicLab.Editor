@@ -2,7 +2,7 @@
       MapModule for adding Map .
       Adds/Removes Tag lat:XX , lon:XX from TagsModule .
 */
-
+require('leaflet-blurred-location') ;
 module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 
   init: function( _editor , options) {
