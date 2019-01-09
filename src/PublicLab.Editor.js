@@ -88,6 +88,14 @@ PL.Editor = Class.extend({
     // executes <callback> on completion, or (by default) navigates to returned URL
     _editor.publish = _editor.options.publish || function publish(callback) {
 
+       if($("#checkbox").is(":checked")){
+        _lat = _editor.mapModule.blurredLocation.getLat() ;
+        _lng = _editor.mapModule.blurredLocation.getLon() ;
+        console.log(_lat + '  ' + _lng) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
+      }
+
       _editor.collectData();
 
       var formatted = new PublicLab.Formatter().convert(
@@ -198,7 +206,7 @@ PL.Editor = Class.extend({
       _editor.modules.push(_editor.tagsModule);
     }
 
-    if (_editor.options.tagsModule !== false) {
+    if (_editor.options.mapModule !== false) {
       _editor.mapModule = new PublicLab.MapModule( _editor) ;
       _editor.modules.push(_editor.mapModule) ;
     }

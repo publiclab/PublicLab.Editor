@@ -9,9 +9,11 @@
 
     <!-- compulsory -->
     <link href="../node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
-    <script src="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
     <script src="../node_modules/leaflet/dist/leaflet.js"></script>
     <link href="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
+    <script src="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
+
+
 
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -123,24 +125,26 @@
           </div>
 
           <div class="ple-module-content col-md-9">
-            <!-- <button id='add_map_button' type="button" class="btn btn-outline-secondary">Add Location</button> -->
-          <h4><b>By place name :</b></h4>
-          <p><input id="placenameInput" type="text" class="form-control" /></p>
 
-          <p>
-            <h4><b>By entering co-ordinates :</b></h4>
-            <div class="row">
-              <div class="col-md-6">
-                <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+            <input type="checkbox" id="checkbox" name="location" value="location">  Add Location <br>
+              <div id="map_content">
+                <h4><b>By place name :</b></h4>
+                <p><input id="placenameInput" type="text" class="form-control" /></p>
+
+                <p>
+                  <h4><b>By entering co-ordinates :</b></h4>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+                    </div>
+                  </div>
+                </p>
+
+                <div id="map" class="leaflet-map" style="width: 300px ; height: 300px;"></div>
               </div>
-              <div class="col-md-6">
-                <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
-              </div>
-            </div>
-          </p>
-
-          <div id="map" class="leaflet-map" style="width: 300px ; height: 300px;"></div>
-
           </div>
 
         </div>
@@ -267,6 +271,18 @@ var myVariable = 4;
 
 
     <script>
+
+      $( document ).ready(function() {
+          $("#map_content").hide() ;
+          $("#checkbox").change(function(){
+            if($(this).is(":checked")){
+              $("#map_content").show() ;
+            }
+            else{
+              $("#map_content").hide() ;
+            }
+          }) ;
+      });
 
       var editor;
 

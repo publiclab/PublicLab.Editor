@@ -23,14 +23,18 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
        }
      }
 
-     var blurredLocation = new BlurredLocation(options) ;
+     _module.blurredLocation = new BlurredLocation(options) ;
 
-     blurredLocation.panMapToGeocodedLocation("placenameInput") ;
-     blurredLocation.setBlurred(false) ;
+     _module.blurredLocation.panMapToGeocodedLocation("placenameInput") ;
+     _module.blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
-       /* if checkbox === true  ELSE return false ; */
+       if($("#checkbox").is(":checked")){
         return true ;
+       }
+       else{
+         return false ;
+       }
      }
 
   }
