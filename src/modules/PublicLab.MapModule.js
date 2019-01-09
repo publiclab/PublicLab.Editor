@@ -15,14 +15,22 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.options.instructions = 'This adds a Map to the Editor with marker on it ' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
-     /*
-      if lat and lon are present --> show simple map !
-      else
 
-     */
+     var options = {
+       InterfaceOptions: {
+         latId: 'lat',
+         lngId: 'lng'
+       }
+     }
+
+     var blurredLocation = new BlurredLocation(options) ;
+
+     blurredLocation.panMapToGeocodedLocation("placenameInput") ;
+     blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
-       
+       /* if checkbox === true  ELSE return false ; */
+        return true ;
      }
 
   }
