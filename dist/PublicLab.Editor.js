@@ -15566,9 +15566,9 @@ module.exports = tokenizeLinks;
             config._isValid = false;
         }
     }
+
     // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
     var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
-
 
     function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
         var result = [
@@ -15696,7 +15696,6 @@ module.exports = tokenizeLinks;
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
-
         }
     );
 
@@ -17827,6 +17826,7 @@ module.exports = tokenizeLinks;
         WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
+
     return hooks;
 
 })));
@@ -22370,7 +22370,6 @@ PL.Editor = Class.extend({
 });
 
 },{"./PublicLab.Errors.js":197,"./PublicLab.Help.js":198,"./PublicLab.History.js":199,"./adapters/PublicLab.Formatter.js":200,"./adapters/PublicLab.Woofmark.js":201,"./core/Util.js":202,"./modules/PublicLab.MainImageModule.js":203,"./modules/PublicLab.Module.js":204,"./modules/PublicLab.RichTextModule.js":209,"./modules/PublicLab.TagsModule.js":210,"./modules/PublicLab.TitleModule.js":212,"resig-class":132}],197:[function(require,module,exports){
-
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -23150,7 +23149,6 @@ module.exports = function(textarea, _editor, _module) {
 }
 
 },{"../modules/PublicLab.RichTextModule.AutoCenter.js":205,"../modules/PublicLab.RichTextModule.Embed.js":206,"../modules/PublicLab.RichTextModule.HorizontalRule.js":207,"../modules/PublicLab.RichTextModule.Table.js":208,"banksy":3,"domador":18,"horsey":36,"megamark":127,"woofmark":194}],202:[function(require,module,exports){
-
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -23612,9 +23610,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 }
 
-
 },{}],209:[function(require,module,exports){
-
 /*
  * Form module for rich text entry
  */
@@ -23813,6 +23809,15 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
         crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
       _editor.validate();
+      var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]{3}[^\P{P}*]+[\*]{2}/;
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
+        _module.value(_module.value().match(regexp)[0].substr(3, _module.value().match(regexp)[0].length-5))
+        console.log('aadx')
+      }
+    });
+
+        crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
       var regexp= /\*\*[\n]+\*\*/g;
       var timestamp = Date.now()
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
@@ -23854,30 +23859,26 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     $(window).scroll(function() {
     var bounding = document.getElementsByClassName('woofmark-mode-markdown')[0].getBoundingClientRect();
 
-      if (
-  bounding.top >= 0 &&
-  bounding.left >= 0 &&
-  bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
-  bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-) {
-  wk_c.style.position = "relative";
-  wk_c.style.bottom = 0 + "px";
-  console.log('in')
-} else {
-  wk_c.style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
-  wk_c.style.position = "fixed";
-  wk_c.style.zIndex = 999;
-  console.log('out')
-}
-    })
-
+    if (
+    bounding.top >= 0 &&
+    bounding.left >= 0 &&
+    bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
+    bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+    ) {
+    wk_c.style.position = "relative";
+    wk_c.style.bottom = 0 + "px";
+    } else {
+    wk_c.style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
+    wk_c.style.position = "fixed";
+    wk_c.style.zIndex = 999;
+   }
+  })
 
   }
 
 });
 
 },{"crossvent":15}],210:[function(require,module,exports){
-
 /*
  * Form module for post tags
  */
@@ -24000,7 +24001,6 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 });
 
 },{}],211:[function(require,module,exports){
-
 /* Displays related posts to associate this one with. 
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -24103,9 +24103,7 @@ module.exports = function relatedNodes(module) {
 
 }
 
-
 },{}],212:[function(require,module,exports){
-
 /*
  * Form module for post title
  */
@@ -24238,4 +24236,3 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
 },{"./PublicLab.TitleModule.Related.js":211}]},{},[196]);
-

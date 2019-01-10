@@ -196,6 +196,15 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
         crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
       _editor.validate();
+      var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]{3}[^\P{P}*]+[\*]{2}/;
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
+        _module.value(_module.value().match(regexp)[0].substr(3, _module.value().match(regexp)[0].length-5))
+        console.log('aadx')
+      }
+    });
+
+        crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
       var regexp= /\*\*[\n]+\*\*/g;
       var timestamp = Date.now()
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp) && $('.invalid-bold-tags-warning').length === 0) {
