@@ -12,7 +12,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.key = 'map_data' ;
     _module.options = options || _editor.options.mapModule || {};
     _module.options.name = 'map' ;
-    _module.options.instructions = 'This adds a Map to the Editor with marker on it ' ;
+    _module.options.instructions = 'Add Map with marker to your note' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
 
@@ -36,6 +36,9 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
          return false ;
        }
      }
+
+     // construct HTML additions
+     _module.build();
 
   }
 }) ;
