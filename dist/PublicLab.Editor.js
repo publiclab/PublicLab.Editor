@@ -23834,6 +23834,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       MapModule for adding Map .
       Adds/Removes Tag lat:XX , lon:XX from TagsModule .
 */
+
 module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 
   init: function( _editor , options) {

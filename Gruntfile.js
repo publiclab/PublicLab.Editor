@@ -45,8 +45,11 @@ module.exports = function(grunt) {
                 'node_modules/typeahead.js/dist/bloodhound.js',
                 'node_modules/bootstrap-tokenfield/dist/bootstrap-tokenfield.js',
                 'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-                'node_modules/jasmine-ajax/lib/mock-ajax.js'
-              ]
+                'node_modules/jasmine-ajax/lib/mock-ajax.js',
+                'https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyDWgc7p4WWFsO3y0MTe50vF4l4NUPcPuwE',
+                'node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js',
+                'node_modules/leaflet/dist/leaflet-src.js'
+              ] 
             }
           }
         }
@@ -54,7 +57,7 @@ module.exports = function(grunt) {
     });
 
     /* Default (development): Watch files and build on change. */
-    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('default', ['watch' , 'jasmine']);
 
     grunt.registerTask('build', [
         'browserify:dist'

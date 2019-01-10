@@ -65,10 +65,10 @@ describe("Editor", function() {
     function onPublish(response) {
 
       expect(response).not.toBeUndefined();
- 
+
       jasmine.Ajax.uninstall();
       done();
- 
+
     }
 
     editor.publish(onPublish);
