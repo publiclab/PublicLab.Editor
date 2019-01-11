@@ -201,8 +201,8 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
       //checks for the following pattern
       //<double asterisks><zero or one space>
-      //<more than zero new line>
-      //<more than one hashes><include one or more characters that are NOT asterisks><double asterisks>
+      //<atleast one new lines>
+      //<atleast one hash><include atleast one characters that is NOT an asterisk><double asterisks>
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
         _module.value(_module.value().match(regexp)[0].substr(3, _module.value().match(regexp)[0].length-5))
       }
