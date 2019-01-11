@@ -196,9 +196,13 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
-                crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+    crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
       _editor.validate();
-      var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]{3}[^\P{P}*]+[\*]{2}/;
+      var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
+      //checks for the following pattern
+      //<double asterisks><zero or one space>
+      //<more than zero new line>
+      //<more than one hashes><include one or more characters that are NOT asterisks><double asterisks>
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
         _module.value(_module.value().match(regexp)[0].substr(3, _module.value().match(regexp)[0].length-5))
       }
