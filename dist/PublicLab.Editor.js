@@ -22727,7 +22727,7 @@ PL.Editor = Class.extend({
     // executes <callback> on completion, or (by default) navigates to returned URL
     _editor.publish = _editor.options.publish || function publish(callback) {
 
-       if($("#checkbox").is(":checked")){
+       if($("#map_content").is(':visible')){
         _lat = _editor.mapModule.blurredLocation.getLat() ;
         _lng = _editor.mapModule.blurredLocation.getLon() ;
         console.log(_lat + '  ' + _lng) ;
@@ -23861,7 +23861,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
      _module.blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
-       if($("#checkbox").is(":checked")){
+       if($("#map_content").is(':visible')){
         return true ;
        }
        else{

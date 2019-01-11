@@ -88,7 +88,7 @@ PL.Editor = Class.extend({
     // executes <callback> on completion, or (by default) navigates to returned URL
     _editor.publish = _editor.options.publish || function publish(callback) {
 
-       if($("#checkbox").is(":checked")){
+       if($("#map_content").is(':visible')){
         _lat = _editor.mapModule.blurredLocation.getLat() ;
         _lng = _editor.mapModule.blurredLocation.getLon() ;
         console.log(_lat + '  ' + _lng) ;

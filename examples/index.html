@@ -122,28 +122,33 @@
           </div>
 
           <div class="ple-module-content col-md-9">
-
-            <input type="checkbox" id="checkbox" name="location" value="location">  Add Location 
+            <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add Location</button>
             <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
-            <br>
-              <div id="map_content">
-                <h4><b>By place name :</b></h4>
-                <p><input id="placenameInput" type="text" class="form-control" /></p>
 
-                <p>
-                  <h4><b>By entering co-ordinates :</b></h4>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
-                    </div>
-                    <div class="col-md-6">
-                      <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
-                    </div>
-                  </div>
-                </p>
-
-                <div id="map" class="leaflet-map" style="width: 300px ; height: 300px;"></div>
+            <div id="map_content">    
+              <div class="row">
+                <div class="col-md-6"> 
+                  <div id="map" class="leaflet-map" style="width: 300px ; height: 300px;"></div>
+                </div>
+                 <div class="col-md-6">
+                  <h4><b>By place name :</b></h4>
+                    <p>
+                      <input id="placenameInput" type="text" class="form-control" />
+                    </p>
+                     <p>
+                      <h4><b>By entering co-ordinates :</b></h4>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+                          </div>
+                          <div class="col-md-6">
+                            <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+                          </div>
+                        </div>
+                     </p>
+                  </div>   
               </div>
+            </div>
           </div>
 
         </div>
@@ -273,13 +278,8 @@ var myVariable = 4;
 
       $( document ).ready(function() {
           $("#map_content").hide() ;
-          $("#checkbox").change(function(){
-            if($(this).is(":checked")){
-              $("#map_content").show() ;
-            }
-            else{
-              $("#map_content").hide() ;
-            }
+          $("#location_button").click(function(){
+              $("#map_content").toggle() ;
           }) ;
       });
 

@@ -29,7 +29,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
      _module.blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
-       if($("#checkbox").is(":checked")){
+       if($("#map_content").is(':visible')){
         return true ;
        }
        else{
