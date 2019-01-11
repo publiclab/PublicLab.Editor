@@ -1,6 +1,6 @@
 Make sure these boxes are checked before your pull request (PR) is ready to be reviewed and merged. Thanks!
 
-* [ ] tests pass -- look for a green checkbox ✔️ a few minutes after opening your PR -- or run tests locally with `rake test`
+* [ ] tests pass -- look for a green checkbox ✔️ a few minutes after opening your PR -- or run tests locally with `grunt jasmine`
 * [ ] code is in uniquely-named feature branch and has no merge conflicts
 * [ ] PR is descriptively titled
 * [ ] PR body includes `fixes #0000`-style reference to original issue #
