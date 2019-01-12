@@ -82,6 +82,38 @@
         </div>
         <!-- end main_image module -->
 
+         <!-- Map Module start-->
+        <div class="ple-module-map ple-module container">
+
+          <div class="ple-module-guide col-md-3">
+            <h2>3</h2>
+          </div>
+
+          <div class="ple-module-content col-md-9">
+
+            <input type="checkbox" id="checkbox" name="location" value="location">  Add Location <br>
+              <div id="map_content">
+                <h4><b>By place name :</b></h4>
+                <p><input id="placenameInput" type="text" class="form-control" /></p>
+
+                <p>
+                  <h4><b>By entering co-ordinates :</b></h4>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+                    </div>
+                  </div>
+                </p>
+
+                <div id="map" class="leaflet-map" style="width: 300px ; height: 300px;"></div>
+              </div>
+          </div>
+
+        </div>
+        <!-- Map Module end -->
 
         <!-- body module -->
         <div class="ple-module-body ple-module container">
