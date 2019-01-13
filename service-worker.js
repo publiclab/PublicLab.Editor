@@ -19,7 +19,11 @@ var CACHE_FILES = [
     'node_modules/bootstrap-tokenfield/dist/bootstrap-tokenfield.js',
     'node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
     'node_modules/blueimp-file-upload/js/jquery.iframe-transport.js',
-    'node_modules/blueimp-file-upload/js/jquery.fileupload.js'
+    'node_modules/blueimp-file-upload/js/jquery.fileupload.js',
+    'node_modules/leaflet/dist/leaflet.css',
+    'node_modules/leaflet/dist/leaflet.js',
+    'node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css',
+    'node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js'
 ];
 
 
