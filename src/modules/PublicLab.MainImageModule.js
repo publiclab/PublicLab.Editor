@@ -47,6 +47,9 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.dropEl = _module.el.find('.ple-drag-drop');
     _module.dropEl.css('background', 'url("' + _module.options.url + '") center no-repeat');
+    _module.dropEl.css('background-position', 'center');
+    _module.dropEl.css('background-repeat', 'no-repeat');
+    _module.dropEl.css('background-size', 'cover');
 
     _module.dropEl.bind('dragover',function(e) {
       e.preventDefault();
