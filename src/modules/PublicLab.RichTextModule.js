@@ -209,6 +209,18 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
+    crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+      _editor.validate();
+      var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
+      //checks for the following pattern
+      //<double asterisks><zero or one space>
+      //<atleast one new lines>
+      //<atleast one hash><include atleast one characters that is NOT an asterisk><double asterisks>
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
+        _module.value(_module.value().match(regexp)[0].substr(3, _module.value().match(regexp)[0].length-5))
+      }
+    });
+
     // once woofmark's done with the textarea, this is triggered
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
