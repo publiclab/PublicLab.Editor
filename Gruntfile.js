@@ -27,6 +27,17 @@ module.exports = function(grunt) {
                     'src/PublicLab.Editor.js'
                 ],
                 dest: 'dist/PublicLab.Editor.js'
+            },
+            debug: {
+                options : {
+                    browserifyOptions: {
+                        debug: true
+                    }  
+                }, 
+                src: [
+                    'src/PublicLab.Editor.js'
+                ],
+                dest: 'dist/PublicLab.Editor.js'
             }
         },
 
@@ -61,6 +72,10 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'browserify:dist'
+    ]);
+
+    grunt.registerTask('debug', [
+        'browserify:debug'
     ]);
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
