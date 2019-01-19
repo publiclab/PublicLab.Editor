@@ -114,4 +114,25 @@ describe("RichTextModule", function() {
   });
 
 
+  it("displays alert for empty bold tags",function() {
+
+      var enter = jQuery.Event("keydown", {keyCode:13})
+
+      var temp_el = module.textarea
+
+      module.setMode('markdown');
+
+      module.textarea.innerHTML = '**';
+
+      $(temp_el).trigger(enter)
+
+      module.textarea.innerHTML = '**';
+
+      $(temp_el).trigger(enter)
+
+      expect($('.invalid-bold-tags-warning').length).not.toBeNull();
+
+    });
+
+
 });

@@ -155,6 +155,7 @@ textarea.ple-textarea {
 .wk-prompt {
   border-radius: 10px;
   padding: 20px;
+  z-index: 2;
 }
 
 /* Following may be removed if this is resolved:
