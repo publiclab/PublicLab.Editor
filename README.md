@@ -33,7 +33,7 @@ Some, or many of the above may be optionally based on [Public Lab Powertags](htt
 
 Design updates are [viewable on PublicLab.org](https://publiclab.org/tag/rich-editor).
 
-You can try a very early, rough prototype here: 
+You can try a very early, rough prototype here:
 
 https://publiclab.github.io/PublicLab.Editor/examples/
 
@@ -51,7 +51,7 @@ The editor is built from different modules like:
 * HistoryModule
 * RichTextModule
 
-Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
+Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark.
 
 To input content into a module, the convention is to use that module's `value()` method, like this:
 
@@ -98,9 +98,11 @@ After installing node and npm run `npm install` from the root directory.
 
 PublicLab.Editor uses grunt - the javascript task runner for compilation of the modules. To install grunt run `npm install -g grunt-cli`. You may have to use `sudo` for root privileges.
 
-Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out in `/examples/index.html`. Run `grunt` and leave it running to build as you go.
+If you simply open the `examples/index.html` file in your browser, you will probably experience the [CORS offline issue](https://github.com/publiclab/PublicLab.Editor/issues/240). To avoid this, you need to access the Editor using a HTTP/HTTPS domain in your localhost, through a server. One option is to install [npm live server](https://www.npmjs.com/package/live-server) with the command `npm install -g live-server`.
 
-You can also run `grunt debug` to have *grunt-browserify* to include Source Maps for easy debugging. This way you can locate the module from where the error is generating. This is for use in development only. 
+Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out by opening the project's directory in your terminal and running the command `live-server`. When the project opens in your default browser, open the folder `/examples` to access the editor. Run `grunt` and leave it running to build as you go.
+
+You can also run `grunt debug` to have *grunt-browserify* to include Source Maps for easy debugging. This way you can locate the module from where the error is generating. This is for use in development only.
 
 
 ## Setup
@@ -108,7 +110,7 @@ You can also run `grunt debug` to have *grunt-browserify* to include Source Maps
 To use PublicLab.Editor, you'll need to follow [the template provided here](https://publiclab.github.io/PublicLab.Editor/examples/index.html), and use the following constructor:
 
 ````js
-var editor = new PL.Editor({ 
+var editor = new PL.Editor({
   textarea: document.getElementById('my-textarea'),
   destination:        "/notes/create",   // content will Submit to this URL upon clicking "Publish"
   data: { // prepopulate fields:
@@ -121,7 +123,7 @@ var editor = new PL.Editor({
 
 To customize the @author and #tag autocompletes with your own suggestions, or with AJAX calls to your server, see the autocomplete example in `/examples/autocomplete.html`.
 
-The editor toolbar comes in two differnt formats. You can use a smaller version by using a `size` property in the constructor. Refer to example given in `/examples/comment.html` 
+The editor toolbar comes in two differnt formats. You can use a smaller version by using a `size` property in the constructor. Refer to example given in `/examples/comment.html`
 
 ## Dependencies
 
@@ -141,16 +143,16 @@ As of `v1`, `PublicLab.Editor` requires `jQuery` to be included on the page, and
 <script src="../node_modules/blueimp-file-upload/js/jquery.fileupload.js"></script>
 ```
 
-These used to be compiled into `PublicLab.Editor` but are now external so that `jQuery` does not get included twice when using the editor in a page which already has `jQuery. 
+These used to be compiled into `PublicLab.Editor` but are now external so that `jQuery` does not get included twice when using the editor in a page which already has `jQuery.
 
 
 ## Server
 
-PublicLab.Editor expects a response from the server upon sending a request to `destination` that is a URL which it will follow. 
+PublicLab.Editor expects a response from the server upon sending a request to `destination` that is a URL which it will follow.
 
 ### Creating a mock server
 
-* Testing image upload and other features that depend on an interactive server is difficult with just a basic one-line webserver. Instead, you can set up the `plots2` project as explained here to see the Editor working interactively while you test out those features. 
+* Testing image upload and other features that depend on an interactive server is difficult with just a basic one-line webserver. Instead, you can set up the `plots2` project as explained here to see the Editor working interactively while you test out those features.
 
  * Clone [`plots2`](https://github.com/publiclab/plots2#standard-installation) and follow the [Standard Installation](https://github.com/publiclab/plots2#standard-installation) instructions to run it on your local server.
 * Now in `plots2/package.json#` at `line 62`, replace this line with `"publiclab-editor": "file:..<path>"` where `<path>` is path of your cloned `PublicLab.Editor` repo folder
@@ -171,7 +173,7 @@ Various modules have different configurable options to be added to the options o
 **formats** -- provide an array of strings specifying allowed file extensions that may be uploaded inline in the rich text input area:
 
 ```js
-var editor = new PL.Editor({ 
+var editor = new PL.Editor({
   textarea: document.getElementById('my-textarea'),
   richTextModule: {
     formats: ['xml', 'pdf', 'csv', 'stl']
@@ -192,7 +194,7 @@ The Tags module uses [Bootstrap Tokenfield](https://github.com/sliptree/bootstra
 
 Help improve Public Lab software!
 
-To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/PublicLab.Editor/issues 
+To report bugs and request features, please use the GitHub issue tracker provided at https://github.com/publiclab/PublicLab.Editor/issues
 
 For additional support, join the Public Lab website and mailing list at http://publiclab.org/lists or for urgent requests, email web@publiclab.org
 
@@ -206,13 +208,13 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ## Testing
 
-Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html 
+Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html
 
 To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
 
 You can find the installation instructions for phantomjs in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there.
 
-To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`. 
+To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
 
 
 ****
@@ -242,7 +244,7 @@ Similarly the RichText module (which wraps the Woofmark adaptor) may make `GET` 
 These can be overridden within the options in a `richTextModule` object, like:
 
 ```js
-var editor = new PL.Editor({ 
+var editor = new PL.Editor({
   textarea: document.getElementById('my-textarea'),
   richTextModule: {
     tagsUrl:    '/tags.json',
@@ -261,4 +263,4 @@ https://github.com/publiclab/PublicLab.Editor/blob/master/src/modules/PublicLab.
 
 ### Compatibility
 
-PublicLab.Editor uses jQuery 1.7+ or 2, and tests run on Node v5+. Other versions depended on are noted in the package.json file. 
+PublicLab.Editor uses jQuery 1.7+ or 2, and tests run on Node v5+. Other versions depended on are noted in the package.json file.
