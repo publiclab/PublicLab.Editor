@@ -4,7 +4,7 @@
   "main": "dist/PublicLab.Editor.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/publiclab/PublicLab.Editor.git"
+    "url": "https://github.com/jywarren/webgl-distort.git"
   },
   "keywords": [
     "editor",
@@ -13,10 +13,6 @@
   ],
   "author": "Public Lab",
   "license": "GPL-3.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jywarren/webgl-distort.git"
-  },
   "ignore": [
     "example.jpg",
     "node_modules",
@@ -27,5 +23,9 @@
     "url": "https://github.com/publiclab/PublicLab.Editor/issues"
   },
   "homepage": "https://github.com/publiclab/PublicLab.Editor#readme",
-  "_source": "git://github.com/publiclab/PublicLab.Editor.git"
+  "_source": "git://github.com/publiclab/PublicLab.Editor.git",
+  "dependencies": {
+    "Caret.js": "^0.3.1",
+    "At.js": "jquery.atwho#^1.5.4"
+  }
 }
