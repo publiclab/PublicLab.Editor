@@ -1,7 +1,5 @@
 var callout_watcher = {
   at: "@",
-  headerTpl:
-    "<center style='background-color:black; color:white'><b>Suggestions</b><center>",
   callbacks: {
     beforeInsert: function(value, obj) {
       username = value.slice(1);
