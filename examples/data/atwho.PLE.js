@@ -33,8 +33,6 @@ var callout_watcher = {
 
 var hashtag_watcher = {
   at: "#",
-  headerTpl:
-    "<center style='background-color:black; color:white'><b>Suggestions</b><center>",
   callbacks: {
     beforeInsert: function(value, obj) {
       value = value.slice(1);
