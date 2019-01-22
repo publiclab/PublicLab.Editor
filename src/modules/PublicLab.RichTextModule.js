@@ -260,7 +260,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     } else {
     wk_c.style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
     wk_c.style.position = "fixed";
-    wk_c.style.zIndex = 999;
+    wk_c.style.zIndex = 2;
    }
   })
 
