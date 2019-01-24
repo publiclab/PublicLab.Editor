@@ -48,6 +48,10 @@ PL.Editor = Class.extend({
 
       }
 
+      else {
+        $('.ple-publish').addClass('disabled');
+      }
+
       $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
       return valid_modules == required_modules;
