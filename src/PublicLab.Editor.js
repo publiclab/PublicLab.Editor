@@ -54,7 +54,7 @@ PL.Editor = Class.extend({
 
     }
 
-    $('.ple-editor *').on('focusout keypress blur change keyup', _editor.validate);
+    // $('.ple-editor *').on('focusout keypress blur change keyup', _editor.validate);
 
     _editor.data = {
 

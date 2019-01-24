@@ -51,10 +51,10 @@ module.exports = PublicLab.Formatter = Class.extend({
     }
 
 
-    _formatter.convert = function(data, destination) {
+    _formatter.convert = function(data, format) {
 
       // return formatted version of data
-      return _formatter.schemas[destination](data);
+      return _formatter.schemas[format](data);
 
     }
 
