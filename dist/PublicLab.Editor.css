@@ -34,6 +34,10 @@
   color: #ddd;
 }
 
+.ple-map-content {
+  font-size: 16px; 
+}
+
 .ple-header {
   text-align: center;
 }
