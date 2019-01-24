@@ -11,13 +11,15 @@
     <script src="../node_modules/leaflet/dist/leaflet.js"></script>
     <link href="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.css" rel="stylesheet">
     <script src="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
     <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="../node_modules/woofmark/dist/woofmark.min.css" rel="stylesheet">
     <link href="../node_modules/horsey/dist/horsey.min.css" rel="stylesheet">
     <link href="../node_modules/bootstrap-tokenfield/dist/css/tokenfield-typeahead.min.css" rel="stylesheet">
     <link href="../node_modules/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.min.css" rel="stylesheet">
+    <link href="../dist/localEdits.css" rel="stylesheet">
 
     <link href="../dist/PublicLab.Editor.css" rel="stylesheet">
 
@@ -40,129 +42,98 @@
 
   <body>
 
-    <div class="pl-editor">
-
-      <div class="ple-header">
-
-        <h1>Share</h1>
-
-        <!-- selector module -->
-        <div class="container ple-type">
-
-          <div class="col-md-5 col-md-push-4">
-            <div class="row">
-              <div class="col-xs-10">
-                <select class="form-control input-lg">
-                  <option selected value="">a research note</option>
-                  <option value="">a question or request</option>
-                  <option value="">an event</option>
-                </select>
+      <div class="pl-editor">
+          <h1 id="first">Public Lab Editor</h1>
+          <div class="ple-header">
+              <h1 id="share">Share</h1>
+              <!-- selector module -->
+              <div class="container ple-type">
+                  <div class="col-md-5 col-md-push-4">
+                      <div class="row">
+                          <div class="col-xs-10">
+                              <select class="form-control input-lg" id="selection">
+                                  <option selected value="">a research note</option>
+                                  <option value="">a question or request</option>
+                                  <option value="">an event</option>
+                              </select>
+                          </div>
+                      </div>
+                  </div>
               </div>
-              <div class="col-xs-2" style="padding-top:10px;text-align:left;">
-                <a rel="tooltip" data-placement="bottom" title="Learn more about different posting types." class="ple-help-light" style="font-size:18px;"><i class="fa fa-question-circle"></i></a>
-
-              </div>
-            </div>
           </div>
-
-        </div>
         <!-- end selector module -->
 
-      </div>
-
-      <div class="ple-content">
-
-
+        <div class="ple-content">
         <!-- title module -->
-        <div class="ple-module-title ple-module container">
-
-          <div class="ple-module-guide col-md-3">
-            <h2>1</h2>
-          </div>
-
-          <div class="ple-module-content col-md-9">
-            <input class="form-control input-lg" type="text" placeholder="Title" />
-          </div>
-
-        </div>
-        <!-- end title module -->
-
+            <div class="ple-module-title ple-module container">
+                <div class="ple-module-content" id="titleBar">
+                    <input class="form-control input-lg" type="text" placeholder="Title" style="" />
+                </div>
+            </div>
+            <hr style="height:2px;background:#ccc;">
+            <!-- end title module -->
 
         <!-- main_image module -->
-        <div class="ple-module-main_image ple-module container">
-
-          <div class="ple-module-guide col-md-3">
-            <h2>2</h2>
-          </div>
-
-          <div class="ple-module-content col-md-9 container">
-            <div class="ple-drag-drop col-md-6">
-              Drag an image here to upload.
+        <div class="ple-module-main_image ple-module container-fluid">
+            <div class="ple-module-content col-md-9 container">
+                <div class="ple-module-guide col-md-3" id="para">
+                </div>
+                <div class="ple-drag-drop col-md-6">
+                    Drag an image here to upload.
+                </div>
+                <div class="col-md-6 help">
+                    <div style="display:none;" class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                    </div>
+                    <p class="upload"><input type="file" class="uploadFile" name="image[photo]" /></p>
+                  <!-- <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p> -->
+                </div>
             </div>
-            <div class="col-md-6 help">
-
-              <div style="display:none;" class="progress">
-                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-              </div>
-
-              <p><input type="file" name="image[photo]" /></p>
-              <p class="ple-help"><span class="ple-help-minor">Select an optional main image for your post.</span></p>
-
-            </div>
-          </div>
-
         </div>
         <!-- end main_image module -->
-
+        <hr style="height:2px;background:#ccc;" class="hori">
         <!-- Map Module start-->
-        <div class="ple-module-map ple-module container">
-
-          <div class="ple-module-guide col-md-3">
-            <h2>3</h2>
-          </div>
-
-          <div class="ple-module-content col-md-9">
-            <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add Location</button>
-            <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
-
-            <div id="map_content">    
-              <div class="row">
-                <div class="col-md-6"> 
-                  <div id="map" class="leaflet-map" style="width: 100% ; height: 300px;"></div>
-                </div>
-                 <div class="col-md-6">
-                  <h4><b>By place name :</b></h4>
-                    <p>
-                      <input id="placenameInput" type="text" class="form-control" />
-                    </p>
-                     <p>
-                      <h4><b>By entering co-ordinates :</b></h4>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
-                          </div>
-                          <div class="col-md-6">
-                            <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
-                          </div>
-                        </div>
-                     </p>
-                  </div>   
-              </div>
+        <div class="ple-module-map ple-module container" id="map_module">
+            <div class="ple-module-guide col-md-3">
             </div>
-          </div>
-
-        </div>
+            <div class="ple-module-content col-md-9">
+                <button id="location_button" class="btn btn-lg btn-default"><i class="fa fa-map-marker" aria-hidden="true"></i> Add Location</button>
+                <p class="ple-help"><span class="ple-help-minor">Search location through place-name , latitude and longitude or by panning the map .</span></p>
+                    <div id="map_content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="map" class="leaflet-map" style="width: 100% ; height: 300px;"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><b>By place name :</b></h4>
+                                <p>
+                                    <input id="placenameInput" type="text" class="form-control" />
+                                </p>
+                                <p>
+                                    <h4><b>By entering co-ordinates :</b></h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><input id="lat" type="text" class="form-control" placeholder="Latitude"></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><input id="lng" type="text" class="form-control" placeholder="Longitude"></p>
+                                        </div>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <!-- Map Module end -->
+        <hr style="height:2px;background:#ccc;margin-top:0px;">
 
         <!-- body module -->
-        <div class="ple-module-body ple-module container">
-
-          <div class="ple-module-guide col-md-3">
-            <h2>4</h2>
-          </div>
-
-          <div class="ple-module-content col-md-9 container">
-            <textarea class="ple-textarea form-control"># About my project
+        <div class="ple-module-body ple-module container-fluid">
+            <div class="ple-module-guide col-md-6" id="shift">
+            </div><br>
+            <div class="ple-module-content col-md-6 container" id="aboutProject">
+                <textarea class="ple-textarea form-control"># About my project
 
 I've been working on [this thing](/) and wanted to share.
 
@@ -178,101 +149,75 @@ And then, after #balloon-mapping with @eustatic, tables:
 |------|------|------|
 | foo  | bar  | baz  |
 | food | bars | bats |
-
 ````js
 
 // Code could go here
 var myVariable = 4;
 
-````</textarea>
-          </div>
+````
 
+                </textarea>
+            </div>
         </div>
         <!-- end body module -->
 
-
         <!-- tags module -->
-        <div class="ple-module-tags ple-module container">
-
-          <div class="ple-module-guide col-md-3">
-            <h2>5</h2>
-          </div>
-
-          <div class="ple-module-content col-md-9">
-            <input class="form-control input-lg" type="text" placeholder="balloon-mapping, water-quality..." />
-          </div>
-
+        <div class="ple-module-tags ple-module container-fluid" id="balloon">
+            <div class="ple-module-guide col-md-9">
+            </div>
+            <div class="ple-module-content col-md-12" id="contentInput">
+                <input class="form-control input-lg" id="inputFunc" type="text" placeholder="balloon-mapping, water-quality..." />
+            </div>
         </div>
         <!-- end tags module -->
 
-
         <!-- multi module -->
-        <div class="ple-module-multi ple-module container">
-
-          <div class="ple-module-guide col-md-3">
-            <p>Extras</p>
-          </div>
-
-          <div class="ple-module-content col-md-9">
-
-            <div class="btn-group">
-              <a class="btn btn-lg btn-default">
-                <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
-              </a>
-              <a class="btn btn-lg btn-default">
-                <i class="fa fa-envelope-o"></i> Event <i class="fa fa-caret-down"></i>
-              </a>
-              <a class="btn btn-lg btn-default">
-                <i class="fa fa-map-o"></i> Map
-              </a>
-              <a class="btn btn-lg btn-default">
-                <i class="fa fa-line-chart"></i> Chart
-              </a>
-              <a class="btn btn-lg btn-default">
-                More <i class="fa fa-caret-down"></i>
-              </a>
+        <div class="ple-module-multi ple-module col-md-6" id="extrasModule">
+            <div class="ple-module-content col-md-12">
+                <div class="btn-group">
+                    <a class="btn btn-lg btn-default">
+                        <i class="fa fa-comment-o"></i> Invite responses <i class="fa fa-caret-down"></i>
+                    </a>
+                    <a class="btn btn-lg btn-default">
+                        <i class="fa fa-envelope-o"></i> Event <i class="fa fa-caret-down"></i>
+                    </a>
+                    <a class="btn btn-lg btn-default">
+                        <i class="fa fa-map-o"></i> Map
+                    </a>
+                    <a class="btn btn-lg btn-default">
+                        <i class="fa fa-line-chart"></i> Chart
+                    </a>
+                    <a class="btn btn-lg btn-default">
+                        More <i class="fa fa-caret-down"></i>
+                    </a>
+                </div>
             </div>
-
-          </div>
-
         </div>
         <!-- end multi module -->
-
-
-      </div>
-
-      <div class="ple-footer">
-
-        <div class="ple-menu-more" style="display:none;">
-          <b>History</b>
-          <div class="ple-history">
-          </div>
-          <hr />
-          <!--
-          <div class="form-control input-md ple-history">
-            <option selected value="">recent edits</option>
-          </div>
-          -->
-        </div>
-
-        <button class="btn btn-lg btn-default btn-more">...</button>
-
-        <span>
-          &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a>
-          <span class="hidden-xs"> so that others may use it.</span>
-        </span>
-
-        <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
-
-        <span class="ple-help pull-right">
-          <span class="ple-steps-left">X</span>
-          <span class="hidden-xs"> steps left</span>
-        </span>
-
-      </div>
-
     </div>
 
+    <div class="ple-footer">
+        <div class="ple-menu-more" style="display:none;">
+            <b>History</b>
+            <div class="ple-history">
+            </div>
+            <hr />
+          <!--<div class="form-control input-md ple-history">
+            <option selected value="">recent edits</option>
+          </div>-->
+        </div>
+        <button class="btn btn-lg btn-default btn-more">...</button>
+        <span>
+            &nbsp; By publishing, you agree to <a href="https://publiclab.org/licenses">open source your work</a>
+            <span class="hidden-xs"> so that others may use it.</span>
+        </span>
+        <button class="ple-publish btn btn-lg btn-primary pull-right disabled">Publish</button>
+        <span class="ple-help pull-right">
+            <span class="ple-steps-left">X</span>
+            <span class="hidden-xs"> steps left</span>
+        </span>
+    </div>
+</div>
 
     <script>
 

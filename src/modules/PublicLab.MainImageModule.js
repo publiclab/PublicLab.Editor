@@ -115,7 +115,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
         _editor.validate();
 
-        // primarily for testing: 
+        // primarily for testing:
         if (_module.options.callback) _module.options.callback();
 
       },

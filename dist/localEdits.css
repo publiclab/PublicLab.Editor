@@ -1,0 +1,569 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html
+{
+    height: 145vh;
+    padding: 0;
+}
+
+.pl-editor
+{
+    height: 150vh;
+}
+
+.pl-editor > #first
+{
+    background: black;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    margin: 0;
+    font-family: 'Slabo 27px', serif;
+    word-spacing: 15px;
+}
+
+.pl-editor > .ple-header > #share
+{
+    display: inline-block;
+    position: absolute;
+    left: 5vw;
+    top: 8.5vh;
+    text-align: left;
+    font-size: 25px;
+}
+
+.row
+{
+    height: 7vh;
+}
+
+#selection
+{
+    width: 32vw;
+    height: 7vh;
+    position: relative;
+    left: -20vw;
+    top: 3vh;
+    display: inline-block;
+    border: 1px solid black;
+}
+
+#titleBar
+{
+    position: absolute;
+    left: 52vw;
+    top: 10vh;
+    width: auto;
+    display: inline-block;
+}
+
+#titleBar > input
+{
+    position: relative;
+    left: 0;
+    height:7vh;
+    width:45vw;
+}
+
+.pre-module-title
+{
+    border-bottom: 3px solid black;
+}
+
+#para
+{
+    position: absolute;
+    top: 0;
+    left: 5vw;
+    width: 40vw;
+    height: 10vh;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 25px;
+    color: black
+}
+
+.ple-drag-drop
+{
+    position: absolute;
+    left: 50vw;
+    top: 0;
+    display: inline-block;
+}
+
+.upload
+{
+    transform: translate(5vw, 12vh);
+}
+
+.upload > .uploadFile::before
+{
+    border: 0;
+    margin: 0;
+}
+
+.ple-module-main_image
+{
+    height: 18vh;
+}
+
+.tips
+{
+    position: absolute;
+    top: 5vh;
+    left: 25vw;
+}
+
+.hori
+{
+    margin-top: 10px;
+}
+
+.ple-instructions
+{
+    font-size: 20px;
+    margin: 0;
+}
+
+.ple-module-guide
+{
+    height: 10vh;
+}
+
+#shift
+{
+    position: relative;
+    left: 5vw;
+}
+
+#aboutProject
+{
+    position: relative;
+    left: 0vw;
+    top: 20vh;
+}
+
+.md-code-block
+{
+    position: absolute;
+    left: -45vw;
+    top: 0;
+    width: 45vw;
+    height: 45vh;
+    border-radius: 0;
+}
+
+.wk-wysiwyg > ul
+{
+    transform: translateX(2.5vw);
+}
+
+#contentInput
+{
+    position: absolute;
+    top: 2vh;
+    left: 0.2vw;
+    width: 47.5vw;
+}
+
+#balloon
+{
+    display: inline-block;
+    width: auto;
+    position: relative;
+    top: 0;
+    left: 3vw;
+    width: 50vw;
+    height: 8vh;
+}
+
+#inputFunc
+{
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 40vw;
+    border-radius: 0;
+}
+
+#extrasModule
+{
+    position: absolute;
+    top: 141.5vh;
+    left: 2vw;
+}
+
+::-webkit-scrollbar
+{
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track
+{
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb
+{
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover
+{
+    background: #555;
+}
+
+@media screen and (max-width: 1050px) {
+    html
+    {
+        height: 115vh;
+    }
+
+    .pl-editor
+    {
+        height: 120vh;
+    }
+
+    .pl-editor > #first
+    {
+        /* overflow-y: scroll; */
+        height: 5vh;
+        font-size: 50px;
+    }
+
+    #selection
+    {
+        height: 5vh;
+    }
+
+    #titleBar > input
+    {
+        height: 5vh;
+        position: absolute;
+        top: -2vh;
+    }
+
+    .ple-drag-drop
+    {
+        height: 10vh;
+    }
+
+    .upload > input
+    {
+        display: block;
+        transform: translateY(-5vh);
+    }
+
+    .ple-module-main_image
+    {
+        height: 11vh;
+    }
+
+    .ple-module-guide
+    {
+        height: 5vh;
+    }
+
+    .md-code-block
+    {
+        position: relative;
+        top: 0vh;
+        left: 0vw;
+        width: 100%;
+        height: 10vh;
+    }
+
+    #aboutProject
+    {
+        position: absolute;
+        top: 55vh;
+        left: 0;
+        width: 98vw;
+    }
+
+    #balloon
+    {
+        display: inline-block;
+        width: auto;
+        position: absolute;
+        top: 100vh;
+        left: 3vw;
+        width: 50vw;
+        height: 8vh;
+    }
+
+    #extrasModule
+    {
+        position: absolute;
+        top: 110vh;
+        left: 2vw;
+        width: 90vw;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    html
+    {
+        height: 130vh;
+    }
+
+    .pl-editor
+    {
+        height: 130vh;
+    }
+
+    .ple-header
+    {
+        height: 12vh;
+    }
+
+    .pl-editor > .ple-header > #share
+    {
+        position: absolute;
+        top: 5vh;
+        left: 10vw;
+    }
+
+    #titleBar
+    {
+        position: absolute;
+        top: 14vh;
+    }
+
+    #selection
+    {
+        position: relative;
+        top: 7vh;
+    }
+
+    #balloon
+    {
+        position: absolute;
+        top: 110vh;
+    }
+
+    #extrasModule
+    {
+        position: absolute;
+        top: 120vh;
+        left: 2vw;
+        width: 90vw;
+    }
+
+    .ple-module-content
+    {
+        height: 8vh;
+        padding-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .pl-editor > #first
+    {
+        height: 8vh;
+    }
+
+    .pl-editor > .ple-header > #share
+    {
+        position: absolute;
+        top: 8vh;
+    }
+
+    .ple-header
+    {
+        height: 25vh;
+    }
+
+    #selection
+    {
+        position: relative;
+        top: 7vh;
+        left: 0;
+        width: 80vw;
+        height: 7vh;
+    }
+
+    #titleBar
+    {
+        position: absolute;
+        top: 27vh;
+        left: 7vw;
+        width: 90vw;
+        height: 7vh;
+    }
+
+    #titleBar > input
+    {
+        width: 90%;
+    }
+
+    .ple-module-main_image
+    {
+        height: 40vh;
+    }
+
+    .upload > input
+    {
+        position: relative;
+        top: 10vh;
+    }
+
+    #para
+    {
+        position: relative;
+        top: 15vh;
+        width: 75vw;
+    }
+
+    #map_module
+    {
+        position: relative;
+        top: 0vh;
+        height: 15vh;
+    }
+
+    .ple-module-body
+    {
+        position: absolute;
+        top: 60vh;
+    }
+
+    html
+    {
+        height: 235vh;
+    }
+
+    .pl-editor
+    {
+        height: 235vh;
+    }
+
+    #balloon
+    {
+        position: absolute;
+        top: 195vh;
+    }
+
+    #contentInput
+    {
+        width: 90vw;
+    }
+
+    #inputFunc
+    {
+        width: 90vw;
+    }
+
+    #extrasModule
+    {
+        position: absolute;
+        top: 215vh;
+        left: 2vw;
+        width: 90vw;
+    }
+
+    #shift > .ple-instructions
+    {
+        position: relative;
+        top: 10vh;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .ple-module-main_image
+    {
+        height: 45vh;
+    }
+
+    #shift > .ple-instructions
+    {
+        position: relative;
+        top: 16vh;
+    }
+
+    #balloon
+    {
+        position: absolute;
+        top: 205vh;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    html, .pl-editor
+    {
+        height: 300vh;
+    }
+
+    .pl-editor > #first
+    {
+        font-size: 30px;
+    }
+
+    .pl-editor > .ple-header > #share
+    {
+        position: absolute;
+        top: 5vh;
+    }
+
+    .ple-module-main_image
+    {
+        height: 65vh;
+    }
+
+    #shift > .ple-instructions
+    {
+        position: relative;
+        top: 30vh;
+    }
+
+    .upload > input
+    {
+        position: relative;
+        top: 17vh;
+    }
+
+    #para
+    {
+        position: relative;
+        top: 23vh;
+    }
+
+    .wk-wysiwyg
+    {
+        position: absolute;
+        top: 30vh;
+    }
+
+    #map_module
+    {
+        height: 25vh;
+    }
+
+    #location_button
+    {
+        transform: translateY(8vh);
+    }
+
+    #balloon
+    {
+        position: absolute;
+        top: 240vh;
+    }
+
+    #extrasModule
+    {
+        position: absolute;
+        top: 260vh;
+    }
+}

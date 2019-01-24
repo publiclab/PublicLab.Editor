@@ -6,7 +6,7 @@
 .pl-editor h2,
 .pl-editor h3,
 .pl-editor h4 {
-  font-family: "Junction Light", serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .pl-editor .powertags {
@@ -23,6 +23,7 @@
 
 .ple-help {
   color: #aaa;
+  display: none;
 }
 
 .ple-help-minor {
@@ -40,10 +41,10 @@
 
 .ple-footer {
   padding: 10px;
-  background: #f8f8f8;
+  background: white;
   width: 100%;
-  position: fixed;
-  bottom: 0;
+  position: absolute;
+  top: 155vh;
   left: 0;
   z-index: 99;
 }
@@ -61,8 +62,6 @@
 }
 
 .ple-module {
-  padding: 20px;
-  border-top: 1px solid #ddd;
 }
 
 .ple-module-guide h2 {
@@ -71,7 +70,7 @@
 }
 
 .ple-module-guide p {
-  color: #aaa;
+  color: #000;
   padding-bottom: 22px;
   padding-right: 30px;
   clear: left;
@@ -91,7 +90,7 @@
 }
 
 .ple-drag-drop {
-  border: 4px dotted #ccc;
+  border: 5px dotted #000;
   background: #f8f8f8;
   color: #aaa;
   font-size: 16px;
@@ -126,10 +125,9 @@ textarea.ple-textarea {
   min-height: 200px;
   padding:10px;
   margin-bottom:10px;
-  border: 5px solid #eee;
-  -webkit-border-radius: 8px;
-  -moz-border-radius:    8px;
-  border-radius:         8px;
+  border: 2px solid #000;
+  -webkit-border-radius: 2px solid #000;
+  -moz-border-radius: 2px solid #000;
   outline: none;
 }
 
@@ -181,6 +179,25 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tooltip.bottom .tooltip-arrow {
   display:none;
 }
+
+@media screen and (max-width: 1050px) {
+    .ple-footer
+    {
+        position: absolute;
+        top: 115vh;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .ple-footer
+    {
+        position: absolute;
+        top: 130vh;
+        width: 100vw;
+        background: white;
+    }
+}
+
 @media (max-width:550px) {
   .ple-module-content a.btn {
       font-size: 0px !important;
@@ -188,4 +205,32 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
     .ple-module-content a.btn i.fa {
       font-size: 20px !important;
    }
+}
+
+@media screen and (max-width: 450px) {
+    .ple-drag-drop
+    {
+        position: absolute;
+        left: 0vw;
+        width: 90vw;
+    }
+
+    .ple-footer
+    {
+        position: absolute;
+        top: 225vh;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .ple-drag-drop
+    {
+        height: 23vh;
+    }
+
+    .ple-footer
+    {
+        position: absolute;
+        top: 280vh;
+    }
 }
