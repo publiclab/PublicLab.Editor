@@ -158,6 +158,43 @@ textarea.ple-textarea {
   z-index: 2;
 }
 
+.wk-prompt-input {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #DDDD;
+  height: 30px;
+  text-indent: 15px;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+}
+
+.wk-prompt-cancel {
+  border-radius: 5px;
+  border: 1px solid #A9A9A9;
+  height: 30px;
+}
+
+.wk-prompt-cancel:hover{
+  opacity: 0.7;
+}
+
+.wk-prompt-cancel:active{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.wk-prompt-ok {
+  border-radius: 5px;
+  border: 1px solid #A9A9A9;
+  height: 30px;
+}
+
+.wk-prompt-ok:hover{
+  opacity: 0.7;
+}
+
+.wk-prompt-ok:active{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
 /* Following may be removed if this is resolved:
 https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tt-menu {
