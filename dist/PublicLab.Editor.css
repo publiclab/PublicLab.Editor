@@ -183,6 +183,30 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tooltip.bottom .tooltip-arrow {
   display:none;
 }
+
+::-webkit-scrollbar
+{
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track
+{
+    background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb
+{
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover
+{
+    background: #555;
+}
+
 @media (max-width:550px) {
   .ple-module-content a.btn {
       font-size: 0px !important;
