@@ -1,5 +1,7 @@
 .pl-editor {
   margin-bottom: 100px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .pl-editor h1,
@@ -48,11 +50,11 @@
   z-index: 99;
 }
 
-.ple-footer .ple-help {
+.ple-footer > .ple-help {
   margin: 12px;
 }
 
-.ple-footer .ple-menu-more {
+.ple-footer > .ple-menu-more {
   padding: 10px;
 }
 
