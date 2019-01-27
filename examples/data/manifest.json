@@ -1,0 +1,11 @@
+{
+    "short_name": "PL.Editor",
+    "name": "PublicLab Editor",
+    "description": "A general purpose, modular JavaScript/Bootstrap UI library for rich text posting",
+    "start_url": "/examples/",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/examples/",
+    "theme_color": "#ffffff"
+  }
+  
