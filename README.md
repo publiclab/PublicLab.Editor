@@ -100,6 +100,8 @@ PublicLab.Editor uses grunt - the javascript task runner for compilation of the 
 
 Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out in `/examples/index.html`. Run `grunt` and leave it running to build as you go.
 
+You can also run `grunt debug` to have *grunt-browserify* to include Source Maps for easy debugging. This way you can locate the module from where the error is generating. This is for use in development only. 
+
 
 ## Setup
 
@@ -145,6 +147,17 @@ These used to be compiled into `PublicLab.Editor` but are now external so that `
 ## Server
 
 PublicLab.Editor expects a response from the server upon sending a request to `destination` that is a URL which it will follow. 
+
+### Creating a mock server
+
+* Testing image upload and other features that depend on an interactive server is difficult with just a basic one-line webserver. Instead, you can set up the `plots2` project as explained here to see the Editor working interactively while you test out those features. 
+
+ * Clone [`plots2`](https://github.com/publiclab/plots2#standard-installation) and follow the [Standard Installation](https://github.com/publiclab/plots2#standard-installation) instructions to run it on your local server.
+* Now in `plots2/package.json#` at `line 62`, replace this line with `"publiclab-editor": "file:..<path>"` where `<path>` is path of your cloned `PublicLab.Editor` repo folder
+* Now with `passenger start` you can access the Editor at `localhost:3000/post`. Make changes in Editor's source code and run `grunt build` or `grunt debug` to bundle all files. Then run `yarn install --force` in plots2 repo to view changes on server.
+* For reflecting HTML changes use   `plots2/app/views/editor/rich.html.erb` instead of example.html. They both have same sturcture.
+* For reflecting the changes on the local server need to run `yarn install --force` and refresh your page.
+
 
 
 ****

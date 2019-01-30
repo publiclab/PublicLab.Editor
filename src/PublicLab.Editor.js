@@ -14,6 +14,7 @@ PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
 PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
+PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
 
 PL.Editor = Class.extend({
@@ -41,11 +42,7 @@ PL.Editor = Class.extend({
 
       });
 
-      if (valid_modules == required_modules) {
-
-        $('.ple-publish').removeClass('disabled');
-
-      }
+      $('.ple-publish').prop('disabled', (valid_modules !== required_modules));
 
       $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
@@ -60,8 +57,8 @@ PL.Editor = Class.extend({
       title: null,
       body:  null,
       tags:  null,          // comma-delimited list; this should be added by a PL.Editor.MainImage module
-      main_image_url: null
-
+      main_image_url: null,
+      map_data: null
     }
 
     // Update data based on passed options.data
@@ -71,7 +68,7 @@ PL.Editor = Class.extend({
 
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
-    // Note that modules may attempt to write to the same key, 
+    // Note that modules may attempt to write to the same key,
     // and would then overwrite one another.
     _editor.collectData = function() {
 
@@ -87,10 +84,18 @@ PL.Editor = Class.extend({
     // executes <callback> on completion, or (by default) navigates to returned URL
     _editor.publish = _editor.options.publish || function publish(callback) {
 
+       if($("#map_content").is(':visible')){
+        _lat = _editor.mapModule.blurredLocation.getLat() ;
+        _lng = _editor.mapModule.blurredLocation.getLon() ;
+        console.log(_lat + '  ' + _lng) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
+      }
+
       _editor.collectData();
 
       var formatted = new PublicLab.Formatter().convert(
-                        _editor.data, 
+                        _editor.data,
                         _editor.options.format
                       );
 
@@ -99,8 +104,8 @@ PL.Editor = Class.extend({
         $('.ple-publish').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         $.ajax(
-          _editor.options.destination, 
-          { 
+          _editor.options.destination,
+          {
             data: formatted,
             method: 'POST'
           }
@@ -131,17 +136,17 @@ PL.Editor = Class.extend({
       var focusables = [];
 
       _editor.modules.forEach(function(module, i) {
- 
+
         focusables = focusables.concat(module.focusables);
- 
+
       });
 
       focusables.push($('.ple-publish'));
- 
+
       focusables.forEach(function(focusable, i) {
- 
+
         focusable.attr('tabindex', i + 1);
- 
+
       });
 
     }
@@ -154,13 +159,13 @@ PL.Editor = Class.extend({
         console.log('Publishing!', _editor.data);
         _editor.publish(_editor.options.publishCallback);
       });
- 
- 
+
+
       $('.btn-more').click(function() {
- 
+
         // display more tools menu
         $('.ple-menu-more').toggle();
- 
+
       });
 
     }
@@ -195,6 +200,11 @@ PL.Editor = Class.extend({
     if (_editor.options.tagsModule !== false) {
       _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
       _editor.modules.push(_editor.tagsModule);
+    }
+
+    if (_editor.options.mapModule !== false) {
+      _editor.mapModule = new PublicLab.MapModule( _editor) ;
+      _editor.modules.push(_editor.mapModule) ;
     }
 
     _editor.help = new PublicLab.Help(_editor);
