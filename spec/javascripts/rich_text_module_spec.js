@@ -147,5 +147,17 @@ describe("RichTextModule", function() {
 
     });
 
+  it("does not alter new line spaced lists", function() {
+
+    module.setMode('wysiwyg')
+
+    module.value('<p>1. first<br/>2. second<br/>3. third</p><p>1.</p><p>2.</p><p>3.</p>')
+
+    module.setMode('markdown')
+
+    expect(module.html()).toContain('<p>1. first<br>2. second<br>3. third</p><p>1.</p><p>2.</p><p>3.</p>')
+
+  })
+
 
 });
