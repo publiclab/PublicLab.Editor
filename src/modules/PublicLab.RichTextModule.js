@@ -193,28 +193,30 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         $(".data-urls-warning").length === 0
       ) {
         var diRegEx = _module.value().match(regexp);
-        var message =
-          "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='" +
-          diRegEx[0] +
-          "'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
-        _module.wysiwyg.editable.innerHTML = _module.wysiwyg.editable.innerHTML.replace(
-          regexp,
-          ""
-        );
-        $(_module.wysiwyg.editable).after(
-          "<div id='scrollpointDURI_" +
-            timestamp +
-            "' class='data-urls-warning alert alert-warning'>" +
-            message +
-            "</div>"
-        );
-        var refer = "#scrollpointDURI_" + timestamp;
-        $("html, body").animate(
-          {
-            scrollTop: $(refer).offset().top
-          },
-          2000
-        );
+        if (diRegEx) {
+          var message =
+            "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='" +
+            diRegEx[0] +
+            "'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
+          _module.wysiwyg.editable.innerHTML = _module.wysiwyg.editable.innerHTML.replace(
+            regexp,
+            ""
+          );
+          $(_module.wysiwyg.editable).after(
+            "<div id='scrollpointDURI_" +
+              timestamp +
+              "' class='data-urls-warning alert alert-warning'>" +
+              message +
+              "</div>"
+          );
+          var refer = "#scrollpointDURI_" + timestamp;
+          $("html, body").animate(
+            {
+              scrollTop: $(refer).offset().top
+            },
+            2000
+          );
+        }
       }
     });
 
