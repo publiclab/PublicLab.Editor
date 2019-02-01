@@ -252,15 +252,31 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     });
 
-    crossvent.add(_module.wysiwyg.textarea, 'keyup', function (e) {
+    crossvent.add(_module.wysiwyg.textarea, "keyup", function(e) {
       _editor.validate();
-      var regexp= /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
+      var regexp = /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
       //checks for the following pattern
       //<double asterisks><zero or one space>
       //<atleast one new lines>
       //<atleast one hash><include atleast one characters that is NOT an asterisk><double asterisks>
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
-        _module.value(_module.value().match(regexp)[0].substr(3, _module.value().match(regexp)[0].length-5))
+        _module.value(
+          _module
+            .value()
+            .match(regexp)[0]
+            .substr(3, _module.value().match(regexp)[0].length - 5)
+        );
+      }
+    });
+
+    crossvent.add(_module.wysiwyg.editable, "mouseover", function(e) {
+      _editor.validate();
+      if (_module.wysiwyg.mode === "wysiwyg" && e.target.href) {
+        var n = new Date().getTime();
+        e.target.id = n;
+        $("#" + n).attr("data-toggle", "tooltip");
+        $("#" + n).attr("title", e.target.href);
+        $('[data-toggle="tooltip"]').tooltip();
       }
     });
 
@@ -292,22 +308,28 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     var wk_c = document.getElementsByClassName("wk-commands")[0];
 
     $(window).scroll(function() {
-    var bounding = document.getElementsByClassName('woofmark-mode-markdown')[0].getBoundingClientRect();
+      var bounding = document
+        .getElementsByClassName("woofmark-mode-markdown")[0]
+        .getBoundingClientRect();
 
-    if (
-    bounding.top >= 0 &&
-    bounding.left >= 0 &&
-    bounding.right <= (window.innerWidth || document.documentElement.clientWidth) &&
-    bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-    ) {
-    wk_c.style.position = "relative";
-    wk_c.style.bottom = 0 + "px";
-    } else {
-    wk_c.style.bottom = document.getElementsByClassName('ple-footer')[0].getBoundingClientRect().height + "px";
-    wk_c.style.position = "fixed";
-    wk_c.style.zIndex = 2;
-   }
-  })
-
+      if (
+        bounding.top >= 0 &&
+        bounding.left >= 0 &&
+        bounding.right <=
+          (window.innerWidth || document.documentElement.clientWidth) &&
+        bounding.bottom <=
+          (window.innerHeight || document.documentElement.clientHeight)
+      ) {
+        wk_c.style.position = "relative";
+        wk_c.style.bottom = 0 + "px";
+      } else {
+        wk_c.style.bottom =
+          document
+            .getElementsByClassName("ple-footer")[0]
+            .getBoundingClientRect().height + "px";
+        wk_c.style.position = "fixed";
+        wk_c.style.zIndex = 2;
+      }
+    });
   }
 });
