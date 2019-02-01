@@ -156,6 +156,15 @@ describe("RichTextModule", function() {
     module.setMode('markdown')
 
     expect(module.html()).toContain('<p>1. first<br>2. second<br>3. third</p><p>1.</p><p>2.</p><p>3.</p>')
+    
+    module.setMode('markdown')
+    
+    module.value('1. one\n2. two\n3. three\n\n1.\n\n2.\n\n3.')
+    
+    module.setMode('wysiwyg')
+    module.setMode('markdown')
+
+    expect(module.value()).toBe('1. one\n2. two\n3. three\n\n1.\n\n2.\n\n3.')
 
   })
 
