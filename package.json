@@ -45,9 +45,6 @@
   },
   "devDependencies": {
     "browserify": "16.2.3",
-    "jasmine": "~3.3.1",
-    "jasmine-jquery": "~2.1.1",
-    "jasmine-ajax": "~3.4.0",
     "matchdep": "^2.0.0"
   },
   "homepage": "https://github.com/publiclab/PublicLab.Editor#readme"
