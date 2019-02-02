@@ -168,8 +168,13 @@ PL.Editor = Class.extend({
 
       });
 
-    }
+      $('.btn-close').click(function() {
 
+        // closes more tools menu
+        $('.ple-menu-more').toggle();
+
+      });
+    }
 
     _editor.modules = [];
 

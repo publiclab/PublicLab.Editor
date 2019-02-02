@@ -1,5 +1,5 @@
 /*
- * History of edits, sorted by day. 
+ * History of edits, sorted by day.
  */
 
 var Class  = require('resig-class'),
@@ -23,7 +23,7 @@ module.exports = PublicLab.History = Class.extend({
     _history.options.element  = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
 
     // unique key to fetch storage
-    _history.key = _history.options.prefix + _history.options.id; 
+    _history.key = _history.options.prefix + _history.options.id;
 
 
     if (window.hasOwnProperty('localStorage')) {
@@ -64,8 +64,8 @@ module.exports = PublicLab.History = Class.extend({
         var string = JSON.stringify(_history.log)
 
         // minimal validation:
-        if (_history.log instanceof Array  
-            && typeof string    == 'string' 
+        if (_history.log instanceof Array
+            && typeof string    == 'string'
             && string[0]        == '[') {
 
           localStorage.setItem(_history.key, string);
@@ -189,9 +189,9 @@ module.exports = PublicLab.History = Class.extend({
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
 
-              
+
               dateClasses.push(log.dateClass);
-              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="clear">clear</a></p>';
+              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-default clear">clear</a></p>';
 
             }
 
