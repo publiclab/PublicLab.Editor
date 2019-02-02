@@ -12,7 +12,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.key = 'map_data' ;
     _module.options = options || _editor.options.mapModule || {};
     _module.options.name = 'map' ;
-    _module.options.instructions = 'Add Map with marker to your note' ;
+    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy">location privacy here</a>' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
 
