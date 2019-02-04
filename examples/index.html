@@ -315,9 +315,9 @@ var myVariable = 4;
 
     <script>
       $(document).ready(function() {
-        $('#map_content').hide();
-        $('#location_button').click(function() {
-          $('#map_content').toggle();
+        $("#map_content").hide();
+        $("#location_button").click(function() {
+          $("#map_content").toggle();
         });
       });
 
@@ -325,9 +325,9 @@ var myVariable = 4;
 
       (function() {
         editor = new PL.Editor({
-          textarea: $('.ple-textarea')[0],
-          destination: '/notes/create',
-          format: 'publiclab'
+          textarea: $(".ple-textarea")[0],
+          destination: "/notes/create",
+          format: "publiclab"
         });
       })();
     </script>
