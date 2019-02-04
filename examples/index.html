@@ -157,6 +157,8 @@
             </p>
 
             <div id="map_content">
+              
+
               <div class="row">
                 <div class="col-md-6">
                   <div
@@ -198,6 +200,20 @@
                       </p>
                     </div>
                   </div>
+
+                  <br>
+                  <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                    <div id="ldi-geocode-button">          
+                      Get my location
+                    </div>
+                  </button></p>
+                  
+                   <br>
+                   <label>
+                     <input id="obscureLocation" type="checkbox"  onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+                      Blur my location
+                   </label>
+
                 </div>
               </div>
             </div>
