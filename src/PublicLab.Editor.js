@@ -168,8 +168,13 @@ PL.Editor = Class.extend({
 
       });
 
-    }
+      $('.btn-close').click(function() {
 
+        // closes more tools menu
+        $('.ple-menu-more').toggle();
+
+      });
+    }
 
     _editor.modules = [];
 
@@ -202,7 +207,7 @@ PL.Editor = Class.extend({
       _editor.modules.push(_editor.tagsModule);
     }
 
-    if (_editor.options.mapModule !== false) {
+    if (_editor.options.mapModule === true) {
       _editor.mapModule = new PublicLab.MapModule( _editor) ;
       _editor.modules.push(_editor.mapModule) ;
     }
