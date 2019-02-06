@@ -24,8 +24,12 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
      }
 
      _module.blurredLocation = new BlurredLocation(options) ;
-
-     _module.blurredLocation.panMapToGeocodedLocation("placenameInput") ;
+        
+        //check if "google" is defined PLOTS2#4717
+    window.hasOwnProperty('google')
+      ? _module.blurredLocation.panMapToGeocodedLocation("placenameInput")
+      : console.log("`google` is not defined! PublicLab.MapModule.js#28");
+        
      _module.blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
