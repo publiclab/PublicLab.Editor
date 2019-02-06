@@ -149,13 +149,12 @@
 
           <div class="ple-module-content col-md-9">
             <button id="location_button" class="btn btn-lg btn-default">
-              <i class="fa fa-map-marker" aria-hidden="true"></i> Add Location
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Add a location
             </button>
             <p class="ple-help">
-              <span class="ple-help-minor"
-                >Search location through place-name , latitude and longitude or
-                by panning the map .</span
-              >
+              <span class="ple-help-minor">
+                Search location through place name , latitude and longitude or by panning the map .
+              </span>
             </p>
 
             <div id="map_content">
@@ -200,6 +199,19 @@
                       </p>
                     </div>
                   </div>
+                  <br>
+                  <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                    <div id="ldi-geocode-button">          
+                      <i class="fa fa-compass"></i> Use current location
+                    </div>
+                  </button></p>
+
+                   <br>
+                   <label>
+                     <input id="obscureLocation" type="checkbox"  onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
+                      Blur my location
+                   </label>
+                   <a href="https://publiclab.org/location-privacy">Learn more</a>
                 </div>
               </div>
             </div>
