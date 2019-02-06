@@ -50,6 +50,7 @@ The editor is built from different modules like:
 * TagsModule
 * HistoryModule
 * RichTextModule
+* MapModule
 
 Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
 
@@ -79,7 +80,6 @@ PublicLab.Module.extend({
   }
 });
 ````
-
 Module output is collected (by `editor.collectData()`) in the `editor.data` object -- a collection of values based on each `module.key`, assigning the value of `module.value()` to that key. So a module with a `key` of `nid`, for example, which returned `6` from `module.value()`, would result in `editor.data` being:
 
 ```js
@@ -89,6 +89,8 @@ Module output is collected (by `editor.collectData()`) in the `editor.data` obje
 ```
 
 Because of this, each module must have a `key` property and a `value()` method. Some modules, like the TagsModule, will return their own value added to the existing value of `key`, so that multiple modules may add to the `tags` property of `editor.data`.
+
+**Note:** The MapModule is NOT a default module, i.e., you will need to explicitly set `mapModule: true` in order to enable it in the parent HTML file.
 
 ## Installation
 
