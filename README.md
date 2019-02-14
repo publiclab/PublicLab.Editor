@@ -54,6 +54,18 @@ The editor is built from different modules like:
 
 Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
 
+### Default modules
+
+The Title, MainImage, Tags, History, and RichText modules are on by default. To disable them for a more minimal editor, you can set them to false in the constructor options:
+
+```js
+var editor = new PL.Editor({ 
+  mainImageModule: false // disable the MainImageModule
+});
+```
+
+### Module content
+
 To input content into a module, the convention is to use that module's `value()` method, like this:
 
 ```js
