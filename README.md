@@ -63,6 +63,7 @@ var editor = new PL.Editor({
   mainImageModule: false // disable the MainImageModule
 });
 ```
+**Note:** The MapModule is NOT a default module, i.e., you will need to explicitly set `mapModule: true` in order to properly enable it in the parent HTML file.
 
 ### Module content
 
@@ -102,7 +103,19 @@ Module output is collected (by `editor.collectData()`) in the `editor.data` obje
 
 Because of this, each module must have a `key` property and a `value()` method. Some modules, like the TagsModule, will return their own value added to the existing value of `key`, so that multiple modules may add to the `tags` property of `editor.data`.
 
-**Note:** The MapModule is NOT a default module, i.e., you will need to explicitly set `mapModule: true` in order to properly enable it in the parent HTML file.
+### Integrated Atwho.js data module
+
+`At.js` is essentially an autocompletion library to autocomplete mentions, smileys etc. just like you see on Github. It can be used to implement the following functionalities:
+
+- Set up multiple listeners for different characters with different behavior and data.
+- Format returned data using **custom templates**, that support keyboard and mouse imput.
+- Custom data handlers and template renderers using a group of configurable callbacks.
+
+We currently employ the `At.js` library to autocomplete authors, wiki pages, and emojis, by wiring them to the "@", "#", and ":" symbols respectively. Refer to the demonstration below for a better insight as to how this works.
+
+![atwho_js](https://user-images.githubusercontent.com/33557095/53129501-b54e9e00-358d-11e9-8ebb-555ca5a1fdcc.gif)
+
+Detailed documentation can be referred to at the [At.js wiki pages](https://github.com/ichord/At.js/wiki).
 
 ## Installation
 
