@@ -20515,7 +20515,6 @@ PL.Editor = Class.extend({
 
       }
 
-      console.log(required_modules, valid_modules, (valid_modules !== required_modules));
       $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
       return valid_modules == required_modules;
