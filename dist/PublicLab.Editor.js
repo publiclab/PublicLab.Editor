@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
-
+// just a test for merge conflicts
 function assignment (result) {
   var stack = Array.prototype.slice.call(arguments, 1);
   var item;
@@ -1845,7 +1845,7 @@ function forEach(list, iterator, context) {
     if (arguments.length < 3) {
         context = this
     }
-    
+
     if (toString.call(list) === '[object Array]')
         forEachArray(list, iterator, context)
     else if (typeof list === 'string')
@@ -22445,7 +22445,7 @@ module.exports = PublicLab.Help = Class.extend({
     $('.ple-module').mouseenter(function(e) {
 
       $(this).find('.ple-guide-minor').fadeTo(400,1);
-      
+
     });
 
 
@@ -22456,7 +22456,7 @@ module.exports = PublicLab.Help = Class.extend({
 
 },{}],199:[function(require,module,exports){
 /*
- * History of edits, sorted by day. 
+ * History of edits, sorted by day.
  */
 
 var Class  = require('resig-class'),
@@ -22480,7 +22480,7 @@ module.exports = PublicLab.History = Class.extend({
     _history.options.element  = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
 
     // unique key to fetch storage
-    _history.key = _history.options.prefix + _history.options.id; 
+    _history.key = _history.options.prefix + _history.options.id;
 
 
     if (window.hasOwnProperty('localStorage')) {
@@ -22521,8 +22521,8 @@ module.exports = PublicLab.History = Class.extend({
         var string = JSON.stringify(_history.log)
 
         // minimal validation:
-        if (_history.log instanceof Array  
-            && typeof string    == 'string' 
+        if (_history.log instanceof Array
+            && typeof string    == 'string'
             && string[0]        == '[') {
 
           localStorage.setItem(_history.key, string);
@@ -22646,7 +22646,7 @@ module.exports = PublicLab.History = Class.extend({
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
 
-              
+
               dateClasses.push(log.dateClass);
               html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="clear">clear</a></p>';
 
@@ -23320,7 +23320,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
         _editor.validate();
 
-        // primarily for testing: 
+        // primarily for testing:
         if (_module.options.callback) _module.options.callback();
 
       },
@@ -23411,11 +23411,11 @@ module.exports = PublicLab.Module = Class.extend({
     _module.el = $('.ple-module-' + _module.options.name);
 
 
-    // Construct and insert HTML, including 
+    // Construct and insert HTML, including
     // instructions, help and tips
-    _module.build = function() {    
+    _module.build = function() {
 
-      // standard instructions location is at start of ple-module-guide 
+      // standard instructions location is at start of ple-module-guide
       _module.el.find('.ple-module-guide')
                 .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
                 .append('<div class="ple-guide-minor hidden-xs hidden-sm" style = "opacity:0;"></div>');
@@ -23427,7 +23427,7 @@ module.exports = PublicLab.Module = Class.extend({
                   .append('<p><i class="fa fa-' + guide.icon + '"></i>' + guide.text + '</p>');
 
       });
- 
+
     }
 
 
@@ -23442,19 +23442,19 @@ module.exports = PublicLab.Module = Class.extend({
 
 
     // could wrap these in an events() method?
-    _module.el.find('.ple-help-minor').hide(); 
+    _module.el.find('.ple-help-minor').hide();
 
 
-    $(_module.el).mouseenter(function() { 
+    $(_module.el).mouseenter(function() {
 
       _module.el.find('.ple-help-minor').fadeTo(400,1);
 
     });
 
-    $(_module.el).mouseleave(function() { 
+    $(_module.el).mouseleave(function() {
 
       _module.el.find('.ple-help-minor').fadeTo(400,0);
-      
+
     });
 
 
@@ -23503,9 +23503,9 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
 }
 
 },{}],207:[function(require,module,exports){
-/* 
+/*
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
-*/   
+*/
 
 module.exports = function initEmbed(_module, wysiwyg) {
 
@@ -23517,7 +23517,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
     border: 0
   });
   $(document).ready(function(){
-    $('[data-toggle="youtube"]').tooltip();   
+    $('[data-toggle="youtube"]').tooltip();
   });
 
   $('.wk-commands .woofmark-command-embed').click(function() {
@@ -23531,9 +23531,9 @@ module.exports = function initEmbed(_module, wysiwyg) {
 }
 
 },{}],208:[function(require,module,exports){
-/* 
+/*
    Horizontal Rule insertion: ****
-*/   
+*/
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
 
@@ -23553,7 +23553,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
     wysiwyg.runCommand(function(chunks, mode) {
       chunks.before += _module.wysiwyg.parseMarkdown("\n****\n"); // newlines before and after
       _module.afterParse(); // tell editor we're done here
-  
+
       // setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
 
     });
@@ -23602,9 +23602,9 @@ module.exports = function initTables(_module, wysiwyg) {
       table = table + "|";
 
       for (var col = 0; col < cols; col++) {
-     
+
         table = table + " cell |";
-     
+
       }
 
       table = table + "\n";
@@ -23625,7 +23625,7 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 
   $(document).ready(function(){
-    $('[data-toggle="table"]').tooltip();   
+    $('[data-toggle="table"]').tooltip();
   });
 
   var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
@@ -24063,7 +24063,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 });
 
 },{}],212:[function(require,module,exports){
-/* Displays related posts to associate this one with. 
+/* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
 
@@ -24096,7 +24096,7 @@ module.exports = function relatedNodes(module) {
   bindEvents()
 
   // make an area for "related posts" to connect to
-  function build() { 
+  function build() {
 
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
@@ -24106,7 +24106,7 @@ module.exports = function relatedNodes(module) {
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
-  function show(relatedResults) { 
+  function show(relatedResults) {
 
     relatedEl.find('.result').remove();
 
@@ -24143,20 +24143,20 @@ module.exports = function relatedNodes(module) {
   function bindEvents() {
 
     $(module.el).find('input').keydown(function(e) {
- 
+
       if (module.options.suggestRelated) {
         relatedEl.fadeIn();
         fetchRelated(show);
       }
- 
+
     });
- 
+
     $(module.el).find('input').focusout(function(e) {
- 
+
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
       }
- 
+
     });
 
   }
@@ -24231,7 +24231,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       if (!valid && value != "") {
 
         _module.error('Must be formatted correctly.');
- 
+
       } else if (value && value.length > 45) {
 
         _module.error('Getting a bit long!', 'warning');
@@ -24252,7 +24252,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     // Overrides default build method
-    _module.build = function() {    
+    _module.build = function() {
 
       // custom location -- just under the title input
       _module.el.find('.ple-module-content')
@@ -24271,7 +24271,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
-    
+
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
