@@ -42,7 +42,17 @@ PL.Editor = Class.extend({
 
       });
 
-      $('.ple-publish').prop('disabled', (valid_modules !== required_modules));
+      if (valid_modules !== required_modules) {
+
+        $('.ple-publish').addClass('disabled');
+        $('.ple-publish').prop('disabled', true);
+
+      } else {
+
+        $('.ple-publish').removeClass('disabled');
+        $('.ple-publish').prop('disabled', false);
+
+      }
 
       $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
 
