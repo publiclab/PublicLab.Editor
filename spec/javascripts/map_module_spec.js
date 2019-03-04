@@ -19,7 +19,7 @@ describe("MapModule", function() {
   it("reports key, value, valid", function() {
 
     expect(module).not.toBeUndefined();
-    expect(module.key).toBe('map');
+    expect(module.key).toBe('map_data');
 
     expect(module.options.name).toBe('map');
     expect(module.options.required).toBe(false);
