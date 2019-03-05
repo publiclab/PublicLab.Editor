@@ -52,7 +52,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<button class="btn-table"><a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a></button>');
+  $('.wk-commands').append('<a class="btn-table"><a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a></a>');
 
   $('.btn-table').css({
     padding: 0,
