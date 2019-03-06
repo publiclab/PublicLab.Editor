@@ -21810,11 +21810,6 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   $('.wk-commands').append('<a class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></a>');
   //since chunk.selection returns null for images
 
-  // $('.btn-autocenter').css({
-  //   padding: 0,
-  //   border: 0
-  // });
-
   $(document).ready(function(){
     $('[data-toggle="autocenter"]').tooltip();
   });
@@ -21847,10 +21842,6 @@ module.exports = function initEmbed(_module, wysiwyg) {
   // create a menu option for embeds:
   $('.wk-commands').append('<a class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></a>');
 
-  // $('.btn-youtube').css({
-  //   padding: 0,
-  //   border: 0
-  // });
   $(document).ready(function(){
     $('[data-toggle="youtube"]').tooltip();   
   });
@@ -21874,11 +21865,6 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
 
   // create a menu option for horizontal rules:
   $('.wk-commands').append('<a class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></a>');
-
-  // $('.btn-horizontal').css({
-  //   padding: 0,
-  //   border: 0
-  // });
 
   $(document).ready(function(){
     $('[data-toggle="horizontal"]').tooltip();
@@ -21953,11 +21939,6 @@ module.exports = function initTables(_module, wysiwyg) {
 
   // create a submenu for sizing tables
   $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
-
-  // $('.btn-table').css({
-  //   padding: 0,
-  //   border: 0
-  // });
 
   $(document).ready(function(){
     $('[data-toggle="table"]').tooltip();   
