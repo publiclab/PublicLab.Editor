@@ -5,12 +5,12 @@
 module.exports = function initEmbed(_module, wysiwyg) {
 
   // create a menu option for embeds:
-  $('.wk-commands').append('<a class="btn-youtube"><a class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></a></a>');
+  $('.wk-commands').append('<a class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></a>');
 
-  $('.btn-youtube').css({
-    padding: 0,
-    border: 0
-  });
+  // $('.btn-youtube').css({
+  //   padding: 0,
+  //   border: 0
+  // });
   $(document).ready(function(){
     $('[data-toggle="youtube"]').tooltip();   
   });
