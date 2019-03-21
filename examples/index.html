@@ -93,6 +93,13 @@
           </div>
         </div>
         <!-- end selector module -->
+        <p>
+          Open Source
+          <a href="https://github.com/publiclab/PublicLab.Editor">
+            <i class="fa fa-github"></i>
+          </a>
+         by <a href= "https://publiclab.org" title = "Public Lab website"><i class = "fa fa-globe"></i> Public Lab</a>
+        </p>
       </div>
 
       <div class="ple-content">
@@ -339,6 +346,7 @@ var myVariable = 4;
         editor = new PL.Editor({
           textarea: $(".ple-textarea")[0],
           destination: "/notes/create",
+          mapModule: true,
           format: "publiclab"
         });
       })();

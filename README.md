@@ -54,6 +54,19 @@ The editor is built from different modules like:
 
 Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
 
+### Default modules
+
+The Title, MainImage, Tags, History, and RichText modules are on by default. To disable them for a more minimal editor, you can set them to false in the constructor options:
+
+```js
+var editor = new PL.Editor({ 
+  mainImageModule: false // disable the MainImageModule
+});
+```
+**Note:** The MapModule is NOT a default module, i.e., you will need to explicitly set `mapModule: true` in order to properly enable it in the parent HTML file.
+
+### Module content
+
 To input content into a module, the convention is to use that module's `value()` method, like this:
 
 ```js
@@ -89,8 +102,6 @@ Module output is collected (by `editor.collectData()`) in the `editor.data` obje
 ```
 
 Because of this, each module must have a `key` property and a `value()` method. Some modules, like the TagsModule, will return their own value added to the existing value of `key`, so that multiple modules may add to the `tags` property of `editor.data`.
-
-**Note:** The MapModule is NOT a default module, i.e., you will need to explicitly set `mapModule: true` in order to properly enable it in the parent HTML file.
 
 ## Installation
 
@@ -180,6 +191,92 @@ var editor = new PL.Editor({
   }
 });
 ```
+###  Atwho.js Data Module
+
+`At.js` is essentially an autocompletion library to autocomplete mentions, smileys etc. just like you see on Github. It can be used to implement the following functionalities:
+
+- Set up multiple listeners for different characters with different behavior and data.
+- Format returned data using **custom templates**, that support keyboard and mouse imput.
+- Custom data handlers and template renderers using a group of configurable callbacks.
+
+We currently employ the `At.js` library to autocomplete authors, wiki pages, and emojis, by wiring them to the "@", "#", and ":" symbols respectively. Refer to the demonstration below for a better insight as to how this works.
+
+![atwho_js](https://user-images.githubusercontent.com/33557095/53129501-b54e9e00-358d-11e9-8ebb-555ca5a1fdcc.gif)
+
+**Usage and code snippets**
+- Inorder to setup the autocompletion library, please follow these steps.
+1.  Assuming that you have an installed copy of [At.js](https://www.npmjs.com/package/at-js) in your node modules, firstly, you need to include the minified CSS and JS builds and the emojis source file, `emoji.js` to your parent HTML.
+````HTML
+<link
+      href="../node_modules/at.js/dist/css/jquery.atwho.min.css"
+      rel="stylesheet"
+    />
+    <script src="../node_modules/at.js/dist/js/jquery.atwho.min.js"></script>
+    <script src="data/emoji.js"></script>
+````
+2. Include the `At.js` data module script from `./examples/data/atwho.PLE.js`into your parent HTML.
+````HTML
+<script src="data/atwho.PLE.js"></script>
+````
+- **Callout watcher:** Triggered at the "@" character, the callout watcher recommends four most likely authors for the user's query. Upon selection, the profile of that particular user is rendered in an anchor tag.
+````js
+  at: "@",
+  callbacks: {
+    beforeInsert: function(value, obj) {
+      username = value.slice(1);    // remove ambiguous first character
+      value = "<a href='https://publiclab.org/profile/" + username + "' target='_blank'>" + value + "</a>";     //  render value as a link
+      return value;
+    },
+    remoteFilter: function(query, callback) {
+      $.getJSON(
+        "https://publiclab.org/api/srch/profiles?query=" + query, {},     //  send user query to PL servers
+        function(data) {
+          if (data.hasOwnProperty("items") && data.items.length > 0) {
+            callback(
+              data.items.map(function(i) {
+                return i.doc_title;     //  for every "item" return the author's name
+              }));}});}},
+  highlightFirst: true,     //  highlight the first suggestion
+  limit: 4      //  limiter
+````
+- **Hastag watcher:** Triggered at the "#" character, the hashtag watcher recommends four most likely wikis for the user's query. Upon selection, the wiki page of that particular topic is rendered in an anchor tag.
+````js
+  at: "#",
+  callbacks: {
+    beforeInsert: function(value, obj) {
+      value = value.slice(1);    // remove ambiguous first character
+      tag = value.slice(value.lastIndexOf("/") + 1);      //  retrieve tag name
+      value = "<a href='https://publiclab.org" + value + "' target='_blank'>#" + tag + "</a>";      //  render value as a link
+      return value;
+    },
+    remoteFilter: function(query, callback) {
+      $.getJSON(
+        "https://publiclab.org/api/srch/tags?query=" + query, {},     //  send user query to PL servers
+        function(data) {
+          if (data.hasOwnProperty("items") && data.items.length > 0) {
+            callback(
+              data.items.map(function(i) {
+                return i.doc_url;     //  for every "item" return the wiki's url
+              }));}});} },
+  highlightFirst: true,      //  highlight the first suggestion
+  limit: 4
+````
+- **Emoji watcher:** Triggered at the ":" character, the emoji watcher recommends three most likely emojis for the user's query. Upon selection, the value of the particular emoji is rendered from the emoji source file `emoji.js`.
+````js
+if (e.key === ":") {
+      var x = emoji;
+      $(this).atwho({
+        at: e.key,
+        limit: 3,
+        highlightFirst: true,     //  highlight the first suggestion
+        data: keys,
+        callbacks: {
+          beforeInsert: function(value, obj) {
+            value = value.slice(1);    // remove ambiguous first character
+            value = x[value];     // retrieve respective emoji object's value from source
+            return value;
+````
+Detailed documentation can be referred to at the [At.js wiki pages](https://github.com/ichord/At.js/wiki). Checkout this [link](http://publiclab.github.io/PublicLab.Editor/examples/) for a live demo!
 
 ### Tags Module
 
