@@ -128,7 +128,7 @@
 textarea.ple-textarea {
   box-sizing: border-box;
   min-height: 31px;
-  height: 800px;
+  height: 550px;
 }
 
 .ple-history {
@@ -146,6 +146,8 @@ textarea.ple-textarea {
   -moz-border-radius:    8px;
   border-radius:         8px;
   outline: none;
+  overflow: scroll;
+  height: 550px;
 }
 
 .ple-textarea img,
