@@ -350,6 +350,7 @@ module.exports = function(textarea, _editor, _module) {
     else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
+      $(this).tooltip('hide');
       $(".wk-switchboard button.woofmark-mode-markdown").toggle();
       $(".wk-switchboard button.woofmark-mode-wysiwyg").toggle();
     });
