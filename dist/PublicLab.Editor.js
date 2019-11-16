@@ -21998,10 +21998,11 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
       } else {
         // hide map on loading.
          $("#map_content").hide();
-         $("#location_button").click(function() {
-            $("#map_content").toggle();
-         });
       }
+
+      $("#location_button").click(function() {
+            $("#map_content").toggle();
+      });
         
         //check if "google" is defined PLOTS2#4717
     window.hasOwnProperty('google')
