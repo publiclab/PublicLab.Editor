@@ -25,6 +25,18 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
      }
 
      _module.blurredLocation = new BlurredLocation(options) ;
+
+      if (!!_editor.options.lat && !!_editor.options.lon) {
+         // show map on loading.
+        $("#map_content").show();
+        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, 5);
+      } else {
+        // hide map on loading.
+         $("#map_content").hide();
+         $("#location_button").click(function() {
+            $("#map_content").toggle();
+         });
+      }
         
         //check if "google" is defined PLOTS2#4717
     window.hasOwnProperty('google')
@@ -35,7 +47,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 
      _module.value = function(){
        if($("#map_content").is(':visible')){
-        return true ;
+         return true ;
        }
        else{
          return false ;
