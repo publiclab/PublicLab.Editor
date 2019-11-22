@@ -286,13 +286,14 @@ The Tags module uses [Bootstrap Tokenfield](https://github.com/sliptree/bootstra
 
 ### Map Module
 
-To add Map module, pass `mapModule: true` in options. Also if you pass `lat: XX` and `lon: YY` in options it will show the map at coordinates [XX, YY].  
+To add Map module, pass `mapModule: true` in options. Also if you pass `lat: XX` and `lon: YY` in options it will show the map at coordinates [XX, YY]. You can optionally include a zoom parameter, by default the value of "5" will be used.
 
 ````js
 editor = new PL.Editor({
     mapModule: true,
     lat: 23,
-    lon: 77
+    lon: 77,
+    zoom: 5
 });
 ````
 

@@ -29,7 +29,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
       if (!!_editor.options.lat && !!_editor.options.lon) {
          // show map on loading.
         $("#map_content").show();
-        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, 5);
+        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5);
       } else {
         // hide map on loading.
          $("#map_content").hide();
