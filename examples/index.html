@@ -333,13 +333,7 @@ var myVariable = 4;
     </div>
 
     <script>
-      $(document).ready(function() {
-        $("#map_content").hide();
-        $("#location_button").click(function() {
-          $("#map_content").toggle();
-        });
-      });
-
+     
       var editor;
 
       (function() {
@@ -347,7 +341,10 @@ var myVariable = 4;
           textarea: $(".ple-textarea")[0],
           destination: "/notes/create",
           mapModule: true,
-          format: "publiclab"
+          format: "publiclab",
+          lat: 23,
+          lon: 77,
+          zoom: 5
         });
       })();
     </script>

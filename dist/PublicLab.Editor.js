@@ -21471,6 +21471,7 @@ module.exports = function(textarea, _editor, _module) {
     else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
+      $(this).tooltip('hide');
       $(".wk-switchboard button.woofmark-mode-markdown").toggle();
       $(".wk-switchboard button.woofmark-mode-wysiwyg").toggle();
     });
@@ -21705,6 +21706,19 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
      }
 
      _module.blurredLocation = new BlurredLocation(options) ;
+
+      if (!!_editor.options.lat && !!_editor.options.lon) {
+         // show map on loading.
+        $("#map_content").show();
+        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5);
+      } else {
+        // hide map on loading.
+         $("#map_content").hide();
+      }
+
+      $("#location_button").click(function() {
+            $("#map_content").toggle();
+      });
         
         //check if "google" is defined PLOTS2#4717
     window.hasOwnProperty('google')
@@ -21715,7 +21729,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 
      _module.value = function(){
        if($("#map_content").is(':visible')){
-        return true ;
+         return true ;
        }
        else{
          return false ;
