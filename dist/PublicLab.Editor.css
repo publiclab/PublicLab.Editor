@@ -15,10 +15,12 @@
 }
 
 .thumbnailBtn {
+  color: black;
   background-color: white;
   border-radius: 3px;
   border: 1px solid black;
-  padding: 10px 20px;
+  padding: 7px 14px;
+  font-weight: bold;
 }
 
 .pl-editor h1,
