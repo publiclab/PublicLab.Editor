@@ -13,6 +13,7 @@ newIssueWelcomeComment: |
 # Comment to be posted to on PRs from first time contributors in your repository
 newPRWelcomeComment: |
  Thanks for opening this pull request!  This space is [protected by our Code of Conduct](https://publiclab.org/conduct) - and we're here to help.
+ Please make sure you've bumped up the version number in the repository's [package.json file](https://github.com/publiclab/PublicLab.Editor/blob/master/package.json) and that you've incorporated your changes in the [/dist/ sub-directory](https://github.com/publiclab/PublicLab.Editor/tree/master/dist).
  `Dangerbot` will test out your code and reply in a bit with some pointers and requests.
  Also please refer [here](https://github.com/publiclab/PublicLab.Editor#installation) for installation help 💿    
  There may be some errors, **but don't worry!** We'll work through them with you! 👍🎉😄    
