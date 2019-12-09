@@ -50,8 +50,22 @@ The editor is built from different modules like:
 * TagsModule
 * HistoryModule
 * RichTextModule
+* MapModule
 
 Each manages its own UI and validation, and which report their contents via a `module.value()` method. The EditorModule encapsulates all the modules. It contains a WYSIWYG textarea, managed (by default) by Woofmark. 
+
+### Default modules
+
+The Title, MainImage, Tags, History, and RichText modules are on by default. To disable them for a more minimal editor, you can set them to false in the constructor options:
+
+```js
+var editor = new PL.Editor({ 
+  mainImageModule: false // disable the MainImageModule
+});
+```
+**Note:** The MapModule is NOT a default module, i.e., you will need to explicitly set `mapModule: true` in order to properly enable it in the parent HTML file.
+
+### Module content
 
 To input content into a module, the convention is to use that module's `value()` method, like this:
 
@@ -79,7 +93,6 @@ PublicLab.Module.extend({
   }
 });
 ````
-
 Module output is collected (by `editor.collectData()`) in the `editor.data` object -- a collection of values based on each `module.key`, assigning the value of `module.value()` to that key. So a module with a `key` of `nid`, for example, which returned `6` from `module.value()`, would result in `editor.data` being:
 
 ```js
@@ -99,6 +112,8 @@ After installing node and npm run `npm install` from the root directory.
 PublicLab.Editor uses grunt - the javascript task runner for compilation of the modules. To install grunt run `npm install -g grunt-cli`. You may have to use `sudo` for root privileges.
 
 Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out in `/examples/index.html`. Run `grunt` and leave it running to build as you go.
+
+You can also run `grunt debug` to have *grunt-browserify* to include Source Maps for easy debugging. This way you can locate the module from where the error is generating. This is for use in development only. 
 
 
 ## Setup
@@ -146,6 +161,17 @@ These used to be compiled into `PublicLab.Editor` but are now external so that `
 
 PublicLab.Editor expects a response from the server upon sending a request to `destination` that is a URL which it will follow. 
 
+### Creating a mock server
+
+* Testing image upload and other features that depend on an interactive server is difficult with just a basic one-line webserver. Instead, you can set up the `plots2` project as explained here to see the Editor working interactively while you test out those features. 
+
+ * Clone [`plots2`](https://github.com/publiclab/plots2#standard-installation) and follow the [Standard Installation](https://github.com/publiclab/plots2#standard-installation) instructions to run it on your local server.
+* Now in `plots2/package.json#` at `line 62`, replace this line with `"publiclab-editor": "file:..<path>"` where `<path>` is path of your cloned `PublicLab.Editor` repo folder
+* Now with `passenger start` you can access the Editor at `localhost:3000/post`. Make changes in Editor's source code and run `grunt build` or `grunt debug` to bundle all files. Then run `yarn install --force` in plots2 repo to view changes on server.
+* For reflecting HTML changes use   `plots2/app/views/editor/rich.html.erb` instead of example.html. They both have same sturcture.
+* For reflecting the changes on the local server need to run `yarn install --force` and refresh your page.
+
+
 
 ****
 
@@ -165,12 +191,111 @@ var editor = new PL.Editor({
   }
 });
 ```
+###  Atwho.js Data Module
+
+`At.js` is essentially an autocompletion library to autocomplete mentions, smileys etc. just like you see on Github. It can be used to implement the following functionalities:
+
+- Set up multiple listeners for different characters with different behavior and data.
+- Format returned data using **custom templates**, that support keyboard and mouse imput.
+- Custom data handlers and template renderers using a group of configurable callbacks.
+
+We currently employ the `At.js` library to autocomplete authors, wiki pages, and emojis, by wiring them to the "@", "#", and ":" symbols respectively. Refer to the demonstration below for a better insight as to how this works.
+
+![atwho_js](https://user-images.githubusercontent.com/33557095/53129501-b54e9e00-358d-11e9-8ebb-555ca5a1fdcc.gif)
+
+**Usage and code snippets**
+- Inorder to setup the autocompletion library, please follow these steps.
+1.  Assuming that you have an installed copy of [At.js](https://www.npmjs.com/package/at-js) in your node modules, firstly, you need to include the minified CSS and JS builds and the emojis source file, `emoji.js` to your parent HTML.
+````HTML
+<link
+      href="../node_modules/at.js/dist/css/jquery.atwho.min.css"
+      rel="stylesheet"
+    />
+    <script src="../node_modules/at.js/dist/js/jquery.atwho.min.js"></script>
+    <script src="data/emoji.js"></script>
+````
+2. Include the `At.js` data module script from `./examples/data/atwho.PLE.js`into your parent HTML.
+````HTML
+<script src="data/atwho.PLE.js"></script>
+````
+- **Callout watcher:** Triggered at the "@" character, the callout watcher recommends four most likely authors for the user's query. Upon selection, the profile of that particular user is rendered in an anchor tag.
+````js
+  at: "@",
+  callbacks: {
+    beforeInsert: function(value, obj) {
+      username = value.slice(1);    // remove ambiguous first character
+      value = "<a href='https://publiclab.org/profile/" + username + "' target='_blank'>" + value + "</a>";     //  render value as a link
+      return value;
+    },
+    remoteFilter: function(query, callback) {
+      $.getJSON(
+        "https://publiclab.org/api/srch/profiles?query=" + query, {},     //  send user query to PL servers
+        function(data) {
+          if (data.hasOwnProperty("items") && data.items.length > 0) {
+            callback(
+              data.items.map(function(i) {
+                return i.doc_title;     //  for every "item" return the author's name
+              }));}});}},
+  highlightFirst: true,     //  highlight the first suggestion
+  limit: 4      //  limiter
+````
+- **Hastag watcher:** Triggered at the "#" character, the hashtag watcher recommends four most likely wikis for the user's query. Upon selection, the wiki page of that particular topic is rendered in an anchor tag.
+````js
+  at: "#",
+  callbacks: {
+    beforeInsert: function(value, obj) {
+      value = value.slice(1);    // remove ambiguous first character
+      tag = value.slice(value.lastIndexOf("/") + 1);      //  retrieve tag name
+      value = "<a href='https://publiclab.org" + value + "' target='_blank'>#" + tag + "</a>";      //  render value as a link
+      return value;
+    },
+    remoteFilter: function(query, callback) {
+      $.getJSON(
+        "https://publiclab.org/api/srch/tags?query=" + query, {},     //  send user query to PL servers
+        function(data) {
+          if (data.hasOwnProperty("items") && data.items.length > 0) {
+            callback(
+              data.items.map(function(i) {
+                return i.doc_url;     //  for every "item" return the wiki's url
+              }));}});} },
+  highlightFirst: true,      //  highlight the first suggestion
+  limit: 4
+````
+- **Emoji watcher:** Triggered at the ":" character, the emoji watcher recommends three most likely emojis for the user's query. Upon selection, the value of the particular emoji is rendered from the emoji source file `emoji.js`.
+````js
+if (e.key === ":") {
+      var x = emoji;
+      $(this).atwho({
+        at: e.key,
+        limit: 3,
+        highlightFirst: true,     //  highlight the first suggestion
+        data: keys,
+        callbacks: {
+          beforeInsert: function(value, obj) {
+            value = value.slice(1);    // remove ambiguous first character
+            value = x[value];     // retrieve respective emoji object's value from source
+            return value;
+````
+Detailed documentation can be referred to at the [At.js wiki pages](https://github.com/ichord/At.js/wiki). Checkout this [link](http://publiclab.github.io/PublicLab.Editor/examples/) for a live demo!
 
 ### Tags Module
 
 The Tags module uses [Bootstrap Tokenfield](https://github.com/sliptree/bootstrap-tokenfield). To add tags after initialization, use:
 
 `editor.tagsModule.el.find('input').tokenfield('createToken', 'purple');`
+
+### Map Module
+
+To add Map module, pass `mapModule: true` in options. Also if you pass `lat: XX` and `lon: YY` in options it will show the map at coordinates [XX, YY]. You can optionally include a zoom parameter, by default the value of "5" will be used.
+
+````js
+editor = new PL.Editor({
+    mapModule: true,
+    lat: 23,
+    lon: 77,
+    zoom: 5
+});
+````
 
 
 ****

@@ -52,7 +52,11 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default"><i class="fa fa-table"></i></a>');
+  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
+
+  $(document).ready(function(){
+    $('[data-toggle="table"]').tooltip();   
+  });
 
   var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
       builder += '<input value="4" class="form-control rows" style="width:75px;" />';
