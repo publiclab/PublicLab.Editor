@@ -20558,9 +20558,11 @@ PL.Editor = Class.extend({
        if($("#map_content").is(':visible')){
         _lat = _editor.mapModule.blurredLocation.getLat() ;
         _lng = _editor.mapModule.blurredLocation.getLon() ;
-        console.log(_lat + '  ' + _lng) ;
+        _zoom = _editor.mapModule.blurredLocation.getZoom() ;
+        console.log(_lat + '  ' + _lng + '  ' + _zoom) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'zoom:' + _zoom) ;
       }
 
       _editor.collectData();
@@ -21694,7 +21696,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.options = options || _editor.options.mapModule || {};
     if (_module.options === true) _module.options = {}; // so we don't make options be /true/
     _module.options.name = 'map' ;
-    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy">location privacy here</a>' ;
+    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy" target="_blank">location privacy here »</a>' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
 
@@ -21960,11 +21962,19 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 
   var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-      builder += '<input value="4" class="form-control rows" style="width:75px;" />';
-      builder += ' x ';
-      builder += '<input value="3" class="form-control cols" style="width:85px;" /> ';
-      builder += '<a class="ple-table-size btn btn-default"><i class="fa fa-plus"></i></a>';
-      builder += '</div>';
+        builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += ' x ';
+        builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+        builder += '</div>';
+
+    $('.woofmark-command-table').attr('data-content', builder);
+
+
+    $(document).on('click', '#incRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) + 1 ); });
+    $(document).on('click', '#decRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) - 1 ); });
+    $(document).on('click', '#incCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) + 1 ); });
+    $(document).on('click', '#decCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) - 1 ); });
 
   $('.woofmark-command-table').attr('data-content', builder);
   $('.woofmark-command-table').attr('data-container', 'body');
@@ -21979,8 +21989,8 @@ module.exports = function initTables(_module, wysiwyg) {
       wysiwyg.runCommand(function(chunks, mode) {
 
         var table = createTable(
-          +$('.ple-table-popover .cols').val(),
-          +$('.ple-table-popover .rows').val()
+          +Number($('.ple-table-popover #tableCols').text()),
+          +Number($('.ple-table-popover #tableRows').text())
         );
 
         if (mode === 'markdown') chunks.before += table;
