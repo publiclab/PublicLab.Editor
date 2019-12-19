@@ -179,8 +179,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     };
 
-    setInterval(autocenterCheck, 100);
-
     crossvent.add(_module.wysiwyg.editable, "keydown", autocenterCheck);
 
     crossvent.add(_module.wysiwyg.editable, "keyup", function(e) {

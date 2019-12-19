@@ -21471,6 +21471,7 @@ module.exports = function(textarea, _editor, _module) {
     else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
+      $(this).tooltip('hide');
       $(".wk-switchboard button.woofmark-mode-markdown").toggle();
       $(".wk-switchboard button.woofmark-mode-wysiwyg").toggle();
     });
@@ -21705,6 +21706,19 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
      }
 
      _module.blurredLocation = new BlurredLocation(options) ;
+
+      if (!!_editor.options.lat && !!_editor.options.lon) {
+         // show map on loading.
+        $("#map_content").show();
+        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5);
+      } else {
+        // hide map on loading.
+         $("#map_content").hide();
+      }
+
+      $("#location_button").click(function() {
+            $("#map_content").toggle();
+      });
         
         //check if "google" is defined PLOTS2#4717
     window.hasOwnProperty('google')
@@ -21715,7 +21729,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 
      _module.value = function(){
        if($("#map_content").is(':visible')){
-        return true ;
+         return true ;
        }
        else{
          return false ;
@@ -21946,11 +21960,19 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 
   var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-      builder += '<input value="4" class="form-control rows" style="width:75px;" />';
-      builder += ' x ';
-      builder += '<input value="3" class="form-control cols" style="width:85px;" /> ';
-      builder += '<a class="ple-table-size btn btn-default"><i class="fa fa-plus"></i></a>';
-      builder += '</div>';
+        builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += ' x ';
+        builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+        builder += '</div>';
+
+    $('.woofmark-command-table').attr('data-content', builder);
+
+
+    $(document).on('click', '#incRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) + 1 ); });
+    $(document).on('click', '#decRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) - 1 ); });
+    $(document).on('click', '#incCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) + 1 ); });
+    $(document).on('click', '#decCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) - 1 ); });
 
   $('.woofmark-command-table').attr('data-content', builder);
   $('.woofmark-command-table').attr('data-container', 'body');
@@ -21965,8 +21987,8 @@ module.exports = function initTables(_module, wysiwyg) {
       wysiwyg.runCommand(function(chunks, mode) {
 
         var table = createTable(
-          +$('.ple-table-popover .cols').val(),
-          +$('.ple-table-popover .rows').val()
+          +Number($('.ple-table-popover #tableCols').text()),
+          +Number($('.ple-table-popover #tableRows').text())
         );
 
         if (mode === 'markdown') chunks.before += table;
@@ -22169,7 +22191,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       }
     };
 
-    setInterval(autocenterCheck, 100);
 
     crossvent.add(_module.wysiwyg.editable, "keydown", autocenterCheck);
 
