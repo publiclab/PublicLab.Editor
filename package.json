@@ -34,7 +34,7 @@
     "grow-textarea": "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669",
     "jquery": "~3",
     "leaflet": "^1.6.0",
-    "leaflet-blurred-location": "^1.4.1",
+    "leaflet-blurred-location": "^1.5.1",
     "megamark": "3.3.0",
     "moment": "~2.24.0",
     "resig-class": "~1.0.0",
