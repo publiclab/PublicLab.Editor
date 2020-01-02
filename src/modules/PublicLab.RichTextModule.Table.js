@@ -52,23 +52,26 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<button class="btn-table"><a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a></button>');
-
-  $('.btn-table').css({
-    padding: 0,
-    border: 0
-  });
+  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
 
   $(document).ready(function(){
     $('[data-toggle="table"]').tooltip();   
   });
 
   var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-      builder += '<input value="4" class="form-control rows" style="width:75px;" />';
-      builder += ' x ';
-      builder += '<input value="3" class="form-control cols" style="width:85px;" /> ';
-      builder += '<a class="ple-table-size btn btn-default"><i class="fa fa-plus"></i></a>';
-      builder += '</div>';
+        builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += ' x ';
+        builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+        builder += '</div>';
+
+    $('.woofmark-command-table').attr('data-content', builder);
+
+
+    $(document).on('click', '#incRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) + 1 ); });
+    $(document).on('click', '#decRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) - 1 ); });
+    $(document).on('click', '#incCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) + 1 ); });
+    $(document).on('click', '#decCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) - 1 ); });
 
   $('.woofmark-command-table').attr('data-content', builder);
   $('.woofmark-command-table').attr('data-container', 'body');
@@ -83,8 +86,8 @@ module.exports = function initTables(_module, wysiwyg) {
       wysiwyg.runCommand(function(chunks, mode) {
 
         var table = createTable(
-          +$('.ple-table-popover .cols').val(),
-          +$('.ple-table-popover .rows').val()
+          +Number($('.ple-table-popover #tableCols').text()),
+          +Number($('.ple-table-popover #tableRows').text())
         );
 
         if (mode === 'markdown') chunks.before += table;

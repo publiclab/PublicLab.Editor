@@ -95,6 +95,13 @@
           </div>
         </div>
         <!-- end selector module -->
+        <p>
+          Open Source
+          <a href="https://github.com/publiclab/PublicLab.Editor">
+            <i class="fa fa-github"></i>
+          </a>
+         by <a href= "https://publiclab.org" title = "Public Lab website"><i class = "fa fa-globe"></i> Public Lab</a>
+        </p>
       </div>
 
       <div class="ple-content">
@@ -328,20 +335,18 @@ var myVariable = 4;
     </div>
 
     <script>
-      $(document).ready(function() {
-        $("#map_content").hide();
-        $("#location_button").click(function() {
-          $("#map_content").toggle();
-        });
-      });
-
+     
       var editor;
 
       (function() {
         editor = new PL.Editor({
           textarea: $(".ple-textarea")[0],
           destination: "/notes/create",
-          format: "publiclab"
+          mapModule: true,
+          format: "publiclab",
+          lat: 23,
+          lon: 77,
+          zoom: 5
         });
       })();
     </script>

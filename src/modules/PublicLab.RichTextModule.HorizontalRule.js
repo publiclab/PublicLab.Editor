@@ -5,12 +5,7 @@
 module.exports = function initHorizontalRule(_module, wysiwyg) {
 
   // create a menu option for horizontal rules:
-  $('.wk-commands').append('<button class="btn-horizontal"><a class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></a></button>');
-
-  $('.btn-horizontal').css({
-    padding: 0,
-    border: 0
-  });
+  $('.wk-commands').append('<a class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></a>');
 
   $(document).ready(function(){
     $('[data-toggle="horizontal"]').tooltip();
