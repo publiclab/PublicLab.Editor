@@ -109,7 +109,7 @@ To install PublicLab.Editor for development, you'll need [NodeJS](https://nodejs
 
 After installing node and npm run `npm install` from the root directory.
 
-PublicLab.Editor uses grunt - the javascript task runner for compilation of the modules. To install grunt run `npm install -g grunt-cli`. You may have to use `sudo` for root privileges.
+PublicLab.Editor uses grunt - the javascript task runner for compilation of the modules. To install grunt run `npm install -g grunt-cli`. If you get permission errors, refer [this](https://stackoverflow.com/questions/16151018/npm-throws-error-without-sudo).
 
 Make changes to the files in the `/src/` directory, then run `grunt build` to compile into `/dist/PublicLab.Editor.js`. This will use `grunt-browserify` to concatenate and include any node modules named in `require()` statements. You'll then be able to try it out in `/examples/index.html`. Run `grunt` and leave it running to build as you go.
 
