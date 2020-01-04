@@ -20477,6 +20477,9 @@ PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
+$(document).ready(function() {
+  PL.Util.preventModalScrollToTop();
+});
 
 PL.Editor = Class.extend({
 
@@ -21532,6 +21535,61 @@ module.exports = {
 
     }
 
+  },
+
+  disableScroll: function() {
+    window.isScrollingDisabled = true;
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    (scrollLeft = window.pageXOffset || document.documentElement.scrollLeft),
+      // if any scroll is attempted, set this to the previous value
+      (window.onscroll = function() {
+        window.scrollTo(scrollLeft, scrollTop);
+      });
+  },
+
+  enableScroll: function() {
+    window.isScrollingDisabled = false;
+    window.onscroll = function() {};
+  },
+
+  preventModalScrollToTop: function() {
+    var self = this;
+    var elementsWithPopups = [
+      document.querySelector(".woofmark-command-link"),
+      document.querySelector(".woofmark-command-image"),
+      document.querySelector(".woofmark-command-attachment")
+    ];
+
+    for (var i = 0; i < elementsWithPopups.length; i++) {
+      var element = elementsWithPopups[i];
+
+      if(!element) continue;
+
+      element.addEventListener("click", function() {
+        // Click on one of the elementsWithPopups disables scrolling
+        if (!window.isScrollingDisabled) {
+          self.disableScroll();
+        }
+
+        $(".wk-prompt-input").on("keydown", function(e) {
+          // Enter keypress in input element
+          if (e.keyCode === 13) {
+            setTimeout(self.enableScroll, 50);
+          }
+        });
+
+        // Click on buttons "Ok" or "Cancel" enables scrolling
+        $(".wk-prompt-ok").on("click", function() {
+          setTimeout(self.enableScroll, 50);
+        });
+
+        $(".wk-prompt-cancel").on("click", function() {
+          setTimeout(self.enableScroll, 50);
+        });
+      });
+    }
+
   }
 
 }
@@ -21696,7 +21754,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.options = options || _editor.options.mapModule || {};
     if (_module.options === true) _module.options = {}; // so we don't make options be /true/
     _module.options.name = 'map' ;
-    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy" target="_blank">location privacy here »</a>' ;
+    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy">location privacy here</a>' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
 
@@ -22192,7 +22250,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         );
       }
     };
-
 
     crossvent.add(_module.wysiwyg.editable, "keydown", autocenterCheck);
 
