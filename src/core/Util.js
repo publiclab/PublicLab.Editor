@@ -33,6 +33,61 @@ module.exports = {
 
     }
 
+  },
+
+  disableScroll: function() {
+    window.isScrollingDisabled = true;
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    (scrollLeft = window.pageXOffset || document.documentElement.scrollLeft),
+      // if any scroll is attempted, set this to the previous value
+      (window.onscroll = function() {
+        window.scrollTo(scrollLeft, scrollTop);
+      });
+  },
+
+  enableScroll: function() {
+    window.isScrollingDisabled = false;
+    window.onscroll = function() {};
+  },
+
+  preventModalScrollToTop: function() {
+    var self = this;
+    var elementsWithPopups = [
+      document.querySelector(".woofmark-command-link"),
+      document.querySelector(".woofmark-command-image"),
+      document.querySelector(".woofmark-command-attachment")
+    ];
+
+    for (var i = 0; i < elementsWithPopups.length; i++) {
+      var element = elementsWithPopups[i];
+
+      if(!element) continue;
+
+      element.addEventListener("click", function() {
+        // Click on one of the elementsWithPopups disables scrolling
+        if (!window.isScrollingDisabled) {
+          self.disableScroll();
+        }
+
+        $(".wk-prompt-input").on("keydown", function(e) {
+          // Enter keypress in input element
+          if (e.keyCode === 13) {
+            setTimeout(self.enableScroll, 50);
+          }
+        });
+
+        // Click on buttons "Ok" or "Cancel" enables scrolling
+        $(".wk-prompt-ok").on("click", function() {
+          setTimeout(self.enableScroll, 50);
+        });
+
+        $(".wk-prompt-cancel").on("click", function() {
+          setTimeout(self.enableScroll, 50);
+        });
+      });
+    }
+
   }
 
 }

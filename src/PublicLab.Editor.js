@@ -16,6 +16,9 @@ PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
+$(document).ready(function() {
+  PL.Util.preventModalScrollToTop();
+});
 
 PL.Editor = Class.extend({
 
