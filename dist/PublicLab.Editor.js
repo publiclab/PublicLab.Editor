@@ -21706,10 +21706,11 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
          lngId: 'lng'
        }
      }
+
+
      var token = "pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig";
 
-     options.tileLayerUrl = 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
-
+      options.tileLayerUrl = _editor.options.tileLayerUrl || 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
 
      _module.blurredLocation = new BlurredLocation(options) ;
 
