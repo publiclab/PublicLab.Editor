@@ -24,12 +24,17 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
        }
      }
 
+
+     var token = "pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig";
+
+      options.tileLayerUrl = _editor.options.tileLayerUrl || 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
+
      _module.blurredLocation = new BlurredLocation(options) ;
 
       if (!!_editor.options.lat && !!_editor.options.lon) {
          // show map on loading.
         $("#map_content").show();
-        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5);
+        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5 );
       } else {
         // hide map on loading.
          $("#map_content").hide();
@@ -38,12 +43,12 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
       $("#location_button").click(function() {
             $("#map_content").toggle();
       });
-        
+
         //check if "google" is defined PLOTS2#4717
     window.hasOwnProperty('google')
       ? _module.blurredLocation.panMapToGeocodedLocation("placenameInput")
       : console.log("`google` is not defined! PublicLab.MapModule.js#28");
-        
+
      _module.blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
