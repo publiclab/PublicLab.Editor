@@ -88,6 +88,22 @@ module.exports = {
       });
     }
 
+  },
+
+  enableRichTextModeKeyboardShortcut: function () {
+    var mainContentTextarea = document.querySelector('.ple-textarea');
+    var toggleMarkdownModeBtn = document.querySelector('.woofmark-mode-markdown');
+    var toggleRichTextModeBtn = document.querySelector('.woofmark-mode-wysiwyg');
+
+    if(!mainContentTextarea) return;
+
+    mainContentTextarea.addEventListener('keydown', function (e) {
+      // Executes on CTRL + P
+      if (e.keyCode === 80 && e.ctrlKey) {
+        toggleRichTextModeBtn.style.display = 'none';
+        toggleMarkdownModeBtn.style.display = 'block';
+      }
+    });
   }
 
 }
