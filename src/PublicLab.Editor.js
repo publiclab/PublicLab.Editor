@@ -16,6 +16,10 @@ PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
+$(document).ready(function() {
+  PL.Util.preventModalScrollToTop();
+  PL.Util.enableRichTextModeKeyboardShortcut();
+});
 
 PL.Editor = Class.extend({
 
@@ -42,9 +46,15 @@ PL.Editor = Class.extend({
 
       });
 
-      if (valid_modules == required_modules) {
+      if (valid_modules !== required_modules) {
+
+        $('.ple-publish').addClass('disabled');
+        $('.ple-publish').prop('disabled', true);
+
+      } else {
 
         $('.ple-publish').removeClass('disabled');
+        $('.ple-publish').prop('disabled', false);
 
       }
 
@@ -91,9 +101,11 @@ PL.Editor = Class.extend({
        if($("#map_content").is(':visible')){
         _lat = _editor.mapModule.blurredLocation.getLat() ;
         _lng = _editor.mapModule.blurredLocation.getLon() ;
-        console.log(_lat + '  ' + _lng) ;
+        _zoom = _editor.mapModule.blurredLocation.getZoom() ;
+        console.log(_lat + '  ' + _lng + '  ' + _zoom) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'zoom:' + _zoom) ;
       }
 
       _editor.collectData();
@@ -172,8 +184,13 @@ PL.Editor = Class.extend({
 
       });
 
-    }
+      $('.btn-close').click(function() {
 
+        // closes more tools menu
+        $('.ple-menu-more').toggle();
+
+      });
+    }
 
     _editor.modules = [];
 
@@ -206,7 +223,7 @@ PL.Editor = Class.extend({
       _editor.modules.push(_editor.tagsModule);
     }
 
-    if (_editor.options.mapModule !== false) {
+    if (_editor.options.mapModule === true) {
       _editor.mapModule = new PublicLab.MapModule( _editor) ;
       _editor.modules.push(_editor.mapModule) ;
     }

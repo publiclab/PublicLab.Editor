@@ -25,6 +25,10 @@
   color: #aaa;
 }
 
+.ple-content {
+  overflow-x: hidden;
+}
+
 .ple-help-minor {
   font-size: 12px;
   color: #aaa;
@@ -54,6 +58,21 @@
 
 .ple-footer .ple-menu-more {
   padding: 10px;
+}
+
+.ple-footer .ple-menu-more .btn-close {
+  float: right;
+  border-radius: 5px;
+  border: 1px solid #A9A9A9;
+  height: 20px;
+}
+
+.ple-footer .ple-menu-more .btn-close:hover{
+  opacity: 0.7;
+}
+
+.ple-footer .ple-menu-more .btn-close:active{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .ple-type {
@@ -155,7 +174,7 @@ textarea.ple-textarea {
 .wk-prompt {
   border-radius: 10px;
   padding: 20px;
-  z-index: 2;
+  z-index: 999;
 }
 
 /* Following may be removed if this is resolved:
