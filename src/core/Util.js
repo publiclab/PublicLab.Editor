@@ -104,6 +104,32 @@ module.exports = {
         toggleMarkdownModeBtn.style.display = 'block';
       }
     });
+  },
+
+  preventUploadedImagesDragging: function() {
+    var wysiwygDiv = document.querySelector(".wk-wysiwyg");
+    var self = this;
+
+    if(!wysiwygDiv) return;
+
+    function handleChange() {
+      if (window.isScrollingDisabled) {
+        self.enableScroll();
+      }
+
+      var imageElements = document.querySelectorAll(
+        '.wk-wysiwyg img:not([draggable="false"])'
+      );
+
+      imageElements.forEach(function(imageElement) {
+        imageElement.setAttribute("draggable", "false");
+      });
+    }
+
+    var observerConfig = { childList: true, subtree: true };
+    var wysiwygDivObserver = new MutationObserver(handleChange);
+
+    wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
   }
 
 }
