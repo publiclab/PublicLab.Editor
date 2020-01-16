@@ -20477,6 +20477,11 @@ PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
+$(document).ready(function() {
+  PL.Util.preventModalScrollToTop();
+  PL.Util.enableRichTextModeKeyboardShortcut();
+  PL.Util.preventUploadedImagesDragging();
+});
 
 PL.Editor = Class.extend({
 
@@ -20558,9 +20563,11 @@ PL.Editor = Class.extend({
        if($("#map_content").is(':visible')){
         _lat = _editor.mapModule.blurredLocation.getLat() ;
         _lng = _editor.mapModule.blurredLocation.getLon() ;
-        console.log(_lat + '  ' + _lng) ;
+        _zoom = _editor.mapModule.blurredLocation.getZoom() ;
+        console.log(_lat + '  ' + _lng + '  ' + _zoom) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'zoom:' + _zoom) ;
       }
 
       _editor.collectData();
@@ -21530,6 +21537,103 @@ module.exports = {
 
     }
 
+  },
+
+  disableScroll: function() {
+    window.isScrollingDisabled = true;
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    (scrollLeft = window.pageXOffset || document.documentElement.scrollLeft),
+      // if any scroll is attempted, set this to the previous value
+      (window.onscroll = function() {
+        window.scrollTo(scrollLeft, scrollTop);
+      });
+  },
+
+  enableScroll: function() {
+    window.isScrollingDisabled = false;
+    window.onscroll = function() {};
+  },
+
+  preventModalScrollToTop: function() {
+    var self = this;
+    var elementsWithPopups = [
+      document.querySelector(".woofmark-command-link"),
+      document.querySelector(".woofmark-command-image"),
+      document.querySelector(".woofmark-command-attachment")
+    ];
+
+    for (var i = 0; i < elementsWithPopups.length; i++) {
+      var element = elementsWithPopups[i];
+
+      if(!element) continue;
+
+      element.addEventListener("click", function() {
+        // Click on one of the elementsWithPopups disables scrolling
+        if (!window.isScrollingDisabled) {
+          self.disableScroll();
+        }
+
+        $(".wk-prompt-input").on("keydown", function(e) {
+          // Enter keypress in input element
+          if (e.keyCode === 13) {
+            setTimeout(self.enableScroll, 50);
+          }
+        });
+
+        // Click on buttons "Ok" or "Cancel" enables scrolling
+        $(".wk-prompt-ok").on("click", function() {
+          setTimeout(self.enableScroll, 50);
+        });
+
+        $(".wk-prompt-cancel").on("click", function() {
+          setTimeout(self.enableScroll, 50);
+        });
+      });
+    }
+
+  },
+
+  enableRichTextModeKeyboardShortcut: function () {
+    var mainContentTextarea = document.querySelector('.ple-textarea');
+    var toggleMarkdownModeBtn = document.querySelector('.woofmark-mode-markdown');
+    var toggleRichTextModeBtn = document.querySelector('.woofmark-mode-wysiwyg');
+
+    if(!mainContentTextarea) return;
+
+    mainContentTextarea.addEventListener('keydown', function (e) {
+      // Executes on CTRL + P
+      if (e.keyCode === 80 && e.ctrlKey) {
+        toggleRichTextModeBtn.style.display = 'none';
+        toggleMarkdownModeBtn.style.display = 'block';
+      }
+    });
+  },
+
+  preventUploadedImagesDragging: function() {
+    var wysiwygDiv = document.querySelector(".wk-wysiwyg");
+    var self = this;
+
+    if(!wysiwygDiv) return;
+
+    function handleChange() {
+      if (window.isScrollingDisabled) {
+        self.enableScroll();
+      }
+
+      var imageElements = document.querySelectorAll(
+        '.wk-wysiwyg img:not([draggable="false"])'
+      );
+
+      imageElements.forEach(function(imageElement) {
+        imageElement.setAttribute("draggable", "false");
+      });
+    }
+
+    var observerConfig = { childList: true, subtree: true };
+    var wysiwygDivObserver = new MutationObserver(handleChange);
+
+    wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
   }
 
 }
@@ -21705,12 +21809,17 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
        }
      }
 
+
+     var token = "pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig";
+
+      options.tileLayerUrl = _editor.options.tileLayerUrl || 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
+
      _module.blurredLocation = new BlurredLocation(options) ;
 
       if (!!_editor.options.lat && !!_editor.options.lon) {
          // show map on loading.
         $("#map_content").show();
-        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5);
+        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5 );
       } else {
         // hide map on loading.
          $("#map_content").hide();
@@ -21719,12 +21828,12 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
       $("#location_button").click(function() {
             $("#map_content").toggle();
       });
-        
+
         //check if "google" is defined PLOTS2#4717
     window.hasOwnProperty('google')
       ? _module.blurredLocation.panMapToGeocodedLocation("placenameInput")
       : console.log("`google` is not defined! PublicLab.MapModule.js#28");
-        
+
      _module.blurredLocation.setBlurred(false) ;
 
      _module.value = function(){
@@ -21960,11 +22069,19 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 
   var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-      builder += '<input value="4" class="form-control rows" style="width:75px;" />';
-      builder += ' x ';
-      builder += '<input value="3" class="form-control cols" style="width:85px;" /> ';
-      builder += '<a class="ple-table-size btn btn-default"><i class="fa fa-plus"></i></a>';
-      builder += '</div>';
+        builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += ' x ';
+        builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+        builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+        builder += '</div>';
+
+    $('.woofmark-command-table').attr('data-content', builder);
+
+
+    $(document).on('click', '#incRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) + 1 ); });
+    $(document).on('click', '#decRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) - 1 ); });
+    $(document).on('click', '#incCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) + 1 ); });
+    $(document).on('click', '#decCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) - 1 ); });
 
   $('.woofmark-command-table').attr('data-content', builder);
   $('.woofmark-command-table').attr('data-container', 'body');
@@ -21979,8 +22096,8 @@ module.exports = function initTables(_module, wysiwyg) {
       wysiwyg.runCommand(function(chunks, mode) {
 
         var table = createTable(
-          +$('.ple-table-popover .cols').val(),
-          +$('.ple-table-popover .rows').val()
+          +Number($('.ple-table-popover #tableCols').text()),
+          +Number($('.ple-table-popover #tableRows').text())
         );
 
         if (mode === 'markdown') chunks.before += table;
@@ -22182,8 +22299,6 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         );
       }
     };
-
-    setInterval(autocenterCheck, 100);
 
     crossvent.add(_module.wysiwyg.editable, "keydown", autocenterCheck);
 

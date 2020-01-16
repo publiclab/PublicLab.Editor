@@ -46,6 +46,11 @@ var hashtag_watcher = {
       return value;
     },
     remoteFilter: function(query, callback) {
+      if (Number.isInteger(Number(query))) {
+        callback(null);
+        return;
+      }
+
       $.getJSON(
         "https://publiclab.org/api/srch/tags?query=" + query,
         {},

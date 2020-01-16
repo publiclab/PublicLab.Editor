@@ -16,6 +16,11 @@ PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
 PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
 PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
+$(document).ready(function() {
+  PL.Util.preventModalScrollToTop();
+  PL.Util.enableRichTextModeKeyboardShortcut();
+  PL.Util.preventUploadedImagesDragging();
+});
 
 PL.Editor = Class.extend({
 
@@ -97,9 +102,11 @@ PL.Editor = Class.extend({
        if($("#map_content").is(':visible')){
         _lat = _editor.mapModule.blurredLocation.getLat() ;
         _lng = _editor.mapModule.blurredLocation.getLon() ;
-        console.log(_lat + '  ' + _lng) ;
+        _zoom = _editor.mapModule.blurredLocation.getZoom() ;
+        console.log(_lat + '  ' + _lng + '  ' + _zoom) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
         _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'zoom:' + _zoom) ;
       }
 
       _editor.collectData();

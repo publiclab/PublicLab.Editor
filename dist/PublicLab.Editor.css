@@ -25,6 +25,10 @@
   color: #aaa;
 }
 
+.ple-content {
+  overflow-x: hidden;
+}
+
 .ple-help-minor {
   font-size: 12px;
   color: #aaa;
