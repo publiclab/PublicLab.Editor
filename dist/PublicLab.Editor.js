@@ -22186,8 +22186,11 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     _module.value(_module.options.initialValue);
 
-    _module.valid = function() {
-      return _module.value() != "";
+    _module.valid = function () {
+      var postBody = _module.value().trim();
+      var isValid = postBody.length >= 10;
+
+      return isValid;
     };
 
     _module.html = function() {
@@ -22736,7 +22739,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
       // must not be empty, for starters
       var value = _module.value(),
-          valid = (value != "");
+          valid = (value.trim() != "");
 
       //valid = valid && (value.match(/\.|,|"|'/) == null);
       // we could discourage too much punctuation, or titles that are too long, here
@@ -22744,7 +22747,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       if (!valid && value != "") {
 
         _module.error('Must be formatted correctly.');
- 
+
       } else if (value && value.length > 45) {
 
         _module.error('Getting a bit long!', 'warning');
@@ -22765,7 +22768,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     // Overrides default build method
-    _module.build = function() {    
+    _module.build = function() {
 
       // custom location -- just under the title input
       _module.el.find('.ple-module-content')
@@ -22784,7 +22787,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
-    
+
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
@@ -22808,6 +22811,5 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
   }
 
 });
-
 
 },{"./PublicLab.TitleModule.Related.js":194}]},{},[178]);

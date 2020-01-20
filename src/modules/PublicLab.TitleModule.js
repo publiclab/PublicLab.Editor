@@ -55,7 +55,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
       // must not be empty, for starters
       var value = _module.value(),
-          valid = (value != "");
+          valid = (value.trim() != "");
 
       //valid = valid && (value.match(/\.|,|"|'/) == null);
       // we could discourage too much punctuation, or titles that are too long, here

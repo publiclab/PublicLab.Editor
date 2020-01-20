@@ -65,8 +65,11 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     _module.value(_module.options.initialValue);
 
-    _module.valid = function() {
-      return _module.value() != "";
+    _module.valid = function () {
+      var postBody = _module.value().trim();
+      var isValid = postBody.length >= 10;
+
+      return isValid;
     };
 
     _module.html = function() {
