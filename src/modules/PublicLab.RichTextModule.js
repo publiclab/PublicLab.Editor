@@ -305,32 +305,5 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     $(_module.options.textarea).on("change keydown", function(e) {
       _module.resize();
     });
-
-    var wk_c = document.getElementsByClassName("wk-commands")[0];
-
-    $(window).scroll(function() {
-      var bounding = document
-        .getElementsByClassName("woofmark-mode-markdown")[0]
-        .getBoundingClientRect();
-
-      if (
-        bounding.top >= 0 &&
-        bounding.left >= 0 &&
-        bounding.right <=
-          (window.innerWidth || document.documentElement.clientWidth) &&
-        bounding.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight)
-      ) {
-        wk_c.style.position = "relative";
-        wk_c.style.bottom = 0 + "px";
-      } else {
-        wk_c.style.bottom =
-          document
-            .getElementsByClassName("ple-footer")[0]
-            .getBoundingClientRect().height + "px";
-        wk_c.style.position = "fixed";
-        wk_c.style.zIndex = 2;
-      }
-    });
   }
 });
