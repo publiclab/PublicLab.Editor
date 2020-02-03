@@ -23,12 +23,14 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.value = function(url, id) {
 
       if (typeof url == 'string') {
-
-        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-        // onLoad never triggers
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
+         $("<img/>",{
+                load : function(){
+                _module.dropEl.css('height',this.height)
+                _module.dropEl.css('width',this.width)
+              },
+              src  : url
+        });
+          
         _module.image.src = url;
         _module.options.url = url;
         _editor.data.has_main_image = true;
@@ -112,7 +114,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
         _module.value(data.result.url, data.result.id);
-
+        _module.dropEl.empty()
         _editor.validate();
 
         // primarily for testing: 

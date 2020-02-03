@@ -19065,7 +19065,6 @@ var strings = require('../strings');
 function boldOrItalic (chunks, type) {
   var rnewlines = /\n{2,}/g;
   var starCount = type === 'bold' ? 2 : 1;
-
   chunks.trim();
   chunks.selection = chunks.selection.replace(rnewlines, '\n');
 
@@ -19088,6 +19087,7 @@ function boldOrItalic (chunks, type) {
     markup = starCount === 1 ? '*' : '**';
     chunks.before = chunks.before + markup;
     chunks.after = markup + chunks.after;
+
   }
 }
 
@@ -21664,12 +21664,14 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.value = function(url, id) {
 
       if (typeof url == 'string') {
-
-        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-        // onLoad never triggers
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
+         $("<img/>",{
+                load : function(){
+                _module.dropEl.css('height',this.height)
+                _module.dropEl.css('width',this.width)
+              },
+              src  : url
+        });
+          
         _module.image.src = url;
         _module.options.url = url;
         _editor.data.has_main_image = true;
@@ -21753,7 +21755,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
         _module.value(data.result.url, data.result.id);
-
+        _module.dropEl.empty()
         _editor.validate();
 
         // primarily for testing: 
@@ -22757,7 +22759,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
       if (!valid && value != "") {
 
         _module.error('Must be formatted correctly.');
-
+ 
       } else if (value && value.length > 45) {
 
         _module.error('Getting a bit long!', 'warning');
@@ -22778,7 +22780,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     // Overrides default build method
-    _module.build = function() {
+    _module.build = function() {    
 
       // custom location -- just under the title input
       _module.el.find('.ple-module-content')
@@ -22797,7 +22799,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
-
+    
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
@@ -22821,5 +22823,6 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
   }
 
 });
+
 
 },{"./PublicLab.TitleModule.Related.js":194}]},{},[178]);
