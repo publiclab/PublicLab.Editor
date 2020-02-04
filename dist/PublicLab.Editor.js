@@ -21666,8 +21666,17 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       if (typeof url == 'string') {
          $("<img/>",{
                 load : function(){
-                _module.dropEl.css('height',this.height)
-                _module.dropEl.css('width',this.width)
+                  var height_dropdown=this.height;
+                  var width_dropdown=this.width;
+                  if(this.width>700){
+                     var aspect_ratio=this.width/800
+                     width_dropdown=800
+                     height_dropdown=this.height/aspect_ratio   
+                  }
+                _module.dropEl.css('height',height_dropdown)
+                _module.dropEl.css('width',width_dropdown)
+                _module.dropEl.css('background-size',width_dropdown+'px '+height_dropdown+'px');
+
               },
               src  : url
         });
@@ -21753,6 +21762,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.show();
         _module.el.find('.progress').hide();
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
+   //     _module.dropEl.css('background-size','cover');
 
         _module.value(data.result.url, data.result.id);
         _module.dropEl.empty()
