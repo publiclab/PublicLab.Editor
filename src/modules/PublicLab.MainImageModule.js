@@ -23,8 +23,8 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.value = function(url, id) {
 
       if (typeof url == 'string') {
-         $("<img/>",{
-                load : function(){
+         
+             _module.image.onload  = function(){
                   var height_dropdown=this.height;
                   var width_dropdown=this.width;
                   if(this.width>700){
@@ -36,9 +36,9 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
                 _module.dropEl.css('width',width_dropdown)
                 _module.dropEl.css('background-size',width_dropdown+'px '+height_dropdown+'px');
 
-              },
-              src  : url
-        });
+              }
+            
+        
           
         _module.image.src = url;
         _module.options.url = url;
