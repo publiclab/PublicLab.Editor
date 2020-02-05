@@ -30,9 +30,9 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
               width_dropdown = 800;
               height_dropdown = this.height/aspect_ratio;   
             }
-            _module.dropEl.css('height',height_dropdown);
-            _module.dropEl.css('width',width_dropdown);
-            _module.dropEl.css('background-size',width_dropdown+'px '+height_dropdown+'px');
+            _module.dropEl.css('height', height_dropdown);
+            _module.dropEl.css('width', width_dropdown);
+            _module.dropEl.css('background-size', width_dropdown+'px '+height_dropdown+'px');
           }
         _module.image.src = url;
         _module.options.url = url;
