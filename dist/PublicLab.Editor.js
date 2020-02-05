@@ -21663,16 +21663,16 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.value = function(url, id) {
         if (typeof url == 'string') {
-            _module.image.onload  = function(){
-            var height_dropdown=this.height;
-            var width_dropdown=this.width;
-            if(this.width>700){
-              var aspect_ratio=this.width/800
-              width_dropdown=800
-              height_dropdown=this.height/aspect_ratio   
+            _module.image.onload = function(){
+            var height_dropdown = this.height;
+            var width_dropdown = this.width;
+            if(this.width > 700) {
+              var aspect_ratio = this.width/800;
+              width_dropdown = 800;
+              height_dropdown = this.height/aspect_ratio;   
             }
-            _module.dropEl.css('height',height_dropdown)
-            _module.dropEl.css('width',width_dropdown)
+            _module.dropEl.css('height',height_dropdown);
+            _module.dropEl.css('width',width_dropdown);
             _module.dropEl.css('background-size',width_dropdown+'px '+height_dropdown+'px');
           }
         _module.image.src = url;
@@ -21759,7 +21759,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
    //     _module.dropEl.css('background-size','cover');
 
         _module.value(data.result.url, data.result.id);
-        _module.dropEl.empty()
+        _module.dropEl.empty();
         _editor.validate();
 
         // primarily for testing: 
