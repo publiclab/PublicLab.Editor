@@ -115,7 +115,6 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.show();
         _module.el.find('.progress').hide();
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
-   //     _module.dropEl.css('background-size','cover');
 
         _module.value(data.result.url, data.result.id);
         _module.dropEl.empty();
