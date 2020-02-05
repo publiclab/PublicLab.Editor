@@ -21663,7 +21663,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     _module.value = function(url, id) {
         if (typeof url == 'string') {
-            _module.image.onload = function(){
+            _module.image.onload = function() {
             var height_dropdown = this.height;
             var width_dropdown = this.width;
             if(this.width > 700) {
