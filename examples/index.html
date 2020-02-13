@@ -61,6 +61,9 @@
       href="../node_modules/at.js/dist/css/jquery.atwho.min.css"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cinzel:900" rel="stylesheet">
+	  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <script src="../node_modules/at.js/dist/js/jquery.atwho.min.js"></script>
     <script src="data/emoji.js"></script>
   </head>
@@ -75,7 +78,7 @@
           <div class="col-md-5 col-md-push-4">
             <div class="row">
               <div class="col-xs-10">
-                <select class="form-control input-lg">
+                <select class="form-control input-lg" id="selection">
                   <option selected value="">a research note</option>
                   <option value="">a question or request</option>
                   <option value="">an event</option>
@@ -113,6 +116,7 @@
             <input
               class="form-control input-lg"
               type="text"
+              id="titleBar"
               placeholder="Title"
             />
           </div>
@@ -139,7 +143,7 @@
                 ></div>
               </div>
 
-              <p><input type="file" name="image[photo]" /></p>
+              <p><input type="file" name="image[photo]" id="bannerImg" /></p>
               <p class="ple-help">
                 <span class="ple-help-minor"
                   >Select an optional main image for your post.</span
@@ -322,7 +326,7 @@ var myVariable = 4;
           <a href="https://publiclab.org/licenses">open source your work</a>
           <span class="hidden-xs"> so that others may use it.</span>
         </span>
-
+        <button class="btn btn-lg btn-primary" id="ple-preview" onclick="previewFunction();seeChanges(one, change)">Preview</button>
         <button class="ple-publish btn btn-lg btn-primary pull-right disabled">
           Publish
         </button>
@@ -333,6 +337,52 @@ var myVariable = 4;
         </span>
       </div>
     </div>
+
+    <div id="fusion">
+      <div class="container" style="background: #eee;">
+          <a class="closebutton" onclick="closeNav()">&times;</a>
+          <div id="displayInfo" class="row">
+              <div id="chooseOption" class="col-sm-12">
+                  <span>Share</span>
+                  <pre id="optionSelect"></pre>
+              </div>
+              <div id="titleInput" class="col-sm-12">
+                  <span>Title</span><br>
+                  <pre id="titleStorage"></pre>
+              </div>
+              <div id="locationInput" class="col-sm-12">
+                  <p>Location</p><br>
+                  <pre id="locationName" class="col-sm-4" style="width: 33%"></pre><pre id="lati" class="col-sm-4" style="width: 33%"></pre><pre id="longi" class="col-sm-4" style="width: 32%"></pre>
+              </div>
+              <div id="about" class="col-sm-12">
+                  <span>Header</span><br>
+                  <div id="aboutHeader"></div>
+              </div>
+      <div id="myGoals" class="col-sm-12">
+        <span>My goals have been</span><br>
+      </div>
+      <div id="printTable" class="col-sm-12">
+        <span>Table</span>
+        <table class="tabla">
+          <thead>
+            <tr id="tablaRow">
+
+            </tr>
+          </thead>
+          <tbody id="tbody">
+                      </tbody>
+        </table>
+      </div>
+      <div id="createToken" class="col-sm-12">
+        <span>Tokens</span>
+      </div>
+          </div>
+      </div>
+      <!--
+      <div id="displayInfo">
+          <pre id="displayChange" style="font-size: 20px;"></pre>
+      </div> -->
+  </div>
 
     <script>
      
@@ -351,5 +401,7 @@ var myVariable = 4;
       })();
     </script>
     <script src="data/atwho.PLE.js"></script>
+    <script src="../dist/diff.js"></script>
+    <script src="../dist/editorfile2.js"></script>
   </body>
 </html>
