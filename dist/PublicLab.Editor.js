@@ -22701,7 +22701,6 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
   init: function(_editor, options) {
 
     var _module = this;
-
     _module.key = 'title';
     _module.options = options || _editor.options.titleModule || {};
     _module.options.name = "title";
@@ -22716,7 +22715,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = true;
-    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="" target="_blank">Read more &raquo;</a>';
+    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Read more &raquo;</button>';
 
     _module.value = function(text) {
 
@@ -22741,7 +22740,6 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
                 .html(text);
       _module.el.find('input').parent()
                 .addClass('has-' + type);
-
     }
 
 
