@@ -215,6 +215,7 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
     z-index: 1000;
     display: block;
     transition: width 0.3s linear;
+    overflow-x: hidden;
 }
 
 .closebutton
@@ -516,6 +517,20 @@ table > tbody > tr > td
 {
     position: relative;
     left: 35vw;
+}
+
+@media (max-width:1050px) {
+  #ple-preview
+  {
+    left: 15vw;
+  }
+}
+
+@media (max-width:1000px) {
+  #ple-preview
+  {
+    left: 0;
+  }
 }
 
 @media (max-width:550px) {
