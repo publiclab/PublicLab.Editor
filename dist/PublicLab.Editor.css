@@ -205,318 +205,292 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 
 #fusion
 {
-    width: 0vw;
-    height: 100vh;
-    overflow: scroll;
-    position: fixed;
-    top: 0vh;
-    left: 0vw;
-    background: #eee;
-    z-index: 1000;
-    display: block;
-    transition: width 0.3s linear;
-    overflow-x: hidden;
+  width: 0vw;
+  height: 100vh;
+  overflow: scroll;
+  position: fixed;
+  top: 0vh;
+  left: 0vw;
+  background: #eee;
+  z-index: 1000;
+  display: block;
+  transition: width 0.3s linear;
+  overflow-x: hidden;
 }
 
 .closebutton
 {
-    position: relative;
-    top: 3vh;
-    left: 80vw;
-    font-size: 60px;
-    color: black;
+  position: relative;
+  top: 3vh;
+  left: 80vw;
+  font-size: 60px;
+  color: black;
 }
 
 .closebutton:hover
 {
-    text-decoration: none;
-    cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 #displayInfo
 {
-    background: white;
-    width: 70vw;
-    height: 90vh;
-    position: absolute;
-    left: 15vw;
-    top: 5vh;
-    opacity: 0;
-    transition: opacity linear 0.3s;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    border: 1px solid black;
-    box-shadow: 5px 5px 5px grey;
-    padding: 5px;
+  background: white;
+  width: 70vw;
+  height: 90vh;
+  position: absolute;
+  left: 15vw;
+  top: 5vh;
+  opacity: 0;
+  transition: opacity linear 0.3s;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid black;
+  box-shadow: 5px 5px 5px grey;
+  padding: 5px;
 }
 
 #chooseOption
 {
-    /*width: auto;*/
-    height: auto;
-    padding: 5px;
-    background: #eee;
-    margin-bottom: 5px;
-    border: 2px solid black;
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-bottom: 5px;
+  border: 2px solid black;
 }
 
 #chooseOption > span
 {
-    /* width: auto; */
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
 }
 
 #optionSelect
 {
-    /* width: auto;
-    max-width: 70vw; */
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #titleInput
 {
-    /* width: auto;
-    height: auto;*/
-    padding: 5px;
-    padding-bottom: 0px;
-    background: #eee;
-    border: 2px solid black;
+  padding: 5px;
+  padding-bottom: 0px;
+  background: #eee;
+  border: 2px solid black;
 }
 
 #titleInput > span
 {
-    width: auto;
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
+  width: auto;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
 }
 
 #titleStorage
 {
-    /* width: auto;
-    max-width: 70vw; */
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #locationInput
 {
-    /* width: auto; */
-    height: auto;
-    padding: 5px;
-    background: #eee;
-    margin-top: 5px;
-    border: 2px solid black;
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
 }
 
 #locationInput > p
 {
-    /* width: auto; */
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
-    display: block;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+  display: block;
 }
 
 #locationName
 {
-    display: inline-block;
-    /* width: 22vw; */
-    margin-right: 0.5vw;
-    overflow: hidden;
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  display: inline-block;
+  margin-right: 0.5vw;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #lati
 {
-    display: inline-block;
-    /* width: 22vw; */
-    margin-right: 0.5vw;
-    overflow: hidden;
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  display: inline-block;
+  margin-right: 0.5vw;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #longi
 {
-    display: inline-block;
-    /* width: 22vw; */
-    overflow: hidden;
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #about
 {
-    /* width: auto; */
-    height: auto;
-    padding: 5px;
-    background: #eee;
-    margin-top: 5px;
-    border: 2px solid black;
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
 }
 
 #about > span
 {
-    /* width: auto; */
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
 }
 
 #aboutHeader
 {
-    /* width: auto; */
-    max-width: 70vw;
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  max-width: 70vw;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #myGoals
 {
-    /* width: auto; */
-    height: auto;
-    padding: 5px;
-    background: #eee;
-    margin-top: 5px;
-    border: 2px solid black;
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
 }
 
 #myGoals > span
 {
-    /* width: auto; */
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
 }
 
 #printTable > table, #printTable > table > thead > tr > th, #printTable > table > tbody > tr > td
 {
-    border: 2px solid black;
+  border: 2px solid black;
 }
 
 #printTable > thead > tr > th
 {
-    font-size: 22px;
-
+  font-size: 22px;
 }
 
 #printTable > table > tbody > tr > td
 {
-    font-size: 17px;
-    font-family: 'Roboto Mono', monospace;
+  font-size: 17px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 #printTable
 {
-    /* width: auto; */
-    height: auto;
-    padding: 5px;
-    background: #eee;
-    margin-top: 5px;
-    border: 2px solid black;
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
 }
 
 #printTable > span
 {
-    /* width: auto; */
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
 }
 
 table > thead > tr > th
 {
 	width: 15vw;
-    margin-left: 0.5vw;
-    background: #fff;
-    text-align: center;
+  margin-left: 0.5vw;
+  background: #fff;
+  text-align: center;
 }
 
 #tbody
 {
-    height: 20px;
+  height: 20px;
 }
 
 table > tbody > tr > td
 {
-    /* width: 15vw; */
-    margin-left: 0.5vw;
-    background: #fff;
-    text-align: center;
+  margin-left: 0.5vw;
+  background: #fff;
+  text-align: center;
 }
 
 #aboutHeader
 {
-    /* width: auto; */
-    max-width: 70vw;
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  max-width: 70vw;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #createToken
 {
-    /* width: auto; */
-    height: auto;
-    padding: 5px;
-    background: #eee;
-    margin-top: 5px;
-    border: 2px solid black;
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
 }
 
 #createToken > span
 {
-    /* width: auto; */
-    padding: 0;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 25px;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
 }
 
 #tokenDisplay > .block
 {
-    /* width: auto; */
-    max-width: 70vw;
-    background: #fff;
-    padding: 5px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 20px;
-    height: auto;
+  max-width: 70vw;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
 }
 
 #map
 {
-    z-index: 1;
+  z-index: 1;
 }
 
 #ple-preview
 {
-    position: relative;
-    left: 35vw;
+  position: relative;
+  left: 35vw;
 }
 
 @media (max-width:1050px) {
@@ -537,7 +511,7 @@ table > tbody > tr > td
   .ple-module-content a.btn {
       font-size: 0px !important;
   }
-    .ple-module-content a.btn i.fa {
-      font-size: 20px !important;
-   }
+  .ple-module-content a.btn i.fa {
+    font-size: 20px !important;
+  }
 }
