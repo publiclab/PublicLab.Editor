@@ -22715,7 +22715,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
     _module.options.required     = true;
-    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <button type="button" class="btn btn-light" style="background: transparent; padding: 1px;text-decoration: underline;font-size: 13px" data-toggle="modal" data-target="#myModal">Read more &raquo;</button>';
+    _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a class="btn btn-light" style="background: transparent; padding: 1px;text-decoration: underline;font-size: 13px;color: #337AB7;" data-toggle="modal" data-target="#myModal">Read more &raquo;</a>';
 
     _module.value = function(text) {
 
