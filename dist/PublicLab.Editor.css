@@ -42,14 +42,8 @@
   text-align: center;
 }
 
-.btn-info {
-  background: transparent !important;
-  padding: 1px !important;
+.btn-light {
   color: #337AB7;
-  text-decoration: underline !important;
-  border: none !important;
-  font-size: 13px !important;
-  font-family:  "Helvetica Neue",Helvetica,Arial,sans-serif !important;
 }
 
 .btn-info:hover {
