@@ -136,7 +136,7 @@ var editor = new PL.Editor({
 
 To customize the @author and #tag autocompletes with your own suggestions, or with AJAX calls to your server, see the autocomplete example in `/examples/autocomplete.html`.
 
-The editor toolbar comes in two differnt formats. You can use a smaller version by using a `size` property in the constructor. Refer to example given in `/examples/comment.html`
+The editor toolbar comes in two different formats. You can use a smaller version by using a `size` property in the constructor. Refer to example given in `/examples/comment.html`
 
 ## Dependencies
 
@@ -170,7 +170,7 @@ PublicLab.Editor expects a response from the server upon sending a request to `d
  * Clone [`plots2`](https://github.com/publiclab/plots2#standard-installation) and follow the [Standard Installation](https://github.com/publiclab/plots2#standard-installation) instructions to run it on your local server.
 * Now in `plots2/package.json#` at `line 62`, replace this line with `"publiclab-editor": "file:..<path>"` where `<path>` is path of your cloned `PublicLab.Editor` repo folder
 * Now with `passenger start` you can access the Editor at `localhost:3000/post`. Make changes in Editor's source code and run `grunt build` or `grunt debug` to bundle all files. Then run `yarn install --force` in plots2 repo to view changes on server.
-* For reflecting HTML changes use   `plots2/app/views/editor/rich.html.erb` instead of example.html. They both have same sturcture.
+* For reflecting HTML changes use   `plots2/app/views/editor/rich.html.erb` instead of example.html. They both have same structure.
 * For reflecting the changes on the local server need to run `yarn install --force` and refresh your page.
 
 
