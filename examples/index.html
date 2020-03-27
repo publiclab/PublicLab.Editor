@@ -207,7 +207,7 @@
                     </div>
                   </div>
                   <br>
-                  <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                  <p><button class="btn btn-lg btn-default" onclick="myFunctionLocation()">
                     <div id="ldi-geocode-button">          
                       <i class="fa fa-compass"></i> Use current location
                     </div>
@@ -335,7 +335,16 @@ var myVariable = 4;
     </div>
 
     <script>
-     
+      function myFunctionLocation() {
+        var n = true;
+        var e = document.getElementById("ldi-geocode-button");
+        var str1 = e.innerHTML;
+        var str = 'fa-spinner';
+        var n = str1.includes(str);
+        if(!n){
+          editor.mapModule.blurredLocation.geocodeWithBrowser(true);
+        }
+      }
       var editor;
 
       (function() {
