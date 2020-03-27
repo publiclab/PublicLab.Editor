@@ -340,8 +340,8 @@ var myVariable = 4;
         var e = document.getElementById("ldi-geocode-button");
         var str1 = e.innerHTML;
         var str = 'fa-spinner';
-        var n = str1.includes(str);
-        if(!n){
+        n = str1.includes(str);
+        if (!n) {
           editor.mapModule.blurredLocation.geocodeWithBrowser(true);
         }
       }
