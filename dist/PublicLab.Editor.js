@@ -18531,7 +18531,7 @@ module.exports = heading;
 'use strict';
 
 function hr (chunks) {
-  chunks.before += '\n<h6>\n';
+  chunks.before += '\n<hr>\n';
   chunks.selection = '';
 }
 
@@ -19188,8 +19188,6 @@ var strings = require('../strings');
 
 function heading (chunks) {
   var level = 0;
-  var many = require('../many');
-var strings = require('../strings');
 
   chunks.selection = chunks.selection
     .replace(/\s+/g, ' ')
