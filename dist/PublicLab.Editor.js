@@ -18531,7 +18531,7 @@ module.exports = heading;
 'use strict';
 
 function hr (chunks) {
-  chunks.before += '\n<hr>\n';
+  chunks.before += '\n<h6>\n';
   chunks.selection = '';
 }
 
@@ -19065,7 +19065,6 @@ var strings = require('../strings');
 function boldOrItalic (chunks, type) {
   var rnewlines = /\n{2,}/g;
   var starCount = type === 'bold' ? 2 : 1;
-
   chunks.trim();
   chunks.selection = chunks.selection.replace(rnewlines, '\n');
 
@@ -19088,6 +19087,7 @@ function boldOrItalic (chunks, type) {
     markup = starCount === 1 ? '*' : '**';
     chunks.before = chunks.before + markup;
     chunks.after = markup + chunks.after;
+
   }
 }
 
@@ -19188,6 +19188,8 @@ var strings = require('../strings');
 
 function heading (chunks) {
   var level = 0;
+  var many = require('../many');
+var strings = require('../strings');
 
   chunks.selection = chunks.selection
     .replace(/\s+/g, ' ')
@@ -21679,6 +21681,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       if (id) _editor.data.main_image = id;
 
       return _module.options.url;
+      //just testing
 
     }
 

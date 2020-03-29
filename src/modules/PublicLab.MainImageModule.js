@@ -38,6 +38,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       if (id) _editor.data.main_image = id;
 
       return _module.options.url;
+      //just testing
 
     }
 
