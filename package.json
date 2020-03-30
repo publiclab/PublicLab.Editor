@@ -52,7 +52,7 @@
     "jasmine-jquery": "~2.1.1",
     "jasmine-ajax": "~4.0.0",
     "matchdep": "^2.0.0",
-    "grunt-contrib-jasmine": "~1.0.3"
+    "grunt-contrib-jasmine": "^1.0.3"
   },
   "homepage": "https://github.com/publiclab/PublicLab.Editor#readme"
 }
