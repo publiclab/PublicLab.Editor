@@ -335,16 +335,18 @@ var myVariable = 4;
     </div>
 
     <script>
+      
       function myFunctionLocation() {
-        var n = true;
-        var e = document.getElementById("ldi-geocode-button");
-        var str1 = e.innerHTML;
-        var str = 'fa-spinner';
-        n = str1.includes(str);
-        if (!n) {
+        var spinnerHidden = true;
+        var popupHtml = document.getElementById("ldi-geocode-button");
+        var popupText = popupHtml.innerHTML;
+        var strClass = 'fa-spinner';
+        spinnerHidden = popupText.includes(strClass);
+        if (!spinnerHidden) {
           editor.mapModule.blurredLocation.geocodeWithBrowser(true);
         }
       }
+      
       var editor;
 
       (function() {
