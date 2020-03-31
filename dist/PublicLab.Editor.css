@@ -1,5 +1,7 @@
 .pl-editor {
   margin-bottom: 100px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .pl-editor h1,
@@ -200,11 +202,316 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tooltip.bottom .tooltip-arrow {
   display:none;
 }
+
+#fusion
+{
+  width: 0vw;
+  height: 100vh;
+  overflow: scroll;
+  position: fixed;
+  top: 0vh;
+  left: 0vw;
+  background: #eee;
+  z-index: 1000;
+  display: block;
+  transition: width 0.3s linear;
+  overflow-x: hidden;
+}
+
+.closebutton
+{
+  position: relative;
+  top: 3vh;
+  left: 80vw;
+  font-size: 60px;
+  color: black;
+}
+
+.closebutton:hover
+{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#displayInfo
+{
+  background: white;
+  width: 70vw;
+  height: 90vh;
+  position: absolute;
+  left: 15vw;
+  top: 5vh;
+  opacity: 0;
+  transition: opacity linear 0.3s;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid black;
+  box-shadow: 5px 5px 5px grey;
+  padding: 5px;
+}
+
+#chooseOption
+{
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-bottom: 5px;
+  border: 2px solid black;
+}
+
+#chooseOption > span
+{
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+}
+
+#optionSelect
+{
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#titleInput
+{
+  padding: 5px;
+  padding-bottom: 0px;
+  background: #eee;
+  border: 2px solid black;
+}
+
+#titleInput > span
+{
+  width: auto;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+}
+
+#titleStorage
+{
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#locationInput
+{
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
+}
+
+#locationInput > p
+{
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+  display: block;
+}
+
+#locationName
+{
+  display: inline-block;
+  margin-right: 0.5vw;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#lati
+{
+  display: inline-block;
+  margin-right: 0.5vw;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#longi
+{
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#about
+{
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
+}
+
+#about > span
+{
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+}
+
+#aboutHeader
+{
+  max-width: 70vw;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#myGoals
+{
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
+}
+
+#myGoals > span
+{
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+}
+
+#printTable > table, #printTable > table > thead > tr > th, #printTable > table > tbody > tr > td
+{
+  border: 2px solid black;
+}
+
+#printTable > thead > tr > th
+{
+  font-size: 22px;
+}
+
+#printTable > table > tbody > tr > td
+{
+  font-size: 17px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+#printTable
+{
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
+}
+
+#printTable > span
+{
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+}
+
+table > thead > tr > th
+{
+	width: 15vw;
+  margin-left: 0.5vw;
+  background: #fff;
+  text-align: center;
+}
+
+#tbody
+{
+  height: 20px;
+}
+
+table > tbody > tr > td
+{
+  margin-left: 0.5vw;
+  background: #fff;
+  text-align: center;
+}
+
+#aboutHeader
+{
+  max-width: 70vw;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#createToken
+{
+  height: auto;
+  padding: 5px;
+  background: #eee;
+  margin-top: 5px;
+  border: 2px solid black;
+}
+
+#createToken > span
+{
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 25px;
+}
+
+#tokenDisplay > .block
+{
+  max-width: 70vw;
+  background: #fff;
+  padding: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 20px;
+  height: auto;
+}
+
+#map
+{
+  z-index: 1;
+}
+
+#ple-preview
+{
+  position: relative;
+  left: 35vw;
+}
+
+@media (max-width:1050px) {
+  #ple-preview
+  {
+    left: 15vw;
+  }
+}
+
+@media (max-width:1000px) {
+  #ple-preview
+  {
+    left: 0;
+  }
+}
+
 @media (max-width:550px) {
   .ple-module-content a.btn {
       font-size: 0px !important;
   }
-    .ple-module-content a.btn i.fa {
-      font-size: 20px !important;
-   }
+  .ple-module-content a.btn i.fa {
+    font-size: 20px !important;
+  }
 }
