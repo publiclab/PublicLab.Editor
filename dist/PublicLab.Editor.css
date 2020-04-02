@@ -2,6 +2,30 @@
   margin-bottom: 100px;
 }
 
+.chooseFile:hover {
+  background-color: #efefef;
+}
+
+.chooseFile:active {
+  background-color: #d8d3d3;
+}
+
+.chooseFile {
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+#file-1 {
+  opacity: 0;
+  width: 0.1px;
+  z-index: -1;
+  height: 0.1px;
+  overflow: hidden;
+  position: absolute;
+
+}
+
 .pl-editor h1,
 .pl-editor h2,
 .pl-editor h3,
