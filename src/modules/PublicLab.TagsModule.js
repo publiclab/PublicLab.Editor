@@ -100,13 +100,20 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.options.recentTags.forEach(function(tag) {
 
         tags.push('<a>' + tag + '</a>');
-
       });
 
       _module.el.find('.ple-recent-tags')
                 .append(tags.join(', '))
 
       _module.el.find('.ple-help-minor').css('opacity','0');
+
+      //clicking on suggested tag would add the tag to tag input
+      $('.ple-recent-tags a').click(function() {
+       _module.el.find('input').tokenfield('createToken', this.textContent);
+         
+      });
+
+    
 
     }
 
