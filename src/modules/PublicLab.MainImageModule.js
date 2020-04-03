@@ -136,6 +136,12 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     });
 
+    // Remove Image button
+    var mainImage = document.getElementById("mainImage");
+    var removeFile = document.getElementById("removeFile");
+    removeFile.onclick =  function(){
+      mainImage.style.background = null;
+    };
 
   }
 
