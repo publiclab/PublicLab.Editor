@@ -22577,6 +22577,13 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.el.find('.ple-help-minor').css('opacity','0');
 
+      //sugggested tag name when clicked will get inputted into tag input field
+      $('.ple-recent-tags a').click(function() {
+        var _tag = this.textContent;
+        _module.el.find('input').tokenfield('createToken', _tag) ;
+        
+      })
+
     }
 
 
