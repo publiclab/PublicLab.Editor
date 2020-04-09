@@ -2,6 +2,25 @@
   margin-bottom: 100px;
 }
 
+.thumbnailBtn:hover {
+  background-color: #efefef;
+}
+
+.thumbnailBtn:focus { 
+  outline:none 
+} 
+
+.thumbnailBtn:active {
+  background-color: #d8d3d3;
+}
+
+.thumbnailBtn {
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
 .pl-editor h1,
 .pl-editor h2,
 .pl-editor h3,
