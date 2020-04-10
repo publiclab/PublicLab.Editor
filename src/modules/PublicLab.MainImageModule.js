@@ -146,7 +146,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       var input = event.srcElement;
       var fileName = input.files[0].name;
       infoArea.textContent = 'Filename: ' + fileName;
-}
+    }
   }
 
 });
