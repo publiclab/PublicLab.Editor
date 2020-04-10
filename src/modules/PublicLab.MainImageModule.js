@@ -136,7 +136,17 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     });
 
+    var input = document.getElementById( 'thumbnail-img' );
+    var infoArea = document.getElementById( 'thumbnail-filename' );
 
+    input.addEventListener( 'change', showFileName );
+
+    function showFileName( event ) {
+   
+      var input = event.srcElement;
+      var fileName = input.files[0].name;
+      infoArea.textContent = 'Filename: ' + fileName;
+}
   }
 
 });
