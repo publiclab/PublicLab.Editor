@@ -19,6 +19,7 @@
 }
 
 .thumbnailBtn {
+  width: 35%;
   color: black;
   background-color: white;
   border-radius: 3px;
