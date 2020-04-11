@@ -110,7 +110,7 @@
 }
 
 .ple-drag-drop {
-  border: 4px dotted #ccc;
+  border: 1px solid #ccc;
   background: #f8f8f8;
   color: #aaa;
   font-size: 16px;
@@ -120,6 +120,7 @@
   -webkit-border-radius: 8px;
   -moz-border-radius:    8px;
   border-radius:         8px;
+  box-shadow: 1px 1px grey;
 }
 
 .ple-drag-drop.hover {
