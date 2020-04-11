@@ -81,6 +81,17 @@ PL.Editor = Class.extend({
       _editor.data[attrname] = options.data[attrname];
     }
 
+    //this will hide ple-footer when a user starts typing on smaller screens
+    if(window.innerWidth <= 992) {
+      $('input, textarea').addClass('input-area');
+      var _input = $('.input-area');
+      _input.focusin(function () {
+        $('.ple-footer').hide();
+      });
+      _input.focusout(function () {
+        $('.ple-footer').show();
+      });
+    }
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
     // Note that modules may attempt to write to the same key,
