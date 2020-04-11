@@ -258,8 +258,3 @@ PL.Editor = Class.extend({
   }
 
 });
-if (
-  cList.contains('pinplace') ||
-  cList.contains('pinsongplay')) {
-  removepin();
-}
