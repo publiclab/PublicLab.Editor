@@ -239,8 +239,27 @@ PL.Editor = Class.extend({
     _editor.eventSetup();
 
     _editor.tabIndices();
-
-
+    
+    var mobileScreen = window.matchMedia("(max-width: 450px)")
+    $(function() {
+      $(document).on('click', function(e) {
+        if(mobileScreen.matches) {
+          if(
+            e.target.classList.contains("hideFooter") ||  
+            e.target.classList.contains("token-input") ||
+            e.target.classList.contains("wk-wysiwyg")) {
+            $(".editor-footer").hide(); 
+          } else {
+            $(".editor-footer").show();
+          }
+        }
+      });
+    });
   }
 
 });
+if (
+  cList.contains('pinplace') ||
+  cList.contains('pinsongplay')) {
+  removepin();
+}
