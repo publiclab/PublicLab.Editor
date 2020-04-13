@@ -22569,6 +22569,17 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.focusables.push(_module.el.find('.tokenfield .tt-input'));
 
 
+      if(window.innerWidth <= 992) {
+        _module.el.find('.tokenfield').addClass('input-area');
+        var _input = $('.input-area');
+        _input.focusin(function () {
+          $('.ple-footer').hide();
+        });
+        _input.focusout(function () {
+          $('.ple-footer').show();
+        });
+      }
+
       // insert recent and common ones here --
       // (this is application-specific)
 
