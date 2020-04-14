@@ -170,7 +170,7 @@
                   <div
                     id="map"
                     class="leaflet-map"
-                    style="width: 100% ; height: 300px;"
+                    style="width: 100% ; height: 300px ; z-index: 0 ;"
                   ></div>
                 </div>
                 <div class="col-md-6">
@@ -207,7 +207,7 @@
                     </div>
                   </div>
                   <br>
-                  <p><button class="btn btn-lg btn-default" onclick="editor.mapModule.blurredLocation.geocodeWithBrowser(true);">
+                  <p><button class="btn btn-lg btn-default" onclick="locateUserHandler()">
                     <div id="ldi-geocode-button">          
                       <i class="fa fa-compass"></i> Use current location
                     </div>
@@ -335,7 +335,18 @@ var myVariable = 4;
     </div>
 
     <script>
-     
+      
+      function locateUserHandler() {
+        var spinnerHidden = true;
+        var popupHtml = document.getElementById("ldi-geocode-button");
+        var popupText = popupHtml.innerHTML;
+        var strClass = 'fa-spinner';
+        spinnerHidden = popupText.includes(strClass);
+        if (!spinnerHidden) {
+          editor.mapModule.blurredLocation.geocodeWithBrowser(true);
+        }
+      }
+      
       var editor;
 
       (function() {
