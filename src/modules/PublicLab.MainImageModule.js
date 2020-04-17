@@ -132,25 +132,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
             // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
             fileuploadfail: function(e, data) {},
 
-            progressall: function(e, data) {
-
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                _module.el.find('.progress .progress-bar').css(
-                    'width',
-                    progress + '%'
-                ).attr('aria-valuenow', '100')
-
+      progressall: function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        _module.el.find('.progress .progress-bar').css(
+          'width',
+          progress + '%'
+        ).attr('aria-valuenow', '100')
             }
+     });
 
-        });
-
-        // Remove Image button
-        var mainImage = document.getElementById("mainImage");
-        var removeFile = document.getElementById("removeFile");
-        removeFile.onclick = function() {
-            mainImage.style.background = "white";
-            _module.el.find('.progress').hide();
-            showImage = false;
+     // Remove Image button
+     var mainImage = document.getElementById("mainImage");
+     var removeFile = document.getElementById("removeFile");
+     removeFile.onclick = function() {
+         mainImage.style.background = "white";
+         _module.el.find('.progress').hide();
+         showImage = false;
         };
 
     }
