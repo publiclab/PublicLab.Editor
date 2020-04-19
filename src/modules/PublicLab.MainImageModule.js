@@ -142,7 +142,6 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
       }
 
-      
     });
 
     // Remove Image button
