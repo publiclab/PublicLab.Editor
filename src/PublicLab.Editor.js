@@ -81,6 +81,24 @@ PL.Editor = Class.extend({
       _editor.data[attrname] = options.data[attrname];
     }
 
+    //shows less message in editors footer on small screens, 
+    //but can be expanded and shrinked again
+    if(window.innerWidth <= 380) {
+      $('.footer-msg').replaceWith('<span>&nbsp; By publishing, you <span class="more">...</span> <span class="expanded hidden-xs">agree to<a href="https://publiclab.org/licenses"> open source your work</a><p class="shrink" style="color:#808080">show less</p></span></span>')
+
+      $('.more').click(function () {
+        $('.expanded').removeClass("hidden-xs");
+        $('.more').addClass("hidden-xs");
+      });
+
+      $('.shrink').click(function () {
+        $('.expanded').addClass("hidden-xs");
+        $('.more').removeClass("hidden-xs");
+      })
+      
+    }
+
+
     //this will hide ple-footer when a user starts typing on smaller screens
     if(window.innerWidth <= 992) {
       $('input, textarea').addClass('input-area');
