@@ -146,10 +146,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     });
 
     // Remove Image button
-    var mainImage = document.getElementById("mainImage");
-    var removeFile = document.getElementById("removeFile");
-    removeFile.onclick = function() {
-      mainImage.style.background = "white";
+    var mainImage = document.getElementById('mainImage');
+    var removeFile = document.getElementById('removeFile');
+    removeFile.onclick = function () {
+      mainImage.style.background = 'white';
       _module.el.find('.progress').hide();
       showImage = false;
     };
