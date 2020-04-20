@@ -13,7 +13,7 @@ assignees: ''
 
 
 **Please describe the desired behavior.**
-Describe the solution you'd like.
+Describe the feature you'd like.
 
 
 **Additional context (optional)**
