@@ -91,13 +91,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       if(window.innerWidth <= 992) {
         _module.el.find('.tokenfield').addClass('input-area');
-        var _input = $('.input-area');
-        _input.focusin(function () {
-          $('.ple-footer').hide();
-        });
-        _input.focusout(function () {
-          $('.ple-footer').show();
-        });
+        hideFooter();
       }
 
       // insert recent and common ones here --
@@ -119,7 +113,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.el.find('.ple-help-minor').css('opacity','0');
 
-      //sugggested tag name when clicked will get inputted into tag input field
+      // sugggested tag name when clicked will get inputted into tag input field
       $('.ple-recent-tags a').click(function() {
         var _tag = this.textContent;
         _module.el.find('input').tokenfield('createToken', _tag) ;

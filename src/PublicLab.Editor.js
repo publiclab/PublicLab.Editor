@@ -81,8 +81,8 @@ PL.Editor = Class.extend({
       _editor.data[attrname] = options.data[attrname];
     }
 
-    //shows less message in editors footer on small screens, 
-    //but can be expanded and shrinked again
+    // shows less message in editors footer on small screens, 
+    // but can be expanded and shrinked again
     if(window.innerWidth <= 380) {
       $('.footer-msg').replaceWith('<span>&nbsp; By publishing, you <span class="more">...</span> <span class="expanded hidden-xs">agree to<a href="https://publiclab.org/licenses"> open source your work</a><p class="shrink" style="color:#808080">show less</p></span></span>')
 
@@ -98,17 +98,22 @@ PL.Editor = Class.extend({
       
     }
 
-
-    //this will hide ple-footer when a user starts typing on smaller screens
-    if(window.innerWidth <= 992) {
-      $('input, textarea').addClass('input-area');
+    // hides ple-footer when a user starts typing on smaller screens
+    function hideFooter (params) {
       var _input = $('.input-area');
+      console.log(_input);
       _input.focusin(function () {
+        console.log('typing');
         $('.ple-footer').hide();
       });
       _input.focusout(function () {
         $('.ple-footer').show();
       });
+    }
+
+    if(window.innerWidth <= 992) {
+      $('input , textarea').addClass('input-area');
+      hideFooter();
     }
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
