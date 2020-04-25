@@ -133,15 +133,21 @@ module.exports = {
   },
 
   hideFooterWhenTypingOnMobile: function() {
-    var _input = $('.input-area');
-    console.log(_input);
-    _input.focusin(function () {
-      console.log('typing');
-      $('.ple-footer').hide();
-    });
-    _input.focusout(function () {
-      $('.ple-footer').show();
-    });
+    var inputArea = $('input, textarea, .wk-wysiwyg');
+
+    if(window.innerWidth <= 992) {
+      inputArea.addClass('input-area');
+
+      var _input = $('.input-area');
+
+      _input.focusin(function () {
+        $('.ple-footer').hide();
+      });
+      
+      _input.focusout(function () {
+        $('.ple-footer').show();
+      });
+    }
   }
 
 }

@@ -20481,6 +20481,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableRichTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  PL.Util.hideFooterWhenTypingOnMobile();
 });
 
 PL.Editor = Class.extend({
@@ -20557,14 +20558,6 @@ PL.Editor = Class.extend({
         $('.more').removeClass("hidden-xs");
       })
       
-    }
-
-    // hides ple-footer when a user starts typing on smaller screens
-    
-
-    if(window.innerWidth <= 992) {
-      $('input, textarea').addClass('input-area');
-      PL.Util.hideFooterWhenTypingOnMobile();
     }
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
@@ -21661,15 +21654,21 @@ module.exports = {
   },
 
   hideFooterWhenTypingOnMobile: function() {
-    var _input = $('.input-area');
-    console.log(_input);
-    _input.focusin(function () {
-      console.log('typing');
-      $('.ple-footer').hide();
-    });
-    _input.focusout(function () {
-      $('.ple-footer').show();
-    });
+    var inputArea = $('input, textarea, .wk-wysiwyg');
+
+    if(window.innerWidth <= 992) {
+      inputArea.addClass('input-area');
+
+      var _input = $('.input-area');
+
+      _input.focusin(function () {
+        $('.ple-footer').hide();
+      });
+      
+      _input.focusout(function () {
+        $('.ple-footer').show();
+      });
+    }
   }
 
 }
@@ -22597,12 +22596,6 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       // add to tabindex only after we've created the tokenfield instance
       _module.focusables.push(_module.el.find('.tokenfield .tt-input'));
-
-
-      if(window.innerWidth <= 992) {
-        _module.el.find('.tokenfield').addClass('input-area');
-        PL.Util.hideFooterWhenTypingOnMobile();
-      }
 
       // insert recent and common ones here --
       // (this is application-specific)

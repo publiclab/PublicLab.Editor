@@ -88,12 +88,6 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       // add to tabindex only after we've created the tokenfield instance
       _module.focusables.push(_module.el.find('.tokenfield .tt-input'));
 
-
-      if(window.innerWidth <= 992) {
-        _module.el.find('.tokenfield').addClass('input-area');
-        PL.Util.hideFooterWhenTypingOnMobile();
-      }
-
       // insert recent and common ones here --
       // (this is application-specific)
 

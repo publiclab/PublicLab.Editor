@@ -20,6 +20,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableRichTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  PL.Util.hideFooterWhenTypingOnMobile();
 });
 
 PL.Editor = Class.extend({
@@ -96,14 +97,6 @@ PL.Editor = Class.extend({
         $('.more').removeClass("hidden-xs");
       })
       
-    }
-
-    // hides ple-footer when a user starts typing on smaller screens
-    
-
-    if(window.innerWidth <= 992) {
-      $('input, textarea').addClass('input-area');
-      PL.Util.hideFooterWhenTypingOnMobile();
     }
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
