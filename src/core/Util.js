@@ -136,15 +136,12 @@ module.exports = {
     var inputArea = $('input, textarea, .wk-wysiwyg');
 
     if(window.innerWidth <= 992) {
-      inputArea.addClass('input-area');
 
-      var _input = $('.input-area');
-
-      _input.focusin(function () {
+      inputArea.focusin(function () {
         $('.ple-footer').hide();
       });
       
-      _input.focusout(function () {
+      inputArea.focusout(function () {
         $('.ple-footer').show();
       });
     }

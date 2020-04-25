@@ -177,6 +177,10 @@ textarea.ple-textarea {
   z-index: 999;
 }
 
+.shrink {
+  color: #808080;
+}
+
 /* Following may be removed if this is resolved:
 https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tt-menu {

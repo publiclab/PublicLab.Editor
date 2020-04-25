@@ -20543,10 +20543,9 @@ PL.Editor = Class.extend({
       _editor.data[attrname] = options.data[attrname];
     }
 
-    // shows less message in editors footer on small screens, 
-    // but can be expanded and shrinked again
+    // Shows less agreement message on editors footer on small screens,
+    // allowing user to expand and hide again.
     if(window.innerWidth <= 380) {
-      $('.footer-msg').replaceWith('<span>&nbsp; By publishing, you <span class="more">...</span> <span class="expanded hidden-xs">agree to<a href="https://publiclab.org/licenses"> open source your work</a><p class="shrink" style="color:#808080">show less</p></span></span>')
 
       $('.more').click(function () {
         $('.expanded').removeClass("hidden-xs");
@@ -21657,15 +21656,12 @@ module.exports = {
     var inputArea = $('input, textarea, .wk-wysiwyg');
 
     if(window.innerWidth <= 992) {
-      inputArea.addClass('input-area');
 
-      var _input = $('.input-area');
-
-      _input.focusin(function () {
+      inputArea.focusin(function () {
         $('.ple-footer').hide();
       });
       
-      _input.focusout(function () {
+      inputArea.focusout(function () {
         $('.ple-footer').show();
       });
     }
@@ -22616,7 +22612,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.el.find('.ple-help-minor').css('opacity','0');
 
-      // sugggested tag name when clicked will get inputted into tag input field
+      // Suggested tag name gets entered in the input field when clicked
       $('.ple-recent-tags a').click(function() {
         var _tag = this.textContent;
         _module.el.find('input').tokenfield('createToken', _tag) ;
