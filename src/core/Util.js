@@ -130,6 +130,18 @@ module.exports = {
     var wysiwygDivObserver = new MutationObserver(handleChange);
 
     wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
+  },
+
+  hideFooterWhenTypingOnMobile: function() {
+    var _input = $('.input-area');
+    console.log(_input);
+    _input.focusin(function () {
+      console.log('typing');
+      $('.ple-footer').hide();
+    });
+    _input.focusout(function () {
+      $('.ple-footer').show();
+    });
   }
 
 }

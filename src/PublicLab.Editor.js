@@ -99,21 +99,11 @@ PL.Editor = Class.extend({
     }
 
     // hides ple-footer when a user starts typing on smaller screens
-    function hideFooter (params) {
-      var _input = $('.input-area');
-      console.log(_input);
-      _input.focusin(function () {
-        console.log('typing');
-        $('.ple-footer').hide();
-      });
-      _input.focusout(function () {
-        $('.ple-footer').show();
-      });
-    }
+    
 
     if(window.innerWidth <= 992) {
-      $('input , textarea').addClass('input-area');
-      hideFooter();
+      $('input, textarea').addClass('input-area');
+      PL.Util.hideFooterWhenTypingOnMobile();
     }
 
     // Fetch values from modules and feed into corresponding editor.data.foo --

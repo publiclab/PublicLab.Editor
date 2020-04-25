@@ -91,7 +91,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       if(window.innerWidth <= 992) {
         _module.el.find('.tokenfield').addClass('input-area');
-        hideFooter();
+        PL.Util.hideFooterWhenTypingOnMobile();
       }
 
       // insert recent and common ones here --

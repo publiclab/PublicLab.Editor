@@ -19065,6 +19065,7 @@ var strings = require('../strings');
 function boldOrItalic (chunks, type) {
   var rnewlines = /\n{2,}/g;
   var starCount = type === 'bold' ? 2 : 1;
+
   chunks.trim();
   chunks.selection = chunks.selection.replace(rnewlines, '\n');
 
@@ -19087,7 +19088,6 @@ function boldOrItalic (chunks, type) {
     markup = starCount === 1 ? '*' : '**';
     chunks.before = chunks.before + markup;
     chunks.after = markup + chunks.after;
-
   }
 }
 
@@ -20542,7 +20542,8 @@ PL.Editor = Class.extend({
       _editor.data[attrname] = options.data[attrname];
     }
 
-    //show less message in editors footer on small screens, and expand on demand.
+    // shows less message in editors footer on small screens, 
+    // but can be expanded and shrinked again
     if(window.innerWidth <= 380) {
       $('.footer-msg').replaceWith('<span>&nbsp; By publishing, you <span class="more">...</span> <span class="expanded hidden-xs">agree to<a href="https://publiclab.org/licenses"> open source your work</a><p class="shrink" style="color:#808080">show less</p></span></span>')
 
@@ -20558,17 +20559,12 @@ PL.Editor = Class.extend({
       
     }
 
+    // hides ple-footer when a user starts typing on smaller screens
+    
 
-    //this will hide ple-footer when a user starts typing on smaller screens
     if(window.innerWidth <= 992) {
       $('input, textarea').addClass('input-area');
-      var _input = $('.input-area');
-      _input.focusin(function () {
-        $('.ple-footer').hide();
-      });
-      _input.focusout(function () {
-        $('.ple-footer').show();
-      });
+      PL.Util.hideFooterWhenTypingOnMobile();
     }
 
     // Fetch values from modules and feed into corresponding editor.data.foo --
@@ -21662,6 +21658,18 @@ module.exports = {
     var wysiwygDivObserver = new MutationObserver(handleChange);
 
     wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
+  },
+
+  hideFooterWhenTypingOnMobile: function() {
+    var _input = $('.input-area');
+    console.log(_input);
+    _input.focusin(function () {
+      console.log('typing');
+      $('.ple-footer').hide();
+    });
+    _input.focusout(function () {
+      $('.ple-footer').show();
+    });
   }
 
 }
@@ -22593,13 +22601,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       if(window.innerWidth <= 992) {
         _module.el.find('.tokenfield').addClass('input-area');
-        var _input = $('.input-area');
-        _input.focusin(function () {
-          $('.ple-footer').hide();
-        });
-        _input.focusout(function () {
-          $('.ple-footer').show();
-        });
+        PL.Util.hideFooterWhenTypingOnMobile();
       }
 
       // insert recent and common ones here --
@@ -22621,7 +22623,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
       _module.el.find('.ple-help-minor').css('opacity','0');
 
-      //sugggested tag name when clicked will get inputted into tag input field
+      // sugggested tag name when clicked will get inputted into tag input field
       $('.ple-recent-tags a').click(function() {
         var _tag = this.textContent;
         _module.el.find('input').tokenfield('createToken', _tag) ;
