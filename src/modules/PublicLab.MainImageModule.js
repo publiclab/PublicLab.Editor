@@ -21,14 +21,19 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.image = new Image();
 
     _module.value = function(url, id) {
-
-      if (typeof url == 'string') {
-
-        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-        // onLoad never triggers
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
+        if (typeof url == 'string') {
+            _module.image.onload = function() {
+            var height_dropdown = this.height;
+            var width_dropdown = this.width;
+            if (this.width > 340) {
+              var aspect_ratio = this.width / 340;
+              width_dropdown = 340;
+              height_dropdown = this.height / aspect_ratio;   
+            }
+            _module.dropEl.css('height', height_dropdown);
+            _module.dropEl.css('width', width_dropdown);
+            _module.dropEl.css('background-size', width_dropdown + 'px ' + height_dropdown + 'px');
+          }
         _module.image.src = url;
         _module.options.url = url;
         _editor.data.has_main_image = true;
@@ -112,7 +117,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
         _module.value(data.result.url, data.result.id);
-
+        _module.dropEl.empty();
         _editor.validate();
 
         // primarily for testing: 
