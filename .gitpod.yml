@@ -1,0 +1,16 @@
+image:
+  file: .gitpod.Dockerfile
+tasks:
+  - init: |
+      npm install
+      npm run build
+    command: |
+      gp await-port 8080
+      gp preview http://localhost:8080/examples
+      npm run build
+  - command: |
+      npx live-server
+    openMode: split-right
+ports:
+  - port: 8080
+    onOpen: ignore
