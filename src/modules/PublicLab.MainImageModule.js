@@ -5,7 +5,8 @@
 module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-
+    
+    var dragImageI = document.getElementById("mainImage");
     var _module = this;
 
     _module.key = 'main_image_url';
@@ -131,6 +132,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       progressall: function (e, data) {
 
         var progress = parseInt(data.loaded / data.total * 100, 10);
+        
+        // For hiding the HTML "Drag an image here to upload." after uploading image.
+        dragImageI.innerHTML = "";       
+        
         _module.el.find('.progress .progress-bar').css(
           'width',
           progress + '%'
