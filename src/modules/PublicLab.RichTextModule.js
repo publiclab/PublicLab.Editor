@@ -324,6 +324,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         wk_c.style.zIndex= 2;
         } else {
           wk_c.style.position = "relative";
+          wk_c.style.bottom = 0 + "px";
         }
       
     });
