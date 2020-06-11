@@ -19065,6 +19065,7 @@ var strings = require('../strings');
 function boldOrItalic (chunks, type) {
   var rnewlines = /\n{2,}/g;
   var starCount = type === 'bold' ? 2 : 1;
+
   chunks.trim();
   chunks.selection = chunks.selection.replace(rnewlines, '\n');
 
@@ -19087,7 +19088,6 @@ function boldOrItalic (chunks, type) {
     markup = starCount === 1 ? '*' : '**';
     chunks.before = chunks.before + markup;
     chunks.after = markup + chunks.after;
-
   }
 }
 
@@ -21651,7 +21651,8 @@ module.exports = {
 module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-
+    
+    var dragImageI = document.getElementById("mainImage");
     var _module = this;
 
     _module.key = 'main_image_url';
@@ -21778,6 +21779,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       progressall: function (e, data) {
 
         var progress = parseInt(data.loaded / data.total * 100, 10);
+        
+        // For hiding the HTML "Drag an image here to upload." after uploading image.
+        dragImageI.innerHTML = "";       
+        
         _module.el.find('.progress .progress-bar').css(
           'width',
           progress + '%'
@@ -22447,32 +22452,28 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
-    var wk_c = document.getElementsByClassName("wk-commands")[0];
+    // if scrolling through the editor text area the toolbar will float
+var wk_c = document.getElementsByClassName("wk-commands")[0];
 
-    $(window).scroll(function() {
-      var bounding = document
-        .getElementsByClassName("woofmark-mode-markdown")[0]
-        .getBoundingClientRect();
+$(window).scroll(function() {
+  var textAreaRect = document
+    .getElementsByClassName("wk-container")[0]
+    .getBoundingClientRect();
+    var footerRect = document
+    .getElementsByClassName("ple-footer")[0]
+    .getBoundingClientRect().height;
 
-      if (
-        bounding.top >= 0 &&
-        bounding.left >= 0 &&
-        bounding.right <=
-          (window.innerWidth || document.documentElement.clientWidth) &&
-        bounding.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight)
-      ) {
-        wk_c.style.position = "relative";
-        wk_c.style.bottom = 0 + "px";
-      } else {
-        wk_c.style.bottom =
-          document
-            .getElementsByClassName("ple-footer")[0]
-            .getBoundingClientRect().height + "px";
-        wk_c.style.position = "fixed";
-        wk_c.style.zIndex = 2;
-      }
-    });
+    if (
+      textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+    ) {
+      wk_c.style.position = "fixed";
+      wk_c.style.bottom = footerRect + "px";
+      wk_c.style.zIndex= 2;
+        } else {
+      wk_c.style.position = "relative";
+      wk_c.style.bottom = 0 + "px";
+    }
+});
   }
 });
 
