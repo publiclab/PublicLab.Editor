@@ -21594,8 +21594,8 @@ module.exports = {
 
   },
 
-  enableRichTextModeKeyboardShortcut: function () {
-    var mainContentTextarea = document.querySelector('.ple-textarea');
+  enableTextModeKeyboardShortcut: function () {
+    var mainContentTextarea = document.querySelector('.wk-container')
     var toggleMarkdownModeBtn = document.querySelector('.woofmark-mode-markdown');
     var toggleRichTextModeBtn = document.querySelector('.woofmark-mode-wysiwyg');
 
@@ -21606,6 +21606,11 @@ module.exports = {
       if (e.keyCode === 80 && e.ctrlKey) {
         toggleRichTextModeBtn.style.display = 'none';
         toggleMarkdownModeBtn.style.display = 'block';
+      }
+      //Executes on CTRL + M
+      if (e.keyCode === 77 && e.ctrlKey) {
+        toggleRichTextModeBtn.style.display = 'block';
+        toggleMarkdownModeBtn.style.display = 'none';
       }
     });
   },
