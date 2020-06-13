@@ -131,6 +131,27 @@
   clear: left;
 }
 
+.thumbnailBtn:hover {
+  background-color: #efefef;
+}
+
+.thumbnailBtn:focus { 
+  outline:none 
+} 
+
+.thumbnailBtn:active {
+  background-color: #d8d3d3;
+}
+
+.thumbnailBtn {
+  color: #000000b8;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 7px 14px;
+  font-weight: bold;
+}
+
 .ple-module-guide .ple-guide-minor p {
   font-size: 12px;
 }
