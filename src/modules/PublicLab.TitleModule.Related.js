@@ -26,6 +26,7 @@ Results should be in following JSON format:
 module.exports = function relatedNodes(module) {
 
   var relatedEl;
+  var relatedResultShow = false;
 
   build();
   bindEvents()
@@ -81,12 +82,22 @@ module.exports = function relatedNodes(module) {
  
       if (module.options.suggestRelated) {
         relatedEl.fadeIn();
+        relatedResultShow = true;
         fetchRelated(show);
       }
  
     });
+
+    $(module.el).find('input').click(function(e) {
  
-    $(module.el).find('input').focusout(function(e) {
+      if (module.options.suggestRelated && relatedResultShow) {
+        relatedEl.fadeIn();
+        fetchRelated(show);
+      }
+ 
+    });
+
+    $(module.el).find('.ple-module-content').mouseleave(function(e) {
  
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
