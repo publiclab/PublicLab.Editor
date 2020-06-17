@@ -3,7 +3,7 @@
 }
 
 #thumbnail-filename {
-  margin: -18px 0px 0px 4px;
+    margin: 0px 0px 5px 4px;
 }
 
 .thumbnailBtn:hover {
@@ -19,7 +19,7 @@
 }
 
 .thumbnailBtn {
-  width: 45%;
+  width: 40%;
   color: black;
   background-color: white;
   border-radius: 3px;
