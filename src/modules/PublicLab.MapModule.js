@@ -13,7 +13,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.options = options || _editor.options.mapModule || {};
     if (_module.options === true) _module.options = {}; // so we don't make options be /true/
     _module.options.name = 'map' ;
-    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy">location privacy here</a>' ;
+    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy" target="_blank">location privacy here »</a>' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
 
