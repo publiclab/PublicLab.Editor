@@ -21594,8 +21594,8 @@ module.exports = {
 
   },
 
-  enableRichTextModeKeyboardShortcut: function () {
-    var mainContentTextarea = document.querySelector('.ple-textarea');
+  enableTextModeKeyboardShortcut: function () {
+    var mainContentTextarea = document.querySelector('.wk-container')
     var toggleMarkdownModeBtn = document.querySelector('.woofmark-mode-markdown');
     var toggleRichTextModeBtn = document.querySelector('.woofmark-mode-wysiwyg');
 
@@ -21606,6 +21606,11 @@ module.exports = {
       if (e.keyCode === 80 && e.ctrlKey) {
         toggleRichTextModeBtn.style.display = 'none';
         toggleMarkdownModeBtn.style.display = 'block';
+      }
+      //Executes on CTRL + M
+      if (e.keyCode === 77 && e.ctrlKey) {
+        toggleRichTextModeBtn.style.display = 'block';
+        toggleMarkdownModeBtn.style.display = 'none';
       }
     });
   },
@@ -21646,7 +21651,8 @@ module.exports = {
 module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-
+    
+    var dragImageI = document.getElementById("mainImage");
     var _module = this;
 
     _module.key = 'main_image_url';
@@ -21662,14 +21668,19 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.image = new Image();
 
     _module.value = function(url, id) {
-
-      if (typeof url == 'string') {
-
-        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-        // onLoad never triggers
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
+        if (typeof url == 'string') {
+            _module.image.onload = function() {
+            var height_dropdown = this.height;
+            var width_dropdown = this.width;
+            if (this.width > 340) {
+              var aspect_ratio = this.width / 340;
+              width_dropdown = 340;
+              height_dropdown = this.height / aspect_ratio;   
+            }
+            _module.dropEl.css('height', height_dropdown);
+            _module.dropEl.css('width', width_dropdown);
+            _module.dropEl.css('background-size', width_dropdown + 'px ' + height_dropdown + 'px');
+          }
         _module.image.src = url;
         _module.options.url = url;
         _editor.data.has_main_image = true;
@@ -21753,7 +21764,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
         _module.value(data.result.url, data.result.id);
-
+        _module.dropEl.empty();
         _editor.validate();
 
         // primarily for testing: 
@@ -21768,6 +21779,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       progressall: function (e, data) {
 
         var progress = parseInt(data.loaded / data.total * 100, 10);
+        
+        // For hiding the HTML "Drag an image here to upload." after uploading image.
+        dragImageI.innerHTML = "";       
+        
         _module.el.find('.progress .progress-bar').css(
           'width',
           progress + '%'
@@ -22437,32 +22452,28 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
-    var wk_c = document.getElementsByClassName("wk-commands")[0];
+    // if scrolling through the editor text area the toolbar will float
+var wk_c = document.getElementsByClassName("wk-commands")[0];
 
-    $(window).scroll(function() {
-      var bounding = document
-        .getElementsByClassName("woofmark-mode-markdown")[0]
-        .getBoundingClientRect();
+$(window).scroll(function() {
+  var textAreaRect = document
+    .getElementsByClassName("wk-container")[0]
+    .getBoundingClientRect();
+    var footerRect = document
+    .getElementsByClassName("ple-footer")[0]
+    .getBoundingClientRect().height;
 
-      if (
-        bounding.top >= 0 &&
-        bounding.left >= 0 &&
-        bounding.right <=
-          (window.innerWidth || document.documentElement.clientWidth) &&
-        bounding.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight)
-      ) {
-        wk_c.style.position = "relative";
-        wk_c.style.bottom = 0 + "px";
-      } else {
-        wk_c.style.bottom =
-          document
-            .getElementsByClassName("ple-footer")[0]
-            .getBoundingClientRect().height + "px";
-        wk_c.style.position = "fixed";
-        wk_c.style.zIndex = 2;
-      }
-    });
+    if (
+      textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+    ) {
+      wk_c.style.position = "fixed";
+      wk_c.style.bottom = footerRect + "px";
+      wk_c.style.zIndex= 2;
+        } else {
+      wk_c.style.position = "relative";
+      wk_c.style.bottom = 0 + "px";
+    }
+});
   }
 });
 
@@ -22576,6 +22587,13 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
                 .append(tags.join(', '))
 
       _module.el.find('.ple-help-minor').css('opacity','0');
+
+      //sugggested tag name when clicked will get inputted into tag input field
+      $('.ple-recent-tags a').click(function() {
+        var _tag = this.textContent;
+        _module.el.find('input').tokenfield('createToken', _tag) ;
+        
+      })
 
     }
 

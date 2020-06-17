@@ -306,31 +306,27 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       _module.resize();
     });
 
-    var wk_c = document.getElementsByClassName("wk-commands")[0];
+    // if scrolling through the editor text area the toolbar will float
+var wk_c = document.getElementsByClassName("wk-commands")[0];
 
-    $(window).scroll(function() {
-      var bounding = document
-        .getElementsByClassName("woofmark-mode-markdown")[0]
-        .getBoundingClientRect();
+$(window).scroll(function() {
+  var textAreaRect = document
+    .getElementsByClassName("wk-container")[0]
+    .getBoundingClientRect();
+    var footerRect = document
+    .getElementsByClassName("ple-footer")[0]
+    .getBoundingClientRect().height;
 
-      if (
-        bounding.top >= 0 &&
-        bounding.left >= 0 &&
-        bounding.right <=
-          (window.innerWidth || document.documentElement.clientWidth) &&
-        bounding.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight)
-      ) {
-        wk_c.style.position = "relative";
-        wk_c.style.bottom = 0 + "px";
-      } else {
-        wk_c.style.bottom =
-          document
-            .getElementsByClassName("ple-footer")[0]
-            .getBoundingClientRect().height + "px";
-        wk_c.style.position = "fixed";
-        wk_c.style.zIndex = 2;
-      }
-    });
+    if (
+      textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+    ) {
+      wk_c.style.position = "fixed";
+      wk_c.style.bottom = footerRect + "px";
+      wk_c.style.zIndex= 2;
+        } else {
+      wk_c.style.position = "relative";
+      wk_c.style.bottom = 0 + "px";
+    }
+});
   }
 });

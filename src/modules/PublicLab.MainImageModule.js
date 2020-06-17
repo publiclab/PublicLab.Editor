@@ -6,6 +6,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
 
+    var dragImageI = document.getElementById("mainImage");
     var _module = this;
 
     _module.key = 'main_image_url';
@@ -21,14 +22,19 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.image = new Image();
 
     _module.value = function(url, id) {
-
-      if (typeof url == 'string') {
-
-        // this attempt to resize the drop zone doesn't work, maybe misguided anyways:
-        // onLoad never triggers
-        _module.image.onLoad = function() {
-          _module.dropEl.height(_module.image.height / _module.image.width * _module.dropEl.height());
-        }
+        if (typeof url == 'string') {
+            _module.image.onload = function() {
+            var height_dropdown = this.height;
+            var width_dropdown = this.width;
+            if (this.width > 340) {
+              var aspect_ratio = this.width / 340;
+              width_dropdown = 340;
+              height_dropdown = this.height / aspect_ratio;   
+            }
+            _module.dropEl.css('height', height_dropdown);
+            _module.dropEl.css('width', width_dropdown);
+            _module.dropEl.css('background-size', width_dropdown + 'px ' + height_dropdown + 'px');
+          }
         _module.image.src = url;
         _module.options.url = url;
         _editor.data.has_main_image = true;
@@ -91,6 +97,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
       start: function(e) {
 
+        showImage = true;
         _module.el.find('.progress .progress-bar')
                   .attr('aria-valuenow', '0')
                   .css('width', '0%');
@@ -103,21 +110,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
       done: function (e, data) {
 
-        _module.el.find('.progress .progress-bar')
-                  .attr('aria-valuenow', '100')
-                  .css('width', '100%');
-        _module.el.find('.progress').hide();
-        _module.dropEl.show();
-        _module.el.find('.progress').hide();
-        _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
+        if (showImage)  {
+          _module.el.find('.progress .progress-bar')
+                    .attr('aria-valuenow', '100')
+                    .css('width', '100%');
+          _module.el.find('.progress').hide();
+          _module.dropEl.show();
+          _module.el.find('.progress').hide();
+          _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
-        _module.value(data.result.url, data.result.id);
+          _module.value(data.result.url, data.result.id);
+          _module.dropEl.empty();
+          _editor.validate();
 
-        _editor.validate();
-
-        // primarily for testing: 
-        if (_module.options.callback) _module.options.callback();
-
+          // primarily for testing: 
+          if (_module.options.callback) _module.options.callback();
+        }
       },
 
       // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
@@ -127,6 +135,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       progressall: function (e, data) {
 
         var progress = parseInt(data.loaded / data.total * 100, 10);
+        
+        // For hiding the HTML "Drag an image here to upload." after uploading image.
+        dragImageI.innerHTML = "";       
+        
         _module.el.find('.progress .progress-bar').css(
           'width',
           progress + '%'
@@ -136,6 +148,14 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     });
 
+    // Remove Image button
+    var mainImage = document.getElementById('mainImage');
+    var removeFile = document.getElementById('removeFile');
+    removeFile.onclick = function () {
+      mainImage.style.background = 'white';
+      _module.el.find('.progress').hide();
+      showImage = false;
+    };
 
   }
 
