@@ -29,6 +29,7 @@ module.exports = function relatedNodes(module) {
   var addedWork = true;
   var addedRelatedEl;
   var addedRelatedPost = 'addedTitles';
+  var relatedResultShow = false;
 
   build();
   bindEvents()
@@ -45,11 +46,19 @@ module.exports = function relatedNodes(module) {
   }
 
   function showAdded(addedResult) {
-    addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="addedtitle"></a> by <a class="addedauthor"></a></div>');
+    addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="addedtitle"></a> by <a class="addedauthor"></a></div>');
     addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedtitle').html(addedResult.title);
     addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedtitle').attr('href', addedResult.url);
     addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedauthor').html('@' + addedResult.author);
     addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedauthor').attr('href', '/profile/' + addedResult.author);
+
+    $('.addedresult-' + addedResult.id + ' .remove-tag').click(function() {
+      var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id +'"]'));
+      var y_axis = window.scrollY;
+      selectedToken.find('.close').trigger('click');
+      window.scrollTo(window.scrollX, y_axis);
+      console.log(selectedToken);
+    });
   }
 
   // expects array of results in format:
@@ -78,7 +87,6 @@ module.exports = function relatedNodes(module) {
         addedWork = false;
         // pending https://github.com/publiclab/plots2/issues/646
         // editor.tagsModule.el.find('input').tokenfield('createToken', 'notify:' + result.author);
-
         addedRelatedPost+=result.title;
         showAdded(result);
 
