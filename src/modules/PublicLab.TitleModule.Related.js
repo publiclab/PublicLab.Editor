@@ -26,7 +26,6 @@ Results should be in following JSON format:
 module.exports = function relatedNodes(module) {
 
   var relatedEl;
-  var addedWork = true;
   var addedRelatedEl;
   var addedRelatedPost = 'addedTitles';
   var relatedResultShow = false;
@@ -39,13 +38,13 @@ module.exports = function relatedNodes(module) {
 
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
-    relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
+    relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to tag the related work.</p><hr style="margin: 4px 0;" />');
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-added"></div>');
     addedRelatedEl = module.el.find('.ple-title-added');
 
   }
 
-  function showAdded(addedResult) {
+  function showAdded(addedResult, relatedResults) {
     addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="addedtitle"></a> by <a class="addedauthor"></a></div>');
     addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedtitle').html(addedResult.title);
     addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedtitle').attr('href', addedResult.url);
@@ -57,7 +56,12 @@ module.exports = function relatedNodes(module) {
       var y_axis = window.scrollY;
       selectedToken.find('.close').trigger('click');
       window.scrollTo(window.scrollX, y_axis);
-      console.log(selectedToken);
+      addedRelatedPost = addedRelatedPost.replace(addedResult.id, '');
+      $('.addedresult-' + addedResult.id).remove();
+      show(relatedResults);
+      if(addedRelatedPost==='addedTitles') {
+        $('.related-post').remove();
+      }
     });
   }
 
@@ -65,10 +69,22 @@ module.exports = function relatedNodes(module) {
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
   function show(relatedResults) { 
     relatedEl.find('.result').remove();
-    sizeOfAddedRealted = 0;
+    // If tag removed from TagModule
+    editor.tagsModule.el.find('input').on('tokenfield:removedtoken', function(e) {
+      var id = (e.attrs.value).replace('response:', '');
+      if(addedRelatedPost.includes(id)) {
+        addedRelatedPost = addedRelatedPost.replace(id, '');
+        $('.addedresult-' + id).remove();
+        show(relatedResults);
+        if(addedRelatedPost==='addedTitles') {
+          $('.related-post').remove();
+        }
+      }
+    });
+
     relatedResults.slice(0, 8).forEach(function(result) {
       var showRealted = false;
-      if(!(addedRelatedPost.includes(result.title))) {
+      if(!(addedRelatedPost.includes(result.id))) {
         showRealted=true;
       }
       if(showRealted) {
@@ -81,14 +97,13 @@ module.exports = function relatedNodes(module) {
 
       $('.result-' + result.id + ' .add-tag').click(function() {
         editor.tagsModule.el.find('input').tokenfield('createToken', 'response:' + result.id);
-        if(addedWork){
-          addedRelatedEl.append('<hr style="margin: 4px 0;" /><p class="ple-help">Added works</p>');
+        if(addedRelatedPost==='addedTitles'){
+          addedRelatedEl.append('<hr class="related-post" style="margin: 4px 0;" /><p class="ple-help related-post">Related Posts</p>');
         }
-        addedWork = false;
         // pending https://github.com/publiclab/plots2/issues/646
         // editor.tagsModule.el.find('input').tokenfield('createToken', 'notify:' + result.author);
-        addedRelatedPost+=result.title;
-        showAdded(result);
+        addedRelatedPost += result.id;
+        showAdded(result, relatedResults);
 
         $('.result-' + result.id).remove();
       });
