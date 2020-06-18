@@ -147,9 +147,12 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
     });
-    var input = document.getElementById('thumbnail-img');
+
+    var imageInput = document.getElementById('thumbnail-img');
     var infoArea = document.getElementById('thumbnail-filename');
-    input.addEventListener('change', showFileName);
+
+    imageInput.addEventListener('change', showFileName);
+
     function showFileName(event) {
       var input = event.srcElement;
       var fileName = input.files[0].name;
@@ -159,6 +162,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     // Remove Image button
     var mainImage = document.getElementById('mainImage');
     var removeFile = document.getElementById('removeFile');
+
     removeFile.onclick = function() {
       mainImage.style.background = 'white';
       _module.el.find('.progress').hide();
