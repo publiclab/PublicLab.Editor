@@ -148,9 +148,9 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     });
     var input = document.getElementById('thumbnail-img');
-    var infoArea = document.getElementById( 'thumbnail-filename' );
-    input.addEventListener( 'change', showFileName );
-    function showFileName( event ) {
+    var infoArea = document.getElementById('thumbnail-filename');
+    input.addEventListener('change', showFileName);
+    function showFileName(event) {
       var input = event.srcElement;
       var fileName = input.files[0].name;
       infoArea.textContent = 'Filename: ' + fileName;
@@ -159,7 +159,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     // Remove Image button
     var mainImage = document.getElementById('mainImage');
     var removeFile = document.getElementById('removeFile');
-    removeFile.onclick = function () {
+    removeFile.onclick = function() {
       mainImage.style.background = 'white';
       _module.el.find('.progress').hide();
       showImage = false;
