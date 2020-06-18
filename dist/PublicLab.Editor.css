@@ -11,7 +11,7 @@
 }
 
 .thumbnailBtn:focus { 
-  outline:none 
+  outline: none; 
 } 
 
 .thumbnailBtn:active {
