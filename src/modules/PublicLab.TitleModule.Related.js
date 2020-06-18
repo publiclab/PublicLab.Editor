@@ -83,11 +83,11 @@ module.exports = function relatedNodes(module) {
     });
 
     relatedResults.slice(0, 8).forEach(function(result) {
-      var showRealted = false;
+      var showRelated = false;
       if(!(addedRelatedPost.includes(result.id))) {
-        showRealted=true;
+        showRelated=true;
       }
-      if(showRealted) {
+      if(showRelated) {
         relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
         relatedEl.find('.result-' + result.id + ' .title').html(result.title);
         relatedEl.find('.result-' + result.id + ' .title').attr('href', result.url);
