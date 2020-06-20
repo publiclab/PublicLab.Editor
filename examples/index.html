@@ -139,7 +139,11 @@
                 ></div>
               </div>
 
-              <p><input type="file" name="image[photo]" /></p>
+              <input type="file" name="image[photo]" id="thumbnail-img">
+              <label for="thumbnail-img" class="thumbnailBtn"> 
+                <span>Choose a file…</span>
+              </label>
+              <div id="thumbnail-filename"></div>
               <button id="removeFile" class="thumbnailBtn">Remove File</button>
               <p class="ple-help">
                 <span class="ple-help-minor"
