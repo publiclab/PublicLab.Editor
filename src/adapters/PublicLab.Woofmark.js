@@ -291,6 +291,10 @@ module.exports = function(textarea, _editor, _module) {
       });
     }
   });
+  require("../modules/PublicLab.CustomInsert.js")(
+    _module,
+    wysiwyg
+  );
 
   // set up table generation tools:
   require("../modules/PublicLab.RichTextModule.Table.js")(_module, wysiwyg);
