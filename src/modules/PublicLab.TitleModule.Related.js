@@ -34,7 +34,7 @@ module.exports = function relatedNodes(module) {
   bindEvents()
 
   // make an area for "related posts" to connect to
-  function build() { 
+  function build() {
 
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
@@ -44,6 +44,7 @@ module.exports = function relatedNodes(module) {
 
   }
 
+  // showResult() will append the required tags in the particular container
   function showResults(resultContainer, result, resultClass) {
     resultContainer.find(resultClass + ' .title').html(result.title);
     resultContainer.find(resultClass + ' .title').attr('href', result.url);
@@ -55,24 +56,25 @@ module.exports = function relatedNodes(module) {
     addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="title"></a> by <a class="author"></a></div>');
     var addedResultClass = '.addedresult-' + addedResult.id;
     showResults(addedRelatedEl, addedResult, addedResultClass);
-    
-    $('.addedresult-' + addedResult.id + ' .remove-tag').click(function() {
-      var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id +'"]'));
+
+    // For removing tags
+    $('.addedresult-' + addedResult.id + ' .remove-tag').click(function () {
+      var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id + '"]'));
       var y_axis = window.scrollY;
       selectedToken.find('.close').trigger('click');
       window.scrollTo(window.scrollX, y_axis);
-      addedRelatedPost = addedRelatedPost.replace(addedResult.id, '');
+      addedRelatedPost = addedRelatedPost.replace(addedResult.id, ''); // remove tags from tagIntergrationModule.
       $('.addedresult-' + addedResult.id).remove();
       showRelatedResult(relatedResults);
-      if(addedRelatedPost==='addedTitles') {
-        $('.related-post').remove();
+      if (addedRelatedPost === 'addedTitles') {
+        $('.related-post').remove(); // removing the tag from Realted Post section.
       }
     });
   }
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
-  function showRelatedResult(relatedResults) { 
+  function showRelatedResult(relatedResults){
     relatedEl.find('.result').remove();
     // If tag removed from TagModule
     editor.tagsModule.el.find('input').on('tokenfield:removedtoken', function(e) {
@@ -98,9 +100,10 @@ module.exports = function relatedNodes(module) {
         showResults(relatedEl, result, resultClass);
       }
 
+      // For adding tags.
       $('.result-' + result.id + ' .add-tag').click(function() {
         editor.tagsModule.el.find('input').tokenfield('createToken', 'response:' + result.id);
-        if (addedRelatedPost==='addedTitles'){
+        if (addedRelatedPost === 'addedTitles') {
           addedRelatedEl.append('<hr class="related-post" style="margin: 4px 0;" /><p class="ple-help related-post">Related Posts</p>');
         }
         // pending https://github.com/publiclab/plots2/issues/646
@@ -119,9 +122,9 @@ module.exports = function relatedNodes(module) {
 
     // example
     showRelatedResult([
-      { id: 1, title: 'A related post',       url: '/', author: 'eustatic'},
-      { id: 2, title: 'Another related post', url: '/', author: 'stevie'},
-      { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
+      { id: 1, title: 'A related post', url: '/', author: 'eustatic' },
+      { id: 2, title: 'Another related post', url: '/', author: 'stevie' },
+      { id: 3, title: 'A third related post', url: '/', author: 'bsugar' }
     ]);
 
   }
@@ -134,6 +137,7 @@ module.exports = function relatedNodes(module) {
       fetchRelated(showRelatedResult);
     }
 
+    // show the related results on keydown or onclick.
     $(module.el).find('input').keydown(function(e) {
 
       if (module.options.suggestRelated) {
@@ -149,13 +153,14 @@ module.exports = function relatedNodes(module) {
 
     });
 
+    // related content will be hidden on mouseleave
     $(module.el).find('.ple-module-content').mouseleave(function(e) {
- 
+
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
         addedRelatedEl.fadeOut();
       }
- 
+
     });
 
   }
