@@ -44,13 +44,18 @@ module.exports = function relatedNodes(module) {
 
   }
 
-  function showAdded(addedResult, relatedResults) {
-    addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="addedtitle"></a> by <a class="addedauthor"></a></div>');
-    addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedtitle').html(addedResult.title);
-    addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedtitle').attr('href', addedResult.url);
-    addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedauthor').html('@' + addedResult.author);
-    addedRelatedEl.find('.addedresult-' + addedResult.id + ' .addedauthor').attr('href', '/profile/' + addedResult.author);
+  function showResults(resultContainer, result, resultClass) {
+    resultContainer.find(resultClass + ' .title').html(result.title);
+    resultContainer.find(resultClass + ' .title').attr('href', result.url);
+    resultContainer.find(resultClass + ' .author').html('@' + result.author);
+    resultContainer.find(resultClass + ' .author').attr('href', '/profile/' + result.author);
+  }
 
+  function showAdded(addedResult, relatedResults) {
+    addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="title"></a> by <a class="author"></a></div>');
+    var addedResultClass = '.addedresult-' + addedResult.id;
+    showResults(addedRelatedEl, addedResult, addedResultClass);
+    
     $('.addedresult-' + addedResult.id + ' .remove-tag').click(function() {
       var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id +'"]'));
       var y_axis = window.scrollY;
@@ -58,7 +63,7 @@ module.exports = function relatedNodes(module) {
       window.scrollTo(window.scrollX, y_axis);
       addedRelatedPost = addedRelatedPost.replace(addedResult.id, '');
       $('.addedresult-' + addedResult.id).remove();
-      show(relatedResults);
+      showRelatedResult(relatedResults);
       if(addedRelatedPost==='addedTitles') {
         $('.related-post').remove();
       }
@@ -67,16 +72,16 @@ module.exports = function relatedNodes(module) {
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
-  function show(relatedResults) { 
+  function showRelatedResult(relatedResults) { 
     relatedEl.find('.result').remove();
     // If tag removed from TagModule
     editor.tagsModule.el.find('input').on('tokenfield:removedtoken', function(e) {
       var id = (e.attrs.value).replace('response:', '');
-      if(addedRelatedPost.includes(id)) {
+      if (addedRelatedPost.includes(id)) {
         addedRelatedPost = addedRelatedPost.replace(id, '');
         $('.addedresult-' + id).remove();
-        show(relatedResults);
-        if(addedRelatedPost==='addedTitles') {
+        showRelatedResult(relatedResults);
+        if (addedRelatedPost==='addedTitles') {
           $('.related-post').remove();
         }
       }
@@ -84,20 +89,18 @@ module.exports = function relatedNodes(module) {
 
     relatedResults.slice(0, 8).forEach(function(result) {
       var showRelated = false;
-      if(!(addedRelatedPost.includes(result.id))) {
+      if (!(addedRelatedPost.includes(result.id))) {
         showRelated=true;
       }
-      if(showRelated) {
+      if (showRelated) {
+        resultClass = '.result-' + result.id;
         relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
-        relatedEl.find('.result-' + result.id + ' .title').html(result.title);
-        relatedEl.find('.result-' + result.id + ' .title').attr('href', result.url);
-        relatedEl.find('.result-' + result.id + ' .author').html('@' + result.author);
-        relatedEl.find('.result-' + result.id + ' .author').attr('href', '/profile/' + result.author);
+        showResults(relatedEl, result, resultClass);
       }
 
       $('.result-' + result.id + ' .add-tag').click(function() {
         editor.tagsModule.el.find('input').tokenfield('createToken', 'response:' + result.id);
-        if(addedRelatedPost==='addedTitles'){
+        if (addedRelatedPost==='addedTitles'){
           addedRelatedEl.append('<hr class="related-post" style="margin: 4px 0;" /><p class="ple-help related-post">Related Posts</p>');
         }
         // pending https://github.com/publiclab/plots2/issues/646
@@ -112,10 +115,10 @@ module.exports = function relatedNodes(module) {
 
   }
 
-  var fetchRelated = module.options.fetchRelated || function fetchRelated(show) {
+  var fetchRelated = module.options.fetchRelated || function fetchRelated(showRelatedResult) {
 
     // example
-    show([
+    showRelatedResult([
       { id: 1, title: 'A related post',       url: '/', author: 'eustatic'},
       { id: 2, title: 'Another related post', url: '/', author: 'stevie'},
       { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
@@ -131,17 +134,18 @@ module.exports = function relatedNodes(module) {
         relatedEl.fadeIn();
         addedRelatedEl.fadeIn();
         relatedResultShow = true;
-        fetchRelated(show);
+        fetchRelated(showRelatedResult);
       }
  
     });
 
     $(module.el).find('input').click(function(e) {
- 
-      if (module.options.suggestRelated && relatedResultShow) {
+      var showResults = false;
+      showResults = module.options.suggestRelated && relatedResultShow;
+      if (showResults) {
         relatedEl.fadeIn();
         addedRelatedEl.fadeIn();
-        fetchRelated(show);
+        fetchRelated(showRelatedResult);
       }
  
     });
