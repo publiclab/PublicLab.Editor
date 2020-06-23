@@ -2,6 +2,42 @@
   margin-bottom: 100px;
 }
 
+#thumbnail-filename {
+    margin: 0px 0px 5px 4px;
+}
+
+.thumbnailBtn:hover {
+  background-color: #efefef;
+}
+
+.thumbnailBtn:focus { 
+  outline: none; 
+} 
+
+.thumbnailBtn:active {
+  background-color: #d8d3d3;
+}
+
+.thumbnailBtn {
+  width: 40%;
+  color: black;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 7px 14px;
+  font-weight: bold;
+  margin-bottom: 8%;
+}
+
+#thumbnail-img {
+  opacity: 0;
+  width: 0.1px;
+  z-index: -1;
+  height: 0.1px;
+  overflow: hidden;
+  position: absolute;
+}
+
 .pl-editor h1,
 .pl-editor h2,
 .pl-editor h3,
