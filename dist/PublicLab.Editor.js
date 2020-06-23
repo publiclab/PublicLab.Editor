@@ -21545,7 +21545,7 @@ PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
 $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
-  PL.Util.enableRichTextModeKeyboardShortcut();
+  PL.Util.enableModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
 });
 
@@ -22733,7 +22733,7 @@ module.exports = {
  				var syn = "[questions" + tag + "]";
  			}
  		}
- 		if(Option2 == "grid") {
+ 		if(Option2 == "Grid") {
  			if(Option1 == "Notes") {
  				var syn = "[notes:grid" + tag + "]";
  			}
@@ -22966,15 +22966,26 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     });
 
+    var imageInput = document.getElementById('thumbnail-img');
+    var infoArea = document.getElementById('thumbnail-filename');
+
+    imageInput.addEventListener('change', showFileName);
+
+    function showFileName(event) {
+      var input = event.srcElement;
+      var fileName = input.files[0].name;
+      infoArea.textContent = 'Filename: ' + fileName;
+    }
+    
     // Remove Image button
     var mainImage = document.getElementById('mainImage');
     var removeFile = document.getElementById('removeFile');
-    removeFile.onclick = function () {
+
+    removeFile.onclick = function() {
       mainImage.style.background = 'white';
       _module.el.find('.progress').hide();
       showImage = false;
     };
-
   }
 
 });
@@ -22995,7 +23006,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
     _module.options = options || _editor.options.mapModule || {};
     if (_module.options === true) _module.options = {}; // so we don't make options be /true/
     _module.options.name = 'map' ;
-    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy">location privacy here</a>' ;
+    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy" target="_blank">location privacy here »</a>' ;
     _module._super(_editor, _module.options) ;
     _module.options.required = false;
 

@@ -17,7 +17,7 @@
  				var syn = "[questions" + tag + "]";
  			}
  		}
- 		if(Option2 == "grid") {
+ 		if(Option2 == "Grid") {
  			if(Option1 == "Notes") {
  				var syn = "[notes:grid" + tag + "]";
  			}
