@@ -81,7 +81,7 @@ module.exports = function relatedNodes(module) {
         addedRelatedPost = addedRelatedPost.replace(id, '');
         $('.addedresult-' + id).remove();
         showRelatedResult(relatedResults);
-        if (addedRelatedPost==='addedTitles') {
+        if (addedRelatedPost === 'addedTitles') {
           $('.related-post').remove();
         }
       }
@@ -90,7 +90,7 @@ module.exports = function relatedNodes(module) {
     relatedResults.slice(0, 8).forEach(function(result) {
       var showRelated = false;
       if (!(addedRelatedPost.includes(result.id))) {
-        showRelated=true;
+        showRelated = true;
       }
       if (showRelated) {
         resultClass = '.result-' + result.id;
@@ -128,26 +128,25 @@ module.exports = function relatedNodes(module) {
 
   function bindEvents() {
 
-    $(module.el).find('input').keydown(function(e) {
- 
-      if (module.options.suggestRelated) {
-        relatedEl.fadeIn();
-        addedRelatedEl.fadeIn();
-        relatedResultShow = true;
-        fetchRelated(showRelatedResult);
-      }
- 
-    });
+    function showSections() {
+      relatedEl.fadeIn();
+      addedRelatedEl.fadeIn();
+      fetchRelated(showRelatedResult);
+    }
 
-    $(module.el).find('input').click(function(e) {
-      var showResults = false;
-      showResults = module.options.suggestRelated && relatedResultShow;
-      if (showResults) {
-        relatedEl.fadeIn();
-        addedRelatedEl.fadeIn();
-        fetchRelated(showRelatedResult);
+    $(module.el).find('input').keydown(function(e) {
+
+      if (module.options.suggestRelated) {
+        relatedResultShow = true;
+        showSections();
+        $(module.el).find('input').click(function(e) {
+          if (relatedResultShow) {
+            showSections();
+          }
+
+        });
       }
- 
+
     });
 
     $(module.el).find('.ple-module-content').mouseleave(function(e) {
