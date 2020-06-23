@@ -58,7 +58,7 @@ module.exports = function relatedNodes(module) {
     showResults(addedRelatedEl, addedResult, addedResultClass);
 
     // For removing tags
-    $('.addedresult-' + addedResult.id + ' .remove-tag').click(function () {
+    $('.addedresult-' + addedResult.id + ' .remove-tag').click(function() {
       var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id + '"]'));
       var y_axis = window.scrollY;
       selectedToken.find('.close').trigger('click');
@@ -74,7 +74,7 @@ module.exports = function relatedNodes(module) {
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
-  function showRelatedResult(relatedResults){
+  function showRelatedResult(relatedResults) {
     relatedEl.find('.result').remove();
     // If tag removed from TagModule
     editor.tagsModule.el.find('input').on('tokenfield:removedtoken', function(e) {
