@@ -1,5 +1,62 @@
+.bug-btn {
+  color: #f1f1f1;
+  font-size: 1em;
+  padding: 0.7em;
+  border: none;
+  /*margin: 2.4em;*/
+  margin-left: 3%;
+  border-radius: 2%;
+  background: linear-gradient(to right, #424242, #616161);
+}
+
+.bug-btn:hover {
+  background: linear-gradient(to right, #242323, #838282);
+  color: #f1f1f1;
+  text-decoration: none;
+}
+
+.bug-btn-wrapper {
+  margin: 3rem;
+}
+
 .pl-editor {
   margin-bottom: 100px;
+}
+
+#thumbnail-filename {
+    margin: 0px 0px 5px 4px;
+}
+
+.thumbnailBtn:hover {
+  background-color: #efefef;
+}
+
+.thumbnailBtn:focus { 
+  outline: none; 
+} 
+
+.thumbnailBtn:active {
+  background-color: #d8d3d3;
+}
+
+.thumbnailBtn {
+  width: 40%;
+  color: black;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 7px 14px;
+  font-weight: bold;
+  margin-bottom: 8%;
+}
+
+#thumbnail-img {
+  opacity: 0;
+  width: 0.1px;
+  z-index: -1;
+  height: 0.1px;
+  overflow: hidden;
+  position: absolute;
 }
 
 .pl-editor h1,
