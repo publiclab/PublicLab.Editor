@@ -34,3 +34,9 @@ node_modules
 
 *.swp
 todo.txt
+
+# Particular IDE directories
+.vscode 
+
+# Test output file
+_SpecRunner.html
