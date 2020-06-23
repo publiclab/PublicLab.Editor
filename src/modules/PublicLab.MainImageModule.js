@@ -5,7 +5,7 @@
 module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-    
+
     var dragImageI = document.getElementById("mainImage");
     var _module = this;
 
@@ -97,6 +97,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
       start: function(e) {
 
+        showImage = true;
         _module.el.find('.progress .progress-bar')
                   .attr('aria-valuenow', '0')
                   .css('width', '0%');
@@ -109,21 +110,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
       done: function (e, data) {
 
-        _module.el.find('.progress .progress-bar')
-                  .attr('aria-valuenow', '100')
-                  .css('width', '100%');
-        _module.el.find('.progress').hide();
-        _module.dropEl.show();
-        _module.el.find('.progress').hide();
-        _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
+        if (showImage)  {
+          _module.el.find('.progress .progress-bar')
+                    .attr('aria-valuenow', '100')
+                    .css('width', '100%');
+          _module.el.find('.progress').hide();
+          _module.dropEl.show();
+          _module.el.find('.progress').hide();
+          _module.dropEl.css('background-image', 'url("' + data.result.url + '")');
 
-        _module.value(data.result.url, data.result.id);
-        _module.dropEl.empty();
-        _editor.validate();
+          _module.value(data.result.url, data.result.id);
+          _module.dropEl.empty();
+          _editor.validate();
 
-        // primarily for testing: 
-        if (_module.options.callback) _module.options.callback();
-
+          // primarily for testing: 
+          if (_module.options.callback) _module.options.callback();
+        }
       },
 
       // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
@@ -146,7 +148,26 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     });
 
+    var imageInput = document.getElementById('thumbnail-img');
+    var infoArea = document.getElementById('thumbnail-filename');
 
+    imageInput.addEventListener('change', showFileName);
+
+    function showFileName(event) {
+      var input = event.srcElement;
+      var fileName = input.files[0].name;
+      infoArea.textContent = 'Filename: ' + fileName;
+    }
+    
+    // Remove Image button
+    var mainImage = document.getElementById('mainImage');
+    var removeFile = document.getElementById('removeFile');
+
+    removeFile.onclick = function() {
+      mainImage.style.background = 'white';
+      _module.el.find('.progress').hide();
+      showImage = false;
+    };
   }
 
 });
