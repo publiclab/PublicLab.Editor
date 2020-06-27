@@ -306,6 +306,10 @@ module.exports = function(textarea, _editor, _module) {
     _module,
     wysiwyg
   );
+  require("../modules/PublicLab.CustomInsertMaps.js")(
+    _module,
+    wysiwyg
+  );
 
   // set up embed insertion tool:
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
