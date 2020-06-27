@@ -53,7 +53,7 @@ module.exports = function relatedNodes(module) {
   }
 
   function showAdded(addedResult, relatedResults) {
-    addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="title"></a> by <a class="author"></a></div>');
+    addedRelatedEl.append('<div class="addedresult addedresult-' + addedResult.id + '" style="margin: 3px;"><a class="btn btn-outline-secondary btn-sm remove-tag"><i class="fa fa-times-circle"></i> Remove</a> <a class="title"></a> by <a class="author"></a></div>');
     var addedResultClass = '.addedresult-' + addedResult.id;
     showResults(addedRelatedEl, addedResult, addedResultClass);
 
@@ -96,7 +96,7 @@ module.exports = function relatedNodes(module) {
       }
       if (showRelated) {
         resultClass = '.result-' + result.id;
-        relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
+        relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-outline-secondary btn-sm add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
         showResults(relatedEl, result, resultClass);
       }
 
