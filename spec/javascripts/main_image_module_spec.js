@@ -1,13 +1,10 @@
-describe("MainImageModule", function() {
-
-
-  it("reports key, value, valid", function() {
-
+describe('MainImageModule', function() {
+  it('reports key, value, valid', function() {
     var fixture = loadFixtures('index.html');
 
     var editor = new PL.Editor({
       textarea: $('.ple-textarea')[0],
-      mainImageUrl: 'examples/example.gif'
+      mainImageUrl: 'examples/example.gif',
     });
 
     var module = new PL.MainImageModule(editor, {});
@@ -27,15 +24,13 @@ describe("MainImageModule", function() {
     expect(editor.data.image_revision).toBe('/image/url.jpg');
     expect(module.image.src).toBe('file:///image/url.jpg');
     expect(module.options.url).toBe('/image/url.jpg');
-
   });
 
 
-  it("makes upload request", function(done) {
-
-    var mainImageUrl = 'http://example.com/image.jpg',
-        nid          = 3,
-        uid          = 4;
+  it('makes upload request', function(done) {
+    var mainImageUrl = 'http://example.com/image.jpg';
+    var nid = 3;
+    var uid = 4;
 
     var fixture = loadFixtures('index.html');
 
@@ -44,8 +39,8 @@ describe("MainImageModule", function() {
       mainImageModule: {
         nid: nid,
         uid: uid,
-        uploadUrl: '/img' //overriding default '/images'
-      }
+        uploadUrl: '/img', // overriding default '/images'
+      },
     });
 
     var module = editor.mainImageModule;
@@ -54,38 +49,30 @@ describe("MainImageModule", function() {
 
     jasmine.Ajax.install();
 
-    var ajaxSpy = spyOn($, "ajax").and.callFake(function(options) {
-
+    var ajaxSpy = spyOn($, 'ajax').and.callFake(function(options) {
       if (options.url === '/img') {
-
         // http://stackoverflow.com/questions/13148356/how-to-properly-unit-test-jquerys-ajax-promises-using-jasmine-and-or-sinon
         var d = $.Deferred();
         d.resolve(options);
         d.reject(options);
         return d.promise();
-
       }
-
     });
 
     function fileuploadsend(e, data) {
-
       expect(data.url).toBe('/img');
       expect(data.formData.nid).toBe(nid);
       expect(data.formData.uid).toBe(uid);
       expect(module.el.find('.progress-bar')).not.toBeHidden();
-
     }
 
     module.el.find('input').bind('fileuploadsend', fileuploadsend);
 
     function fileuploaddone(e, data) {
-
       expect(data).not.toBeUndefined();
- 
+
       jasmine.Ajax.uninstall();
       done();
- 
     }
 
     module.el.find('input').bind('fileuploaddone', fileuploaddone);
@@ -93,11 +80,8 @@ describe("MainImageModule", function() {
     // https://github.com/blueimp/jQuery-File-Upload/wiki/API#programmatic-file-upload
     module.el.find('input').fileupload('add', {
       files: [
-        new Blob(["fakedata"])
-      ]
+        new Blob(['fakedata']),
+      ],
     });
-
   });
-
-
 });
