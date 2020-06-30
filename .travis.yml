@@ -6,4 +6,6 @@ before_install:
   - npm install -g grunt-cli
 before_script:
   - grunt build
-script: grunt jasmine --force
+script: 
+  - grunt jasmine --force
+  - npm run test-ui
