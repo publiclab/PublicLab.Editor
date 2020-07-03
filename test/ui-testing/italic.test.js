@@ -12,17 +12,25 @@ describe('Italic Text', () => {
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('emphasized text'));
   
     expect(stringIsIncluded).toBe(true);
+    await page.keyboard.press("Backspace");
 
   }, timeout);
 
   test('Adds emphasized text in markdown mode', async () => {
+    await page.waitForSelector('.woofmark-mode-markdown');
     await page.click('.woofmark-mode-markdown');
-    await page.waitForSelector('.ple-module-body');
-    await page.focus('.ple-module-body');
+    await page.evaluate(() => document.querySelector('.ple-textarea').value += ' ');
     await page.click('.woofmark-command-italic');
-    const stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('_emphasized text_'));
-  
+    let stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('*emphasized text*'));
     expect(stringIsIncluded).toBe(true);
+
+    await page.click('.woofmark-command-italic');
+    stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('emphasized text'));
+    expect(stringIsIncluded).toBe(true);
+    stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('*emphasized text*'));
+    expect(stringIsIncluded).toBe(false);
+
+    await page.keyboard.press("Backspace");
 
   }, timeout);
 
