@@ -5,7 +5,7 @@
   "main": "dist/PublicLab.Editor.js",
   "scripts": {
     "build": "grunt build",
-    "test": "grunt jasmine && npm run test-ui --runInBand",
+    "test": "grunt jasmine && npm run test-ui",
     "test-ui": "node ./node_modules/.bin/jest"
   },
   "repository": {

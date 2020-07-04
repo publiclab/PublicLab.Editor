@@ -10,7 +10,7 @@ describe('Bold Text', () => {
     await page.waitForSelector('.ple-module-body');
     await page.click('.woofmark-command-bold');
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('strong text'));
-  
+
     expect(stringIsIncluded).toBe(true);
     await page.keyboard.press("Backspace");
 
@@ -31,6 +31,8 @@ describe('Bold Text', () => {
     expect(stringIsIncluded).toBe(false);
 
     await page.keyboard.press("Backspace");
+    await page.click('.woofmark-mode-wysiwyg');
 
   }, timeout);
+
 });

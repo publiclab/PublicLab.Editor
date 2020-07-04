@@ -31,6 +31,7 @@ describe('Italic Text', () => {
     expect(stringIsIncluded).toBe(false);
 
     await page.keyboard.press("Backspace");
+    await page.click('.woofmark-mode-wysiwyg');
 
   }, timeout);
 
