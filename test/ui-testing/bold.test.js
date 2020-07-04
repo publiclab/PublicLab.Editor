@@ -31,7 +31,8 @@ describe('Bold Text', () => {
     expect(stringIsIncluded).toBe(false);
 
     await page.keyboard.press("Backspace");
-    await page.waitForSelector('.woofmark-mode-wysiwyg');
+    await page.click('.woofmark-mode-wysiwyg');
 
   }, timeout);
+
 });
