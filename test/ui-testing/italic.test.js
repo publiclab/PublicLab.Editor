@@ -7,16 +7,19 @@ beforeAll(async () => {
 
 describe('Italic Text', () => {
   test('Adds emphasized text in rich text mode', async () => {
+    // clicks on italic button and checks if 'emphasized text' is added in the editor
     await page.waitForSelector('.ple-module-body');
     await page.click('.woofmark-command-italic');
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('emphasized text'));
-  
     expect(stringIsIncluded).toBe(true);
+    
+    // resets the changes by removing the added text
     await page.keyboard.press("Backspace");
 
   }, timeout);
 
   test('Adds emphasized text in markdown mode', async () => {
+    // clicks on italic button and checks if '*emphasized text*' is added in the editor
     await page.waitForSelector('.woofmark-mode-markdown');
     await page.click('.woofmark-mode-markdown');
     await page.evaluate(() => document.querySelector('.ple-textarea').value += ' ');
@@ -24,12 +27,14 @@ describe('Italic Text', () => {
     let stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('*emphasized text*'));
     expect(stringIsIncluded).toBe(true);
 
+    // clicks italic button again to un-emphasize the text but retains the text value 'emphasized text'
     await page.click('.woofmark-command-italic');
     stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('emphasized text'));
     expect(stringIsIncluded).toBe(true);
     stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('*emphasized text*'));
     expect(stringIsIncluded).toBe(false);
 
+    // resets changes by removing the added text and changes back to wysiwyg mode
     await page.keyboard.press("Backspace");
     await page.click('.woofmark-mode-wysiwyg');
 
