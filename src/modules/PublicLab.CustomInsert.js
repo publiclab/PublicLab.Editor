@@ -37,7 +37,7 @@
  		return syn;
  	}
 
- $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="glyphicon glyphicon-plus"></i></a>');
+ $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
 
     var builder  = '<div class="dropdown" style="margin-bottom: 20px;">';
     	builder += '<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >'
@@ -72,6 +72,8 @@
     var Option1 = "Notes"; 
     var Option2 = "List";
 	$('.woofmark-command-insert').attr('data-content', builder);
+    $('.woofmark-command-insert').attr('data-container', 'body');
+    $('.woofmark-command-insert').attr('data-placement','top');
 	$('.woofmark-command-insert').popover({ html : true,sanitize: false});
     $('.wk-commands .woofmark-command-insert').click(function() {
     $("#menu a").click(function(){
