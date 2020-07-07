@@ -22755,7 +22755,7 @@ module.exports = {
 
  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
 
-    var builder  = '<div class="dropdown" style="margin-bottom: 20px;">';
+    var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
     	builder += '<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >'
     	builder += '<span id= "selected">What Do you want to insert?</span>';
     	builder += '<span class="caret"></span>';
@@ -22779,40 +22779,39 @@ module.exports = {
     	builder += '</ul>'; 
     	builder += '</div>'; 
     	builder += '<div class="input-group">';
-      	builder += '<input type="text" class="form-control" placeholder="Search for..." id="inputText" style="min-width: 150px;">';
+        builder += '<input type="text" class="form-control" placeholder="Search for..." id="inputText" style="min-width: 150px;">';
         builder += '<span class="input-group-btn">';
         builder += '<button class="btn btn-default" type="button" id ="go1">Go!</button>';
-      	builder += '</span>';
-    	builder += '</div>';
-    	
+        builder += '</span>';
+        builder += '</div>';
     var Option1 = "Notes"; 
     var Option2 = "List";
-	$('.woofmark-command-insert').attr('data-content', builder);
+    $('.woofmark-command-insert').attr('data-content', builder);
     $('.woofmark-command-insert').attr('data-container', 'body');
     $('.woofmark-command-insert').attr('data-placement','top');
-	$('.woofmark-command-insert').popover({ html : true,sanitize: false});
+    $('.woofmark-command-insert').popover({ html : true,sanitize: false});
     $('.wk-commands .woofmark-command-insert').click(function() {
     $("#menu a").click(function(){
-    	Option1 = $(this).text();
+        Option1 = $(this).text();
         $("#selected").text($(this).text());
     });
-	})
+    });
     $('.wk-commands .woofmark-command-insert').click(function() {
-    	$("#menu2 a").click(function(){
-    		Option2 = $(this).text();
-        	$("#selected2").text($(this).text());
-    	});  
-	})
-	$('.wk-commands .woofmark-command-insert').click(function() {
-		$('#go1').click(function(){
-			wysiwyg.runCommand(function(chunks, mode){
-				var syntax = Syntax($('#inputText')[0].value,Option1, Option2);
-				if (mode === 'markdown') chunks.before += syntax;
-        		else {
-          			chunks.before += _module.wysiwyg.parseMarkdown(syntax);
-          		} 
-          	})
-		})
+        $("#menu2 a").click(function(){
+            Option2 = $(this).text();
+            $("#selected2").text($(this).text());
+        });  
+    })
+    $('.wk-commands .woofmark-command-insert').click(function() {
+        $('#go1').click(function(){
+            wysiwyg.runCommand(function(chunks, mode){
+                var syntax = Syntax($('#inputText')[0].value,Option1, Option2);
+                if (mode === 'markdown') chunks.before += syntax;
+                else {
+                    chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+          	    } 
+            })
+        })
     })
 }
 
