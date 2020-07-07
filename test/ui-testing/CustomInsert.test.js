@@ -7,7 +7,7 @@ beforeAll(async () => {
 
 describe('Custom Insert text', () => {
 	test('Add Custom Insert text in rich text mode', async () => {
-		await page.waitForSelector('.ple-module-body');
+	await page.waitForSelector('.ple-module-body');
 	// Click on insert text button
 	await page.click('.woofmark-command-insert');
 	// Select the option 'Nodes' from Menu: What Do you want to insert?
@@ -33,7 +33,7 @@ describe('Custom Insert text', () => {
 
 describe('Custom Insert text', () => {
 	test('Adds strong text in rich text mode', async () => {
-		await page.waitForSelector('.ple-module-body');
+	await page.waitForSelector('.ple-module-body');
 	// Click on Mardown mode button
 	await page.waitForSelector('.woofmark-mode-markdown');
 	await page.click('.woofmark-mode-markdown');
