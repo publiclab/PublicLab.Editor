@@ -11526,7 +11526,7 @@ module.exports = tokenizeLinks;
 
 },{}],114:[function(require,module,exports){
 //! moment.js
-//! version : 2.26.0
+//! version : 2.27.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -17145,7 +17145,7 @@ module.exports = tokenizeLinks;
 
     //! moment.js
 
-    hooks.version = '2.26.0';
+    hooks.version = '2.27.0';
 
     setHookCallback(createLocal);
 
@@ -21545,7 +21545,7 @@ PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
 $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
-  PL.Util.enableRichTextModeKeyboardShortcut();
+  PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
 });
 
@@ -22715,40 +22715,39 @@ module.exports = {
 
 },{}],185:[function(require,module,exports){
 
- module.exports = function CustomInsert(_module, wysiwyg) {
- 	function Syntax(Latitude, Longitude, Layers) {
-        var syn = "[map:content:" + Latitude + ":" + Longitude;
-        if(Layers)
-            syn = syn + ":" + Layers;
-        syn = syn + "]"        
- 		return syn;
- 	}
+module.exports = function CustomInsert(_module, wysiwyg) {
+  function Syntax(Latitude, Longitude, Layers) {
+    var syn = "[map:content:" + Latitude + ":" + Longitude;
+    if(Layers)
+      syn = syn + ":" + Layers;
+    syn = syn + "]"        
+    return syn;
+  }
 
- $('.wk-commands').append('<a class="woofmark-command-insert-map btn btn-default" data-toggle="Insert" title="Custom Insert Maps"><i class="glyphicon glyphicon-plus"></i></a>');
+  $('.wk-commands').append('<a class="woofmark-command-insert-map btn btn-default" data-toggle="Insert" title="Custom Insert Maps"><i class="fa fa-globe"></i></a>');
 
-    var builder =  '<div class="input-group">';
-        builder += '<input type="number" class="form-control" placeholder="Latitude" id="Latitude" style="min-width: 150px;" required>';
-        builder += '<input type="number" class="form-control" placeholder="Longitude" id="Longitude" style="min-width: 150px;">';
-      	builder += '<input type="text" class="form-control" placeholder="Preset Layers(separated with commas)" id="layer" style="min-width: 150px;">';
-        builder += '<button class="btn btn-default" type="button" id ="submit">Go!</button>';
-    	builder += '</div>';
-    	
-	$('.woofmark-command-insert-map').attr('data-content', builder);
-	$('.woofmark-command-insert-map').popover({ html : true,sanitize: false});
-
-	$('.wk-commands .woofmark-command-insert-map').click(function() {
-		$('#submit').click(function(){
-			wysiwyg.runCommand(function(chunks, mode){
-                console.log($('#Latitude')[0].value, $('#Longitude')[0].value, $('#layer')[0].value);
-				var syntax = Syntax($('#Latitude')[0].value, $('#Longitude')[0].value, $('#layer')[0].value);
-				if (mode === 'markdown') chunks.before += syntax;
-        		else {
-          			chunks.before += _module.wysiwyg.parseMarkdown(syntax);
-          			setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
-          		} 
-          	})
-		})
+  var builder =  '<div class="input-group">';
+  builder += '<input type="number" class="form-control" placeholder="Latitude" id="Latitude" style="min-width: 150px;" required>';
+  builder += '<input type="number" class="form-control" placeholder="Longitude" id="Longitude" style="min-width: 150px;">';
+  builder += '<input type="text" class="form-control" placeholder="Preset Layers(separated with commas)" id="layer" style="min-width: 150px;">';
+  builder += '<button class="btn btn-default" type="button" id ="submit">Go!</button>';
+  builder += '</div>';
+  
+  $('.woofmark-command-insert-map').attr('data-content', builder);
+  $('.woofmark-command-insert-map').attr('data-container', 'body');
+  $('.woofmark-command-insert-map').attr('data-placement','top');
+  $('.woofmark-command-insert-map').popover({ html : true,sanitize: false});
+  $('.wk-commands .woofmark-command-insert-map').click(function() {
+    $('#submit').click(function(){
+      wysiwyg.runCommand(function(chunks, mode){
+        var syntax = Syntax($('#Latitude')[0].value, $('#Longitude')[0].value, $('#layer')[0].value);
+        if (mode === 'markdown') chunks.before += syntax;
+        else {
+         chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+       } 
+     })
     })
+  })
 }
 
 },{}],186:[function(require,module,exports){
