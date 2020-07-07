@@ -11526,7 +11526,7 @@ module.exports = tokenizeLinks;
 
 },{}],114:[function(require,module,exports){
 //! moment.js
-//! version : 2.26.0
+//! version : 2.27.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -17145,7 +17145,7 @@ module.exports = tokenizeLinks;
 
     //! moment.js
 
-    hooks.version = '2.26.0';
+    hooks.version = '2.27.0';
 
     setHookCallback(createLocal);
 
@@ -22479,7 +22479,7 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]";
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
           }
         }
       });
@@ -22723,7 +22723,7 @@ module.exports = {
  			if(Option1 == "Wikis") {
  				var syn = "[wikis:" + tag + "]";
  			}
- 			if(Option1 == "Nodes") {
+ 			if(Option1 == "Nodes(Wikis + Notes)") {
  				var syn = "[nodes:" + tag + "]";
  			}
  			if(Option1 == "Activity") {
@@ -22740,7 +22740,7 @@ module.exports = {
  			if(Option1 == "Wikis") {
  				var syn = "[wikis:grid" + tag + "]";
  			}
- 			if(Option1 == "Nodes") {
+ 			if(Option1 == "Nodes(Wikis + Notes)") {
  				var syn = "[nodes:grid" + tag + "]";
  			}
  			if(Option1 == "Activity") {
@@ -22761,11 +22761,11 @@ module.exports = {
     	builder += '<span class="caret"></span>';
     	builder += '</button>';
     	builder += '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="menu">';
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">Notes</a></li>';
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">Wikis</a></li>';
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">Nodes(Wikis + Notes)</a></li>';    	
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">Activity</a></li>';
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">Questions</a></li>';    	    	
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="Notes">Notes</a></li>';
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="Wikis">Wikis</a></li>';
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="Nodes">Nodes(Wikis + Notes)</a></li>';    	
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="Activity">Activity</a></li>';
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="Questions">Questions</a></li>';    	    	
     	builder += '</ul>';
     	builder += '</div>'
     	builder += '<div class="dropdown" style="margin-bottom: 20px;">';
@@ -22774,8 +22774,8 @@ module.exports = {
     	builder += '<span class="caret"></span>';
     	builder += '</button>';
     	builder += '<ul class="dropdown-menu" role ="menu" aria-labelledby="dropdownMenu2" id="menu2">';
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">List</a></li>';
-    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1">Grid</a></li>';   	    	
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="List">List</a></li>';
+    	builder += '<li role="presentation"><a role="menuitem" tabindex="-1" id="Grid">Grid</a></li>';   	    	
     	builder += '</ul>'; 
     	builder += '</div>'; 
     	builder += '<div class="input-group">';
@@ -22808,7 +22808,6 @@ module.exports = {
 				if (mode === 'markdown') chunks.before += syntax;
         		else {
           			chunks.before += _module.wysiwyg.parseMarkdown(syntax);
-          			setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
           		} 
           	})
 		})

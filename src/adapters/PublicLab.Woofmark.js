@@ -285,7 +285,7 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]";
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
           }
         }
       });
