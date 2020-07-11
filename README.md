@@ -1,4 +1,5 @@
-PublicLab.Editor
+PublicLab.Editor  
+[![npm version](https://badge.fury.io/js/publiclab-editor.svg)](https://badge.fury.io/js/publiclab-editor)
 ====
 
 [![Build Status](https://travis-ci.org/publiclab/PublicLab.Editor.svg)](https://travis-ci.org/publiclab/PublicLab.Editor)
