@@ -1,6 +1,6 @@
 {
   "name": "publiclab-editor",
-  "version": "2.0.6",
+  "version": "2.1.0",
   "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
   "main": "dist/PublicLab.Editor.js",
   "scripts": {
@@ -53,7 +53,7 @@
     "jasmine": "~3.5.0",
     "jasmine-ajax": "~4.0.0",
     "jasmine-jquery": "~2.1.1",
-    "jest": "^25.5.0",
+    "jest": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "matchdep": "^2.0.0"
   },
