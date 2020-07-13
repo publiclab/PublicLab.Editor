@@ -21545,7 +21545,7 @@ PL.MapModule       = require('./modules/PublicLab.MapModule.js');
 
 $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
-  PL.Util.enableRichTextModeKeyboardShortcut();
+  PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
 });
 
@@ -22409,7 +22409,7 @@ module.exports = function(textarea, _editor, _module) {
           ],
 
           allowedAttributes: {
-            a: ["href", "name", "target", "title", "aria-label"],
+            a: ["href", "name", "class", "target", "title", "aria-label"],
             iframe: [
               "allowfullscreen",
               "frameborder",
