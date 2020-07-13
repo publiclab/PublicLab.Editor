@@ -311,7 +311,7 @@ module.exports = function(textarea, _editor, _module) {
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
   wysiwyg.stylePrompt = function() {
-    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
+    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-outline-secondary");
     $(".wk-prompt input")
       .addClass("input form-control")
       .css("margin-bottom", "5px");
@@ -327,7 +327,7 @@ module.exports = function(textarea, _editor, _module) {
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-      "btn btn-default"
+      "btn btn-light"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
