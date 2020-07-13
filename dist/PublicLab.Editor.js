@@ -21946,12 +21946,13 @@ module.exports = PublicLab.History = Class.extend({
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
               dateClasses.push(log.dateClass);
-              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-default clear">clear</a></p>';
+              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-outline-secondary clear">clear</a></p>';
+
             }
 
             html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
             html += '<b>' + i + '</b>: ';
-            html += '<a class="btn btn-xs btn-default revert">revert</a> <a class="btn btn-xs btn-default clear">clear</a> | Preview: ';
+            html += '<a class="btn btn-xs btn-outline-secondary revert">revert</a> <a class="btn btn-xs btn-outline-secondary clear">clear</a> | Preview: ';
             html += time;
             html += ' -- <i class="preview">' + log.text.substr(0, 30) + '...</i>';
             html += '</p>';
@@ -22388,7 +22389,7 @@ module.exports = function(textarea, _editor, _module) {
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
   wysiwyg.stylePrompt = function() {
-    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
+    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-outline-secondary");
     $(".wk-prompt input")
         .addClass("input form-control")
         .css("margin-bottom", "5px");
@@ -22404,7 +22405,7 @@ module.exports = function(textarea, _editor, _module) {
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-        "btn btn-default"
+      "btn btn-light"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -22883,9 +22884,8 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   // $('.woofmark-mode-markdown').removeClass('disabled')
 
   // create a menu option for auto center:
-  $('.wk-commands').append('<a class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></a>');
-  // since chunk.selection returns null for images
-
+  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
+  //since chunk.selection returns null for images
   $(document).ready(function() {
     $('[data-toggle="autocenter"]').tooltip();
   });
@@ -22914,10 +22914,10 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
 
 module.exports = function initEmbed(_module, wysiwyg) {
   // create a menu option for embeds:
-  $('.wk-commands').append('<a class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></a>');
-
-  $(document).ready(function() {
-    $('[data-toggle="youtube"]').tooltip();
+  $('.wk-commands').append('<button class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></button>');
+  
+  $(document).ready(function(){
+    $('[data-toggle="youtube"]').tooltip();   
   });
 
   $('.wk-commands .woofmark-command-embed').click(function() {
@@ -22945,7 +22945,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
   // create a menu option for horizontal rules:
-  $('.wk-commands').append('<a class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="horizontal"]').tooltip();
@@ -23005,7 +23005,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();
