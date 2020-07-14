@@ -1,4 +1,4 @@
-/* Displays related posts to associate this one with. 
+/* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
 
@@ -24,14 +24,13 @@ Results should be in following JSON format:
 
  */
 module.exports = function relatedNodes(module) {
-
   var relatedEl;
   var addedRelatedEl;
   var addedRelatedPost = 'addedTitles';
   var relatedResultShow = false;
 
   build();
-  bindEvents()
+  bindEvents();
 
   // make an area for "related posts" to connect to
   function build() {
@@ -101,6 +100,7 @@ module.exports = function relatedNodes(module) {
       }
 
       // For adding tags.
+
       $('.result-' + result.id + ' .add-tag').click(function() {
         editor.tagsModule.el.find('input').tokenfield('createToken', 'response:' + result.id);
         if (addedRelatedPost === 'addedTitles') {
@@ -113,9 +113,7 @@ module.exports = function relatedNodes(module) {
 
         $('.result-' + result.id).remove();
       });
-
     });
-
   }
 
   var fetchRelated = module.options.fetchRelated || function fetchRelated(showRelatedResult) {
@@ -125,9 +123,9 @@ module.exports = function relatedNodes(module) {
       { id: 1, title: 'A related post', url: '/', author: 'eustatic' },
       { id: 2, title: 'Another related post', url: '/', author: 'stevie' },
       { id: 3, title: 'A third related post', url: '/', author: 'bsugar' }
-    ]);
 
-  }
+    ]);
+  };
 
   function bindEvents() {
 
@@ -139,6 +137,7 @@ module.exports = function relatedNodes(module) {
 
     // show the related results on keydown or onclick.
     $(module.el).find('input').keydown(function(e) {
+
 
       if (module.options.suggestRelated) {
         relatedResultShow = true;
@@ -156,15 +155,14 @@ module.exports = function relatedNodes(module) {
     // related content will be hidden on mouseleave
     $(module.el).find('.ple-module-content').mouseleave(function(e) {
 
+
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
         addedRelatedEl.fadeOut();
       }
 
     });
-
   }
 
   return relatedEl;
-
-}
+};

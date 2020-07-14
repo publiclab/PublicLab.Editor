@@ -1,22 +1,18 @@
-var editor, module;
+var editor; var module;
 
 describe("RichTextModule", function() {
-
   beforeAll(function() {
-
     var fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
     });
 
-    module = new PL.RichTextModule( editor, { textarea: editor.options.textarea });
-
+    module = new PL.RichTextModule( editor, {textarea: editor.options.textarea});
   });
 
 
   it("reports key, value, valid", function() {
-
     expect(module).not.toBeUndefined();
     expect(module.value()).not.toBe(false);
     expect(module.value()).not.toBeUndefined();
@@ -26,12 +22,10 @@ describe("RichTextModule", function() {
     expect(module.options.required).toBe(true);
 
     expect(module.valid()).toBe(true);
-    //_module.height = function() {
-
+    // _module.height = function() {
   });
 
   it("sets and reports value regardless of whether it's in markdown or wysiwyg mode", function() {
-
     module.setMode('markdown');
     module.value('Test text');
     expect(module.value()).toBe('Test text');
@@ -52,12 +46,10 @@ describe("RichTextModule", function() {
 
     module.setMode('markdown');
     expect($(module.textarea).val()).toBe('## Test title');
-
   });
 
 
   it("recognizes @callouts and #hashtags and #hash-tags", function() {
-
     module.setMode('markdown');
     module.value('Hello, @jeff!');
     // shouldn't actually add markdown link around a callout:
@@ -71,68 +63,60 @@ describe("RichTextModule", function() {
 
     module.value('#balloon-mapping');
     expect(module.html()).toContain('<a href="/tag/balloon-mapping">#balloon-mapping</a>');
-
   });
 
 
   it("accepts customized authors method as constructor option for @callouts", function() {
-
     module = new PL.RichTextModule( editor, {
       textarea: editor.options.textarea,
       authors: function(value, done) {
         done([
-          { value: '@kirk',    text: '@kirk; 1 note'    },
-          { value: '@spock',   text: '@spock; 2 notes'  },
-          { value: '@uhura',   text: '@uhura; 4 notes'  },
-          { value: '@bones',   text: '@bones; 1 note'   },
-          { value: '@sulu',    text: '@sulu; 5 notes'   },
-          { value: '@checkov', text: '@checkov; 1 note' }
+          {value: '@kirk', text: '@kirk; 1 note'},
+          {value: '@spock', text: '@spock; 2 notes'},
+          {value: '@uhura', text: '@uhura; 4 notes'},
+          {value: '@bones', text: '@bones; 1 note'},
+          {value: '@sulu', text: '@sulu; 5 notes'},
+          {value: '@checkov', text: '@checkov; 1 note'}
         ]);
       }
     });
 
     module.options.authors('', function(list) {
       expect(list[0].value).toBe('@kirk');
-    })
-
+    });
   });
 
-  it("detects data-urls",function(){
-
-    //switch to rich-text mode
+  it("detects data-urls", function() {
+    // switch to rich-text mode
     module.setMode('wysiwyg');
 
-    //enter data-url
+    // enter data-url
     module.value('data:image/x');
 
-    //simulate enter press
-    var e = jQuery.Event("keyup", {keyCode:13});
+    // simulate enter press
+    var e = jQuery.Event("keyup", {keyCode: 13});
     jQuery('.ple-textarea').trigger(e);
 
-    //detect data-urls
+    // detect data-urls
     expect($('.data-urls-warning').length).not.toBeNull();
   });
 
 
-  it("displays alert for empty bold tags",function() {
+  it("displays alert for empty bold tags", function() {
+    var enter = jQuery.Event("keydown", {keyCode: 13});
 
-      var enter = jQuery.Event("keydown", {keyCode:13})
+    var tempEl = module.textarea;
 
-      var temp_el = module.textarea
+    module.setMode('markdown');
 
-      module.setMode('markdown');
+    module.textarea.innerHTML = '**';
 
-      module.textarea.innerHTML = '**';
+    $(tempEl).trigger(enter);
 
-      $(temp_el).trigger(enter)
+    module.textarea.innerHTML = '**';
 
-      module.textarea.innerHTML = '**';
+    $(tempEl).trigger(enter);
 
-      $(temp_el).trigger(enter)
-
-      expect($('.invalid-bold-tags-warning').length).not.toBeNull();
-
-    });
-
-
+    expect($('.invalid-bold-tags-warning').length).not.toBeNull();
+  });
 });
