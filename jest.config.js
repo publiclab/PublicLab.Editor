@@ -7,4 +7,4 @@ module.exports = {
     "**/test/**/*.test.js"
   ],
   verbose: true
-} 
+};

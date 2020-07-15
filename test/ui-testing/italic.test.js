@@ -16,10 +16,9 @@ describe('Italic Text', () => {
     await page.click('.woofmark-command-italic');
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('emphasized text'));
     expect(stringIsIncluded).toBe(true);
-    
+
     // resets the changes by removing the added text
     await page.keyboard.press("Backspace");
-
   }, timeout);
 
   test('Adds emphasized text in markdown mode', async () => {
@@ -41,7 +40,5 @@ describe('Italic Text', () => {
     // resets changes by removing the added text and changes back to wysiwyg mode
     await page.keyboard.press("Backspace");
     await page.click('.woofmark-mode-wysiwyg');
-
   }, timeout);
-
 });
