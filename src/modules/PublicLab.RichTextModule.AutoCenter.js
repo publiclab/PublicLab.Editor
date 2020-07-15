@@ -14,8 +14,8 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   });
 
   $('.wk-commands .woofmark-command-autocenter').click(function() {
-    wysiwyg.runCommand(function(chunks,mode) {
-      if(mode == "wysiwyg") {
+    wysiwyg.runCommand(function(chunks, mode) {
+      if (mode === "wysiwyg") {
         var tag = "center";
         var open = '<' + tag;
         var close = '</' + tag.replace(/</g, '</');
@@ -64,7 +64,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
           }
         }
 
-        function closebounded (chunks, tag) {
+        function closebounded(chunks, tag) {
           var rcloseleft = new RegExp('</' + tag.replace(/</g, '</') + '>$', 'i');
           var ropenright = new RegExp('^<' + tag + '(?: [^>]*)?>', 'i');
           var bounded = rcloseleft.test(chunks.before) && ropenright.test(chunks.after);
@@ -75,58 +75,57 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
           return bounded;
         }
 
-        function surrounded (chunks, tag) {
-        var ropen = new RegExp('<' + tag + '(?: [^>]*)?>', 'ig');
-        var rclose = new RegExp('<\/' + tag.replace(/</g, '</') + '>', 'ig');
-        var opensBefore = count(chunks.before, ropen);
-        var opensAfter = count(chunks.after, ropen);
-        var closesBefore = count(chunks.before, rclose);
-        var closesAfter = count(chunks.after, rclose);
-        var open = opensBefore - closesBefore > 0;
-        var close = closesAfter - opensAfter > 0;
-        return open && close;
-      
-        function count (text, regex) {
+        function surrounded(chunks, tag) {
+          var ropen = new RegExp('<' + tag + '(?: [^>]*)?>', 'ig');
+          var rclose = new RegExp('<\/' + tag.replace(/</g, '</') + '>', 'ig');
+          var opensBefore = count(chunks.before, ropen);
+          var opensAfter = count(chunks.after, ropen);
+          var closesBefore = count(chunks.before, rclose);
+          var closesAfter = count(chunks.after, rclose);
+          var open = opensBefore - closesBefore > 0;
+          var close = closesAfter - opensAfter > 0;
+          return open && close;
+        }
+
+        function count(text, regex) {
           var match = text.match(regex);
           if (match) {
             return match.length;
           }
           return 0;
         }
-      }
-    } else if (mode == "markdown") {
-      var open = '->';
-      var close = '<-';
-      var rleading = new RegExp(open + '( [^>]*)?', 'i');
-      var rtrailing = new RegExp('^' + close, 'i');
-      var ropen = new RegExp(open + '( [^>]*)?', 'ig');
-      var rclose = new RegExp(close + '( [^>]*)?', 'ig');
-      chunks.trim();
-      var trail = rleading.exec(chunks.before);
-      var lead = rtrailing.exec(chunks.after);
+      } else if (mode === "markdown") {
+        var open = '->';
+        var close = '<-';
+        var rleading = new RegExp(open + '( [^>]*)?', 'i');
+        var rtrailing = new RegExp('^' + close, 'i');
+        var ropen = new RegExp(open + '( [^>]*)?', 'ig');
+        var rclose = new RegExp(close + '( [^>]*)?', 'ig');
+        chunks.trim();
+        var trail = rleading.exec(chunks.before);
+        var lead = rtrailing.exec(chunks.after);
 
-      if(trail && lead) {
-        chunks.before = chunks.before.replace(rleading, '');
-        chunks.after = chunks.after.replace(rtrailing, '');
-      } else {
-        var opened = ropen.test(chunks.selection);
-        var closed = rclose.test(chunks.selection);
-        if(opened || closed)
-        {
-          if (opened) {
-            chunks.selection = chunks.selection.replace(ropen, '');
-            chunks.before += open;
-          }
-          if (closed) {
-            chunks.selection = chunks.selection.replace(rclose, '');
-            chunks.after = close + chunks.after;
-          }
+        if (trail && lead) {
+          chunks.before = chunks.before.replace(rleading, '');
+          chunks.after = chunks.after.replace(rtrailing, '');
         } else {
-          // adds center tag and parses into markdown
-          chunks.selection = _module.wysiwyg.parseHTML("<center>"+chunks.selection+"</center>")
+          var opened = ropen.test(chunks.selection);
+          var closed = rclose.test(chunks.selection);
+          if (opened || closed) {
+            if (opened) {
+              chunks.selection = chunks.selection.replace(ropen, '');
+              chunks.before += open;
+            }
+            if (closed) {
+              chunks.selection = chunks.selection.replace(rclose, '');
+              chunks.after = close + chunks.after;
+            }
+          } else {
+            // adds center tag and parses into markdown
+            chunks.selection = _module.wysiwyg.parseHTML("<center>" + chunks.selection + "</center>");
+          }
         }
       }
-    }
 
       _module.afterParse();
     });

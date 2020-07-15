@@ -8,11 +8,11 @@ beforeAll(async () => {
 describe('Center Text', () => {
   test('Centering and decentering text', async () => {
     // selects a string from textarea in md mode
-    await page.setViewport({ width: 1920, height: 1080 });
+    await page.setViewport({width: 1920, height: 1080});
     await page.waitForSelector('.ple-module-body');
     await page.click('.woofmark-mode-markdown');
     await page.focus('.ple-textarea');
-    
+
     // center aligns the string and checks for presence of '->' and '<-'
     await page.click('.woofmark-command-autocenter');
     let opening = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('->'));
@@ -28,6 +28,5 @@ describe('Center Text', () => {
     closing = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('<-'));
     expect(opening).toBe(false);
     expect(closing).toBe(false);
-
   }, timeout);
 });
