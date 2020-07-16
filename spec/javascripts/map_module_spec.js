@@ -1,9 +1,7 @@
-var editor, module;
+var editor; var module;
 
 describe("MapModule", function() {
-
   beforeAll(function() {
-
     fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
@@ -12,12 +10,10 @@ describe("MapModule", function() {
     });
 
     module = editor.mapModule;
-
   });
 
 
   it("reports key, value, valid", function() {
-
     expect(module).not.toBeUndefined();
     expect(module.key).toBe('map_data');
 
@@ -25,14 +21,11 @@ describe("MapModule", function() {
     expect(module.options.required).toBe(false);
 
     expect(module.valid()).toBe(true);
-
   });
 
 
   xit("accepts inputs", function() {
 
 
-
   });
-
 });
