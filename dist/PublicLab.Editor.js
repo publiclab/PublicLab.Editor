@@ -21525,23 +21525,23 @@ function extend() {
 }
 
 },{}],178:[function(require,module,exports){
-var Class        = require('resig-class');
+var Class = require('resig-class');
 
 PL = PublicLab = {};
 module.exports = PL;
 
-PL.Util            = require('./core/Util.js');
-PL.Formatter       = require('./adapters/PublicLab.Formatter.js');
-PL.Woofmark        = require('./adapters/PublicLab.Woofmark.js');
-PL.History         = require('./PublicLab.History.js');
-PL.Help            = require('./PublicLab.Help.js');
-PL.Errors          = require('./PublicLab.Errors.js');
-PL.Module          = require('./modules/PublicLab.Module.js');
-PL.TitleModule     = require('./modules/PublicLab.TitleModule.js');
+PL.Util = require('./core/Util.js');
+PL.Formatter = require('./adapters/PublicLab.Formatter.js');
+PL.Woofmark = require('./adapters/PublicLab.Woofmark.js');
+PL.History = require('./PublicLab.History.js');
+PL.Help = require('./PublicLab.Help.js');
+PL.Errors = require('./PublicLab.Errors.js');
+PL.Module = require('./modules/PublicLab.Module.js');
+PL.TitleModule = require('./modules/PublicLab.TitleModule.js');
 PL.MainImageModule = require('./modules/PublicLab.MainImageModule.js');
-PL.RichTextModule  = require('./modules/PublicLab.RichTextModule.js');
-PL.TagsModule      = require('./modules/PublicLab.TagsModule.js');
-PL.MapModule       = require('./modules/PublicLab.MapModule.js');
+PL.RichTextModule = require('./modules/PublicLab.RichTextModule.js');
+PL.TagsModule = require('./modules/PublicLab.TagsModule.js');
+PL.MapModule = require('./modules/PublicLab.MapModule.js');
 
 $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
@@ -21552,7 +21552,6 @@ $(document).ready(function() {
 PL.Editor = Class.extend({
 
   init: function(options) {
-
     var _editor = this;
     _editor.options = options;
     _editor.options.history = _editor.options.history || true;
@@ -21561,47 +21560,39 @@ PL.Editor = Class.extend({
     // Validation:
     // Count how many required modules remain for author to complete:
     _editor.validate = function() {
-
-      var valid_modules    = 0,
-          required_modules = 0;
+      var validModules = 0;
+      var requiredModules = 0;
 
       _editor.modules.forEach(function(module, i) {
-
         if (module.options.required) {
-          required_modules += 1;
-          if (module.valid()) valid_modules += 1;
+          requiredModules += 1;
+          if (module.valid()) validModules += 1;
         }
-
       });
 
-      if (valid_modules !== required_modules) {
-
+      if (validModules !== requiredModules) {
         $('.ple-publish').addClass('disabled');
         $('.ple-publish').prop('disabled', true);
-
       } else {
-
         $('.ple-publish').removeClass('disabled');
         $('.ple-publish').prop('disabled', false);
-
       }
 
-      $('.ple-steps-left').html((required_modules - valid_modules) + ' of ' + required_modules);
+      $('.ple-steps-left').html((requiredModules - validModules) + ' of ' + requiredModules);
 
-      return valid_modules == required_modules;
-
-    }
+      return validModules == requiredModules;
+    };
 
     $('.ple-editor *').on('focusout keypress blur change keyup', _editor.validate);
 
     _editor.data = {
 
       title: null,
-      body:  null,
-      tags:  null,          // comma-delimited list; this should be added by a PL.Editor.MainImage module
+      body: null,
+      tags: null, // comma-delimited list; this should be added by a PL.Editor.MainImage module
       main_image_url: null,
       map_data: null
-    }
+    };
 
     // Update data based on passed options.data
     for (var attrname in options.data) {
@@ -21613,92 +21604,70 @@ PL.Editor = Class.extend({
     // Note that modules may attempt to write to the same key,
     // and would then overwrite one another.
     _editor.collectData = function() {
-
       _editor.modules.forEach(function(module, i) {
-
         _editor.data[module.key] = module.value();
-
       });
-
-    }
+    };
 
 
     // executes <callback> on completion, or (by default) navigates to returned URL
     _editor.publish = _editor.options.publish || function publish(callback) {
-
-       if($("#map_content").is(':visible')){
-        _lat = _editor.mapModule.blurredLocation.getLat() ;
-        _lng = _editor.mapModule.blurredLocation.getLon() ;
-        _zoom = _editor.mapModule.blurredLocation.getZoom() ;
-        console.log(_lat + '  ' + _lng + '  ' + _zoom) ;
-        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat) ;
-        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng) ;
-        _editor.tagsModule.el.find('input').tokenfield('createToken', 'zoom:' + _zoom) ;
+      if ($("#map_content").is(':visible')) {
+        _lat = _editor.mapModule.blurredLocation.getLat();
+        _lng = _editor.mapModule.blurredLocation.getLon();
+        _zoom = _editor.mapModule.blurredLocation.getZoom();
+        console.log(_lat + '  ' + _lng + '  ' + _zoom);
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lat:' + _lat);
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'lon:' + _lng);
+        _editor.tagsModule.el.find('input').tokenfield('createToken', 'zoom:' + _zoom);
       }
 
       _editor.collectData();
 
       var formatted = new PublicLab.Formatter().convert(
-                        _editor.data,
-                        _editor.options.format
-                      );
+          _editor.data,
+          _editor.options.format
+      );
 
       if (_editor.options.destination) {
-
         $('.ple-publish').html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         $.ajax(
-          _editor.options.destination,
-          {
-            data: formatted,
-            method: 'POST'
-          }
+            _editor.options.destination,
+            {
+              data: formatted,
+              method: 'POST'
+            }
         ).done(function(response) {
-
           if (callback) callback(response);
           else window.location = response;
-
         }).fail(function(response) {
-
           $('.ple-publish').removeClass('btn-success')
-                           .addClass('btn-danger');
-
+              .addClass('btn-danger');
         });
-
       } else {
-
         console.log('Editor requires a destination.');
-
       }
-
-    }
+    };
 
 
     _editor.tabIndices = function() {
-
       // set tabindices:
       var focusables = [];
 
       _editor.modules.forEach(function(module, i) {
-
         focusables = focusables.concat(module.focusables);
-
       });
 
       focusables.push($('.ple-publish'));
 
       focusables.forEach(function(focusable, i) {
-
         focusable.attr('tabindex', i + 1);
-
       });
-
-    }
+    };
 
 
     _editor.eventSetup = function() {
-
-
       $('.ple-publish').click(function() {
         console.log('Publishing!', _editor.data);
         _editor.publish(_editor.options.publishCallback);
@@ -21706,19 +21675,15 @@ PL.Editor = Class.extend({
 
 
       $('.btn-more').click(function() {
-
         // display more tools menu
         $('.ple-menu-more').toggle();
-
       });
 
       $('.btn-close').click(function() {
-
         // closes more tools menu
         $('.ple-menu-more').toggle();
-
       });
-    }
+    };
 
     _editor.modules = [];
 
@@ -21733,13 +21698,13 @@ PL.Editor = Class.extend({
       _editor.modules.push(_editor.mainImageModule);
     }
 
-    if (_editor.options.richTextModule  !== false) {
+    if (_editor.options.richTextModule !== false) {
       // options are normally passed via the corresponding _editor.options.fooModule object;
       // however, we copy textarea (the most basic) in automatically:
       _editor.options.richTextModule = _editor.options.richTextModule || {};
       _editor.options.richTextModule.textarea = _editor.options.textarea;
 
-      _editor.richTextModule  = new PublicLab.RichTextModule( _editor);
+      _editor.richTextModule = new PublicLab.RichTextModule( _editor);
       _editor.modules.push(_editor.richTextModule);
 
       // history must go after richTextModule, as it monitors that
@@ -21747,13 +21712,13 @@ PL.Editor = Class.extend({
     }
 
     if (_editor.options.tagsModule !== false) {
-      _editor.tagsModule      = new PublicLab.TagsModule(     _editor);
+      _editor.tagsModule = new PublicLab.TagsModule( _editor);
       _editor.modules.push(_editor.tagsModule);
     }
 
     if (_editor.options.mapModule === true) {
-      _editor.mapModule = new PublicLab.MapModule( _editor) ;
-      _editor.modules.push(_editor.mapModule) ;
+      _editor.mapModule = new PublicLab.MapModule( _editor);
+      _editor.modules.push(_editor.mapModule);
     }
 
     _editor.help = new PublicLab.Help(_editor);
@@ -21766,8 +21731,6 @@ PL.Editor = Class.extend({
     _editor.eventSetup();
 
     _editor.tabIndices();
-
-
   }
 
 });
@@ -21781,27 +21744,19 @@ PL.Editor = Class.extend({
 module.exports = PublicLab.Errors = Class.extend({
 
   init: function(_editor, options) {
-
     var _errors = this;
 
     _errors.options = options || {};
 
     if (_errors.options && typeof _errors.options === 'object' && Object.keys(_errors.options).length > 0) {
-
       $('.ple-errors').append('<div class="alert alert-danger"></div>');
 
       Object.keys(_errors.options).forEach(function eachField(key, i) {
-
         _errors.options[key].forEach(function eachError(error, j) {
-
           $('.ple-errors .alert').append('<p><b>Error:</b> ' + key + ' ' + error + '.</p>');
-
         });
-
       });
-
     }
-
   }
 
 });
@@ -21814,7 +21769,6 @@ module.exports = PublicLab.Errors = Class.extend({
 module.exports = PublicLab.Help = Class.extend({
 
   init: function(_editor, options) {
-
     var _help = this;
 
     _help.options = options || {};
@@ -21826,19 +21780,12 @@ module.exports = PublicLab.Help = Class.extend({
     // this won't work in xs compact state...
 
     $('.ple-module').mouseleave(function(e) {
-
-      $(this).find('.ple-guide-minor').fadeTo(400,0);
-
+      $(this).find('.ple-guide-minor').fadeTo(400, 0);
     });
 
     $('.ple-module').mouseenter(function(e) {
-
-      $(this).find('.ple-guide-minor').fadeTo(400,1);
-      
+      $(this).find('.ple-guide-minor').fadeTo(400, 1);
     });
-
-
-
   }
 
 });
@@ -21848,13 +21795,12 @@ module.exports = PublicLab.Help = Class.extend({
  * History of edits, sorted by day.
  */
 
-var Class  = require('resig-class'),
-    moment = require('moment');
+var Class = require('resig-class');
+var moment = require('moment');
 
 module.exports = PublicLab.History = Class.extend({
 
   init: function(_editor, options) {
-
     var _history = this;
 
     if (options === true) options = {};
@@ -21863,68 +21809,57 @@ module.exports = PublicLab.History = Class.extend({
     // this would be the nid in Drupal
     // plus the username, or just a
     // unique id if it's a new post
-    _history.options.id       = _history.options.id || 0;// (new Date()).getTime();
+    _history.options.id = _history.options.id || 0;// (new Date()).getTime();
     _history.options.interval = _history.options.interval || 10000; // ten second default
-    _history.options.prefix   = _history.options.prefix || "publiclab-editor-history-";
-    _history.options.element  = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
+    _history.options.prefix = _history.options.prefix || "publiclab-editor-history-";
+    _history.options.element = _history.options.element || $('.ple-history')[0]; // element in which to display/update saved states
 
     // unique key to fetch storage
     _history.key = _history.options.prefix + _history.options.id;
 
 
     if (window.hasOwnProperty('localStorage')) {
-
-
       // Fetch the entire history of this post from localStorage
       _history.fetch = function() {
-
         _history.log = JSON.parse(localStorage.getItem(_history.key)) || [];
 
         if (_history.options.debug) console.log('history: fetched', _history.log.length);
 
         return _history.log;
-
-      }
+      };
 
 
       // Empties history permanently, including
       // localstorage, so be careful
       _history.flush = function() {
-
         if (_history.options.debug) console.log('history: flushing');
         _history.log = [];
 
         localStorage.setItem(_history.key, false);
-
-      }
+      };
 
 
       // Write the entire history of this post to localStorage;
       // overwrites previous history, so be careful
       _history.write = function() {
-
         // maintain history length at 20 items
         if (_history.log.length > 20) _history.log.shift();
 
         if (_history.options.debug) console.log('history: overwriting');
-        var string = JSON.stringify(_history.log)
+        var string = JSON.stringify(_history.log);
 
         // minimal validation:
-        if (_history.log instanceof Array
-            && typeof string    == 'string'
-            && string[0]        == '[') {
-
+        if (_history.log instanceof Array &&
+            typeof string == 'string' &&
+            string[0] == '[') {
           localStorage.setItem(_history.key, string);
-
         }
-
-      }
+      };
 
 
       // Add an item to the history (history.log)
       // and write to localStorage.
       _history.add = function(text) {
-
         $('.ple-history-saving').fadeIn();
         setTimeout(function() {
           $('.ple-history-saving').fadeOut();
@@ -21932,113 +21867,86 @@ module.exports = PublicLab.History = Class.extend({
 
         var entry = {
 
-          text:      text,
+          text: text,
           timestamp: (new Date()).getTime()
           // type: 'minor'
 
-        }
+        };
 
         _history.log.push(entry);
         _history.write();
-
-      }
+      };
 
 
       // Add an item ONLY if it's different from the last entry
       _history.addIfDifferent = function(text) {
-
         if (_history.last() && text != _history.last().text) {
-
           _history.add(text);
           if (_history.options.debug) console.log('history: entry saved');
 
           return true;
-
         } else if (_history.last()) {
-
-          _history.last().timestamp = (new Date()).getTime()
-          //if (_history.options.debug) console.log('history: last entry timestamp updated', _history.last());
+          _history.last().timestamp = (new Date()).getTime();
+          // if (_history.options.debug) console.log('history: last entry timestamp updated', _history.last());
 
           return false;
-
         } else {
-
           _history.add(text);
           if (_history.options.debug) console.log('history: first entry saved');
 
           return true;
-
         }
-
-      }
+      };
 
 
       // Most recent history entry
       _history.last = function() {
-
         if (_history.log.length > 0 ) {
-
           return _history.log[_history.log.length - 1];
-
         } else {
-
           return null;
-
         }
-
-      }
+      };
 
 
       // Actually get the contents of the passed textarea and store
       _history.check = function() {
-
         var changed = _history.addIfDifferent(_editor.richTextModule.value());
         var element = _history.options.element;
 
         // only if it's changed, or if it hasn't yet been created
         if (element && ($(element).find('*').length === 0 || changed)) _history.display(element);
-
-      }
+      };
 
 
       // Inserts recent history into given DOM
       // element, after emptying it.
       _history.display = function(element) {
-
         element = element || _history.options.element;
 
         $(element).html(''); // empty it
 
         // SELECT element mode is not yet used
         if (element.nodeName == 'SELECT') {
-
           _history.log.forEach(function(log, i) {
-
             var time = moment(new Date(log.timestamp)).fromNow();
             $(element).append('<option value="' + log.timestamp + '">' + time + '</option>');
-
           });
-
         } else if (element.nodeName == 'DIV') {
-
           var dateClasses = [];
 
           _history.log.forEach(function(log, i) {
-
             log.formattedDate = log.formattedDate || moment(new Date(log.timestamp)).format("MMM Do YYYY"); // Aug 2nd 2016
             log.dateClass = log.dateClass || log.formattedDate.replace(/ /g, '-');
 
-            var time      = moment(new Date(log.timestamp)).fromNow(),
-                className = 'ple-history-' + log.timestamp,
-                html = '';
+            var time = moment(new Date(log.timestamp)).fromNow();
+            var className = 'ple-history-' + log.timestamp;
+            var html = '';
 
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
-
-
               dateClasses.push(log.dateClass);
               html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-default clear">clear</a></p>';
-
             }
 
             html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
@@ -22051,56 +21959,43 @@ module.exports = PublicLab.History = Class.extend({
             $(element).append(html);
 
             $(element).find('.' + className + ' a.revert').click(function(e) {
-
               _editor.richTextModule.value(log.text);
               $('.ple-menu-more').hide();
               setTimeout(_editor.richTextModule.afterParse, 0);
-
             });
 
             $(element).find('.' + className + ' a.clear').click(function(e) {
-
               _editor.history.log.splice(_editor.history.log.indexOf(log), 1);
               $(element).find('.' + className).remove();
-
             });
-
           });
 
           // now go through by day
           dateClasses.forEach(function countDateClasses(dateClass, i) {
-
             // count how many of each there are
-            $('.day.day-' + dateClass).find('.count').html($('.log.day-' + dateClass).length + ' entries')
+            $('.day.day-' + dateClass).find('.count').html($('.log.day-' + dateClass).length + ' entries');
 
             $('.day.day-' + dateClass + ' .count').click(function showDay() {
-
               $('.log.day-' + dateClass).toggle();
-
             });
 
             // clear these log entries
             $('.day.day-' + dateClass + ' .clear').click(function clearDay() {
-
               if (confirm('Are you sure? There is no undo.')) {
                 // in both history module and DOM elements
                 $('.log.day-' + dateClass + ' .clear').trigger('click');
                 // refresh
                 _editor.history.display(element);
               }
-
             });
-
           });
 
           // open last day by default
           $('.day:last .count').trigger('click');
 
           $(element).height(parseInt($(window).height() * 0.5));
-
         }
-
-      }
+      };
 
 
       _history.fetch();
@@ -22108,20 +22003,13 @@ module.exports = PublicLab.History = Class.extend({
       setInterval(_history.check, _history.options.interval);
 
       $(_editor.richTextModule.options.textarea).on('change', function() {
-
         _history.check();
-
       });
 
       _history.check();
-
-
     } else {
-
       console.log('history requires localStorage-enabled browser');
-
     }
-
   }
 
 });
@@ -22139,7 +22027,6 @@ module.exports = PublicLab.Formatter = Class.extend({
 
   // eventually we could accept both a format and a URL
   init: function() {
-
     var _formatter = this;
 
 
@@ -22147,11 +22034,10 @@ module.exports = PublicLab.Formatter = Class.extend({
     _formatter.schemas = {
 
       "publiclab": function(data) {
-
         var output = {};
 
-        output.title              = data.title || null;
-        output.body               = data.body  || null;
+        output.title = data.title || null;
+        output.body = data.body || null;
 
         // we can remove this from server req, since we're authenticated
         output.authenticity_token = data.token || null;
@@ -22160,33 +22046,29 @@ module.exports = PublicLab.Formatter = Class.extend({
         output.draft = data.draft || false;
 
         // Optional:
-        output.tags               = data.tags           || null; // comma delimited
-        output.has_main_image     = data.has_main_image || null;
-        output.main_image         = data.main_image     || null; // id to associate with pre-uploaded image
-        output.node_images        = data.node_images    || null; // comma-separated image.ids, I think
+        output.tags = data.tags || null; // comma delimited
+        output.has_main_image = data.has_main_image || null;
+        output.main_image = data.main_image || null; // id to associate with pre-uploaded image
+        output.node_images = data.node_images || null; // comma-separated image.ids, I think
         // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
-        output.image              = { };
-        output.image.photo        = data.image          || null;
+        output.image = { };
+        output.image.photo = data.image || null;
 
         return output;
-
-      }//,
+      }// ,
 
       // "drupal": {
       //   "title":           null,
       //   "body":            null
       // }
 
-    }
+    };
 
 
     _formatter.convert = function(data, destination) {
-
       // return formatted version of data
       return _formatter.schemas[destination](data);
-
-    }
-
+    };
   }
 
 });
@@ -22198,9 +22080,9 @@ module.exports = PublicLab.Formatter = Class.extend({
  * Should improve organization of this vs. RichTextModule
  */
 
-var woofmark = require("woofmark"),
-  domador = require("domador"),
-  megamark = require("megamark");
+var woofmark = require("woofmark");
+var domador = require("domador");
+var megamark = require("megamark");
 
 module.exports = function(textarea, _editor, _module) {
   var icons = {
@@ -22259,24 +22141,24 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: { nid: null },
+      formData: {nid: null},
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-            "X-CSRF-Token",
-            $('meta[name="csrf-token"]').attr("content")
+              "X-CSRF-Token",
+              $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isImage(file) {
-        var valid = true,
-          // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
-          formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"],
-          filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true;
+        // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+        var formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"];
+        var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -22293,38 +22175,38 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: { nid: null },
+      formData: {nid: null},
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-            "X-CSRF-Token",
-            $('meta[name="csrf-token"]').attr("content")
+              "X-CSRF-Token",
+              $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isAttachment(file) {
-        var valid = true,
-          formats = _module.options.attachmentFormats || [
-            "csv",
-            "xls",
-            "zip",
-            "kml",
-            "kmz",
-            "gpx",
-            "lut",
-            "stl",
-            "dxf",
-            "txt",
-            "pdf",
-            "svg",
-            "doc",
-            "ppt"
-          ],
-          filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true;
+        var formats = _module.options.attachmentFormats || [
+          "csv",
+          "xls",
+          "zip",
+          "kml",
+          "kmz",
+          "gpx",
+          "lut",
+          "stl",
+          "dxf",
+          "txt",
+          "pdf",
+          "svg",
+          "doc",
+          "ppt"
+        ];
+        var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -22337,11 +22219,12 @@ module.exports = function(textarea, _editor, _module) {
       if (false) console.log(link);
       if (link.href.match(".csv")) {
         // displaying csvs in graphs
-        if (wysiwyg.mode === "markdown")
+        if (wysiwyg.mode === "markdown") {
           var output = "[graph:" + link.href + "]";
-        else
+        } else {
           var output =
             '<div class="powertags">Power tag: graph:' + link.href + "</div>";
+        }
         return {
           before: chunks.before,
           selection: output,
@@ -22409,7 +22292,7 @@ module.exports = function(textarea, _editor, _module) {
           ],
 
           allowedAttributes: {
-            a: ["href", "name", "target", "title", "aria-label"],
+            a: ["href", "name", "class", "target", "title", "aria-label"],
             iframe: [
               "allowfullscreen",
               "frameborder",
@@ -22491,14 +22374,14 @@ module.exports = function(textarea, _editor, _module) {
 
   // set up horizontal rule insertion tool:
   require("../modules/PublicLab.RichTextModule.HorizontalRule.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
 
   // set up auto center insertion tool:
   require("../modules/PublicLab.RichTextModule.AutoCenter.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
   require("../modules/PublicLab.CustomInsertMaps.js")(
     _module,
@@ -22511,21 +22394,21 @@ module.exports = function(textarea, _editor, _module) {
   wysiwyg.stylePrompt = function() {
     $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
     $(".wk-prompt input")
-      .addClass("input form-control")
-      .css("margin-bottom", "5px");
+        .addClass("input form-control")
+        .css("margin-bottom", "5px");
   };
 
   $(
-    ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
+      ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
   ).click(wysiwyg.stylePrompt);
 
   wysiwyg.style = function() {
     $(".wk-commands").after(
-      '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
+        '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-      "btn btn-default"
+        "btn btn-default"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -22534,18 +22417,18 @@ module.exports = function(textarea, _editor, _module) {
     $(".wk-commands button.woofmark-command-attachment").addClass("hidden-xs");
 
     $(".wk-switchboard button.woofmark-mode-markdown")
-      .parent()
-      .removeClass("btn-group");
+        .parent()
+        .removeClass("btn-group");
     $(".wk-switchboard button.woofmark-mode-markdown").html(
-      '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
+        '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
     );
     $(".wk-switchboard button.woofmark-mode-wysiwyg").html(
-      '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
+        '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
     );
 
-    if (wysiwyg.mode === "wysiwyg")
+    if (wysiwyg.mode === "wysiwyg") {
       $(".wk-switchboard button.woofmark-mode-wysiwyg").hide();
-    else $(".wk-switchboard button.woofmark-mode-markdown").hide();
+    } else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
       $(this).tooltip('hide');
@@ -22554,7 +22437,7 @@ module.exports = function(textarea, _editor, _module) {
     });
 
     if (_editor.options.size == "xs") {
-      //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
+      // $('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
 
       // hide selectively, not by #:
       $(".wk-commands button.woofmark-command-quote").hide();
@@ -22575,38 +22458,30 @@ module.exports = function(textarea, _editor, _module) {
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
-
     var sPageURL = window.location.hash;
     if (sPageURL) sPageURL = sPageURL.split('#')[1];
     var sURLVariables = sPageURL.split('&');
 
     for (var i = 0; i < sURLVariables.length; i++) {
-
       var sParameterName = sURLVariables[i].split('=');
 
       if (sParameterName[0] == sParam) {
         return sParameterName[1];
       }
-
     }
-
   },
 
   getUrlParameter: function(sParam) {
-
     var sPageURL = window.location.search.substring(1);
     var sURLVariables = sPageURL.split('&');
 
     for (var i = 0; i < sURLVariables.length; i++) {
-
       var sParameterName = sURLVariables[i].split('=');
 
       if (sParameterName[0] == sParam) {
         return sParameterName[1];
       }
-
     }
-
   },
 
   disableScroll: function() {
@@ -22614,10 +22489,10 @@ module.exports = {
     // Get the current page scroll position
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     (scrollLeft = window.pageXOffset || document.documentElement.scrollLeft),
-      // if any scroll is attempted, set this to the previous value
-      (window.onscroll = function() {
-        window.scrollTo(scrollLeft, scrollTop);
-      });
+    // if any scroll is attempted, set this to the previous value
+    (window.onscroll = function() {
+      window.scrollTo(scrollLeft, scrollTop);
+    });
   },
 
   enableScroll: function() {
@@ -22636,7 +22511,7 @@ module.exports = {
     for (var i = 0; i < elementsWithPopups.length; i++) {
       var element = elementsWithPopups[i];
 
-      if(!element) continue;
+      if (!element) continue;
 
       element.addEventListener("click", function() {
         // Click on one of the elementsWithPopups disables scrolling
@@ -22661,23 +22536,22 @@ module.exports = {
         });
       });
     }
-
   },
 
-  enableTextModeKeyboardShortcut: function () {
-    var mainContentTextarea = document.querySelector('.wk-container')
+  enableTextModeKeyboardShortcut: function() {
+    var mainContentTextarea = document.querySelector('.wk-container');
     var toggleMarkdownModeBtn = document.querySelector('.woofmark-mode-markdown');
     var toggleRichTextModeBtn = document.querySelector('.woofmark-mode-wysiwyg');
 
-    if(!mainContentTextarea) return;
+    if (!mainContentTextarea) return;
 
-    mainContentTextarea.addEventListener('keydown', function (e) {
+    mainContentTextarea.addEventListener('keydown', function(e) {
       // Executes on CTRL + P
       if (e.keyCode === 80 && e.ctrlKey) {
         toggleRichTextModeBtn.style.display = 'none';
         toggleMarkdownModeBtn.style.display = 'block';
       }
-      //Executes on CTRL + M
+      // Executes on CTRL + M
       if (e.keyCode === 77 && e.ctrlKey) {
         toggleRichTextModeBtn.style.display = 'block';
         toggleMarkdownModeBtn.style.display = 'none';
@@ -22689,7 +22563,7 @@ module.exports = {
     var wysiwygDiv = document.querySelector(".wk-wysiwyg");
     var self = this;
 
-    if(!wysiwygDiv) return;
+    if (!wysiwygDiv) return;
 
     function handleChange() {
       if (window.isScrollingDisabled) {
@@ -22697,7 +22571,7 @@ module.exports = {
       }
 
       var imageElements = document.querySelectorAll(
-        '.wk-wysiwyg img:not([draggable="false"])'
+          '.wk-wysiwyg img:not([draggable="false"])'
       );
 
       imageElements.forEach(function(imageElement) {
@@ -22705,13 +22579,13 @@ module.exports = {
       });
     }
 
-    var observerConfig = { childList: true, subtree: true };
+    var observerConfig = {childList: true, subtree: true};
     var wysiwygDivObserver = new MutationObserver(handleChange);
 
     wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
   }
 
-}
+};
 
 },{}],185:[function(require,module,exports){
 
@@ -22758,7 +22632,6 @@ module.exports = function CustomInsert(_module, wysiwyg) {
 module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-
     var dragImageI = document.getElementById("mainImage");
     var _module = this;
 
@@ -22775,19 +22648,19 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.image = new Image();
 
     _module.value = function(url, id) {
-        if (typeof url == 'string') {
-            _module.image.onload = function() {
-            var height_dropdown = this.height;
-            var width_dropdown = this.width;
-            if (this.width > 340) {
-              var aspect_ratio = this.width / 340;
-              width_dropdown = 340;
-              height_dropdown = this.height / aspect_ratio;   
-            }
-            _module.dropEl.css('height', height_dropdown);
-            _module.dropEl.css('width', width_dropdown);
-            _module.dropEl.css('background-size', width_dropdown + 'px ' + height_dropdown + 'px');
+      if (typeof url == 'string') {
+        _module.image.onload = function() {
+          var heightDropdown = this.height;
+          var widthDropdown = this.width;
+          if (this.width > 340) {
+            var aspectRatio = this.width / 340;
+            widthDropdown = 340;
+            heightDropdown = this.height / aspectRatio;
           }
+          _module.dropEl.css('height', heightDropdown);
+          _module.dropEl.css('width', widthDropdown);
+          _module.dropEl.css('background-size', widthDropdown + 'px ' + heightDropdown + 'px');
+        };
         _module.image.src = url;
         _module.options.url = url;
         _editor.data.has_main_image = true;
@@ -22797,8 +22670,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       if (id) _editor.data.main_image = id;
 
       return _module.options.url;
-
-    }
+    };
 
     // construct HTML additions
     _module.build();
@@ -22810,17 +22682,17 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     _module.dropEl.css('background-repeat', 'no-repeat');
     _module.dropEl.css('background-size', 'cover');
 
-    _module.dropEl.bind('dragover',function(e) {
+    _module.dropEl.bind('dragover', function(e) {
       e.preventDefault();
       // create relevant styles in sheet
       _module.dropEl.addClass('hover');
     });
 
-    _module.dropEl.bind('dragout',function(e) {
+    _module.dropEl.bind('dragout', function(e) {
       _module.dropEl.removeClass('hover');
     });
 
-    _module.dropEl.bind('drop',function(e) {
+    _module.dropEl.bind('drop', function(e) {
       e.preventDefault();
     });
 
@@ -22828,7 +22700,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     // read in previous main images to enable reverting back
     if (_module.options.previousMainImages) {
 
-    // $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
+      // $("#image_revision").append('<option selected="selected" id="'+data.result.id+'" value="'+data.result.url+'">Temp Image '+data.result.id+'</option>');
 
     }
 
@@ -22849,24 +22721,21 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       },
 
       start: function(e) {
-
         showImage = true;
         _module.el.find('.progress .progress-bar')
-                  .attr('aria-valuenow', '0')
-                  .css('width', '0%');
-        _module.dropEl.css('border-color','#ccc');
-        _module.dropEl.css('background','none');
+            .attr('aria-valuenow', '0')
+            .css('width', '0%');
+        _module.dropEl.css('border-color', '#ccc');
+        _module.dropEl.css('background', 'none');
         _module.dropEl.removeClass('hover');
         _module.el.find('.progress').show();
-
       },
 
-      done: function (e, data) {
-
-        if (showImage)  {
+      done: function(e, data) {
+        if (showImage) {
           _module.el.find('.progress .progress-bar')
-                    .attr('aria-valuenow', '100')
-                    .css('width', '100%');
+              .attr('aria-valuenow', '100')
+              .css('width', '100%');
           _module.el.find('.progress').hide();
           _module.dropEl.show();
           _module.el.find('.progress').hide();
@@ -22876,27 +22745,25 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
           _module.dropEl.empty();
           _editor.validate();
 
-          // primarily for testing: 
+          // primarily for testing:
           if (_module.options.callback) _module.options.callback();
         }
       },
 
       // see callbacks at https://github.com/blueimp/jQuery-File-Upload/wiki/Options
-      fileuploadfail: function(e,data) {
+      fileuploadfail: function(e, data) {
       },
 
-      progressall: function (e, data) {
-
+      progressall: function(e, data) {
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        
-        // For hiding the HTML "Drag an image here to upload." after uploading image.
-        dragImageI.innerHTML = "";       
-        
-        _module.el.find('.progress .progress-bar').css(
-          'width',
-          progress + '%'
-        ).attr('aria-valuenow', '100')
 
+        // For hiding the HTML "Drag an image here to upload." after uploading image.
+        dragImageI.innerHTML = "";
+
+        _module.el.find('.progress .progress-bar').css(
+            'width',
+            progress + '%'
+        ).attr('aria-valuenow', '100');
       }
 
     });
@@ -22911,7 +22778,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       var fileName = input.files[0].name;
       infoArea.textContent = 'Filename: ' + fileName;
     }
-    
+
     // Remove Image button
     var mainImage = document.getElementById('mainImage');
     var removeFile = document.getElementById('removeFile');
@@ -22933,66 +22800,63 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 
-  init: function( _editor , options) {
+  init: function( _editor, options) {
+    var _module = this;
 
-    var _module = this ;
-
-    _module.key = 'map_data' ;
+    _module.key = 'map_data';
     _module.options = options || _editor.options.mapModule || {};
     if (_module.options === true) _module.options = {}; // so we don't make options be /true/
-    _module.options.name = 'map' ;
-    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy" target="_blank">location privacy here »</a>' ;
-    _module._super(_editor, _module.options) ;
+    _module.options.name = 'map';
+    _module.options.instructions = 'Add a map to your note. Learn about <a href="https://publiclab.org/location-privacy" target="_blank">location privacy here »</a>';
+    _module._super(_editor, _module.options);
     _module.options.required = false;
 
-     var options = {
-       InterfaceOptions: {
-         latId: 'lat',
-         lngId: 'lng'
-       }
-     }
-
-
-     var token = "pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig";
-
-      options.tileLayerUrl = _editor.options.tileLayerUrl || 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
-
-     _module.blurredLocation = new BlurredLocation(options) ;
-
-      if (!!_editor.options.lat && !!_editor.options.lon) {
-         // show map on loading.
-        $("#map_content").show();
-        _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5 );
-      } else {
-        // hide map on loading.
-         $("#map_content").hide();
+    var options = {
+      InterfaceOptions: {
+        latId: 'lat',
+        lngId: 'lng'
       }
+    };
 
-      $("#location_button").click(function() {
-            $("#map_content").toggle();
-      });
 
-        //check if "google" is defined PLOTS2#4717
-    window.hasOwnProperty('google')
-      ? _module.blurredLocation.panMapToGeocodedLocation("placenameInput")
-      : console.log("`google` is not defined! PublicLab.MapModule.js#28");
+    var token = "pk.eyJ1Ijoianl3YXJyZW4iLCJhIjoiVzVZcGg3NCJ9.BJ6ArUPuTs1JT9Ssu3K8ig";
 
-     _module.blurredLocation.setBlurred(false) ;
+    options.tileLayerUrl = _editor.options.tileLayerUrl || 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=' + token;
 
-     _module.value = function(){
-       if($("#map_content").is(':visible')){
-         return true ;
-       }
-       else{
-         return false ;
-       }
-     }
+    _module.blurredLocation = new BlurredLocation(options);
 
-     // construct HTML additions
-     _module.build();
+    if (!!_editor.options.lat && !!_editor.options.lon) {
+      // show map on loading.
+      $("#map_content").show();
+      _module.blurredLocation.goTo(_editor.options.lat, _editor.options.lon, _editor.options.zoom || 5 );
+    } else {
+      // hide map on loading.
+      $("#map_content").hide();
+    }
 
+    $("#location_button").click(function() {
+      $("#map_content").toggle();
+    });
+
+    // check if "google" is defined PLOTS2#4717
+    window.hasOwnProperty('google') ?
+      _module.blurredLocation.panMapToGeocodedLocation("placenameInput") :
+      console.log("`google` is not defined! PublicLab.MapModule.js#28");
+
+    _module.blurredLocation.setBlurred(false);
+
+    _module.value = function() {
+      if ($("#map_content").is(':visible')) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    // construct HTML additions
+    _module.build();
   }
-}) ;
+});
 
 },{}],188:[function(require,module,exports){
 /*
@@ -23002,7 +22866,6 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
 module.exports = PublicLab.Module = Class.extend({
 
   init: function(_editor, options) {
-
     var _module = this;
 
     _module.options = options || {};
@@ -23013,53 +22876,41 @@ module.exports = PublicLab.Module = Class.extend({
     _module.el = $('.ple-module-' + _module.options.name);
 
 
-    // Construct and insert HTML, including 
+    // Construct and insert HTML, including
     // instructions, help and tips
-    _module.build = function() {    
-
-      // standard instructions location is at start of ple-module-guide 
+    _module.build = function() {
+      // standard instructions location is at start of ple-module-guide
       _module.el.find('.ple-module-guide')
-                .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
-                .append('<div class="ple-guide-minor hidden-xs hidden-sm" style = "opacity:0;"></div>');
+          .append('<p class="ple-instructions">' + _module.options.instructions + '</p>')
+          .append('<div class="ple-guide-minor hidden-xs hidden-sm" style = "opacity:0;"></div>');
 
       _module.options.guides.forEach(function(guide) {
-
         _module.el.find('.ple-guide-minor')
-                  .append('<br style="position:absolute;top:' + guide.position + 'px;" class="hidden-xs hidden-sm" />')
-                  .append('<p><i class="fa fa-' + guide.icon + '"></i>' + guide.text + '</p>');
-
+            .append('<br style="position:absolute;top:' + guide.position + 'px;" class="hidden-xs hidden-sm" />')
+            .append('<p><i class="fa fa-' + guide.icon + '"></i>' + guide.text + '</p>');
       });
- 
-    }
+    };
 
 
     // All modules must have a module.valid() method
     // which returns true by default (making them optional).
     // Eventually, we might distinguish between empty and invalid.
     _module.valid = function() {
-
       return true;
-
-    }
+    };
 
 
     // could wrap these in an events() method?
-    _module.el.find('.ple-help-minor').hide(); 
+    _module.el.find('.ple-help-minor').hide();
 
 
-    $(_module.el).mouseenter(function() { 
-
-      _module.el.find('.ple-help-minor').fadeTo(400,1);
-
+    $(_module.el).mouseenter(function() {
+      _module.el.find('.ple-help-minor').fadeTo(400, 1);
     });
 
-    $(_module.el).mouseleave(function() { 
-
-      _module.el.find('.ple-help-minor').fadeTo(400,0);
-      
+    $(_module.el).mouseleave(function() {
+      _module.el.find('.ple-help-minor').fadeTo(400, 0);
     });
-
-
   }
 
 });
@@ -23070,55 +22921,52 @@ module.exports = PublicLab.Module = Class.extend({
 */
 
 module.exports = function initAutoCenter(_module, wysiwyg) {
-
   // $('.woofmark-mode-markdown').removeClass('disabled')
 
   // create a menu option for auto center:
   $('.wk-commands').append('<a class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></a>');
-  //since chunk.selection returns null for images
+  // since chunk.selection returns null for images
 
-  $(document).ready(function(){
+  $(document).ready(function() {
     $('[data-toggle="autocenter"]').tooltip();
   });
 
   $('.wk-commands .woofmark-command-autocenter').click(function() {
-    wysiwyg.runCommand(function(chunks,mode) {
-      if(mode == "wysiwyg") { //first convert then replace
-        chunks.selection = ("->"+chunks.selection+"<-")
+    wysiwyg.runCommand(function(chunks, mode) {
+      if (mode == "wysiwyg") { // first convert then replace
+        chunks.selection = ("->"+chunks.selection+"<-");
         var openingTag = /->/g;
         var closingTag = /<-/g;
-        chunks.selection = chunks.selection.replace(openingTag,"<center>")
-        chunks.selection = chunks.selection.replace(closingTag,"</center>")
-      }
-      else if (mode == "markdown") {
-        chunks.selection = _module.wysiwyg.parseHTML("<center>"+chunks.selection+"</center>")
+        chunks.selection = chunks.selection.replace(openingTag, "<center>");
+        chunks.selection = chunks.selection.replace(closingTag, "</center>");
+      } else if (mode == "markdown") {
+        chunks.selection = _module.wysiwyg.parseHTML("<center>"+chunks.selection+"</center>");
       }
 
       _module.afterParse();
-      })
-  })
-}
+    });
+  });
+};
 
 },{}],190:[function(require,module,exports){
-/* 
+/*
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
-*/   
+*/
 
 module.exports = function initEmbed(_module, wysiwyg) {
-
   // create a menu option for embeds:
   $('.wk-commands').append('<a class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></a>');
-  
-  $(document).ready(function(){
-    $('[data-toggle="youtube"]').tooltip();   
+
+  $(document).ready(function() {
+    $('[data-toggle="youtube"]').tooltip();
   });
 
   $('.wk-commands .woofmark-command-embed').click(function() {
-    wysiwyg.runCommand(function (chunks, mode) {
+    wysiwyg.runCommand(function(chunks, mode) {
       var modalResult =
         "\n\n\n" +
         prompt(
-          "Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>"
+            "Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>"
         ) +
         "\n";
 
@@ -23128,22 +22976,19 @@ module.exports = function initEmbed(_module, wysiwyg) {
       chunks.before += _module.wysiwyg.parseMarkdown(modalResult); // newlines before and after
       _module.afterParse(); // tell editor we're done here
     });
-
   });
-
-}
+};
 
 },{}],191:[function(require,module,exports){
-/* 
+/*
    Horizontal Rule insertion: ****
-*/   
+*/
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
-
   // create a menu option for horizontal rules:
   $('.wk-commands').append('<a class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></a>');
 
-  $(document).ready(function(){
+  $(document).ready(function() {
     $('[data-toggle="horizontal"]').tooltip();
   });
 
@@ -23151,14 +22996,11 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
     wysiwyg.runCommand(function(chunks, mode) {
       chunks.before += _module.wysiwyg.parseMarkdown("\n****\n"); // newlines before and after
       _module.afterParse(); // tell editor we're done here
-  
+
       // setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
-
     });
-
   });
-
-}
+};
 
 },{}],192:[function(require,module,exports){
 /*
@@ -23171,105 +23013,93 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
 */
 
 module.exports = function initTables(_module, wysiwyg) {
-
   function createTable(cols, rows) {
-
     cols = cols || 3;
     rows = rows || 2;
 
     var table = "|";
 
     for (var col = 0; col < cols; col++) {
-
       table = table + " col" + col + " |";
-
     }
 
     table = table + "\n|";
 
     for (var col = 0; col < cols; col++) {
-
       table = table + "------|";
-
     }
 
     table = table + "\n";
 
     for (var row = 0; row < rows; row++) {
-
       table = table + "|";
 
       for (var col = 0; col < cols; col++) {
-     
         table = table + " cell |";
-     
       }
 
       table = table + "\n";
-
     }
 
     return table + "\n";
-
   }
 
 
   // create a submenu for sizing tables
   $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
 
-  $(document).ready(function(){
-    $('[data-toggle="table"]').tooltip();   
+  $(document).ready(function() {
+    $('[data-toggle="table"]').tooltip();
   });
 
-  var builder  = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-        builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
-        builder += ' x ';
-        builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
-        builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
-        builder += '</div>';
+  var builder = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
+  builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+  builder += ' x ';
+  builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+  builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+  builder += '</div>';
 
-    $('.woofmark-command-table').attr('data-content', builder);
+  $('.woofmark-command-table').attr('data-content', builder);
 
 
-    $(document).on('click', '#incRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) + 1 ); });
-    $(document).on('click', '#decRows', function(){ $("#tableRows").text( Number($("#tableRows").text()) - 1 ); });
-    $(document).on('click', '#incCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) + 1 ); });
-    $(document).on('click', '#decCols', function(){ $("#tableCols").text( Number($("#tableCols").text()) - 1 ); });
+  $(document).on('click', '#incRows', function() {
+    $("#tableRows").text( Number($("#tableRows").text()) + 1 );
+  });
+  $(document).on('click', '#decRows', function() {
+    $("#tableRows").text( Number($("#tableRows").text()) - 1 );
+  });
+  $(document).on('click', '#incCols', function() {
+    $("#tableCols").text( Number($("#tableCols").text()) + 1 );
+  });
+  $(document).on('click', '#decCols', function() {
+    $("#tableCols").text( Number($("#tableCols").text()) - 1 );
+  });
 
   $('.woofmark-command-table').attr('data-content', builder);
   $('.woofmark-command-table').attr('data-container', 'body');
-  $('.woofmark-command-table').attr('data-placement','top');
+  $('.woofmark-command-table').attr('data-placement', 'top');
 
-  $('.woofmark-command-table').popover({ html : true });
+  $('.woofmark-command-table').popover({html: true});
 
   $('.wk-commands .woofmark-command-table').click(function() {
-
     $('.ple-table-size').click(function() {
-
       wysiwyg.runCommand(function(chunks, mode) {
-
         var table = createTable(
-          +Number($('.ple-table-popover #tableCols').text()),
-          +Number($('.ple-table-popover #tableRows').text())
+            +Number($('.ple-table-popover #tableCols').text()),
+            +Number($('.ple-table-popover #tableRows').text())
         );
 
         if (mode === 'markdown') chunks.before += table;
         else {
-
           chunks.before += _module.wysiwyg.parseMarkdown(table);
           setTimeout(_module.afterParse, 0); // do this asynchronously so it applies Boostrap table styling
-
         }
 
         $('.woofmark-command-table').popover('toggle');
-
       });
-
     });
-
   });
-
-}
+};
 
 },{}],193:[function(require,module,exports){
 /*
@@ -23323,9 +23153,9 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module.editable = _module.wysiwyg.editable;
     _module.textarea = _module.wysiwyg.textarea;
 
-    if (_module.wysiwyg.mode == "wysiwyg")
+    if (_module.wysiwyg.mode == "wysiwyg") {
       _module.focusables.push($(_module.editable));
-    else _module.focusables.push($(_module.textarea));
+    } else _module.focusables.push($(_module.textarea));
 
     _module.value = function(text) {
       // woofmark automatically returns the markdown, not rich text:
@@ -23339,7 +23169,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     _module.value(_module.options.initialValue);
 
-    _module.valid = function () {
+    _module.valid = function() {
       var postBody = _module.value().trim();
       var isValid = postBody.length >= 10;
 
@@ -23367,8 +23197,8 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     _module.afterParse = function() {
       // bootstrap styling for plots2
       $(_module.wysiwyg.editable)
-        .find("table")
-        .addClass("table");
+          .find("table")
+          .addClass("table");
     };
     _module.afterParse();
 
@@ -23386,10 +23216,10 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     };
 
     // caused wild jumpy behavior - https://github.com/publiclab/PublicLab.Editor/issues/114
-    //var growTextarea = require('grow-textarea');
+    // var growTextarea = require('grow-textarea');
     // Make textarea match content height
     _module.resize = function() {
-      //growTextarea(_module.options.textarea, { extra: 10 });
+      // growTextarea(_module.options.textarea, { extra: 10 });
     };
 
     _module.resize();
@@ -23418,7 +23248,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         var message =
           "Looks like you're using <a href='http://wikipedia.org/en/Markdown'>Markdown</a> while in Rich Text mode. If you'd like to continue in Markdown mode, <a class='alert-change-mode' href='javascript:void();'>click here</a>.";
         $(_module.wysiwyg.editable).after(
-          "<div id='scrollpointMD_" +
+            "<div id='scrollpointMD_" +
             timestamp +
             "' class='markdown-warning alert alert-warning'>" +
             message +
@@ -23429,10 +23259,10 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         });
         var refer = "#scrollpointMD_" + timestamp;
         $("html, body").animate(
-          {
-            scrollTop: $(refer).offset().top
-          },
-          2000
+            {
+              scrollTop: $(refer).offset().top
+            },
+            2000
         );
       }
     });
@@ -23446,12 +23276,12 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         _module.wysiwyg.editable.innerHTML.match(closingTag)
       ) {
         _module.wysiwyg.editable.innerHTML = _module.wysiwyg.editable.innerHTML.replace(
-          openingTag,
-          "<center>"
+            openingTag,
+            "<center>"
         );
         _module.wysiwyg.editable.innerHTML = _module.wysiwyg.editable.innerHTML.replace(
-          closingTag,
-          "</center>"
+            closingTag,
+            "</center>"
         );
       }
     };
@@ -23474,11 +23304,11 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
             diRegEx[0] +
             "'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
           _module.wysiwyg.editable.innerHTML = _module.wysiwyg.editable.innerHTML.replace(
-            regexp,
-            ""
+              regexp,
+              ""
           );
           $(_module.wysiwyg.editable).after(
-            "<div id='scrollpointDURI_" +
+              "<div id='scrollpointDURI_" +
               timestamp +
               "' class='data-urls-warning alert alert-warning'>" +
               message +
@@ -23486,10 +23316,10 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
           );
           var refer = "#scrollpointDURI_" + timestamp;
           $("html, body").animate(
-            {
-              scrollTop: $(refer).offset().top
-            },
-            2000
+              {
+                scrollTop: $(refer).offset().top
+              },
+              2000
           );
         }
       }
@@ -23507,11 +23337,11 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         var message =
           "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
         _module.wysiwyg.textarea.innerHTML = _module.wysiwyg.textarea.innerHTML.replace(
-          regexp,
-          ""
+            regexp,
+            ""
         );
         $(_module.wysiwyg.textarea).after(
-          "<div id='scrollpointBold_" +
+            "<div id='scrollpointBold_" +
             timestamp +
             "' class='invalid-bold-tags-warning alert alert-warning'>" +
             message +
@@ -23519,10 +23349,10 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         );
         var refer = "#scrollpointBold_" + timestamp;
         $("html, body").animate(
-          {
-            scrollTop: $(refer).offset().top
-          },
-          2000
+            {
+              scrollTop: $(refer).offset().top
+            },
+            2000
         );
       }
     });
@@ -23530,16 +23360,16 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     crossvent.add(_module.wysiwyg.textarea, "keyup", function(e) {
       _editor.validate();
       var regexp = /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
-      //checks for the following pattern
-      //<double asterisks><zero or one space>
-      //<atleast one new lines>
-      //<atleast one hash><include atleast one characters that is NOT an asterisk><double asterisks>
+      // checks for the following pattern
+      // <double asterisks><zero or one space>
+      // <atleast one new lines>
+      // <atleast one hash><include atleast one characters that is NOT an asterisk><double asterisks>
       if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
         _module.value(
-          _module
-            .value()
-            .match(regexp)[0]
-            .substr(3, _module.value().match(regexp)[0].length - 5)
+            _module
+                .value()
+                .match(regexp)[0]
+                .substr(3, _module.value().match(regexp)[0].length - 5)
         );
       }
     });
@@ -23559,7 +23389,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     // using woofmark's special event system, crossvent
     // -- move this into the Woofmark adapter initializer
     crossvent.add(_module.options.textarea, "woofmark-mode-change", function(
-      e
+        e
     ) {
       _module.resize();
 
@@ -23569,11 +23399,11 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       document.body.scrollTop = _module.scrollTop;
       // might need to adjust for markdown/rich text not
       // taking up same amount of space, if menu is below _editor...
-      //if (_editor.wysiwyg.mode == "markdown")
+      // if (_editor.wysiwyg.mode == "markdown")
 
-      if (_module.wysiwyg.mode == "wysiwyg")
+      if (_module.wysiwyg.mode == "wysiwyg") {
         _module.focusables[0] = $(_module.editable);
-      else _module.focusables[0] = $(_module.textarea);
+      } else _module.focusables[0] = $(_module.textarea);
     });
 
     $(_module.options.textarea).on("change keydown", function(e) {
@@ -23581,27 +23411,27 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     });
 
     // if scrolling through the editor text area the toolbar will float
-var wk_c = document.getElementsByClassName("wk-commands")[0];
+    var wkC = document.getElementsByClassName("wk-commands")[0];
 
-$(window).scroll(function() {
-  var textAreaRect = document
-    .getElementsByClassName("wk-container")[0]
-    .getBoundingClientRect();
-    var footerRect = document
-    .getElementsByClassName("ple-footer")[0]
-    .getBoundingClientRect().height;
+    $(window).scroll(function() {
+      var textAreaRect = document
+          .getElementsByClassName("wk-container")[0]
+          .getBoundingClientRect();
+      var footerRect = document
+          .getElementsByClassName("ple-footer")[0]
+          .getBoundingClientRect().height;
 
-    if (
-      textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
-    ) {
-      wk_c.style.position = "fixed";
-      wk_c.style.bottom = footerRect + "px";
-      wk_c.style.zIndex= 2;
-        } else {
-      wk_c.style.position = "relative";
-      wk_c.style.bottom = 0 + "px";
-    }
-});
+      if (
+        textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+      ) {
+        wkC.style.position = "fixed";
+        wkC.style.bottom = footerRect + "px";
+        wkC.style.zIndex= 2;
+      } else {
+        wkC.style.position = "relative";
+        wkC.style.bottom = 0 + "px";
+      }
+    });
   }
 });
 
@@ -23613,74 +23443,64 @@ $(window).scroll(function() {
 module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-
     var _module = this;
 
     _module.key = 'tags';
     _module.options = options || _editor.options.tagsModule || {};
-    _module.options.name         = 'tags';
+    _module.options.name = 'tags';
     _module.options.instructions = 'Tags relate your work to others\' posts. <a href="https://publiclab.org/wiki/power-tags" target="_blank">Read more &raquo;</a>';
-    _module.options.recentTags = [ 'balloon-mapping', 'water-quality' ];
-    _module.options.local = _module.options.local || ['balloon-mapping','kite-mapping','air-quality','spectrometer','water-quality'];
+    _module.options.recentTags = ['balloon-mapping', 'water-quality'];
+    _module.options.local = _module.options.local || ['balloon-mapping', 'kite-mapping', 'air-quality', 'spectrometer', 'water-quality'];
     _module.options.prefetch = _module.options.prefetch || null;
 
     _module._super(_editor, _module.options);
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
-    _module.options.required     = false;
+    _module.options.required = false;
     _module.options.instructions = 'Tags connect your work with similar content, and make your work more visible. <a href="https://publiclab.org/wiki/power-tags" target="_blank">Read more &raquo;</a>';
 
     _module.value = function(text) {
-
       if (typeof text == 'string') {
-
         _module.el.find('input').val(text);
-
       }
 
       var tags = _module.el.find('input').val();
 
-      if (_editor.data.hasOwnProperty(_module.key)
-       && _editor.data[_module.key] !== null
-       && _editor.data[_module.key] !== '') {
-
+      if (_editor.data.hasOwnProperty(_module.key) &&
+       _editor.data[_module.key] !== null &&
+       _editor.data[_module.key] !== '') {
         tags = _editor.data[_module.key] + ',' + tags;
-
       }
 
       return tags;
-
-    }
+    };
 
     _module.value(_module.options.initialValue);
 
 
     // server-side validation for now, and not required, so no reqs
     _module.valid = function() {
-
       return true;
-
-    }
+    };
 
 
     // Overrides default build method
     _module.build = function() {
-
       // custom location -- just under the input
       _module.el.find('.ple-module-content')
-                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+          .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
 
       _module.el.find('.ple-module-content .ple-help-minor')
-                .html(_module.options.instructions);
+          .html(_module.options.instructions);
 
       // https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
       _module.engine = new Bloodhound({
         local: _module.options.local,
         remote: _module.options.remote,
         datumTokenizer: Bloodhound.tokenizers.whitespace,
-//        datumTokenizer: function(d) {
-//          return Bloodhound.tokenizers.whitespace(d.value);
-//        },
+        //        datumTokenizer: function(d) {
+        //          return Bloodhound.tokenizers.whitespace(d.value);
+        //        },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: _module.options.prefetch
       });
@@ -23688,7 +23508,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       _module.engine.initialize();
 
       _module.el.find('input').tokenfield({
-        typeahead: [null, { source: _module.engine.ttAdapter() }],
+        typeahead: [null, {source: _module.engine.ttAdapter()}],
         delimiter: ', '
       });
 
@@ -23701,41 +23521,35 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
       // (this is application-specific)
 
       _module.el.find('.ple-module-content')
-                .append('<p class="ple-help-minor">Recent tags: <span class="ple-recent-tags"></span></p>');
+          .append('<p class="ple-help-minor">Recent tags: <span class="ple-recent-tags"></span></p>');
 
       var tags = [];
 
       _module.options.recentTags.forEach(function(tag) {
-
         tags.push('<a>' + tag + '</a>');
-
       });
 
       _module.el.find('.ple-recent-tags')
-                .append(tags.join(', '))
+          .append(tags.join(', '));
 
-      _module.el.find('.ple-help-minor').css('opacity','0');
+      _module.el.find('.ple-help-minor').css('opacity', '0');
 
-      //sugggested tag name when clicked will get inputted into tag input field
+      // sugggested tag name when clicked will get inputted into tag input field
       $('.ple-recent-tags a').click(function() {
         var _tag = this.textContent;
-        _module.el.find('input').tokenfield('createToken', _tag) ;
-        
-      })
-
-    }
+        _module.el.find('input').tokenfield('createToken', _tag);
+      });
+    };
 
 
     // construct HTML additions
     _module.build();
-
-
   }
 
 });
 
 },{}],195:[function(require,module,exports){
-/* Displays related posts to associate this one with. 
+/* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
 
@@ -23761,29 +23575,24 @@ Results should be in following JSON format:
 
  */
 module.exports = function relatedNodes(module) {
-
   var relatedEl;
 
   build();
-  bindEvents()
+  bindEvents();
 
   // make an area for "related posts" to connect to
-  function build() { 
-
+  function build() {
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
     relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to alert those contributors.</p><hr style="margin: 4px 0;" />');
-
   }
 
   // expects array of results in format:
   // { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
-  function show(relatedResults) { 
-
+  function show(relatedResults) {
     relatedEl.find('.result').remove();
 
     relatedResults.slice(0, 8).forEach(function(result) {
-
       relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
       relatedEl.find('.result-' + result.id + ' .title').html(result.title);
       relatedEl.find('.result-' + result.id + ' .title').attr('href', result.url);
@@ -23796,46 +23605,35 @@ module.exports = function relatedNodes(module) {
         // editor.tagsModule.el.find('input').tokenfield('createToken', 'notify:' + result.author);
         $('.result-' + result.id).remove();
       });
-
     });
-
   }
 
   var fetchRelated = module.options.fetchRelated || function fetchRelated(show) {
-
     // example
     show([
-      { id: 1, title: 'A related post',       url: '/', author: 'eustatic'},
-      { id: 2, title: 'Another related post', url: '/', author: 'stevie'},
-      { id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
+      {id: 1, title: 'A related post', url: '/', author: 'eustatic'},
+      {id: 2, title: 'Another related post', url: '/', author: 'stevie'},
+      {id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
     ]);
-
-  }
+  };
 
   function bindEvents() {
-
     $(module.el).find('input').keydown(function(e) {
- 
       if (module.options.suggestRelated) {
         relatedEl.fadeIn();
         fetchRelated(show);
       }
- 
     });
- 
+
     $(module.el).find('input').focusout(function(e) {
- 
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
       }
- 
     });
-
   }
 
   return relatedEl;
-
-}
+};
 
 },{}],196:[function(require,module,exports){
 /*
@@ -23845,7 +23643,6 @@ module.exports = function relatedNodes(module) {
 module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
   init: function(_editor, options) {
-
     var _module = this;
 
     _module.key = 'title';
@@ -23861,81 +23658,65 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.focusables.push(_module.el.find('input'));
 
     _module.options.initialValue = _editor.options[_module.key] || _module.el.find('input').val();
-    _module.options.required     = true;
+    _module.options.required = true;
     _module.options.instructions = 'Titles draw others into your work. Choose one that provides some context. <a href="" target="_blank">Read more &raquo;</a>';
 
     _module.value = function(text) {
-
       if (typeof text == 'string') {
-
         _module.el.find('input').val(text);
-
       }
 
       return _module.el.find('input').val();
-
-    }
+    };
 
     _module.value(_module.options.initialValue);
 
 
     _module.error = function(text, type) {
-
       type = type || 'error';
 
       _module.el.find('.ple-module-content .ple-help-minor')
-                .html(text);
+          .html(text);
       _module.el.find('input').parent()
-                .addClass('has-' + type);
-
-    }
+          .addClass('has-' + type);
+    };
 
 
     _module.valid = function() {
-
       // must not be empty, for starters
-      var value = _module.value(),
-          valid = (value.trim() != "");
+      var value = _module.value();
+      var valid = (value.trim() != "");
 
-      //valid = valid && (value.match(/\.|,|"|'/) == null);
+      // valid = valid && (value.match(/\.|,|"|'/) == null);
       // we could discourage too much punctuation, or titles that are too long, here
 
       if (!valid && value != "") {
-
         _module.error('Must be formatted correctly.');
- 
       } else if (value && value.length > 45) {
-
         _module.error('Getting a bit long!', 'warning');
-
       } else {
-
         _module.el.find('.ple-module-content .ple-help-minor')
-                  .html(_module.options.instructions);
+            .html(_module.options.instructions);
         _module.el.find('input').parent()
-                  .removeClass('has-error')
-                  .removeClass('has-warning');
-
+            .removeClass('has-error')
+            .removeClass('has-warning');
       }
 
       return valid;
-
-    }
+    };
 
 
     // Overrides default build method
-    _module.build = function() {    
-
+    _module.build = function() {
       // custom location -- just under the title input
       _module.el.find('.ple-module-content')
-                .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
+          .append('<p class="ple-help"><span class="ple-help-minor"></span></p>');
 
       _module.el.find('.ple-module-content .ple-help-minor')
-                .html(_module.options.instructions);
+          .html(_module.options.instructions);
 
-      _module.el.find('.ple-help-minor').css('opacity','0');
-
-    }
+      _module.el.find('.ple-help-minor').css('opacity', '0');
+    };
 
 
     // construct HTML additions
@@ -23943,27 +23724,22 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 
 
     _module.el.find('.ple-module-guide').prepend('<div style="display:none;" class="ple-menu-more ple-help-minor pull-right"></div>');
-    
+
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
-    //_module.menuEl.append('<a class="btn btn-default">...</a>');
+    // _module.menuEl.append('<a class="btn btn-default">...</a>');
 
     $(_module.el).find('input').keydown(function(e) {
-
       _editor.validate();
-
     });
 
     // make this hide only if another section is clicked, using a 'not' pseudoselector
     $(_module.el).find('input').focusout(function(e) {
-
       _editor.validate();
-
     });
 
     _module.relatedEl = require('./PublicLab.TitleModule.Related.js')(_module);
-
   }
 
 });
