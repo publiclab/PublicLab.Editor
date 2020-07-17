@@ -50,7 +50,6 @@
     "leaflet-blurred-location": "^1.5.1",
     "megamark": "3.3.0",
     "moment": "~2.27.0",
-    "puppeteer": "^2.1.0",
     "resig-class": "~1.0.0",
     "typeahead.js-browserify": "~1.0.7",
     "woofmark": "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy",
@@ -68,7 +67,8 @@
     "jasmine-jquery": "~2.1.1",
     "jest": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
-    "matchdep": "^2.0.0"
+    "matchdep": "^2.0.0",
+    "puppeteer": "^2.1.0"
   },
   "husky": {
     "hooks": {
