@@ -7,6 +7,10 @@ beforeAll(async () => {
 
 describe('Bold Text', () => {
   test('Adds strong text in rich text mode', async () => {
+    // switches to wysiwyg mode if it is in markdown mode
+    if (await page.evaluate(() => $(".woofmark-mode-markdown").is(":disabled"))) {
+      await page.click('.woofmark-mode-wysiwyg');
+    }
     // clicks on bold button and checks if 'strong text' is added in the editor
     await page.waitForSelector('.ple-module-body');
     await page.click('.woofmark-command-bold');
