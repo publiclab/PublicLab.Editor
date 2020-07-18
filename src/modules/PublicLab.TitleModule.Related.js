@@ -34,13 +34,11 @@ module.exports = function relatedNodes(module) {
 
   // make an area for "related posts" to connect to
   function build() {
-
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
     relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to tag the related work.</p><hr style="margin: 4px 0;" />');
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-added"></div>');
     addedRelatedEl = module.el.find('.ple-title-added');
-
   }
 
   // showResult() will append the required tags in the particular container
@@ -59,9 +57,9 @@ module.exports = function relatedNodes(module) {
     // For removing tags
     $('.addedresult-' + addedResult.id + ' .remove-tag').click(function() {
       var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id + '"]'));
-      var y_axis = window.scrollY;
+      var yAxis = window.scrollY;
       selectedToken.find('.close').trigger('click');
-      window.scrollTo(window.scrollX, y_axis);
+      window.scrollTo(window.scrollX, yAxis);
       addedRelatedPost = addedRelatedPost.replace(addedResult.id, ''); // remove tags from tagIntergrationModule.
       $('.addedresult-' + addedResult.id).remove();
       showRelatedResult(relatedResults);
@@ -117,18 +115,16 @@ module.exports = function relatedNodes(module) {
   }
 
   var fetchRelated = module.options.fetchRelated || function fetchRelated(showRelatedResult) {
-
     // example
     showRelatedResult([
-      { id: 1, title: 'A related post', url: '/', author: 'eustatic' },
-      { id: 2, title: 'Another related post', url: '/', author: 'stevie' },
-      { id: 3, title: 'A third related post', url: '/', author: 'bsugar' }
+      {id: 1, title: 'A related post', url: '/', author: 'eustatic'},
+      {id: 2, title: 'Another related post', url: '/', author: 'stevie'},
+      {id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
 
     ]);
   };
 
   function bindEvents() {
-
     function showSections() {
       relatedEl.fadeIn();
       addedRelatedEl.fadeIn();
@@ -137,8 +133,6 @@ module.exports = function relatedNodes(module) {
 
     // show the related results on keydown or onclick.
     $(module.el).find('input').keydown(function(e) {
-
-
       if (module.options.suggestRelated) {
         relatedResultShow = true;
         showSections();
@@ -146,21 +140,16 @@ module.exports = function relatedNodes(module) {
           if (relatedResultShow) {
             showSections();
           }
-
         });
       }
-
     });
 
     // related content will be hidden on mouseleave
     $(module.el).find('.ple-module-content').mouseleave(function(e) {
-
-
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
         addedRelatedEl.fadeOut();
       }
-
     });
   }
 
