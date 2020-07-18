@@ -153,12 +153,12 @@ module.exports = PublicLab.History = Class.extend({
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
               dateClasses.push(log.dateClass);
-              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-default clear">clear</a></p>';
+              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-outline-secondary clear">clear</a></p>';
             }
 
             html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
             html += '<b>' + i + '</b>: ';
-            html += '<a class="btn btn-xs btn-default revert">revert</a> <a class="btn btn-xs btn-default clear">clear</a> | Preview: ';
+            html += '<a class="btn btn-xs btn-outline-secondary revert">revert</a> <a class="btn btn-xs btn-outline-secondary clear">clear</a> | Preview: ';
             html += time;
             html += ' -- <i class="preview">' + log.text.substr(0, 30) + '...</i>';
             html += '</p>';

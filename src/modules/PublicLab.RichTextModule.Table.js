@@ -41,7 +41,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();

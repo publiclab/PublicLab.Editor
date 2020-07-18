@@ -16,7 +16,6 @@
       rel="stylesheet"
     />
     <script src="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
-
     <link
       href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -39,8 +38,8 @@
     />
 
     <link href="../dist/PublicLab.Editor.css" rel="stylesheet" />
-
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- required for TagsModule -->
@@ -72,6 +71,8 @@
 
         <!-- selector module -->
         <div class="container ple-type">
+          <div class="row">
+          <div class="col-md-5 col-md-push-4"></div>
           <div class="col-md-5 col-md-push-4">
             <div class="row">
               <div class="col-xs-10">
@@ -93,6 +94,7 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
         <!-- end selector module -->
         <p>
@@ -107,6 +109,7 @@
       <div class="ple-content">
         <!-- title module -->
         <div class="ple-module-title ple-module container">
+          <div class="row">
           <div class="ple-module-guide col-md-3"><h2>1</h2></div>
 
           <div class="ple-module-content col-md-9">
@@ -116,11 +119,13 @@
               placeholder="Title"
             />
           </div>
+          </div>
         </div>
         <!-- end title module -->
 
         <!-- main_image module -->
         <div class="ple-module-main_image ple-module container">
+          <div class="row">
           <div class="ple-module-guide col-md-3"><h2>2</h2></div>
 
           <div class="ple-module-content col-md-9 container">
@@ -152,15 +157,17 @@
               </p>
             </div>
           </div>
+          </div>
         </div>
         <!-- end main_image module -->
 
         <!-- Map Module start -->
         <div class="ple-module-map ple-module container">
+          <div class="row">
           <div class="ple-module-guide col-md-3"><h2>3</h2></div>
 
           <div class="ple-module-content col-md-9">
-            <button id="location_button" class="btn btn-lg btn-default">
+            <button id="location_button" class="btn btn-lg btn-outline-secondary">
               <i class="fa fa-map-marker" aria-hidden="true"></i> Add a location
             </button>
             <p class="ple-help">
@@ -212,7 +219,7 @@
                     </div>
                   </div>
                   <br>
-                  <p><button class="btn btn-lg btn-default" onclick="locateUserHandler()">
+                  <p><button class="btn btn-lg btn-outline-secondary" onclick="locateUserHandler()">
                     <div id="ldi-geocode-button">          
                       <i class="fa fa-compass"></i> Use current location
                     </div>
@@ -228,11 +235,13 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
         <!-- Map Module end -->
 
         <!-- body module -->
         <div class="ple-module-body ple-module container">
+          <div class="row">
           <div class="ple-module-guide col-md-3"><h2>4</h2></div>
 
           <div class="ple-module-content col-md-9 container">
@@ -262,11 +271,13 @@ var myVariable = 4;
 ````</textarea
             >
           </div>
+          </div>
         </div>
         <!-- end body module -->
 
         <!-- tags module -->
         <div class="ple-module-tags ple-module container">
+          <div class="row">
           <div class="ple-module-guide col-md-3"><h2>5</h2></div>
 
           <div class="ple-module-content col-md-9">
@@ -276,34 +287,37 @@ var myVariable = 4;
               placeholder="balloon-mapping, water-quality..."
             />
           </div>
+          </div>
         </div>
         <!-- end tags module -->
 
         <!-- multi module -->
         <div class="ple-module-multi ple-module container">
+          <div class="row">
           <div class="ple-module-guide col-md-3"><p>Extras</p></div>
 
           <div class="ple-module-content col-md-9">
             <div class="btn-group">
-              <a class="btn btn-lg btn-default">
+              <a class="btn btn-lg btn-outline-secondary">
                 <i class="fa fa-comment-o"></i> Invite responses
                 <i class="fa fa-caret-down"></i>
               </a>
-              <a class="btn btn-lg btn-default">
+              <a class="btn btn-lg btn-outline-secondary">
                 <i class="fa fa-envelope-o"></i> Event
                 <i class="fa fa-caret-down"></i>
               </a>
-              <a class="btn btn-lg btn-default">
+              <a class="btn btn-lg btn-outline-secondary">
                 <i class="fa fa-map-o"></i> Map
               </a>
-              <a class="btn btn-lg btn-default">
+              <a class="btn btn-lg btn-outline-secondary">
                 <i class="fa fa-line-chart"></i> Chart
               </a>
-              <a class="btn btn-lg btn-default">
+              <a class="btn btn-lg btn-outline-secondary">
                 More <i class="fa fa-caret-down"></i>
               </a>
             </div>
           </div>
+        </div>
         </div>
         <!-- end multi module -->
       </div>
@@ -323,7 +337,7 @@ var myVariable = 4;
           -->
         </div>
 
-        <button class="btn btn-lg btn-default btn-more">...</button>
+        <button class="btn btn-lg btn-outline-secondary btn-more">...</button>
 
         <span>
           &nbsp; By publishing, you agree to
