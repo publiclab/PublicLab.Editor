@@ -35,4 +35,12 @@ describe("TagsModule", function() {
     expect(editor.data[module.key]).toBe('first');
     expect(module.value()).toBe('first,cool,rad');
   });
+
+  it("remove value to 'tags' ", function() {
+    module.value('');
+    editor.data[module.key] = '';
+    expect(editor.data.hasOwnProperty(module.key)).toBe(true);
+    expect(editor.data[module.key]).toBe('');
+    expect(module.value()).toBe('');
+  });
 });
