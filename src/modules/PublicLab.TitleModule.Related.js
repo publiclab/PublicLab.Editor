@@ -26,7 +26,7 @@ Results should be in following JSON format:
 module.exports = function relatedNodes(module) {
   var relatedEl;
   var addedRelatedEl;
-  var addedRelatedPost = 'addedTitles';
+  var addedRelatedPost = [];
   var relatedResultShow = false;
 
   build();
@@ -34,13 +34,11 @@ module.exports = function relatedNodes(module) {
 
   // make an area for "related posts" to connect to
   function build() {
-
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-related"></div>');
     relatedEl = module.el.find('.ple-title-related');
     relatedEl.append('<p class="ple-help">Does your work relate to one of these? Click to tag the related work.</p><hr style="margin: 4px 0;" />');
     module.el.find('.ple-module-content').append('<div style="display:none;" class="ple-title-added"></div>');
     addedRelatedEl = module.el.find('.ple-title-added');
-
   }
 
   // showResult() will append the required tags in the particular container
@@ -58,14 +56,15 @@ module.exports = function relatedNodes(module) {
 
     // For removing tags
     $('.addedresult-' + addedResult.id + ' .remove-tag').click(function() {
+      var addRelatedPostIndex = addedRelatedPost.indexOf(addedResult.id);
+      addedRelatedPost.splice(addRelatedPostIndex, 1);// remove tags from tagIntergrationModule.
       var selectedToken = (editor.tagsModule.el.find('.token[data-value="response:' + addedResult.id + '"]'));
-      var y_axis = window.scrollY;
+      var yAxis = window.scrollY;
       selectedToken.find('.close').trigger('click');
-      window.scrollTo(window.scrollX, y_axis);
-      addedRelatedPost = addedRelatedPost.replace(addedResult.id, ''); // remove tags from tagIntergrationModule.
+      window.scrollTo(window.scrollX, yAxis);
       $('.addedresult-' + addedResult.id).remove();
       showRelatedResult(relatedResults);
-      if (addedRelatedPost === 'addedTitles') {
+      if (addedRelatedPost.length === 0) {
         $('.related-post').remove(); // removing the tag from Realted Post section.
       }
     });
@@ -77,23 +76,21 @@ module.exports = function relatedNodes(module) {
     relatedEl.find('.result').remove();
     // If tag removed from TagModule
     editor.tagsModule.el.find('input').on('tokenfield:removedtoken', function(e) {
-      var id = (e.attrs.value).replace('response:', '');
+      var id = parseInt((e.attrs.value).replace('response:', ''));
       if (addedRelatedPost.includes(id)) {
-        addedRelatedPost = addedRelatedPost.replace(id, '');
+        var addRelatedPostIndex = addedRelatedPost.indexOf(id);
+        if (addRelatedPostIndex != -1) {
+          addedRelatedPost.splice(addRelatedPostIndex, 1);
+        }
         $('.addedresult-' + id).remove();
         showRelatedResult(relatedResults);
-        if (addedRelatedPost === 'addedTitles') {
+        if (addedRelatedPost.length === 0 ) {
           $('.related-post').remove();
         }
       }
     });
-
     relatedResults.slice(0, 8).forEach(function(result) {
-      var showRelated = false;
-      if (!(addedRelatedPost.includes(result.id))) {
-        showRelated = true;
-      }
-      if (showRelated) {
+      if (!(addedRelatedPost.includes(parseInt(result.id)))) {
         resultClass = '.result-' + result.id;
         relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-outline-secondary btn-sm add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
         showResults(relatedEl, result, resultClass);
@@ -103,12 +100,12 @@ module.exports = function relatedNodes(module) {
 
       $('.result-' + result.id + ' .add-tag').click(function() {
         editor.tagsModule.el.find('input').tokenfield('createToken', 'response:' + result.id);
-        if (addedRelatedPost === 'addedTitles') {
+        if (addedRelatedPost.length === 0) {
           addedRelatedEl.append('<hr class="related-post" style="margin: 4px 0;" /><p class="ple-help related-post">Related Posts</p>');
         }
         // pending https://github.com/publiclab/plots2/issues/646
         // editor.tagsModule.el.find('input').tokenfield('createToken', 'notify:' + result.author);
-        addedRelatedPost += result.id;
+        addedRelatedPost.push(result.id);
         showAdded(result, relatedResults);
 
         $('.result-' + result.id).remove();
@@ -117,18 +114,16 @@ module.exports = function relatedNodes(module) {
   }
 
   var fetchRelated = module.options.fetchRelated || function fetchRelated(showRelatedResult) {
-
     // example
     showRelatedResult([
-      { id: 1, title: 'A related post', url: '/', author: 'eustatic' },
-      { id: 2, title: 'Another related post', url: '/', author: 'stevie' },
-      { id: 3, title: 'A third related post', url: '/', author: 'bsugar' }
+      {id: 1, title: 'A related post', url: '/', author: 'eustatic'},
+      {id: 2, title: 'Another related post', url: '/', author: 'stevie'},
+      {id: 3, title: 'A third related post', url: '/', author: 'bsugar'}
 
     ]);
   };
 
   function bindEvents() {
-
     function showSections() {
       relatedEl.fadeIn();
       addedRelatedEl.fadeIn();
@@ -137,8 +132,6 @@ module.exports = function relatedNodes(module) {
 
     // show the related results on keydown or onclick.
     $(module.el).find('input').keydown(function(e) {
-
-
       if (module.options.suggestRelated) {
         relatedResultShow = true;
         showSections();
@@ -146,21 +139,16 @@ module.exports = function relatedNodes(module) {
           if (relatedResultShow) {
             showSections();
           }
-
         });
       }
-
     });
 
     // related content will be hidden on mouseleave
     $(module.el).find('.ple-module-content').mouseleave(function(e) {
-
-
       if (module.options.suggestRelated) {
         relatedEl.fadeOut();
         addedRelatedEl.fadeOut();
       }
-
     });
   }
 
