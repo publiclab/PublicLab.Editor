@@ -21735,7 +21735,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":185,"./modules/PublicLab.MapModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.RichTextModule.js":192,"./modules/PublicLab.TagsModule.js":193,"./modules/PublicLab.TitleModule.js":195,"resig-class":117}],179:[function(require,module,exports){
+},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":186,"./modules/PublicLab.MapModule.js":187,"./modules/PublicLab.Module.js":188,"./modules/PublicLab.RichTextModule.js":193,"./modules/PublicLab.TagsModule.js":194,"./modules/PublicLab.TitleModule.js":196,"resig-class":117}],179:[function(require,module,exports){
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -22080,9 +22080,9 @@ module.exports = PublicLab.Formatter = Class.extend({
  * Should improve organization of this vs. RichTextModule
  */
 
-var woofmark = require("woofmark");
-var domador = require("domador");
-var megamark = require("megamark");
+var woofmark = require("woofmark"),
+  domador = require("domador"),
+  megamark = require("megamark");
 
 module.exports = function(textarea, _editor, _module) {
   var icons = {
@@ -22141,24 +22141,24 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: {nid: null},
+      formData: { nid: null },
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-              "X-CSRF-Token",
-              $('meta[name="csrf-token"]').attr("content")
+            "X-CSRF-Token",
+            $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isImage(file) {
-        var valid = true;
-        // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
-        var formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"];
-        var filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true,
+          // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+          formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"],
+          filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -22175,38 +22175,38 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: {nid: null},
+      formData: { nid: null },
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-              "X-CSRF-Token",
-              $('meta[name="csrf-token"]').attr("content")
+            "X-CSRF-Token",
+            $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isAttachment(file) {
-        var valid = true;
-        var formats = _module.options.attachmentFormats || [
-          "csv",
-          "xls",
-          "zip",
-          "kml",
-          "kmz",
-          "gpx",
-          "lut",
-          "stl",
-          "dxf",
-          "txt",
-          "pdf",
-          "svg",
-          "doc",
-          "ppt"
-        ];
-        var filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true,
+          formats = _module.options.attachmentFormats || [
+            "csv",
+            "xls",
+            "zip",
+            "kml",
+            "kmz",
+            "gpx",
+            "lut",
+            "stl",
+            "dxf",
+            "txt",
+            "pdf",
+            "svg",
+            "doc",
+            "ppt"
+          ],
+          filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -22219,12 +22219,11 @@ module.exports = function(textarea, _editor, _module) {
       if (false) console.log(link);
       if (link.href.match(".csv")) {
         // displaying csvs in graphs
-        if (wysiwyg.mode === "markdown") {
+        if (wysiwyg.mode === "markdown")
           var output = "[graph:" + link.href + "]";
-        } else {
+        else
           var output =
             '<div class="powertags">Power tag: graph:' + link.href + "</div>";
-        }
         return {
           before: chunks.before,
           selection: output,
@@ -22292,7 +22291,7 @@ module.exports = function(textarea, _editor, _module) {
           ],
 
           allowedAttributes: {
-            a: ["href", "name", "class", "target", "title", "aria-label"],
+            a: ["href", "name", "target", "title", "aria-label"],
             iframe: [
               "allowfullscreen",
               "frameborder",
@@ -22362,26 +22361,30 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]";
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
           }
         }
       });
     }
   });
+  require("../modules/PublicLab.CustomInsert.js")(
+    _module,
+    wysiwyg
+  );
 
   // set up table generation tools:
   require("../modules/PublicLab.RichTextModule.Table.js")(_module, wysiwyg);
 
   // set up horizontal rule insertion tool:
   require("../modules/PublicLab.RichTextModule.HorizontalRule.js")(
-      _module,
-      wysiwyg
+    _module,
+    wysiwyg
   );
 
   // set up auto center insertion tool:
   require("../modules/PublicLab.RichTextModule.AutoCenter.js")(
-      _module,
-      wysiwyg
+    _module,
+    wysiwyg
   );
 
   // set up embed insertion tool:
@@ -22390,21 +22393,21 @@ module.exports = function(textarea, _editor, _module) {
   wysiwyg.stylePrompt = function() {
     $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
     $(".wk-prompt input")
-        .addClass("input form-control")
-        .css("margin-bottom", "5px");
+      .addClass("input form-control")
+      .css("margin-bottom", "5px");
   };
 
   $(
-      ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
+    ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
   ).click(wysiwyg.stylePrompt);
 
   wysiwyg.style = function() {
     $(".wk-commands").after(
-        '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
+      '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-        "btn btn-default"
+      "btn btn-default"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -22413,18 +22416,18 @@ module.exports = function(textarea, _editor, _module) {
     $(".wk-commands button.woofmark-command-attachment").addClass("hidden-xs");
 
     $(".wk-switchboard button.woofmark-mode-markdown")
-        .parent()
-        .removeClass("btn-group");
+      .parent()
+      .removeClass("btn-group");
     $(".wk-switchboard button.woofmark-mode-markdown").html(
-        '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
+      '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
     );
     $(".wk-switchboard button.woofmark-mode-wysiwyg").html(
-        '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
+      '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
     );
 
-    if (wysiwyg.mode === "wysiwyg") {
+    if (wysiwyg.mode === "wysiwyg")
       $(".wk-switchboard button.woofmark-mode-wysiwyg").hide();
-    } else $(".wk-switchboard button.woofmark-mode-markdown").hide();
+    else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
       $(this).tooltip('hide');
@@ -22433,7 +22436,7 @@ module.exports = function(textarea, _editor, _module) {
     });
 
     if (_editor.options.size == "xs") {
-      // $('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
+      //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
 
       // hide selectively, not by #:
       $(".wk-commands button.woofmark-command-quote").hide();
@@ -22450,7 +22453,7 @@ module.exports = function(textarea, _editor, _module) {
   return wysiwyg;
 };
 
-},{"../modules/PublicLab.RichTextModule.AutoCenter.js":188,"../modules/PublicLab.RichTextModule.Embed.js":189,"../modules/PublicLab.RichTextModule.HorizontalRule.js":190,"../modules/PublicLab.RichTextModule.Table.js":191,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
+},{"../modules/PublicLab.CustomInsert.js":185,"../modules/PublicLab.RichTextModule.AutoCenter.js":189,"../modules/PublicLab.RichTextModule.Embed.js":190,"../modules/PublicLab.RichTextModule.HorizontalRule.js":191,"../modules/PublicLab.RichTextModule.Table.js":192,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -22584,6 +22587,108 @@ module.exports = {
 };
 
 },{}],185:[function(require,module,exports){
+ module.exports = function CustomInsert(_module, wysiwyg) {
+	function Syntax(tag ,Option1, Option2) {
+		if(Option2 == "List") {
+			if(Option1 == "Notes") {
+				var syn = "[notes:" + tag + "]";
+			}
+			if(Option1 == "Wikis") {
+				var syn = "[wikis:" + tag + "]";
+			}
+			if(Option1 == "Nodes(Wikis + Notes)") {
+				var syn = "[nodes:" + tag + "]";
+			}
+			if(Option1 == "Activity") {
+				var syn = "[activity:" + tag + "]";
+			}
+			if(Option1 == "Questions") {
+				var syn = "[questions" + tag + "]";
+			}
+		}
+		if(Option2 == "Grid") {
+			if(Option1 == "Notes") {
+				var syn = "[notes:grid" + tag + "]";
+			}
+			if(Option1 == "Wikis") {
+				var syn = "[wikis:grid" + tag + "]";
+			}
+			if(Option1 == "Nodes(Wikis + Notes)") {
+				var syn = "[nodes:grid" + tag + "]";
+			}
+			if(Option1 == "Activity") {
+				var syn = "[activity:grid" + tag + "]";
+			}
+			if(Option1 == "Questions") {
+				var syn = "[questions:grid" + tag + "]";
+			}
+		}
+		return syn;
+	}
+
+   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+
+   var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
+   builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >'
+   builder += '<span class= "selected">What Do you want to insert?</span>';
+   builder += '<span class="caret"></span>';
+   builder += '</button>';
+   builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';      
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';             
+   builder += '</ul>';
+   builder += '</div>'
+   builder += '<div class="dropdown" style="margin-bottom: 20px;">';
+   builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">'
+   builder += '<span class="selected2">Insert as a</span>';
+   builder += '<span class="caret"></span>';
+   builder += '</button>';
+   builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
+   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';               
+   builder += '</ul>'; 
+   builder += '</div>'; 
+   builder += '<div class="input-group">';
+   builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
+   builder += '<span class="input-group-btn">';
+   builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+   builder += '</span>';
+   builder += '</div>';
+   var Option1 = "Notes"; 
+   var Option2 = "List";
+   $('.woofmark-command-insert').attr('data-content', builder);
+   $('.woofmark-command-insert').attr('data-container', 'body');
+   $('.woofmark-command-insert').attr('data-placement','top');
+   $('.woofmark-command-insert').popover({ html : true,sanitize: false});
+   $('.wk-commands .woofmark-command-insert').click(function() {
+	$(".menu1 a").click(function(){
+		Option1 = $(this).text();
+		$(".selected").text($(this).text());
+	});
+});
+   $('.wk-commands .woofmark-command-insert').click(function() {
+	$(".menu2 a").click(function(){
+		Option2 = $(this).text();
+		$(".selected2").text($(this).text());
+	});  
+})
+   $('.wk-commands .woofmark-command-insert').click(function() {
+	$('.go1').click(function(){
+		wysiwyg.runCommand(function(chunks, mode){
+			var syntax = Syntax($('.inputText')[0].value,Option1, Option2);
+			if (mode === 'markdown') chunks.before += syntax;
+			else {
+				chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+			} 
+		})
+	})
+})
+}
+
+},{}],186:[function(require,module,exports){
 /*
  * Form module for main post image
  */
@@ -22751,7 +22856,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 });
 
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 /*
       MapModule for adding Map .
       Adds/Removes Tag lat:XX , lon:XX from TagsModule .
@@ -22817,7 +22922,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
   }
 });
 
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /*
  * Form modules like title, tags, body, main image
  */
@@ -22874,7 +22979,7 @@ module.exports = PublicLab.Module = Class.extend({
 
 });
 
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 /*
    Auto Center insertion: ****
 */
@@ -22907,7 +23012,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   });
 };
 
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 /*
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
 */
@@ -22938,7 +23043,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
   });
 };
 
-},{}],190:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /*
    Horizontal Rule insertion: ****
 */
@@ -22961,7 +23066,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
   });
 };
 
-},{}],191:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 /*
  Table generation:
 
@@ -23060,7 +23165,7 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 };
 
-},{}],192:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -23394,7 +23499,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
   }
 });
 
-},{"crossvent":12}],193:[function(require,module,exports){
+},{"crossvent":12}],194:[function(require,module,exports){
 /*
  * Form module for post tags
  */
@@ -23507,7 +23612,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{}],194:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 /* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -23594,7 +23699,7 @@ module.exports = function relatedNodes(module) {
   return relatedEl;
 };
 
-},{}],195:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -23704,4 +23809,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":194}]},{},[178]);
+},{"./PublicLab.TitleModule.Related.js":195}]},{},[178]);
