@@ -50,19 +50,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 
     _module.dropEl = _module.el.find('.ple-drag-drop');
+    _module.mainDropEl = _module.el.find('.mainImageBox');
     _module.dropEl.css('background', 'url("' + _module.options.url + '") center no-repeat');
     _module.dropEl.css('background-position', 'center');
     _module.dropEl.css('background-repeat', 'no-repeat');
     _module.dropEl.css('background-size', 'cover');
 
-    _module.dropEl.bind('dragover', function(e) {
+    _module.dropEl.bind('dragover dragenter', function(e) {
       e.preventDefault();
       // create relevant styles in sheet
       _module.dropEl.addClass('hover');
+      _module.mainDropEl.addClass('dragDrop');
     });
 
-    _module.dropEl.bind('dragout', function(e) {
+    _module.dropEl.bind('dragout dragleave dragend drop', function(e) {
       _module.dropEl.removeClass('hover');
+      _module.mainDropEl.removeClass('dragDrop');
     });
 
     _module.dropEl.bind('drop', function(e) {
