@@ -55,5 +55,6 @@ describe('Custom Insert text', () => {
     // Evaluate the expression
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('[notes:tag]'));
     expect(stringIsIncluded).toBe(true);
+    await page.click('.woofmark-mode-wysiwyg');
   }, timeout);
 });
