@@ -1,41 +1,72 @@
 module.exports = function CustomInsert(_module, wysiwyg) {
   function Syntax(tag, Option1, Option2) {
-    if (Option2 == "List") {
-      if (Option1 == "Notes") {
-        var syn = "[notes:" + tag + "]";
-      }
-      if (Option1 == "Wikis") {
-        var syn = "[wikis:" + tag + "]";
-      }
-      if (Option1 == "Nodes(Wikis + Notes)") {
-        var syn = "[nodes:" + tag + "]";
-      }
-      if (Option1 == "Activity") {
-        var syn = "[activity:" + tag + "]";
-      }
-      if (Option1 == "Questions") {
-        var syn = "[questions" + tag + "]";
+    console.log(tag, Option1, Option2);
+    if (Option2 === "List") {
+      switch (Option1) {
+        case "Notes":
+          var syn = "[notes:" + tag + "]";
+          break;
+        case "Wikis":
+          var syn = "[wikis:" + tag + "]";
+          break;
+        case "Nodes(Wikis + Notes)":
+          var syn = "[nodes:" + tag + "]";
+          break;
+        case "Activity":
+          var syn = "[activity:" + tag + "]";
+          break;
+        case "Questions":
+          var syn = "[questions:" + tag + "]";
+          break;
       }
     }
     if (Option2 == "Grid") {
-      if (Option1 == "Notes") {
-        var syn = "[notes:grid" + tag + "]";
-      }
-      if (Option1 == "Wikis") {
-        var syn = "[wikis:grid" + tag + "]";
-      }
-      if (Option1 == "Nodes(Wikis + Notes)") {
-        var syn = "[nodes:grid" + tag + "]";
-      }
-      if (Option1 == "Activity") {
-        var syn = "[activity:grid" + tag + "]";
-      }
-      if (Option1 == "Questions") {
-        var syn = "[questions:grid" + tag + "]";
+      switch (Option1) {
+        case "Notes":
+          var syn = "[notes:grid:" + tag + "]";
+          break;
+        case "Wikis":
+          var syn = "[wikis:grid:" + tag + "]";
+          break;
+        case "Nodes(Wikis + Notes)":
+          var syn = "[nodes:grid:" + tag + "]";
+          break;
+        case "Activity":
+          var syn = "[activity:grid:" + tag + "]";
+          break;
+        case "Questions":
+          var syn = "[questions:grid:" + tag + "]";
+          break;
       }
     }
     return syn;
   }
+  $.fn.extend({
+    insertAtCaret: function(myValue) {
+      return this.each(function(i) {
+        if (document.selection) {
+          // For browsers like Internet Explorer
+          this.focus();
+          var sel = document.selection.createRange();
+          sel.text = myValue;
+          this.focus();
+        } else if (this.selectionStart || this.selectionStart == '0') {
+          // For browsers like Firefox and Webkit based
+          var startPos = this.selectionStart;
+          var endPos = this.selectionEnd;
+          var scrollTop = this.scrollTop;
+          this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos, this.value.length);
+          this.focus();
+          this.selectionStart = startPos + myValue.length;
+          this.selectionEnd = startPos + myValue.length;
+          this.scrollTop = scrollTop;
+        } else {
+          this.value += myValue;
+          this.focus();
+        }
+      });
+    }
+  });
 
   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
 
@@ -90,8 +121,10 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     $('.go1').click(function() {
       wysiwyg.runCommand(function(chunks, mode) {
         var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
-        if (mode === 'markdown') chunks.before += syntax;
-        else {
+        if (mode === 'markdown') {
+          $(".ple-textarea").insertAtCaret("");
+          chunks.before += (syntax);
+        } else {
           chunks.before += _module.wysiwyg.parseMarkdown(syntax);
         }
       });

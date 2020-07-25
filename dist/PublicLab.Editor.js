@@ -22080,9 +22080,9 @@ module.exports = PublicLab.Formatter = Class.extend({
  * Should improve organization of this vs. RichTextModule
  */
 
-var woofmark = require("woofmark"),
-  domador = require("domador"),
-  megamark = require("megamark");
+var woofmark = require("woofmark");
+var domador = require("domador");
+var megamark = require("megamark");
 
 module.exports = function(textarea, _editor, _module) {
   var icons = {
@@ -22141,24 +22141,24 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: { nid: null },
+      formData: {nid: null},
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-            "X-CSRF-Token",
-            $('meta[name="csrf-token"]').attr("content")
+              "X-CSRF-Token",
+              $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isImage(file) {
-        var valid = true,
-          // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
-          formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"],
-          filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true;
+        // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+        var formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"];
+        var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -22175,38 +22175,38 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: { nid: null },
+      formData: {nid: null},
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-            "X-CSRF-Token",
-            $('meta[name="csrf-token"]').attr("content")
+              "X-CSRF-Token",
+              $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isAttachment(file) {
-        var valid = true,
-          formats = _module.options.attachmentFormats || [
-            "csv",
-            "xls",
-            "zip",
-            "kml",
-            "kmz",
-            "gpx",
-            "lut",
-            "stl",
-            "dxf",
-            "txt",
-            "pdf",
-            "svg",
-            "doc",
-            "ppt"
-          ],
-          filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true;
+        var formats = _module.options.attachmentFormats || [
+          "csv",
+          "xls",
+          "zip",
+          "kml",
+          "kmz",
+          "gpx",
+          "lut",
+          "stl",
+          "dxf",
+          "txt",
+          "pdf",
+          "svg",
+          "doc",
+          "ppt"
+        ];
+        var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -22219,11 +22219,12 @@ module.exports = function(textarea, _editor, _module) {
       if (false) console.log(link);
       if (link.href.match(".csv")) {
         // displaying csvs in graphs
-        if (wysiwyg.mode === "markdown")
+        if (wysiwyg.mode === "markdown") {
           var output = "[graph:" + link.href + "]";
-        else
+        } else {
           var output =
             '<div class="powertags">Power tag: graph:' + link.href + "</div>";
+        }
         return {
           before: chunks.before,
           selection: output,
@@ -22368,8 +22369,8 @@ module.exports = function(textarea, _editor, _module) {
     }
   });
   require("../modules/PublicLab.CustomInsert.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
 
   // set up table generation tools:
@@ -22377,14 +22378,14 @@ module.exports = function(textarea, _editor, _module) {
 
   // set up horizontal rule insertion tool:
   require("../modules/PublicLab.RichTextModule.HorizontalRule.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
 
   // set up auto center insertion tool:
   require("../modules/PublicLab.RichTextModule.AutoCenter.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
 
   // set up embed insertion tool:
@@ -22393,21 +22394,21 @@ module.exports = function(textarea, _editor, _module) {
   wysiwyg.stylePrompt = function() {
     $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
     $(".wk-prompt input")
-      .addClass("input form-control")
-      .css("margin-bottom", "5px");
+        .addClass("input form-control")
+        .css("margin-bottom", "5px");
   };
 
   $(
-    ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
+      ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
   ).click(wysiwyg.stylePrompt);
 
   wysiwyg.style = function() {
     $(".wk-commands").after(
-      '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
+        '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-      "btn btn-default"
+        "btn btn-default"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -22416,18 +22417,18 @@ module.exports = function(textarea, _editor, _module) {
     $(".wk-commands button.woofmark-command-attachment").addClass("hidden-xs");
 
     $(".wk-switchboard button.woofmark-mode-markdown")
-      .parent()
-      .removeClass("btn-group");
+        .parent()
+        .removeClass("btn-group");
     $(".wk-switchboard button.woofmark-mode-markdown").html(
-      '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
+        '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
     );
     $(".wk-switchboard button.woofmark-mode-wysiwyg").html(
-      '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
+        '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
     );
 
-    if (wysiwyg.mode === "wysiwyg")
+    if (wysiwyg.mode === "wysiwyg") {
       $(".wk-switchboard button.woofmark-mode-wysiwyg").hide();
-    else $(".wk-switchboard button.woofmark-mode-markdown").hide();
+    } else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
       $(this).tooltip('hide');
@@ -22436,7 +22437,7 @@ module.exports = function(textarea, _editor, _module) {
     });
 
     if (_editor.options.size == "xs") {
-      //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
+      // $('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
 
       // hide selectively, not by #:
       $(".wk-commands button.woofmark-command-quote").hide();
@@ -22587,106 +22588,141 @@ module.exports = {
 };
 
 },{}],185:[function(require,module,exports){
- module.exports = function CustomInsert(_module, wysiwyg) {
-	function Syntax(tag ,Option1, Option2) {
-		if(Option2 == "List") {
-			if(Option1 == "Notes") {
-				var syn = "[notes:" + tag + "]";
-			}
-			if(Option1 == "Wikis") {
-				var syn = "[wikis:" + tag + "]";
-			}
-			if(Option1 == "Nodes(Wikis + Notes)") {
-				var syn = "[nodes:" + tag + "]";
-			}
-			if(Option1 == "Activity") {
-				var syn = "[activity:" + tag + "]";
-			}
-			if(Option1 == "Questions") {
-				var syn = "[questions" + tag + "]";
-			}
-		}
-		if(Option2 == "Grid") {
-			if(Option1 == "Notes") {
-				var syn = "[notes:grid" + tag + "]";
-			}
-			if(Option1 == "Wikis") {
-				var syn = "[wikis:grid" + tag + "]";
-			}
-			if(Option1 == "Nodes(Wikis + Notes)") {
-				var syn = "[nodes:grid" + tag + "]";
-			}
-			if(Option1 == "Activity") {
-				var syn = "[activity:grid" + tag + "]";
-			}
-			if(Option1 == "Questions") {
-				var syn = "[questions:grid" + tag + "]";
-			}
-		}
-		return syn;
-	}
-
-   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
-
-   var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
-   builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >'
-   builder += '<span class= "selected">What Do you want to insert?</span>';
-   builder += '<span class="caret"></span>';
-   builder += '</button>';
-   builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';      
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';             
-   builder += '</ul>';
-   builder += '</div>'
-   builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-   builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">'
-   builder += '<span class="selected2">Insert as a</span>';
-   builder += '<span class="caret"></span>';
-   builder += '</button>';
-   builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
-   builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';               
-   builder += '</ul>'; 
-   builder += '</div>'; 
-   builder += '<div class="input-group">';
-   builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
-   builder += '<span class="input-group-btn">';
-   builder += '<button class="btn btn-default go1" type="button">Go!</button>';
-   builder += '</span>';
-   builder += '</div>';
-   var Option1 = "Notes"; 
-   var Option2 = "List";
-   $('.woofmark-command-insert').attr('data-content', builder);
-   $('.woofmark-command-insert').attr('data-container', 'body');
-   $('.woofmark-command-insert').attr('data-placement','top');
-   $('.woofmark-command-insert').popover({ html : true,sanitize: false});
-   $('.wk-commands .woofmark-command-insert').click(function() {
-	$(".menu1 a").click(function(){
-		Option1 = $(this).text();
-		$(".selected").text($(this).text());
-	});
-});
-   $('.wk-commands .woofmark-command-insert').click(function() {
-	$(".menu2 a").click(function(){
-		Option2 = $(this).text();
-		$(".selected2").text($(this).text());
-	});  
-})
-   $('.wk-commands .woofmark-command-insert').click(function() {
-	$('.go1').click(function(){
-		wysiwyg.runCommand(function(chunks, mode){
-			var syntax = Syntax($('.inputText')[0].value,Option1, Option2);
-			if (mode === 'markdown') chunks.before += syntax;
-			else {
-				chunks.before += _module.wysiwyg.parseMarkdown(syntax);
-			} 
-		})
-	})
-})
+module.exports = function CustomInsert(_module, wysiwyg) {
+ function Syntax(tag, Option1, Option2) {
+    console.log(tag, Option1, Option2)
+    if (Option2 === "List") {
+      switch(Option1) {
+      case "Notes":
+        var syn = "[notes:" + tag + "]";
+        break;
+      case "Wikis":
+        var syn = "[wikis:" + tag + "]";
+        break;
+      case "Nodes(Wikis + Notes)":
+        var syn = "[nodes:" + tag + "]";
+        break;
+      case "Activity":
+        var syn = "[activity:" + tag + "]";
+        break;
+      case "Questions":
+        var syn = "[questions:" + tag + "]";
+        break;
+    }
+  }
+    if (Option2 == "Grid") {
+      switch(Option1) {
+      case "Notes":
+        var syn = "[notes:grid:" + tag + "]";
+        break;
+      case "Wikis":
+        var syn = "[wikis:grid:" + tag + "]";
+        break;
+      case "Nodes(Wikis + Notes)":
+        var syn = "[nodes:grid:" + tag + "]";
+        break;
+      case "Activity":
+        var syn = "[activity:grid:" + tag + "]";
+        break;
+      case "Questions":
+        var syn = "[questions:grid:" + tag + "]";
+        break;
+    }
+  }
+    return syn;
+  }
+$.fn.extend({
+insertAtCaret: function(myValue){
+  return this.each(function(i) {
+    if (document.selection) {
+      //For browsers like Internet Explorer
+      this.focus();
+      var sel = document.selection.createRange();
+      sel.text = myValue;
+      this.focus();
+    }
+    else if (this.selectionStart || this.selectionStart == '0') {
+      //For browsers like Firefox and Webkit based
+      var startPos = this.selectionStart;
+      var endPos = this.selectionEnd;
+      var scrollTop = this.scrollTop;
+      this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+      this.focus();
+      this.selectionStart = startPos + myValue.length;
+      this.selectionEnd = startPos + myValue.length;
+      this.scrollTop = scrollTop;
+    } else {
+      this.value += myValue;
+      this.focus();
+    }
+  });
 }
+});
+
+  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+
+  var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
+  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
+  builder += '<span class= "selected">What Do you want to insert?</span>';
+  builder += '<span class="caret"></span>';
+  builder += '</button>';
+  builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
+  builder += '</ul>';
+  builder += '</div>';
+  builder += '<div class="dropdown" style="margin-bottom: 20px;">';
+  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+  builder += '<span class="selected2">Insert as a</span>';
+  builder += '<span class="caret"></span>';
+  builder += '</button>';
+  builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
+  builder += '</ul>';
+  builder += '</div>';
+  builder += '<div class="input-group">';
+  builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
+  builder += '<span class="input-group-btn">';
+  builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+  builder += '</span>';
+  builder += '</div>';
+  var Option1 = "Notes";
+  var Option2 = "List";
+  $('.woofmark-command-insert').attr('data-content', builder);
+  $('.woofmark-command-insert').attr('data-container', 'body');
+  $('.woofmark-command-insert').attr('data-placement', 'top');
+  $('.woofmark-command-insert').popover({html: true, sanitize: false});
+  $('.wk-commands .woofmark-command-insert').click(function() {
+    $(".menu1 a").click(function() {
+      Option1 = $(this).text();
+      $(".selected").text($(this).text());
+    });
+  });
+  $('.wk-commands .woofmark-command-insert').click(function() {
+    $(".menu2 a").click(function() {
+      Option2 = $(this).text();
+      $(".selected2").text($(this).text());
+    });
+  });
+  $('.wk-commands .woofmark-command-insert').click(function() {
+    $('.go1').click(function() {
+      wysiwyg.runCommand(function(chunks, mode) {
+        var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
+        if (mode === 'markdown') {
+          $(".ple-textarea").insertAtCaret("")
+          chunks.before += (syntax);
+        }
+        else {
+           chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+        }
+      });
+    });
+  });
+};
 
 },{}],186:[function(require,module,exports){
 /*
