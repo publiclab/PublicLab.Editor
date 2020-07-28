@@ -21947,7 +21947,6 @@ module.exports = PublicLab.History = Class.extend({
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
               dateClasses.push(log.dateClass);
               html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-outline-secondary clear">clear</a></p>';
-
             }
 
             html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
@@ -22405,7 +22404,7 @@ module.exports = function(textarea, _editor, _module) {
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-      "btn btn-light"
+        "btn btn-light"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -22637,19 +22636,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 
     _module.dropEl = _module.el.find('.ple-drag-drop');
+    _module.mainDropEl = _module.el.find('.mainImageBox');
     _module.dropEl.css('background', 'url("' + _module.options.url + '") center no-repeat');
     _module.dropEl.css('background-position', 'center');
     _module.dropEl.css('background-repeat', 'no-repeat');
     _module.dropEl.css('background-size', 'cover');
 
-    _module.dropEl.bind('dragover', function(e) {
+    _module.dropEl.bind('dragover dragenter', function(e) {
       e.preventDefault();
       // create relevant styles in sheet
       _module.dropEl.addClass('hover');
+      _module.mainDropEl.addClass('dragDrop');
     });
 
-    _module.dropEl.bind('dragout', function(e) {
+    _module.dropEl.bind('dragout dragleave dragend drop', function(e) {
       _module.dropEl.removeClass('hover');
+      _module.mainDropEl.removeClass('dragDrop');
     });
 
     _module.dropEl.bind('drop', function(e) {
@@ -22894,23 +22896,23 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   $('.wk-commands .woofmark-command-autocenter').click(function() {
     wysiwyg.runCommand(function(chunks, mode) {
       if (mode === "wysiwyg") {
-        var tag = "center";
-        var open = '<' + tag;
-        var close = '</' + tag.replace(/</g, '</');
-        var rleading = new RegExp(open + '( [^>]*)?>$', 'i');
-        var rtrailing = new RegExp('^' + close + '>', 'i');
-        var ropen = new RegExp(open + '( [^>]*)?>', 'ig');
-        var rclose = new RegExp(close + '( [^>]*)?>', 'ig');
+        const tag = "center";
+        const open = '<' + tag;
+        const close = '</' + tag.replace(/</g, '</');
+        const rleading = new RegExp(open + '( [^>]*)?>$', 'i');
+        const rtrailing = new RegExp('^' + close + '>', 'i');
+        const ropen = new RegExp(open + '( [^>]*)?>', 'ig');
+        const rclose = new RegExp(close + '( [^>]*)?>', 'ig');
         chunks.trim();
         // searches if selected text is center aligned and left aligns it
-        var trail = rtrailing.exec(chunks.before);
-        var lead = rleading.exec(chunks.after);
+        const trail = rtrailing.exec(chunks.before);
+        const lead = rleading.exec(chunks.after);
         if (lead && trail) {
           chunks.before = chunks.before.replace(rleading, '');
           chunks.after = chunks.after.replace(rtrailing, '');
         } else {
           // searches if center tag is opened in selected text
-          var opened = ropen.test(chunks.selection);
+          const opened = ropen.test(chunks.selection);
           if (opened) {
             chunks.selection = chunks.selection.replace(ropen, '');
             if (!surrounded(chunks, tag)) {
@@ -22918,7 +22920,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
             }
           }
           // searches if center tag is closed in selected text
-          var closed = rclose.test(chunks.selection);
+          const closed = rclose.test(chunks.selection);
           if (closed) {
             chunks.selection = chunks.selection.replace(rclose, '');
             if (!surrounded(chunks, tag)) {
@@ -22943,9 +22945,9 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
         }
 
         function closebounded(chunks, tag) {
-          var rcloseleft = new RegExp('</' + tag.replace(/</g, '</') + '>$', 'i');
-          var ropenright = new RegExp('^<' + tag + '(?: [^>]*)?>', 'i');
-          var bounded = rcloseleft.test(chunks.before) && ropenright.test(chunks.after);
+          const rcloseleft = new RegExp('</' + tag.replace(/</g, '</') + '>$', 'i');
+          const ropenright = new RegExp('^<' + tag + '(?: [^>]*)?>', 'i');
+          const bounded = rcloseleft.test(chunks.before) && ropenright.test(chunks.after);
           if (bounded) {
             chunks.before = chunks.before.replace(rcloseleft, '');
             chunks.after = chunks.after.replace(ropenright, '');
@@ -22954,41 +22956,41 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
         }
 
         function surrounded(chunks, tag) {
-          var ropen = new RegExp('<' + tag + '(?: [^>]*)?>', 'ig');
-          var rclose = new RegExp('<\/' + tag.replace(/</g, '</') + '>', 'ig');
-          var opensBefore = count(chunks.before, ropen);
-          var opensAfter = count(chunks.after, ropen);
-          var closesBefore = count(chunks.before, rclose);
-          var closesAfter = count(chunks.after, rclose);
-          var open = opensBefore - closesBefore > 0;
-          var close = closesAfter - opensAfter > 0;
+          const ropen = new RegExp('<' + tag + '(?: [^>]*)?>', 'ig');
+          const rclose = new RegExp('<\/' + tag.replace(/</g, '</') + '>', 'ig');
+          const opensBefore = count(chunks.before, ropen);
+          const opensAfter = count(chunks.after, ropen);
+          const closesBefore = count(chunks.before, rclose);
+          const closesAfter = count(chunks.after, rclose);
+          const open = opensBefore - closesBefore > 0;
+          const close = closesAfter - opensAfter > 0;
           return open && close;
         }
 
         function count(text, regex) {
-          var match = text.match(regex);
+          const match = text.match(regex);
           if (match) {
             return match.length;
           }
           return 0;
         }
       } else if (mode === "markdown") {
-        var open = '->';
-        var close = '<-';
-        var rleading = new RegExp(open + '( [^>]*)?', 'i');
-        var rtrailing = new RegExp('^' + close, 'i');
-        var ropen = new RegExp(open + '( [^>]*)?', 'ig');
-        var rclose = new RegExp(close + '( [^>]*)?', 'ig');
+        const open = '->';
+        const close = '<-';
+        const rleading = new RegExp(open + '( [^>]*)?', 'i');
+        const rtrailing = new RegExp('^' + close, 'i');
+        const ropen = new RegExp(open + '( [^>]*)?', 'ig');
+        const rclose = new RegExp(close + '( [^>]*)?', 'ig');
         chunks.trim();
-        var trail = rleading.exec(chunks.before);
-        var lead = rtrailing.exec(chunks.after);
+        const trail = rleading.exec(chunks.before);
+        const lead = rtrailing.exec(chunks.after);
 
         if (trail && lead) {
           chunks.before = chunks.before.replace(rleading, '');
           chunks.after = chunks.after.replace(rtrailing, '');
         } else {
-          var opened = ropen.test(chunks.selection);
-          var closed = rclose.test(chunks.selection);
+          const opened = ropen.test(chunks.selection);
+          const closed = rclose.test(chunks.selection);
           if (opened || closed) {
             if (opened) {
               chunks.selection = chunks.selection.replace(ropen, '');
