@@ -126,6 +126,21 @@ module.exports = {
     var wysiwygDivObserver = new MutationObserver(handleChange);
 
     wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
+  },
+
+  hideFooterWhenTypingOnMobile: function() {
+    var inputArea = $('input, textarea, .wk-wysiwyg');
+
+    if(window.innerWidth <= 992) {
+
+      inputArea.focusin(function () {
+        $('.ple-footer').hide();
+      });
+
+      inputArea.focusout(function () {
+        $('.ple-footer').show();
+      });
+    }
   }
 
 };
