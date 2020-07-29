@@ -4,9 +4,9 @@
  * Should improve organization of this vs. RichTextModule
  */
 
-var woofmark = require("woofmark"),
-  domador = require("domador"),
-  megamark = require("megamark");
+var woofmark = require("woofmark");
+var domador = require("domador");
+var megamark = require("megamark");
 
 module.exports = function(textarea, _editor, _module) {
   var icons = {
@@ -65,24 +65,24 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: { nid: null },
+      formData: {nid: null},
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-            "X-CSRF-Token",
-            $('meta[name="csrf-token"]').attr("content")
+              "X-CSRF-Token",
+              $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isImage(file) {
-        var valid = true,
-          // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
-          formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"],
-          filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true;
+        // formats = _module.options.formats || ['csv', 'xls', 'zip', 'kml', 'kmz', 'gpx', 'lut', 'stl', 'dxf', 'txt', 'pdf', 'svg', 'doc', 'ppt', 'gif', 'png', 'jpg', 'jpeg'],
+        var formats = _module.options.formats || ["gif", "png", "jpg", "jpeg"];
+        var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -99,38 +99,38 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: { nid: null },
+      formData: {nid: null},
 
       // xhr upload options like CSRF token
       xhrOptions: {
         beforeSend: function(xhr) {
           xhr.setRequestHeader(
-            "X-CSRF-Token",
-            $('meta[name="csrf-token"]').attr("content")
+              "X-CSRF-Token",
+              $('meta[name="csrf-token"]').attr("content")
           );
         }
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
       validate: function isAttachment(file) {
-        var valid = true,
-          formats = _module.options.attachmentFormats || [
-            "csv",
-            "xls",
-            "zip",
-            "kml",
-            "kmz",
-            "gpx",
-            "lut",
-            "stl",
-            "dxf",
-            "txt",
-            "pdf",
-            "svg",
-            "doc",
-            "ppt"
-          ],
-          filetype = file.name.split(".")[file.name.split(".").length - 1];
+        var valid = true;
+        var formats = _module.options.attachmentFormats || [
+          "csv",
+          "xls",
+          "zip",
+          "kml",
+          "kmz",
+          "gpx",
+          "lut",
+          "stl",
+          "dxf",
+          "txt",
+          "pdf",
+          "svg",
+          "doc",
+          "ppt"
+        ];
+        var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
@@ -143,11 +143,12 @@ module.exports = function(textarea, _editor, _module) {
       if (false) console.log(link);
       if (link.href.match(".csv")) {
         // displaying csvs in graphs
-        if (wysiwyg.mode === "markdown")
+        if (wysiwyg.mode === "markdown") {
           var output = "[graph:" + link.href + "]";
-        else
+        } else {
           var output =
             '<div class="powertags">Power tag: graph:' + link.href + "</div>";
+        }
         return {
           before: chunks.before,
           selection: output,
@@ -215,7 +216,7 @@ module.exports = function(textarea, _editor, _module) {
           ],
 
           allowedAttributes: {
-            a: ["href", "name", "target", "title", "aria-label"],
+            a: ["href", "name", "class", "target", "title", "aria-label"],
             iframe: [
               "allowfullscreen",
               "frameborder",
@@ -297,14 +298,14 @@ module.exports = function(textarea, _editor, _module) {
 
   // set up horizontal rule insertion tool:
   require("../modules/PublicLab.RichTextModule.HorizontalRule.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
 
   // set up auto center insertion tool:
   require("../modules/PublicLab.RichTextModule.AutoCenter.js")(
-    _module,
-    wysiwyg
+      _module,
+      wysiwyg
   );
 
   // set up embed insertion tool:
@@ -313,21 +314,21 @@ module.exports = function(textarea, _editor, _module) {
   wysiwyg.stylePrompt = function() {
     $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
     $(".wk-prompt input")
-      .addClass("input form-control")
-      .css("margin-bottom", "5px");
+        .addClass("input form-control")
+        .css("margin-bottom", "5px");
   };
 
   $(
-    ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
+      ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
   ).click(wysiwyg.stylePrompt);
 
   wysiwyg.style = function() {
     $(".wk-commands").after(
-      '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
+        '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-      "btn btn-default"
+        "btn btn-default"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -336,18 +337,18 @@ module.exports = function(textarea, _editor, _module) {
     $(".wk-commands button.woofmark-command-attachment").addClass("hidden-xs");
 
     $(".wk-switchboard button.woofmark-mode-markdown")
-      .parent()
-      .removeClass("btn-group");
+        .parent()
+        .removeClass("btn-group");
     $(".wk-switchboard button.woofmark-mode-markdown").html(
-      '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
+        '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
     );
     $(".wk-switchboard button.woofmark-mode-wysiwyg").html(
-      '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
+        '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
     );
 
-    if (wysiwyg.mode === "wysiwyg")
+    if (wysiwyg.mode === "wysiwyg") {
       $(".wk-switchboard button.woofmark-mode-wysiwyg").hide();
-    else $(".wk-switchboard button.woofmark-mode-markdown").hide();
+    } else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
       $(this).tooltip('hide');
@@ -356,7 +357,7 @@ module.exports = function(textarea, _editor, _module) {
     });
 
     if (_editor.options.size == "xs") {
-      //$('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
+      // $('.wk-switchboard button,.wk-commands button').addClass('btn-xs');
 
       // hide selectively, not by #:
       $(".wk-commands button.woofmark-command-quote").hide();

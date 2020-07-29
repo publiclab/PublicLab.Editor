@@ -5,7 +5,6 @@
 module.exports = PublicLab.Builder = Class.extend({
 
   init: function(_editor, options) {
-
     var _builder = this;
 
     _builder.options = options || {};
@@ -15,11 +14,9 @@ module.exports = PublicLab.Builder = Class.extend({
 
     _builder.construct = function(module) {
 
-      // actually fill the element with HTML -- 
+      // actually fill the element with HTML --
 
-    }
-
-
+    };
   }
 
 });

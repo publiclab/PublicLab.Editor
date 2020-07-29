@@ -23,6 +23,42 @@
   margin-bottom: 100px;
 }
 
+#thumbnail-filename {
+    margin: 0px 0px 5px 4px;
+}
+
+.thumbnailBtn:hover {
+  background-color: #efefef;
+}
+
+.thumbnailBtn:focus { 
+  outline: none; 
+} 
+
+.thumbnailBtn:active {
+  background-color: #d8d3d3;
+}
+
+.thumbnailBtn {
+  width: 40%;
+  color: black;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 7px 14px;
+  font-weight: bold;
+  margin-bottom: 8%;
+}
+
+#thumbnail-img {
+  opacity: 0;
+  width: 0.1px;
+  z-index: -1;
+  height: 0.1px;
+  overflow: hidden;
+  position: absolute;
+}
+
 .pl-editor h1,
 .pl-editor h2,
 .pl-editor h3,
@@ -117,6 +153,27 @@
   clear: left;
 }
 
+.thumbnailBtn:hover {
+  background-color: #efefef;
+}
+
+.thumbnailBtn:focus { 
+  outline:none 
+} 
+
+.thumbnailBtn:active {
+  background-color: #d8d3d3;
+}
+
+.thumbnailBtn {
+  color: #000000b8;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 7px 14px;
+  font-weight: bold;
+}
+
 .ple-module-guide .ple-guide-minor p {
   font-size: 12px;
 }
@@ -130,21 +187,35 @@
   padding-bottom: 8px;
 }
 
+.mainImageBox{
+    height: 130px;
+    margin-bottom: 10px;
+}
+
+.mainImageBox.dragDrop{
+  background-color: #efefef;
+  padding: 10px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius:    6px;
+  border-radius:         6px;
+}
+
 .ple-drag-drop {
-  border: 4px dotted #ccc;
+  border: 3px dashed #ccc;
   background: #f8f8f8;
   color: #aaa;
   font-size: 16px;
-  padding: 40px;
+  padding: 50px;
   text-align: center;
-  margin-bottom: 10px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius:    8px;
-  border-radius:         8px;
+  height: 100%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius:    6px;
+  border-radius:         6px;
 }
 
 .ple-drag-drop.hover {
-  background: #f1f1f1;
+  padding: 40px;
+  background: #f8f8f8;
 }
 
 /********************/

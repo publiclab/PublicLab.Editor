@@ -1,8 +1,11 @@
-PublicLab.Editor
+PublicLab.Editor  
+[![npm version](https://badge.fury.io/js/publiclab-editor.svg)](https://badge.fury.io/js/publiclab-editor)
 ====
 
 [![Build Status](https://travis-ci.org/publiclab/PublicLab.Editor.svg)](https://travis-ci.org/publiclab/PublicLab.Editor)
 [![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/PublicLab.Editor) 
+
 Please contact [plots-dev@googlegroups.com](mailto:plots-dev@googlegroups.com) to get involved! We'd love to make this editor compatible with other platforms.
 
 PublicLab.Editor is a general purpose, modular JavaScript/Bootstrap UI library for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for [PublicLab.org](https://publiclab.org) (itself an [open source project](https://github.com/publiclab/plots2)).
@@ -320,13 +323,25 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ## Testing
 
-Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html
+Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html. The UI tests are written using jest and puppeteer. 
+
+The combined tests are run using `npm run test`.
 
 To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
 
 You can find the installation instructions for phantomjs in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there.
 
 To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
+
+To run the UI tests you can run `npm run test-ui`. To add new tests, edit the  `*test.js` files in `/test/ui-testing/`. 
+
+If you face any error while running UI tests:
+
+1. Make sure you're not running them as a root user. If running them as a root user include args: ['--no-sandbox'] in jest-puppeteer.config.js (not recommended).
+2. Make sure you have all the required dependencies installed.
+For Debian systems:
+`sudo apt-get install gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget`
+3. Upgrade your kernel.
 
 
 ****

@@ -1,10 +1,7 @@
 var editor;
 
 describe("Errors", function() {
-
-
   it("displays given errors", function() {
-
     fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
@@ -18,11 +15,9 @@ describe("Errors", function() {
     expect($('.ple-errors .alert').length).toBe(1);
     expect($('.ple-errors p').length).toBe(1);
     expect($('.ple-errors p').text()).toBe("Error: title can't be blank.");
-
   });
 
   it("does not display error alert if there are no errors", function() {
-
     fixture = loadFixtures('index.html');
 
     $('.ple-errors').html('');
@@ -32,9 +27,6 @@ describe("Errors", function() {
     });
 
     expect($('.ple-errors .alert').length).toBe(0);
-
   });
-
-
 });
 
