@@ -131,16 +131,14 @@ module.exports = {
   hideFooterWhenTypingOnMobile: function() {
     var inputArea = $('input, textarea, .wk-wysiwyg');
 
-    if(window.innerWidth <= 992) {
-
-      inputArea.focusin(function () {
-        $('.ple-footer').hide();
-      });
-
-      inputArea.focusout(function () {
-        $('.ple-footer').show();
-      });
-    }
+    inputArea.focusin(function () {
+       if(window.innerWidth <= 992) {
+         $('.ple-footer').hide();
+       }
+    });
+    
+    inputArea.focusout(function () {
+      $('.ple-footer').show();
+    });
   }
-
 };
