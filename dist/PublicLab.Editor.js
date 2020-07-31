@@ -352,7 +352,6 @@ function setup (fileinput, options) {
 function create (options) {
   var o = options || {};
   o.formData = o.formData || {};
-  o.xhrOptions = o.xhrOptions || {};
   o.fieldKey = o.fieldKey || 'uploads';
   var bureaucrat = emitter({
     submit: submit
@@ -370,7 +369,7 @@ function create (options) {
     bureaucrat.emit('valid', validFiles);
     var form = new FormData();
     Object.keys(o.formData).forEach(function copyFormData(key) {
-      form[key] = o.formData[key];
+      form.append(key, o.formData[key]);
     });
     var req = {
       'Content-Type': 'multipart/form-data',
@@ -381,9 +380,6 @@ function create (options) {
       url: o.endpoint || '/api/files',
       body: form
     };
-    Object.keys(o.xhrOptions).forEach(function copyXhrOptions(key) {
-      req[key] = o.xhrOptions[key];
-    });
 
     validFiles.forEach(appendFile);
     xhr(req, handleResponse);
@@ -20977,11 +20973,7 @@ function commands (el, id) {
 }
 
 function modes (el, id) {
-  var texts = {
-    markdown: 'm\u2193',
-    wysiwyg: 'wysiwyg'
-  };
-  setText(el, texts[id] || id);
+  setText(el, strings.modes[id] || id);
 }
 
 module.exports = {
@@ -21064,7 +21056,11 @@ module.exports = {
     upload: ', or upload a file',
     uploading: 'Uploading your file...',
     uploadfailed: 'The upload failed! That\'s all we know.'
-  }
+  },
+  modes: {
+    wysiwyg: 'wysiwyg',
+    markdown: 'm\u2193',
+  },
 };
 
 },{}],175:[function(require,module,exports){
@@ -21547,6 +21543,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  PL.Util.hideFooterWhenTypingOnMobile();
 });
 
 PL.Editor = Class.extend({
@@ -22579,6 +22576,20 @@ module.exports = {
     var wysiwygDivObserver = new MutationObserver(handleChange);
 
     wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
+  },
+
+  hideFooterWhenTypingOnMobile: function() {
+    var inputArea = $('input, textarea, .wk-wysiwyg');
+
+    inputArea.focusin(function () {
+       if(window.innerWidth <= 992) {
+         $('.ple-footer').hide();
+       }
+    });
+
+    inputArea.focusout(function () {
+      $('.ple-footer').show();
+    });
   }
 
 };
@@ -23202,7 +23213,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         icon: "clock-o",
         position: 90,
         text:
-          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
+          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-default' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
       }
     ];
 
