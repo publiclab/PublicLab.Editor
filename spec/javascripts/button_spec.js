@@ -1,15 +1,12 @@
 var editor;
 
 describe("Publish button", function() {
-
   beforeAll(function() {
-
     fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
     });
-
   });
 
 
@@ -20,9 +17,6 @@ describe("Publish button", function() {
     $('.ple-module-title input').val('A title');
     $('.ple-module-title input').keydown();
     // Check final state of Publish button.
-    expect($('.ple-publish').prop('disabled')).toBe(false);    
-
+    expect($('.ple-publish').prop('disabled')).toBe(false);
   });
-
-
 });
