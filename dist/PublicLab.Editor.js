@@ -22589,75 +22589,75 @@ module.exports = {
 
 },{}],185:[function(require,module,exports){
 module.exports = function CustomInsert(_module, wysiwyg) {
- function Syntax(tag, Option1, Option2) {
-    console.log(tag, Option1, Option2)
+  function Syntax(tag, Option1, Option2) {
+    console.log(tag, Option1, Option2);
     if (Option2 === "List") {
-      switch(Option1) {
-      case "Notes":
-        var syn = "[notes:" + tag + "]";
-        break;
-      case "Wikis":
-        var syn = "[wikis:" + tag + "]";
-        break;
-      case "Nodes(Wikis + Notes)":
-        var syn = "[nodes:" + tag + "]";
-        break;
-      case "Activity":
-        var syn = "[activity:" + tag + "]";
-        break;
-      case "Questions":
-        var syn = "[questions:" + tag + "]";
-        break;
+      switch (Option1) {
+        case "Notes":
+          var syn = "[notes:" + tag + "]";
+          break;
+        case "Wikis":
+          var syn = "[wikis:" + tag + "]";
+          break;
+        case "Nodes(Wikis + Notes)":
+          var syn = "[nodes:" + tag + "]";
+          break;
+        case "Activity":
+          var syn = "[activity:" + tag + "]";
+          break;
+        case "Questions":
+          var syn = "[questions:" + tag + "]";
+          break;
+      }
     }
-  }
     if (Option2 == "Grid") {
-      switch(Option1) {
-      case "Notes":
-        var syn = "[notes:grid:" + tag + "]";
-        break;
-      case "Wikis":
-        var syn = "[wikis:grid:" + tag + "]";
-        break;
-      case "Nodes(Wikis + Notes)":
-        var syn = "[nodes:grid:" + tag + "]";
-        break;
-      case "Activity":
-        var syn = "[activity:grid:" + tag + "]";
-        break;
-      case "Questions":
-        var syn = "[questions:grid:" + tag + "]";
-        break;
+      switch (Option1) {
+        case "Notes":
+          var syn = "[notes:grid:" + tag + "]";
+          break;
+        case "Wikis":
+          var syn = "[wikis:grid:" + tag + "]";
+          break;
+        case "Nodes(Wikis + Notes)":
+          var syn = "[nodes:grid:" + tag + "]";
+          break;
+        case "Activity":
+          var syn = "[activity:grid:" + tag + "]";
+          break;
+        case "Questions":
+          var syn = "[questions:grid:" + tag + "]";
+          break;
+      }
     }
-  }
     return syn;
   }
-$.fn.extend({
-insertAtCaret: function(myValue){
-  return this.each(function(i) {
-    if (document.selection) {
-      //For browsers like Internet Explorer
-      this.focus();
-      var sel = document.selection.createRange();
-      sel.text = myValue;
-      this.focus();
-    }
-    else if (this.selectionStart || this.selectionStart == '0') {
-      //For browsers like Firefox and Webkit based
-      var startPos = this.selectionStart;
-      var endPos = this.selectionEnd;
-      var scrollTop = this.scrollTop;
-      this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
-      this.focus();
-      this.selectionStart = startPos + myValue.length;
-      this.selectionEnd = startPos + myValue.length;
-      this.scrollTop = scrollTop;
-    } else {
-      this.value += myValue;
-      this.focus();
+  $.fn.extend({
+    insertAtCaret: function(myValue) {
+      return this.each(function(i) {
+        if (document.selection) {
+          // For browsers like Internet Explorer
+          this.focus();
+          var sel = document.selection.createRange();
+          sel.text = myValue;
+          this.focus();
+        } else if (this.selectionStart || this.selectionStart == '0') {
+          // For browsers like Firefox and Webkit based
+          var startPos = this.selectionStart;
+          var endPos = this.selectionEnd;
+          var scrollTop = this.scrollTop;
+          this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos, this.value.length);
+          this.focus();
+          this.selectionStart = startPos + myValue.length;
+          this.selectionEnd = startPos + myValue.length;
+          this.scrollTop = scrollTop;
+        } else {
+          this.value += myValue;
+          this.focus();
+        }
+      });
     }
   });
-}
-});
+
 
   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
 
@@ -22697,29 +22697,43 @@ insertAtCaret: function(myValue){
   $('.woofmark-command-insert').attr('data-placement', 'top');
   $('.woofmark-command-insert').popover({html: true, sanitize: false});
   $('.wk-commands .woofmark-command-insert').click(function() {
+    var sel = window.getSelection();
+    console.log(sel)
+    if(sel.anchorNode !== null) {
+      var range = sel.getRangeAt(0);
+    }
+    else {
+      range = null;
+    }
+    console.log(sel.anchorNode)
     $(".menu1 a").click(function() {
       Option1 = $(this).text();
       $(".selected").text($(this).text());
     });
-  });
-  $('.wk-commands .woofmark-command-insert').click(function() {
     $(".menu2 a").click(function() {
       Option2 = $(this).text();
       $(".selected2").text($(this).text());
-    });
-  });
-  $('.wk-commands .woofmark-command-insert').click(function() {
+    });            
     $('.go1').click(function() {
-      wysiwyg.runCommand(function(chunks, mode) {
-        var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
-        if (mode === 'markdown') {
-          $(".ple-textarea").insertAtCaret("")
-          chunks.before += (syntax);
-        }
-        else {
-           chunks.before += _module.wysiwyg.parseMarkdown(syntax);
-        }
+      console.log(sel.anchorNode)
+      var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
+      if($('.woofmark-mode-markdown')[0].disabled === false && range !== null) {
+        range.deleteContents();
+        range.insertNode(document.createTextNode(syntax));
+        $('.woofmark-mode-markdown').click();
+        $('.woofmark-mode-wysiwyg').click();
+      }
+      else{
+        wysiwyg.runCommand(function(chunks, mode) {
+          if (mode === 'markdown') {
+            $(".ple-textarea").insertAtCaret("");
+            chunks.before += (syntax);
+          } 
+          else {
+            chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+          }
       });
+    }
     });
   });
 };
@@ -22777,19 +22791,22 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 
     _module.dropEl = _module.el.find('.ple-drag-drop');
+    _module.mainDropEl = _module.el.find('.mainImageBox');
     _module.dropEl.css('background', 'url("' + _module.options.url + '") center no-repeat');
     _module.dropEl.css('background-position', 'center');
     _module.dropEl.css('background-repeat', 'no-repeat');
     _module.dropEl.css('background-size', 'cover');
 
-    _module.dropEl.bind('dragover', function(e) {
+    _module.dropEl.bind('dragover dragenter', function(e) {
       e.preventDefault();
       // create relevant styles in sheet
       _module.dropEl.addClass('hover');
+      _module.mainDropEl.addClass('dragDrop');
     });
 
-    _module.dropEl.bind('dragout', function(e) {
+    _module.dropEl.bind('dragout dragleave dragend drop', function(e) {
       _module.dropEl.removeClass('hover');
+      _module.mainDropEl.removeClass('dragDrop');
     });
 
     _module.dropEl.bind('drop', function(e) {
@@ -23034,23 +23051,23 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   $('.wk-commands .woofmark-command-autocenter').click(function() {
     wysiwyg.runCommand(function(chunks, mode) {
       if (mode === "wysiwyg") {
-        var tag = "center";
-        var open = '<' + tag;
-        var close = '</' + tag.replace(/</g, '</');
-        var rleading = new RegExp(open + '( [^>]*)?>$', 'i');
-        var rtrailing = new RegExp('^' + close + '>', 'i');
-        var ropen = new RegExp(open + '( [^>]*)?>', 'ig');
-        var rclose = new RegExp(close + '( [^>]*)?>', 'ig');
+        const tag = "center";
+        const open = '<' + tag;
+        const close = '</' + tag.replace(/</g, '</');
+        const rleading = new RegExp(open + '( [^>]*)?>$', 'i');
+        const rtrailing = new RegExp('^' + close + '>', 'i');
+        const ropen = new RegExp(open + '( [^>]*)?>', 'ig');
+        const rclose = new RegExp(close + '( [^>]*)?>', 'ig');
         chunks.trim();
         // searches if selected text is center aligned and left aligns it
-        var trail = rtrailing.exec(chunks.before);
-        var lead = rleading.exec(chunks.after);
+        const trail = rtrailing.exec(chunks.before);
+        const lead = rleading.exec(chunks.after);
         if (lead && trail) {
           chunks.before = chunks.before.replace(rleading, '');
           chunks.after = chunks.after.replace(rtrailing, '');
         } else {
           // searches if center tag is opened in selected text
-          var opened = ropen.test(chunks.selection);
+          const opened = ropen.test(chunks.selection);
           if (opened) {
             chunks.selection = chunks.selection.replace(ropen, '');
             if (!surrounded(chunks, tag)) {
@@ -23058,7 +23075,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
             }
           }
           // searches if center tag is closed in selected text
-          var closed = rclose.test(chunks.selection);
+          const closed = rclose.test(chunks.selection);
           if (closed) {
             chunks.selection = chunks.selection.replace(rclose, '');
             if (!surrounded(chunks, tag)) {
@@ -23083,9 +23100,9 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
         }
 
         function closebounded(chunks, tag) {
-          var rcloseleft = new RegExp('</' + tag.replace(/</g, '</') + '>$', 'i');
-          var ropenright = new RegExp('^<' + tag + '(?: [^>]*)?>', 'i');
-          var bounded = rcloseleft.test(chunks.before) && ropenright.test(chunks.after);
+          const rcloseleft = new RegExp('</' + tag.replace(/</g, '</') + '>$', 'i');
+          const ropenright = new RegExp('^<' + tag + '(?: [^>]*)?>', 'i');
+          const bounded = rcloseleft.test(chunks.before) && ropenright.test(chunks.after);
           if (bounded) {
             chunks.before = chunks.before.replace(rcloseleft, '');
             chunks.after = chunks.after.replace(ropenright, '');
@@ -23094,41 +23111,41 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
         }
 
         function surrounded(chunks, tag) {
-          var ropen = new RegExp('<' + tag + '(?: [^>]*)?>', 'ig');
-          var rclose = new RegExp('<\/' + tag.replace(/</g, '</') + '>', 'ig');
-          var opensBefore = count(chunks.before, ropen);
-          var opensAfter = count(chunks.after, ropen);
-          var closesBefore = count(chunks.before, rclose);
-          var closesAfter = count(chunks.after, rclose);
-          var open = opensBefore - closesBefore > 0;
-          var close = closesAfter - opensAfter > 0;
+          const ropen = new RegExp('<' + tag + '(?: [^>]*)?>', 'ig');
+          const rclose = new RegExp('<\/' + tag.replace(/</g, '</') + '>', 'ig');
+          const opensBefore = count(chunks.before, ropen);
+          const opensAfter = count(chunks.after, ropen);
+          const closesBefore = count(chunks.before, rclose);
+          const closesAfter = count(chunks.after, rclose);
+          const open = opensBefore - closesBefore > 0;
+          const close = closesAfter - opensAfter > 0;
           return open && close;
         }
 
         function count(text, regex) {
-          var match = text.match(regex);
+          const match = text.match(regex);
           if (match) {
             return match.length;
           }
           return 0;
         }
       } else if (mode === "markdown") {
-        var open = '->';
-        var close = '<-';
-        var rleading = new RegExp(open + '( [^>]*)?', 'i');
-        var rtrailing = new RegExp('^' + close, 'i');
-        var ropen = new RegExp(open + '( [^>]*)?', 'ig');
-        var rclose = new RegExp(close + '( [^>]*)?', 'ig');
+        const open = '->';
+        const close = '<-';
+        const rleading = new RegExp(open + '( [^>]*)?', 'i');
+        const rtrailing = new RegExp('^' + close, 'i');
+        const ropen = new RegExp(open + '( [^>]*)?', 'ig');
+        const rclose = new RegExp(close + '( [^>]*)?', 'ig');
         chunks.trim();
-        var trail = rleading.exec(chunks.before);
-        var lead = rtrailing.exec(chunks.after);
+        const trail = rleading.exec(chunks.before);
+        const lead = rtrailing.exec(chunks.after);
 
         if (trail && lead) {
           chunks.before = chunks.before.replace(rleading, '');
           chunks.after = chunks.after.replace(rtrailing, '');
         } else {
-          var opened = ropen.test(chunks.selection);
-          var closed = rclose.test(chunks.selection);
+          const opened = ropen.test(chunks.selection);
+          const closed = rclose.test(chunks.selection);
           if (opened || closed) {
             if (opened) {
               chunks.selection = chunks.selection.replace(ropen, '');

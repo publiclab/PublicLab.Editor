@@ -68,6 +68,7 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
 
+
   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
 
   var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
@@ -106,28 +107,40 @@ module.exports = function CustomInsert(_module, wysiwyg) {
   $('.woofmark-command-insert').attr('data-placement', 'top');
   $('.woofmark-command-insert').popover({html: true, sanitize: false});
   $('.wk-commands .woofmark-command-insert').click(function() {
+    var sel = window.getSelection();
+    console.log(sel);
+    if (sel.anchorNode !== null) {
+      var range = sel.getRangeAt(0);
+    } else {
+      range = null;
+    }
+    console.log(sel.anchorNode);
     $(".menu1 a").click(function() {
       Option1 = $(this).text();
       $(".selected").text($(this).text());
     });
-  });
-  $('.wk-commands .woofmark-command-insert').click(function() {
     $(".menu2 a").click(function() {
       Option2 = $(this).text();
       $(".selected2").text($(this).text());
     });
-  });
-  $('.wk-commands .woofmark-command-insert').click(function() {
     $('.go1').click(function() {
-      wysiwyg.runCommand(function(chunks, mode) {
-        var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
-        if (mode === 'markdown') {
-          $(".ple-textarea").insertAtCaret("");
-          chunks.before += (syntax);
-        } else {
-          chunks.before += _module.wysiwyg.parseMarkdown(syntax);
-        }
-      });
+      console.log(sel.anchorNode);
+      var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
+      if ($('.woofmark-mode-markdown')[0].disabled === false && range !== null) {
+        range.deleteContents();
+        range.insertNode(document.createTextNode(syntax));
+        $('.woofmark-mode-markdown').click();
+        $('.woofmark-mode-wysiwyg').click();
+      } else {
+        wysiwyg.runCommand(function(chunks, mode) {
+          if (mode === 'markdown') {
+            $(".ple-textarea").insertAtCaret("");
+            chunks.before += (syntax);
+          } else {
+            chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+          }
+        });
+      }
     });
   });
 };
