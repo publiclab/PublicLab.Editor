@@ -21735,7 +21735,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":185,"./modules/PublicLab.MapModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.RichTextModule.js":192,"./modules/PublicLab.TagsModule.js":193,"./modules/PublicLab.TitleModule.js":195,"resig-class":117}],179:[function(require,module,exports){
+},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":186,"./modules/PublicLab.MapModule.js":187,"./modules/PublicLab.Module.js":188,"./modules/PublicLab.RichTextModule.js":193,"./modules/PublicLab.TagsModule.js":194,"./modules/PublicLab.TitleModule.js":196,"resig-class":117}],179:[function(require,module,exports){
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -22383,6 +22383,10 @@ module.exports = function(textarea, _editor, _module) {
       _module,
       wysiwyg
   );
+  require("../modules/PublicLab.CustomInsertMaps.js")(
+    _module,
+    wysiwyg
+  );
 
   // set up embed insertion tool:
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
@@ -22450,7 +22454,7 @@ module.exports = function(textarea, _editor, _module) {
   return wysiwyg;
 };
 
-},{"../modules/PublicLab.RichTextModule.AutoCenter.js":188,"../modules/PublicLab.RichTextModule.Embed.js":189,"../modules/PublicLab.RichTextModule.HorizontalRule.js":190,"../modules/PublicLab.RichTextModule.Table.js":191,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
+},{"../modules/PublicLab.CustomInsertMaps.js":185,"../modules/PublicLab.RichTextModule.AutoCenter.js":189,"../modules/PublicLab.RichTextModule.Embed.js":190,"../modules/PublicLab.RichTextModule.HorizontalRule.js":191,"../modules/PublicLab.RichTextModule.Table.js":192,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -22584,6 +22588,43 @@ module.exports = {
 };
 
 },{}],185:[function(require,module,exports){
+
+module.exports = function CustomInsert(_module, wysiwyg) {
+  function Syntax(Latitude, Longitude, Layers) {
+    var syn = "[map:content:" + Latitude + ":" + Longitude;
+    if(Layers)
+      syn = syn + ":" + Layers;
+    syn = syn + "]"        
+    return syn;
+  }
+
+  $('.wk-commands').append('<a class="woofmark-command-insert-map btn btn-default" data-toggle="Insert" title="Custom Insert Maps"><i class="fa fa-globe"></i></a>');
+
+  var builder =  '<div class="input-group">';
+  builder += '<input type="number" class="form-control" placeholder="Latitude" id="Latitude" style="min-width: 150px;" required>';
+  builder += '<input type="number" class="form-control" placeholder="Longitude" id="Longitude" style="min-width: 150px;">';
+  builder += '<input type="text" class="form-control" placeholder="Preset Layers(separated with commas)" id="layer" style="min-width: 150px;">';
+  builder += '<button class="btn btn-default" type="button" id ="submit">Go!</button>';
+  builder += '</div>';
+  
+  $('.woofmark-command-insert-map').attr('data-content', builder);
+  $('.woofmark-command-insert-map').attr('data-container', 'body');
+  $('.woofmark-command-insert-map').attr('data-placement','top');
+  $('.woofmark-command-insert-map').popover({ html : true,sanitize: false});
+  $('.wk-commands .woofmark-command-insert-map').click(function() {
+    $('#submit').click(function(){
+      wysiwyg.runCommand(function(chunks, mode){
+        var syntax = Syntax($('#Latitude')[0].value, $('#Longitude')[0].value, $('#layer')[0].value);
+        if (mode === 'markdown') chunks.before += syntax;
+        else {
+         chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+       } 
+     })
+    })
+  })
+}
+
+},{}],186:[function(require,module,exports){
 /*
  * Form module for main post image
  */
@@ -22758,7 +22799,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 });
 
-},{}],186:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 /*
       MapModule for adding Map .
       Adds/Removes Tag lat:XX , lon:XX from TagsModule .
@@ -22824,7 +22865,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
   }
 });
 
-},{}],187:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /*
  * Form modules like title, tags, body, main image
  */
@@ -22881,7 +22922,7 @@ module.exports = PublicLab.Module = Class.extend({
 
 });
 
-},{}],188:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 /*
    Auto Center insertion: ****
 */
@@ -23016,7 +23057,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   });
 };
 
-},{}],189:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 /*
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
 */
@@ -23047,7 +23088,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
   });
 };
 
-},{}],190:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /*
    Horizontal Rule insertion: ****
 */
@@ -23070,7 +23111,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
   });
 };
 
-},{}],191:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 /*
  Table generation:
 
@@ -23169,7 +23210,7 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 };
 
-},{}],192:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -23503,7 +23544,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
   }
 });
 
-},{"crossvent":12}],193:[function(require,module,exports){
+},{"crossvent":12}],194:[function(require,module,exports){
 /*
  * Form module for post tags
  */
@@ -23616,7 +23657,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{}],194:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 /* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -23703,7 +23744,7 @@ module.exports = function relatedNodes(module) {
   return relatedEl;
 };
 
-},{}],195:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -23813,4 +23854,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":194}]},{},[178]);
+},{"./PublicLab.TitleModule.Related.js":195}]},{},[178]);
