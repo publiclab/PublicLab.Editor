@@ -22898,6 +22898,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       mainImage.style.background = 'white';
       _module.el.find('.progress').hide();
       showImage = false;
+      _module.options.url = '';
+      _module.image.src = '';
+      _editor.data.has_main_image = false;
+      _editor.data.image_revision = '';
     };
   }
 
