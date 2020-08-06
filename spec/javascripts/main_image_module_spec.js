@@ -84,4 +84,20 @@ describe("MainImageModule", function() {
       ]
     });
   });
+
+  it("remove image", function() {
+    var fixture = loadFixtures('index.html');
+
+    var editor = new PL.Editor({
+      textarea: $('.ple-textarea')[0],
+      mainImageUrl: 'examples/example.gif'
+    });
+
+    var module = new PL.MainImageModule(editor, {});
+    expect(module.value('/image/url.jpg', 34)).toBe('/image/url.jpg');
+    document.getElementById('removeFile').click();
+    expect(editor.data.has_main_image).toBe(false);
+    expect(editor.data.image_revision).toBe('');
+    expect(module.options.url).toBe('');
+  });
 });
