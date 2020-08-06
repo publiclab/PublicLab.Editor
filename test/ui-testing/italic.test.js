@@ -13,6 +13,7 @@ describe('Italic Text', () => {
     }
     // clicks on italic button and checks if 'emphasized text' is added in the editor
     await page.waitForSelector('.ple-module-body');
+    await page.keyboard.press('Backspace');
     await page.click('.woofmark-command-italic');
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('emphasized text'));
     expect(stringIsIncluded).toBe(true);

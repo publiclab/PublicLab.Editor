@@ -8,14 +8,22 @@ beforeAll(async () => {
 describe('Bold Text', () => {
   test('Adds strong text in rich text mode', async () => {
     // switches to wysiwyg mode if it is in markdown mode
+    await page.screenshot({path: 'buddy-screenshot1.png'});
     if (await page.evaluate(() => $(".woofmark-mode-markdown").is(":disabled"))) {
       await page.click('.woofmark-mode-wysiwyg');
     }
+    await page.screenshot({path: 'buddy-screenshot2.png'});
     // clicks on bold button and checks if 'strong text' is added in the editor
     await page.waitForSelector('.ple-module-body');
+    await page.waitForSelector('.wk-wysiwyg');
+    await page.keyboard.press('Backspace');
+    await page.screenshot({path: 'buddy-screenshot3.png'});
     await page.click('.woofmark-command-bold');
+    await page.screenshot({path: 'buddy-screenshot4.png'});
+
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('strong text'));
     expect(stringIsIncluded).toBe(true);
+    await page.screenshot({path: 'buddy-screenshot5.png'});
 
     // resets the changes by removing the added text
     await page.keyboard.press("Backspace");
