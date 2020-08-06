@@ -1,6 +1,5 @@
 module.exports = function CustomInsert(_module, wysiwyg) {
   function Syntax(tag, Option1, Option2) {
-    console.log(tag, Option1, Option2);
     if (Option2 === "List") {
       switch (Option1) {
         case "Notes":
@@ -67,39 +66,8 @@ module.exports = function CustomInsert(_module, wysiwyg) {
       });
     }
   });
-
-
+  const builder = require("./PublicLab.CustomInsert.Template.js");
   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
-
-  var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
-  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
-  builder += '<span class= "selected">What Do you want to insert?</span>';
-  builder += '<span class="caret"></span>';
-  builder += '</button>';
-  builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
-  builder += '</ul>';
-  builder += '</div>';
-  builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
-  builder += '<span class="selected2">Insert as a</span>';
-  builder += '<span class="caret"></span>';
-  builder += '</button>';
-  builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
-  builder += '</ul>';
-  builder += '</div>';
-  builder += '<div class="input-group">';
-  builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
-  builder += '<span class="input-group-btn">';
-  builder += '<button class="btn btn-default go1" type="button">Go!</button>';
-  builder += '</span>';
-  builder += '</div>';
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
@@ -108,13 +76,11 @@ module.exports = function CustomInsert(_module, wysiwyg) {
   $('.woofmark-command-insert').popover({html: true, sanitize: false});
   $('.wk-commands .woofmark-command-insert').click(function() {
     var sel = window.getSelection();
-    console.log(sel);
     if (sel.anchorNode !== null) {
       var range = sel.getRangeAt(0);
     } else {
       range = null;
     }
-    console.log(sel.anchorNode);
     $(".menu1 a").click(function() {
       Option1 = $(this).text();
       $(".selected").text($(this).text());
@@ -124,7 +90,6 @@ module.exports = function CustomInsert(_module, wysiwyg) {
       $(".selected2").text($(this).text());
     });
     $('.go1').click(function() {
-      console.log(sel.anchorNode);
       var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
       if ($('.woofmark-mode-markdown')[0].disabled === false && range !== null) {
         range.deleteContents();
