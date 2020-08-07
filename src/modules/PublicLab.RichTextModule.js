@@ -30,7 +30,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         icon: "clock-o",
         position: 90,
         text:
-          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
+          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-default' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
       }
     ];
 
