@@ -147,7 +147,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     var imageInput = document.getElementById('thumbnail-img');
     var infoArea = document.getElementById('thumbnail-filename');
 
-    if (imageInput) {
+    if (imageInput && infoArea) {
       imageInput.addEventListener('change', showFileName);
 
       function showFileName(event) {
