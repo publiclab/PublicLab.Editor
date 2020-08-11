@@ -9,6 +9,5 @@ describe('Title of the page', () => {
   test('Title of the page', async () => {
     const title = await page.title();
     expect(title).toBe('PublicLab.Editor');
-
   }, timeout);
 });

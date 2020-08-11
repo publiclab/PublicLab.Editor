@@ -28,5 +28,6 @@ describe('Center Text', () => {
     closing = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('<-'));
     expect(opening).toBe(false);
     expect(closing).toBe(false);
+    await page.click('.woofmark-mode-wysiwyg');
   }, timeout);
 });
