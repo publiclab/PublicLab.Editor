@@ -16,6 +16,7 @@ describe('Custom Insert text', () => {
     await page.waitForSelector('.Nodes');
     await page.click('.Nodes');
     // Select the option 'List' from Menu: Insert as a?
+    await page.waitForSelector('.dropdownMenu2');
     await page.click('.dropdownMenu2');
     await page.waitForSelector('.List');
     await page.click('.List');
@@ -44,6 +45,7 @@ describe('Custom Insert text', () => {
     await page.waitForSelector('.Notes');
     await page.click('.Notes');
     // Select the option 'List' from Menu: Insert as a?
+    await page.waitForSelector('.dropdownMenu2');
     await page.click('.dropdownMenu2');
     await page.waitForSelector('.List');
     await page.click('.List');
