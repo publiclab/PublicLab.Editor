@@ -21735,7 +21735,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":185,"./modules/PublicLab.MapModule.js":186,"./modules/PublicLab.Module.js":187,"./modules/PublicLab.RichTextModule.js":192,"./modules/PublicLab.TagsModule.js":193,"./modules/PublicLab.TitleModule.js":195,"resig-class":117}],179:[function(require,module,exports){
+},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":187,"./modules/PublicLab.MapModule.js":188,"./modules/PublicLab.Module.js":189,"./modules/PublicLab.RichTextModule.js":194,"./modules/PublicLab.TagsModule.js":195,"./modules/PublicLab.TitleModule.js":197,"resig-class":117}],179:[function(require,module,exports){
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -22292,7 +22292,7 @@ module.exports = function(textarea, _editor, _module) {
           ],
 
           allowedAttributes: {
-            a: ["href", "name", "class", "target", "title", "aria-label"],
+            a: ["href", "name", "target", "title", "aria-label"],
             iframe: [
               "allowfullscreen",
               "frameborder",
@@ -22362,12 +22362,16 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]";
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
           }
         }
       });
     }
   });
+  require("../modules/PublicLab.CustomInsert.js")(
+      _module,
+      wysiwyg
+  );
 
   // set up table generation tools:
   require("../modules/PublicLab.RichTextModule.Table.js")(_module, wysiwyg);
@@ -22450,7 +22454,7 @@ module.exports = function(textarea, _editor, _module) {
   return wysiwyg;
 };
 
-},{"../modules/PublicLab.RichTextModule.AutoCenter.js":188,"../modules/PublicLab.RichTextModule.Embed.js":189,"../modules/PublicLab.RichTextModule.HorizontalRule.js":190,"../modules/PublicLab.RichTextModule.Table.js":191,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
+},{"../modules/PublicLab.CustomInsert.js":186,"../modules/PublicLab.RichTextModule.AutoCenter.js":190,"../modules/PublicLab.RichTextModule.Embed.js":191,"../modules/PublicLab.RichTextModule.HorizontalRule.js":192,"../modules/PublicLab.RichTextModule.Table.js":193,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -22584,6 +22588,151 @@ module.exports = {
 };
 
 },{}],185:[function(require,module,exports){
+  var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
+  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
+  builder += '<span class= "selected">What Do you want to insert?</span>';
+  builder += '<span class="caret"></span>';
+  builder += '</button>';
+  builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
+  builder += '</ul>';
+  builder += '</div>';
+  builder += '<div class="dropdown" style="margin-bottom: 20px;">';
+  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+  builder += '<span class="selected2">Insert as a</span>';
+  builder += '<span class="caret"></span>';
+  builder += '</button>';
+  builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
+  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
+  builder += '</ul>';
+  builder += '</div>';
+  builder += '<div class="input-group">';
+  builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
+  builder += '<span class="input-group-btn">';
+  builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+  builder += '</span>';
+  builder += '</div>';
+  module.exports = builder;
+},{}],186:[function(require,module,exports){
+module.exports = function CustomInsert(_module, wysiwyg) {
+
+  function Syntax(tag, Option1, Option2) {
+    if (Option2 === "List") {
+      switch (Option1) {
+        case "Notes":
+          var syn = "[notes:" + tag + "]";
+          break;
+        case "Wikis":
+          var syn = "[wikis:" + tag + "]";
+          break;
+        case "Nodes(Wikis + Notes)":
+          var syn = "[nodes:" + tag + "]";
+          break;
+        case "Activity":
+          var syn = "[activity:" + tag + "]";
+          break;
+        case "Questions":
+          var syn = "[questions:" + tag + "]";
+          break;
+      }
+    }
+    if (Option2 == "Grid") {
+      switch (Option1) {
+        case "Notes":
+          var syn = "[notes:grid:" + tag + "]";
+          break;
+        case "Wikis":
+          var syn = "[wikis:grid:" + tag + "]";
+          break;
+        case "Nodes(Wikis + Notes)":
+          var syn = "[nodes:grid:" + tag + "]";
+          break;
+        case "Activity":
+          var syn = "[activity:grid:" + tag + "]";
+          break;
+        case "Questions":
+          var syn = "[questions:grid:" + tag + "]";
+          break;
+      }
+    }
+    return syn;
+  }
+  $.fn.extend({
+    insertAtCaret: function(myValue) {
+      return this.each(function(i) {
+        if (document.selection) {
+          // For browsers like Internet Explorer
+          this.focus();
+          var sel = document.selection.createRange();
+          sel.text = myValue;
+          this.focus();
+        } else if (this.selectionStart || this.selectionStart == '0') {
+          // For browsers like Firefox and Webkit based
+          var startPos = this.selectionStart;
+          var endPos = this.selectionEnd;
+          var scrollTop = this.scrollTop;
+          this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos, this.value.length);
+          this.focus();
+          this.selectionStart = startPos + myValue.length;
+          this.selectionEnd = startPos + myValue.length;
+          this.scrollTop = scrollTop;
+        } else {
+          this.value += myValue;
+          this.focus();
+        }
+      });
+    }
+  });
+  const builder = require("./PublicLab.CustomInsert.Template.js"); 
+  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+  var Option1 = "Notes";
+  var Option2 = "List";
+  $('.woofmark-command-insert').attr('data-content', builder);
+  $('.woofmark-command-insert').attr('data-container', 'body');
+  $('.woofmark-command-insert').attr('data-placement', 'top');
+  $('.woofmark-command-insert').popover({html: true, sanitize: false});
+  $('.wk-commands .woofmark-command-insert').click(function() {
+    var sel = window.getSelection();
+    if (sel.anchorNode !== null) {
+      var range = sel.getRangeAt(0);
+    } else {
+      range = null;
+    }
+    $(".menu1 a").click(function() {
+      Option1 = $(this).text();
+      $(".selected").text($(this).text());
+    });
+    $(".menu2 a").click(function() {
+      Option2 = $(this).text();
+      $(".selected2").text($(this).text());
+    });
+    $('.go1').click(function() {
+      var syntax = Syntax($('.inputText')[0].value, Option1, Option2);
+      if ($('.woofmark-mode-markdown')[0].disabled === false && range !== null) {
+        range.deleteContents();
+        range.insertNode(document.createTextNode(syntax));
+        $('.woofmark-mode-markdown').click();
+        $('.woofmark-mode-wysiwyg').click();
+      } else {
+        wysiwyg.runCommand(function(chunks, mode) {
+          if (mode === 'markdown') {
+            $(".ple-textarea").insertAtCaret("");
+            chunks.before += (syntax);
+          } else {
+            chunks.before += _module.wysiwyg.parseMarkdown(syntax);
+          }
+        });
+      }
+    });
+  });
+};
+
+},{"./PublicLab.CustomInsert.Template.js":185}],187:[function(require,module,exports){
 /*
  * Form module for main post image
  */
@@ -22758,7 +22907,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
 });
 
-},{}],186:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /*
       MapModule for adding Map .
       Adds/Removes Tag lat:XX , lon:XX from TagsModule .
@@ -22824,7 +22973,7 @@ module.exports = PublicLab.MapModule = PublicLab.Module.extend({
   }
 });
 
-},{}],187:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 /*
  * Form modules like title, tags, body, main image
  */
@@ -22881,7 +23030,7 @@ module.exports = PublicLab.Module = Class.extend({
 
 });
 
-},{}],188:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 /*
    Auto Center insertion: ****
 */
@@ -23016,7 +23165,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   });
 };
 
-},{}],189:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /*
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
 */
@@ -23047,7 +23196,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
   });
 };
 
-},{}],190:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 /*
    Horizontal Rule insertion: ****
 */
@@ -23070,7 +23219,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
   });
 };
 
-},{}],191:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 /*
  Table generation:
 
@@ -23169,7 +23318,7 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 };
 
-},{}],192:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -23503,7 +23652,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
   }
 });
 
-},{"crossvent":12}],193:[function(require,module,exports){
+},{"crossvent":12}],195:[function(require,module,exports){
 /*
  * Form module for post tags
  */
@@ -23616,7 +23765,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{}],194:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 /* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -23703,7 +23852,7 @@ module.exports = function relatedNodes(module) {
   return relatedEl;
 };
 
-},{}],195:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -23813,4 +23962,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":194}]},{},[178]);
+},{"./PublicLab.TitleModule.Related.js":196}]},{},[178]);
