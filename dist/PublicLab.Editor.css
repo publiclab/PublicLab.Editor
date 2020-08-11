@@ -187,21 +187,35 @@
   padding-bottom: 8px;
 }
 
+.mainImageBox{
+    height: 130px;
+    margin-bottom: 10px;
+}
+
+.mainImageBox.dragDrop{
+  background-color: #efefef;
+  padding: 10px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius:    6px;
+  border-radius:         6px;
+}
+
 .ple-drag-drop {
-  border: 4px dotted #ccc;
+  border: 3px dashed #ccc;
   background: #f8f8f8;
   color: #aaa;
   font-size: 16px;
-  padding: 40px;
+  padding: 50px;
   text-align: center;
-  margin-bottom: 10px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius:    8px;
-  border-radius:         8px;
+  height: 100%;
+  -webkit-border-radius: 6px;
+  -moz-border-radius:    6px;
+  border-radius:         6px;
 }
 
 .ple-drag-drop.hover {
-  background: #f1f1f1;
+  padding: 40px;
+  background: #f8f8f8;
 }
 
 /********************/
