@@ -216,7 +216,7 @@ module.exports = function(textarea, _editor, _module) {
           ],
 
           allowedAttributes: {
-            a: ["href", "name", "class", "target", "title", "aria-label"],
+            a: ["href", "name", "target", "title", "aria-label"],
             iframe: [
               "allowfullscreen",
               "frameborder",
@@ -286,12 +286,16 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]";
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
           }
         }
       });
     }
   });
+  require("../modules/PublicLab.CustomInsert.js")(
+      _module,
+      wysiwyg
+  );
 
   // set up table generation tools:
   require("../modules/PublicLab.RichTextModule.Table.js")(_module, wysiwyg);
