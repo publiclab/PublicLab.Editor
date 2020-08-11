@@ -41,7 +41,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-
+      
       return _module.options.url;
     };
 
@@ -147,23 +147,29 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     var imageInput = document.getElementById('thumbnail-img');
     var infoArea = document.getElementById('thumbnail-filename');
 
-    imageInput.addEventListener('change', showFileName);
+    if (imageInput && infoArea) {
+      imageInput.addEventListener('change', showFileName);
 
-    function showFileName(event) {
-      var input = event.srcElement;
-      var fileName = input.files[0].name;
-      infoArea.textContent = 'Filename: ' + fileName;
+      function showFileName(event) {
+        var input = event.srcElement;
+        var fileName = input.files[0].name;
+        infoArea.textContent = 'Filename: ' + fileName;
+      }
+
+      // Remove Image button
+      var mainImage = document.getElementById('mainImage');
+      var removeFile = document.getElementById('removeFile');
+
+      removeFile.onclick = function() {
+        mainImage.style.background = 'white';
+        _module.el.find('.progress').hide();
+        showImage = false;
+      _module.options.url = '';
+      _module.image.src = '';
+      _editor.data.has_main_image = false;
+      _editor.data.image_revision = '';
+      };
     }
-
-    // Remove Image button
-    var mainImage = document.getElementById('mainImage');
-    var removeFile = document.getElementById('removeFile');
-
-    removeFile.onclick = function() {
-      mainImage.style.background = 'white';
-      _module.el.find('.progress').hide();
-      showImage = false;
-    };
   }
 
 });
