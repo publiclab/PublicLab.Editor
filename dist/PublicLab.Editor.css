@@ -65,6 +65,11 @@
   position: absolute;
 }
 
+#imageButtons {
+  display: flex;
+  flex-direction: column;
+}
+
 .pl-editor h1,
 .pl-editor h2,
 .pl-editor h3,
@@ -288,6 +293,13 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   .module-mainImage {
     flex-direction: column;
   }
+  .thumbnailBtn {
+    width: 120px;
+  }
+  #imageButtons {
+    flex-direction: row;
+    justify-content: space-between;
+  }  
   .mainImageBox {
     width: auto;
   }
