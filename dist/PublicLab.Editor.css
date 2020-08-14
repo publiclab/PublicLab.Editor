@@ -23,24 +23,29 @@
   margin-bottom: 100px;
 }
 
+.module-mainImage {
+  display: flex;
+  flex-direction: row;
+}
+
 #thumbnail-filename {
-    margin: 0px 0px 5px 4px;
+  margin: 0px 0px 5px 4px;
 }
 
 .thumbnailBtn:hover {
   background-color: #efefef;
 }
 
-.thumbnailBtn:focus { 
-  outline: none; 
-} 
+.thumbnailBtn:focus {
+  outline: none;
+}
 
 .thumbnailBtn:active {
   background-color: #d8d3d3;
 }
 
 .thumbnailBtn {
-  width: 40%;
+  width: 150px;
   color: black;
   background-color: white;
   border-radius: 3px;
@@ -48,6 +53,7 @@
   padding: 7px 14px;
   font-weight: bold;
   margin-bottom: 8%;
+  text-align: center;
 }
 
 #thumbnail-img {
@@ -57,6 +63,11 @@
   height: 0.1px;
   overflow: hidden;
   position: absolute;
+}
+
+#imageButtons {
+  display: flex;
+  flex-direction: column;
 }
 
 .pl-editor h1,
@@ -120,15 +131,15 @@
 .ple-footer .ple-menu-more .btn-close {
   float: right;
   border-radius: 5px;
-  border: 1px solid #A9A9A9;
+  border: 1px solid #a9a9a9;
   height: 20px;
 }
 
-.ple-footer .ple-menu-more .btn-close:hover{
+.ple-footer .ple-menu-more .btn-close:hover {
   opacity: 0.7;
 }
 
-.ple-footer .ple-menu-more .btn-close:active{
+.ple-footer .ple-menu-more .btn-close:active {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
@@ -153,27 +164,6 @@
   clear: left;
 }
 
-.thumbnailBtn:hover {
-  background-color: #efefef;
-}
-
-.thumbnailBtn:focus { 
-  outline:none 
-} 
-
-.thumbnailBtn:active {
-  background-color: #d8d3d3;
-}
-
-.thumbnailBtn {
-  color: #000000b8;
-  background-color: white;
-  border-radius: 3px;
-  border: 1px solid black;
-  padding: 7px 14px;
-  font-weight: bold;
-}
-
 .ple-module-guide .ple-guide-minor p {
   font-size: 12px;
 }
@@ -181,23 +171,24 @@
 .ple-module-guide p i.fa {
   color: #666;
   font-size: 18px;
-  float:left;
+  float: left;
   padding-top: 6px;
   padding-right: 12px;
   padding-bottom: 8px;
 }
 
-.mainImageBox{
-    height: 130px;
-    margin-bottom: 10px;
+.mainImageBox {
+  height: 180px;
+  width: 720px;
+  margin-bottom: 10px;
 }
 
-.mainImageBox.dragDrop{
+.mainImageBox.dragDrop {
   background-color: #efefef;
   padding: 10px;
   -webkit-border-radius: 6px;
-  -moz-border-radius:    6px;
-  border-radius:         6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
 }
 
 .ple-drag-drop {
@@ -209,8 +200,8 @@
   text-align: center;
   height: 100%;
   -webkit-border-radius: 6px;
-  -moz-border-radius:    6px;
-  border-radius:         6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
 }
 
 .ple-drag-drop.hover {
@@ -235,18 +226,18 @@ textarea.ple-textarea {
 .ple-textarea:focus,
 .wk-wysiwyg {
   min-height: 200px;
-  padding:10px;
-  margin-bottom:10px;
+  padding: 10px;
+  margin-bottom: 10px;
   border: 5px solid #eee;
   -webkit-border-radius: 8px;
-  -moz-border-radius:    8px;
-  border-radius:         8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
   outline: none;
 }
 
 .ple-textarea img,
-.wk-wysiwyg img{
-  max-width: 100%
+.wk-wysiwyg img {
+  max-width: 100%;
 }
 
 .wk-commands {
@@ -290,13 +281,26 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 }
 
 .tooltip.bottom .tooltip-arrow {
-  display:none;
+  display: none;
 }
-@media (max-width:550px) {
+@media (max-width: 550px) {
   .ple-module-content a.btn {
-      font-size: 0px !important;
+    font-size: 0px !important;
   }
-    .ple-module-content a.btn i.fa {
-      font-size: 20px !important;
-   }
+  .ple-module-content a.btn i.fa {
+    font-size: 20px !important;
+  }
+  .module-mainImage {
+    flex-direction: column;
+  }
+  .thumbnailBtn {
+    width: 120px;
+  }
+  #imageButtons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .mainImageBox {
+    width: auto;
+  }
 }

@@ -20,6 +20,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  $('#removeFile').hide();
 });
 
 PL.Editor = Class.extend({

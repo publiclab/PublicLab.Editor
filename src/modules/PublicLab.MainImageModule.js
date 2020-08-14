@@ -41,7 +41,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-      
+
       return _module.options.url;
     };
 
@@ -105,6 +105,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.css('background', 'none');
         _module.dropEl.removeClass('hover');
         _module.el.find('.progress').show();
+        $('#removeFile').show();
       },
 
       done: function(e, data) {
@@ -149,6 +150,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
 
     if (imageInput && infoArea) {
       imageInput.addEventListener('change', showFileName);
+      $('#removeFile').show();
 
       function showFileName(event) {
         var input = event.srcElement;
@@ -163,11 +165,13 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       removeFile.onclick = function() {
         mainImage.style.background = 'white';
         _module.el.find('.progress').hide();
+        infoArea.textContent = '';
         showImage = false;
-      _module.options.url = '';
-      _module.image.src = '';
-      _editor.data.has_main_image = false;
-      _editor.data.image_revision = '';
+        _module.options.url = '';
+        _module.image.src = '';
+        _editor.data.has_main_image = false;
+        _editor.data.image_revision = '';
+        $('#removeFile').hide();
       };
     }
   }
