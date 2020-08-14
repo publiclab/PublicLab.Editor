@@ -5,7 +5,6 @@
 module.exports = PublicLab.Help = Class.extend({
 
   init: function(_editor, options) {
-
     var _help = this;
 
     _help.options = options || {};
@@ -17,19 +16,12 @@ module.exports = PublicLab.Help = Class.extend({
     // this won't work in xs compact state...
 
     $('.ple-module').mouseleave(function(e) {
-
-      $(this).find('.ple-guide-minor').fadeTo(400,0);
-
+      $(this).find('.ple-guide-minor').fadeTo(400, 0);
     });
 
     $('.ple-module').mouseenter(function(e) {
-
-      $(this).find('.ple-guide-minor').fadeTo(400,1);
-      
+      $(this).find('.ple-guide-minor').fadeTo(400, 1);
     });
-
-
-
   }
 
 });
