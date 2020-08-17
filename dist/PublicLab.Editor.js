@@ -22777,7 +22777,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-      
+
       return _module.options.url;
     };
 
@@ -22903,11 +22903,11 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         infoArea.textContent = '';
         showImage = false;
-      _module.options.url = '';
-      _module.image.src = '';
-      _editor.data.has_main_image = false;
-      _editor.data.image_revision = '';
-      $('#removeFile').hide();
+        _module.options.url = '';
+        _module.image.src = '';
+        _editor.data.has_main_image = false;
+        _editor.data.image_revision = '';
+        $('#removeFile').hide();
       };
     }
   }

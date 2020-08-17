@@ -310,15 +310,15 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
     var wkC = document.getElementsByClassName("wk-commands")[0];
 
     $(window).scroll(function() {
-      var textAreaRect = document
-          .getElementsByClassName("wk-container")[0]
+      var textAreaRect = $(".ple-textarea")[0]
           .getBoundingClientRect();
-      var footerRect = document
-          .getElementsByClassName("ple-footer")[0]
+      var richAreaRect = $(".wk-wysiwyg")[0]
+          .getBoundingClientRect();
+      var footerRect = $("ple-footer")[0]
           .getBoundingClientRect().height;
 
       if (
-        textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+        (textAreaRect.bottom || richAreaRect.bottom) >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && (textAreaRect.top || richAreaRect.top) <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
       ) {
         wkC.style.position = "fixed";
         wkC.style.bottom = footerRect + "px";
