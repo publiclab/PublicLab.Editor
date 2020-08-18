@@ -21547,6 +21547,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  $('#removeFile').hide();
 });
 
 PL.Editor = Class.extend({
@@ -22588,39 +22589,39 @@ module.exports = {
 };
 
 },{}],185:[function(require,module,exports){
-  var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
-  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
-  builder += '<span class= "selected">What Do you want to insert?</span>';
-  builder += '<span class="caret"></span>';
-  builder += '</button>';
-  builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
-  builder += '</ul>';
-  builder += '</div>';
-  builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-  builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
-  builder += '<span class="selected2">Insert as a</span>';
-  builder += '<span class="caret"></span>';
-  builder += '</button>';
-  builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
-  builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
-  builder += '</ul>';
-  builder += '</div>';
-  builder += '<div class="input-group">';
-  builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
-  builder += '<span class="input-group-btn">';
-  builder += '<button class="btn btn-default go1" type="button">Go!</button>';
-  builder += '</span>';
-  builder += '</div>';
-  module.exports = builder;
+var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
+builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
+builder += '<span class= "selected">What Do you want to insert?</span>';
+builder += '<span class="caret"></span>';
+builder += '</button>';
+builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
+builder += '</ul>';
+builder += '</div>';
+builder += '<div class="dropdown" style="margin-bottom: 20px;">';
+builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+builder += '<span class="selected2">Insert as a</span>';
+builder += '<span class="caret"></span>';
+builder += '</button>';
+builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
+builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
+builder += '</ul>';
+builder += '</div>';
+builder += '<div class="input-group">';
+builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
+builder += '<span class="input-group-btn">';
+builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+builder += '</span>';
+builder += '</div>';
+module.exports = builder;
+
 },{}],186:[function(require,module,exports){
 module.exports = function CustomInsert(_module, wysiwyg) {
-
   function Syntax(tag, Option1, Option2) {
     if (Option2 === "List") {
       switch (Option1) {
@@ -22688,7 +22689,7 @@ module.exports = function CustomInsert(_module, wysiwyg) {
       });
     }
   });
-  const builder = require("./PublicLab.CustomInsert.Template.js"); 
+  const builder = require("./PublicLab.CustomInsert.Template.js");
   $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
   var Option1 = "Notes";
   var Option2 = "List";
@@ -22776,7 +22777,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-
+      
       return _module.options.url;
     };
 
@@ -22840,6 +22841,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.dropEl.css('background', 'none');
         _module.dropEl.removeClass('hover');
         _module.el.find('.progress').show();
+        $('#removeFile').show();
       },
 
       done: function(e, data) {
@@ -22882,27 +22884,32 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
     var imageInput = document.getElementById('thumbnail-img');
     var infoArea = document.getElementById('thumbnail-filename');
 
-    imageInput.addEventListener('change', showFileName);
+    if (imageInput && infoArea) {
+      imageInput.addEventListener('change', showFileName);
+      $('#removeFile').show();
 
-    function showFileName(event) {
-      var input = event.srcElement;
-      var fileName = input.files[0].name;
-      infoArea.textContent = 'Filename: ' + fileName;
-    }
+      function showFileName(event) {
+        var input = event.srcElement;
+        var fileName = input.files[0].name;
+        infoArea.textContent = 'Filename: ' + fileName;
+      }
 
-    // Remove Image button
-    var mainImage = document.getElementById('mainImage');
-    var removeFile = document.getElementById('removeFile');
+      // Remove Image button
+      var mainImage = document.getElementById('mainImage');
+      var removeFile = document.getElementById('removeFile');
 
-    removeFile.onclick = function() {
-      mainImage.style.background = 'white';
-      _module.el.find('.progress').hide();
-      showImage = false;
+      removeFile.onclick = function() {
+        mainImage.style.background = 'white';
+        _module.el.find('.progress').hide();
+        infoArea.textContent = '';
+        showImage = false;
       _module.options.url = '';
       _module.image.src = '';
       _editor.data.has_main_image = false;
       _editor.data.image_revision = '';
-    };
+      $('#removeFile').hide();
+      };
+    }
   }
 
 });
@@ -23351,7 +23358,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         icon: "clock-o",
         position: 90,
         text:
-          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <code>...</code> menu below."
+          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-default' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
       }
     ];
 
