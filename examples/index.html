@@ -3,7 +3,7 @@
   <head>
     <title>PublicLab.Editor</title>
 
-    <meta name="theme-color" content="#000">
+    <meta name="theme-color" content="#000" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- compulsory -->
@@ -82,13 +82,16 @@
                   <option value="">an event</option>
                 </select>
               </div>
-              <div class="col-xs-2" style="padding-top:10px;text-align:left;">
+              <div
+                class="col-xs-2"
+                style="padding-top: 10px; text-align: left;"
+              >
                 <a
                   rel="tooltip"
                   data-placement="bottom"
                   title="Learn more about different posting types."
                   class="ple-help-light"
-                  style="font-size:18px;"
+                  style="font-size: 18px;"
                   ><i class="fa fa-question-circle"></i
                 ></a>
               </div>
@@ -102,7 +105,10 @@
           <a href="https://github.com/publiclab/PublicLab.Editor">
             <i class="fa fa-github"></i>
           </a>
-         by <a href= "https://publiclab.org" title = "Public Lab website"><i class = "fa fa-globe"></i> Public Lab</a>
+          by
+          <a href="https://publiclab.org" title="Public Lab website"
+            ><i class="fa fa-globe"></i> Public Lab</a
+          >
         </p>
       </div>
 
@@ -110,7 +116,9 @@
         <!-- title module -->
         <div class="ple-module-title ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3"><h2>1</h2></div>
+          <div class="ple-module-guide col-md-3">
+            <h2>1</h2>
+          </div>
 
           <div class="ple-module-content col-md-9">
             <input
@@ -126,16 +134,17 @@
         <!-- main_image module -->
         <div class="ple-module-main_image ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3"><h2>2</h2></div>
-
-          <div class="ple-module-content col-md-9 container">
+          <div class="ple-module-guide col-md-3">
+            <h2>2</h2>
+          </div>
+          <div class="module-mainImage ple-module-content col-md-9 container">
             <div class="mainImageBox">
               <div id="mainImage" class="ple-drag-drop">
                 Drag an image here to upload.
               </div>
             </div>
             <div class="col-md-6 help">
-              <div style="display:none;" class="progress">
+              <div style="display: none;" class="progress">
                 <div
                   class="progress-bar progress-bar-striped active"
                   role="progressbar"
@@ -145,13 +154,17 @@
                   style="width: 0%;"
                 ></div>
               </div>
-
-              <input type="file" name="image[photo]" id="thumbnail-img">
-              <label for="thumbnail-img" class="thumbnailBtn"> 
-                <span>Choose a file…</span>
-              </label>
               <div id="thumbnail-filename"></div>
-              <button id="removeFile" class="thumbnailBtn">Remove File</button>
+
+              <div id="imageButtons">
+                <input type="file" name="image[photo]" id="thumbnail-img" />
+                <label for="thumbnail-img" class="thumbnailBtn">
+                  <span>Choose File</span>
+                </label>
+                <button id="removeFile" class="thumbnailBtn">
+                  Remove File
+                </button>
+              </div>
               <p class="ple-help">
                 <span class="ple-help-minor"
                   >Select an optional main image for your post.</span
@@ -166,7 +179,9 @@
         <!-- Map Module start -->
         <div class="ple-module-map ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3"><h2>3</h2></div>
+          <div class="ple-module-guide col-md-3">
+            <h2>3</h2>
+          </div>
 
           <div class="ple-module-content col-md-9">
             <button id="location_button" class="btn btn-lg btn-outline-secondary">
@@ -174,7 +189,8 @@
             </button>
             <p class="ple-help">
               <span class="ple-help-minor">
-                Search location through place name , latitude and longitude or by panning the map .
+                Search location through place name , latitude and longitude or
+                by panning the map .
               </span>
             </p>
 
@@ -184,7 +200,7 @@
                   <div
                     id="map"
                     class="leaflet-map"
-                    style="width: 100% ; height: 300px ; z-index: 0 ;"
+                    style="width: 100%; height: 300px; z-index: 0;"
                   ></div>
                 </div>
                 <div class="col-md-6">
@@ -220,19 +236,30 @@
                       </p>
                     </div>
                   </div>
-                  <br>
-                  <p><button class="btn btn-lg btn-outline-secondary" onclick="locateUserHandler()">
-                    <div id="ldi-geocode-button">          
-                      <i class="fa fa-compass"></i> Use current location
-                    </div>
-                  </button></p>
+                  <br />
+                  <p>
+                    <button
+                      class="btn btn-lg btn-default"
+                      onclick="locateUserHandler()"
+                    >
+                      <div id="ldi-geocode-button">
+                        <i class="fa fa-compass"></i> Use current location
+                      </div>
+                    </button>
+                  </p>
 
-                   <br>
-                   <label>
-                     <input id="obscureLocation" type="checkbox"  onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'>
-                      Blur my location
-                   </label>
-                   <a href="https://publiclab.org/location-privacy">Learn more</a>
+                  <br />
+                  <label>
+                    <input
+                      id="obscureLocation"
+                      type="checkbox"
+                      onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'
+                    />
+                    Blur my location
+                  </label>
+                  <a href="https://publiclab.org/location-privacy"
+                    >Learn more</a
+                  >
                 </div>
               </div>
             </div>
@@ -244,8 +271,9 @@
         <!-- body module -->
         <div class="ple-module-body ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3"><h2>4</h2></div>
-
+          <div class="ple-module-guide col-md-3">
+            <h2>4</h2>
+          </div>
           <div class="ple-module-content col-md-9 container">
             <textarea class="ple-textarea form-control">
 # About my project
@@ -280,8 +308,9 @@ var myVariable = 4;
         <!-- tags module -->
         <div class="ple-module-tags ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3"><h2>5</h2></div>
-
+          <div class="ple-module-guide col-md-3">
+            <h2>5</h2>
+          </div>
           <div class="ple-module-content col-md-9">
             <input
               class="form-control input-lg"
@@ -296,8 +325,9 @@ var myVariable = 4;
         <!-- multi module -->
         <div class="ple-module-multi ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3"><p>Extras</p></div>
-
+          <div class="ple-module-guide col-md-3">
+            <p>Extras</p>
+          </div>
           <div class="ple-module-content col-md-9">
             <div class="btn-group">
               <a class="btn btn-lg btn-outline-secondary">
@@ -324,11 +354,16 @@ var myVariable = 4;
         <!-- end multi module -->
       </div>
       <div class="bug-btn-wrapper">
-        <a href="https://publiclab.org/post?n=23853" class="bug-btn" target="_blank">Found an issue with the editor? Report a bug.</a>
+        <a
+          href="https://publiclab.org/post?n=23853"
+          class="bug-btn"
+          target="_blank"
+          >Found an issue with the editor? Report a bug.</a
+        >
       </div>
 
       <div class="ple-footer">
-        <div class="ple-menu-more" style="display:none;">
+        <div class="ple-menu-more" style="display: none;">
           <b>History</b>
           <div class="ple-history"></div>
           <hr />
@@ -339,7 +374,9 @@ var myVariable = 4;
           -->
         </div>
 
-        <button class="btn btn-lg btn-default btn-more"><i class='fa fa-clock-o'></i></button>
+        <button class="btn btn-lg btn-default btn-more">
+          <i class="fa fa-clock-o"></i>
+        </button>
 
         <span>
           &nbsp; By publishing, you agree to
@@ -359,21 +396,20 @@ var myVariable = 4;
     </div>
 
     <script>
-      
       function locateUserHandler() {
         var spinnerHidden = true;
         var popupHtml = document.getElementById("ldi-geocode-button");
         var popupText = popupHtml.innerHTML;
-        var strClass = 'fa-spinner';
+        var strClass = "fa-spinner";
         spinnerHidden = popupText.includes(strClass);
         if (!spinnerHidden) {
           editor.mapModule.blurredLocation.geocodeWithBrowser(true);
         }
       }
-      
+
       var editor;
 
-      (function() {
+      (function () {
         editor = new PL.Editor({
           textarea: $(".ple-textarea")[0],
           destination: "/notes/create",
@@ -381,7 +417,7 @@ var myVariable = 4;
           format: "publiclab",
           lat: 23,
           lon: 77,
-          zoom: 5
+          zoom: 5,
         });
       })();
     </script>

@@ -1,6 +1,6 @@
 {
   "name": "publiclab-editor",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
   "main": "dist/PublicLab.Editor.js",
   "scripts": {
@@ -49,7 +49,7 @@
     "moment": "~2.27.0",
     "resig-class": "~1.0.0",
     "typeahead.js-browserify": "~1.0.7",
-    "woofmark": "git://github.com/jywarren/woofmark.git#xhrOptionsAltBureaucracy",
+    "woofmark": "git://github.com/jywarren/woofmark.git#plots2",
     "xhr": "~2.5.0"
   },
   "devDependencies": {
