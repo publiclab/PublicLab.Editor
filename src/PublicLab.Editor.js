@@ -20,6 +20,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  PL.Util.hideFooterWhenTypingOnMobile();
   $('#removeFile').hide();
 });
 
