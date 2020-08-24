@@ -308,13 +308,14 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // if scrolling through the editor text area the toolbar will float
     var wkC = document.getElementsByClassName("wk-commands")[0];
+    console.log('one2');
 
     $(window).scroll(function() {
       var textAreaRect = $(".ple-textarea")[0]
           .getBoundingClientRect();
       var richAreaRect = $(".wk-wysiwyg")[0]
           .getBoundingClientRect();
-      var footerRect = $("ple-footer")[0]
+      var footerRect = $(".ple-footer")[0]
           .getBoundingClientRect().height;
 
       if (
