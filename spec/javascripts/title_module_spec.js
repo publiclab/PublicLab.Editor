@@ -18,9 +18,12 @@ describe("TitleModule", function() {
     expect(module.value()).not.toBe(false);
     expect(module.value()).toBe('');
 
-    module.value('My new post:');
-    expect(module.value()).toBe('My new post:');
+    module.value('related post');
+    expect(module.value()).toBe('related post'); // should match 3 mocked results
 
     expect(module.valid()).toBe(true);
+    expect($('.ple-title-related .result').length).toBe(3);  });
+
+    // $('.ple-title-related .result .add-tag').click();
+    // expect($('.ple-title-related . addedresult').length).toBe(1); // checks that it was indeed added
   });
-});
