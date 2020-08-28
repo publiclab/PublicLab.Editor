@@ -26,4 +26,6 @@ describe("TitleModule", function() {
 
     // $('.ple-title-related .result .add-tag').click();
     // expect($('.ple-title-related . addedresult').length).toBe(1); // checks that it was indeed added
+    $('.ple-title-related .result .add-tag').click();
+    expect($('.ple-title-related . addedresult').length).toBe(1); // checks that it was indeed added
   });
