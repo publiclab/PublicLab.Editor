@@ -11,7 +11,7 @@ describe("TitleModule", function() {
     module = new PL.TitleModule(editor, {});
   });
 
-  it("value, valid, key", function() {
+  it("value, valid, key of the Added Title", function() {
     expect(module).not.toBeUndefined();
     expect(module.key).toBe('title');
 
@@ -24,8 +24,6 @@ describe("TitleModule", function() {
     expect(module.valid()).toBe(true);
     expect($('.ple-title-related .result').length).toBe(3);  });
 
-    // $('.ple-title-related .result .add-tag').click();
-    // expect($('.ple-title-related . addedresult').length).toBe(1); // checks that it was indeed added
     $('.ple-title-related .result .add-tag').click();
     expect($('.ple-title-related . addedresult').length).toBe(1); // checks that it was indeed added
   });
