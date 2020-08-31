@@ -21736,7 +21736,7 @@ PL.Editor = Class.extend({
 
 });
 
-},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":187,"./modules/PublicLab.MapModule.js":188,"./modules/PublicLab.Module.js":189,"./modules/PublicLab.RichTextModule.js":194,"./modules/PublicLab.TagsModule.js":195,"./modules/PublicLab.TitleModule.js":197,"resig-class":117}],179:[function(require,module,exports){
+},{"./PublicLab.Errors.js":179,"./PublicLab.Help.js":180,"./PublicLab.History.js":181,"./adapters/PublicLab.Formatter.js":182,"./adapters/PublicLab.Woofmark.js":183,"./core/Util.js":184,"./modules/PublicLab.MainImageModule.js":187,"./modules/PublicLab.MapModule.js":188,"./modules/PublicLab.Module.js":189,"./modules/PublicLab.RichTextModule.js":195,"./modules/PublicLab.TagsModule.js":196,"./modules/PublicLab.TitleModule.js":198,"resig-class":117}],179:[function(require,module,exports){
 /*
  * Error display; error format is:
  * "title": ["can't be blank"]
@@ -22389,6 +22389,9 @@ module.exports = function(textarea, _editor, _module) {
       wysiwyg
   );
 
+  // set up auto completion tool:
+  require("../modules/PublicLab.RichTextModule.Atwho.js")(_module, wysiwyg);
+
   // set up embed insertion tool:
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
@@ -22455,7 +22458,7 @@ module.exports = function(textarea, _editor, _module) {
   return wysiwyg;
 };
 
-},{"../modules/PublicLab.CustomInsert.js":186,"../modules/PublicLab.RichTextModule.AutoCenter.js":190,"../modules/PublicLab.RichTextModule.Embed.js":191,"../modules/PublicLab.RichTextModule.HorizontalRule.js":192,"../modules/PublicLab.RichTextModule.Table.js":193,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
+},{"../modules/PublicLab.CustomInsert.js":186,"../modules/PublicLab.RichTextModule.Atwho.js":190,"../modules/PublicLab.RichTextModule.AutoCenter.js":191,"../modules/PublicLab.RichTextModule.Embed.js":192,"../modules/PublicLab.RichTextModule.HorizontalRule.js":193,"../modules/PublicLab.RichTextModule.Table.js":194,"domador":15,"megamark":112,"woofmark":176}],184:[function(require,module,exports){
 module.exports = {
 
   getUrlHashParameter: function(sParam) {
@@ -22777,7 +22780,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-      
+
       return _module.options.url;
     };
 
@@ -22903,11 +22906,11 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         infoArea.textContent = '';
         showImage = false;
-      _module.options.url = '';
-      _module.image.src = '';
-      _editor.data.has_main_image = false;
-      _editor.data.image_revision = '';
-      $('#removeFile').hide();
+        _module.options.url = '';
+        _module.image.src = '';
+        _editor.data.has_main_image = false;
+        _editor.data.image_revision = '';
+        $('#removeFile').hide();
       };
     }
   }
@@ -23038,6 +23041,110 @@ module.exports = PublicLab.Module = Class.extend({
 });
 
 },{}],190:[function(require,module,exports){
+/*
+   Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
+*/
+
+
+module.exports = function initAthwo(_module, wysiwyg) {
+    var calloutWatcher = {
+        at: "@",
+        callbacks: {
+          beforeInsert: function(value, obj) {
+              console.log('module extension');
+            username = value.slice(1);
+            value =
+              "<a href='https://publiclab.org/profile/" +
+              username +
+              "' target='_blank'>" +
+              value +
+              "</a>";
+            return value;
+          },
+          remoteFilter: function(query, callback) {
+            $.getJSON(
+              "https://publiclab.org/api/srch/profiles?query=" + query,
+              {},
+              function(data) {
+                if (data.hasOwnProperty("items") && data.items.length > 0) {
+                  callback(
+                    data.items.map(function(i) {
+                      return i.doc_title;
+                    })
+                  );
+                }
+              }
+            );
+          }
+        },
+        highlightFirst: true,
+        limit: 4
+      };
+      
+      var hashtagWatcher = {
+        at: "#",
+        callbacks: {
+          beforeInsert: function(value, obj) {
+            value = value.slice(1);
+            tag = value.slice(value.lastIndexOf("/") + 1);
+            value =
+              "<a href='https://publiclab.org" +
+              value +
+              "' target='_blank'>#" +
+              tag +
+              "</a>";
+            return value;
+          },
+          remoteFilter: function(query, callback) {
+            if (Number.isInteger(Number(query))) {
+              callback(null);
+              return;
+            }
+      
+            $.getJSON(
+              "https://publiclab.org/api/srch/tags?query=" + query,
+              {},
+              function(data) {
+                if (data.hasOwnProperty("items") && data.items.length > 0) {
+                  callback(
+                    data.items.map(function(i) {
+                      return i.doc_url;
+                    })
+                  );
+                }
+              }
+            );
+          }
+        },
+        highlightFirst: true,
+        limit: 4
+      };
+      
+      $(".wk-wysiwyg")
+        .atwho(calloutWatcher)
+        .atwho(hashtagWatcher)
+        .keypress(function(e) {
+          if (e.key === ":") {
+            var x = emoji;
+            $(this).atwho({
+              at: e.key,
+              limit: 3,
+              highlightFirst: true,
+              data: keys,
+              callbacks: {
+                beforeInsert: function(value, obj) {
+                  value = value.slice(1);
+                  value = x[value];
+                  return value;
+                }
+              }
+            });
+          }
+        });
+      
+  };
+  
+},{}],191:[function(require,module,exports){
 /*
    Auto Center insertion: ****
 */
@@ -23172,7 +23279,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   });
 };
 
-},{}],191:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 /*
    Embed insertion: <iframe width="560" height="315" src="https://www.youtube.com/embed/Ej_l1hANqMc" frameborder="0" allowfullscreen></iframe>
 */
@@ -23203,7 +23310,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
   });
 };
 
-},{}],192:[function(require,module,exports){
+},{}],193:[function(require,module,exports){
 /*
    Horizontal Rule insertion: ****
 */
@@ -23226,7 +23333,7 @@ module.exports = function initHorizontalRule(_module, wysiwyg) {
   });
 };
 
-},{}],193:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 /*
  Table generation:
 
@@ -23325,7 +23432,7 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 };
 
-},{}],194:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 /*
  * Form module for rich text entry
  */
@@ -23659,7 +23766,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
   }
 });
 
-},{"crossvent":12}],195:[function(require,module,exports){
+},{"crossvent":12}],196:[function(require,module,exports){
 /*
  * Form module for post tags
  */
@@ -23772,7 +23879,7 @@ module.exports = PublicLab.TagsModule = PublicLab.Module.extend({
 
 });
 
-},{}],196:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 /* Displays related posts to associate this one with.
  * Pass this a fetchRelated() method which runs show() with returned JSON data.
  * Example:
@@ -23859,7 +23966,7 @@ module.exports = function relatedNodes(module) {
   return relatedEl;
 };
 
-},{}],197:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 /*
  * Form module for post title
  */
@@ -23969,4 +24076,4 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
 });
 
 
-},{"./PublicLab.TitleModule.Related.js":196}]},{},[178]);
+},{"./PublicLab.TitleModule.Related.js":197}]},{},[178]);
