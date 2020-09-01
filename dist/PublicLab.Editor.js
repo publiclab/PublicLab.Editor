@@ -22777,7 +22777,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-      
+
       return _module.options.url;
     };
 
@@ -22903,11 +22903,11 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         infoArea.textContent = '';
         showImage = false;
-      _module.options.url = '';
-      _module.image.src = '';
-      _editor.data.has_main_image = false;
-      _editor.data.image_revision = '';
-      $('#removeFile').hide();
+        _module.options.url = '';
+        _module.image.src = '';
+        _editor.data.has_main_image = false;
+        _editor.data.image_revision = '';
+        $('#removeFile').hide();
       };
     }
   }
@@ -23636,17 +23636,18 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // if scrolling through the editor text area the toolbar will float
     var wkC = document.getElementsByClassName("wk-commands")[0];
+    console.log('one2');
 
     $(window).scroll(function() {
-      var textAreaRect = document
-          .getElementsByClassName("wk-container")[0]
+      var textAreaRect = $(".ple-textarea")[0]
           .getBoundingClientRect();
-      var footerRect = document
-          .getElementsByClassName("ple-footer")[0]
+      var richAreaRect = $(".wk-wysiwyg")[0]
+          .getBoundingClientRect();
+      var footerRect = $(".ple-footer")[0]
           .getBoundingClientRect().height;
 
       if (
-        textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+        (textAreaRect.bottom || richAreaRect.bottom) >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && (textAreaRect.top || richAreaRect.top) <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
       ) {
         wkC.style.position = "fixed";
         wkC.style.bottom = footerRect + "px";
