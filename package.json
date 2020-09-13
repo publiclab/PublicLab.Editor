@@ -4,8 +4,8 @@
   "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
   "main": "dist/PublicLab.Editor.js",
   "scripts": {
-    "build": "grunt build",
-    "babel": "babel dist -d dist",
+    "build": "grunt build && ./node_modules/.bin/babel dist -d dist",
+    "babel": "./node_modules/.bin/babel dist -d dist",
     "test": "grunt jasmine && npm run test-ui",
     "test-ui": "node ./node_modules/.bin/jest"
   },
