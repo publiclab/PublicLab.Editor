@@ -6,7 +6,7 @@ before_install:
   - npm install -g grunt-cli
 before_script:
   - grunt build
-  - ./node_modules/.bin/babel dist -d dist
+  - ./node_modules/.bin/babel dist
 script: 
   - grunt jasmine --force
   - npm run test-ui
