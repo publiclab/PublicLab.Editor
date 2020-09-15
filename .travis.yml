@@ -4,7 +4,8 @@ node_js:
   - '12'
 before_install:
   - npm install -g grunt-cli
-script: 
+before_script:
   - npm run build
+script: 
   - grunt jasmine --force
   - npm run test-ui
