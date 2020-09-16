@@ -6,7 +6,8 @@
   "scripts": {
     "build": "grunt build",
     "test": "grunt jasmine && npm run test-ui",
-    "test-ui": "node ./node_modules/.bin/jest"
+    "test-ui": "node ./node_modules/.bin/jest",
+    "create-release": " node create-release.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,8 @@
     "url": "https://github.com/publiclab/PublicLab.Editor/issues"
   },
   "dependencies": {
+    "@octokit/rest": "18.0.2",
+    "inquirer": "^6.2.2",
     "at.js": "^1.5.4",
     "blueimp-file-upload": "^10.30.1",
     "bootstrap": "~3.4.0",
