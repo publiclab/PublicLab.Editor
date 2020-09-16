@@ -33,8 +33,6 @@
     "url": "https://github.com/publiclab/PublicLab.Editor/issues"
   },
   "dependencies": {
-    "@octokit/rest": "18.0.2",
-    "inquirer": "^6.2.2",
     "at.js": "^1.5.4",
     "blueimp-file-upload": "^10.30.1",
     "bootstrap": "~3.4.0",
@@ -55,6 +53,8 @@
     "xhr": "~2.5.0"
   },
   "devDependencies": {
+    "@octokit/rest": "18.0.2",
+    "inquirer": "^6.2.2",
     "browserify": "16.5.2",
     "eslint": "^7.1.0",
     "eslint-config-google": "^0.14.0",
