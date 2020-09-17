@@ -1,4 +1,3 @@
 {
-    "presets": [ "@babel/preset-env" ],
-    "sourceType": "script"
-  }
+    "presets": [ "@babel/preset-env" ]
+}
