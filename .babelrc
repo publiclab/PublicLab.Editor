@@ -1,4 +1,10 @@
 {
-    "presets": ['@babel/preset-env', { targets: { node: 'current' } }],
-    "sourceType": "script"
+  "preset": [
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "current"
+      }
+    }]
+  ],
+  "sourceType": "script"
 }
