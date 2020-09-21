@@ -6,5 +6,8 @@
       }
     }]
   ],
-  "sourceType": "script"
+  "overrides": [{
+    "test": "./dist/PublicLab.Editor.js",
+    "sourceType": "script"
+  }]
 }
