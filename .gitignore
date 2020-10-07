@@ -40,3 +40,6 @@ todo.txt
 
 # Test output file
 _SpecRunner.html
+
+.DS_Store
+test/.DS_Store
