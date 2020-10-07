@@ -150,6 +150,7 @@
 .ple-module {
   padding: 20px;
   border-top: 1px solid #ddd;
+  display: flex;
 }
 
 .ple-module-guide h2 {
