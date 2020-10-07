@@ -6,7 +6,8 @@
   "scripts": {
     "build": "grunt build",
     "test": "grunt jasmine && npm run test-ui",
-    "test-ui": "node ./node_modules/.bin/jest"
+    "test-ui": "node ./node_modules/.bin/jest",
+    "create-release": " node create-release.js"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,8 @@
     "xhr": "~2.5.0"
   },
   "devDependencies": {
+    "@octokit/rest": "18.0.2",
+    "inquirer": "^6.2.2",
     "browserify": "16.5.2",
     "eslint": "^7.1.0",
     "eslint-config-google": "^0.14.0",
