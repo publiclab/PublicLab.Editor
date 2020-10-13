@@ -64,7 +64,19 @@ module.exports = function(grunt) {
               ] 
             }
           }
-        }
+        },
+
+        babel: {
+            options: {
+              sourceMap: true,
+              presets: ["@babel/preset-env"],
+            },
+            dist: {
+              files: {
+                "dist/PublicLab.Editor.js": "dist/PublicLab.Editor.js",
+              },
+            },
+          }
 
     });
 
@@ -72,7 +84,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['watch' , 'jasmine']);
 
     grunt.registerTask('build', [
-        'browserify:dist'
+        'browserify:dist', 'babel'
     ]);
 
     grunt.registerTask('debug', [
@@ -80,5 +92,10 @@ module.exports = function(grunt) {
     ]);
 
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+
+    grunt.loadNpmTasks('grunt-babel');
+
+
+
 
 };
