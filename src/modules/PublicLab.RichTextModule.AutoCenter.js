@@ -6,7 +6,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   // $('.woofmark-mode-markdown').removeClass('disabled')
 
   // create a menu option for auto center:
-  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-outline-secondary" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
   // since chunk.selection returns null for images
 
   $(document).ready(function() {
