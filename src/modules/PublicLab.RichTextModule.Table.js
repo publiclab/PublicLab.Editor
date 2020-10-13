@@ -41,17 +41,17 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-outline-secondary" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();
   });
 
   var builder = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-  builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+  builder += '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
   builder += ' x ';
-  builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
-  builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+  builder += '<a id="decCols" class="btn btn-sm btn-outline-secondaryt"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  builder += '&nbsp;<a class="ple-table-size btn btn-outline-secondary">Add</a>';
   builder += '</div>';
 
   $('.woofmark-command-table').attr('data-content', builder);

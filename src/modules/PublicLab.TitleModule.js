@@ -90,7 +90,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
-    // _module.menuEl.append('<a class="btn btn-default">...</a>');
+    // _module.menuEl.append('<a class="btn btn-outline-secondary">...</a>');
 
     $(_module.el).find('input').keydown(function(e) {
       _editor.validate();

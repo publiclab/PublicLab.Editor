@@ -1,3 +1,21 @@
+pre {
+  display: block;
+  font-size: 13px;
+  line-height: 1.42857;
+  color: rgb(51, 51, 51);
+  word-break: break-all;
+  overflow-wrap: break-word;
+  background-color: rgb(245, 245, 245);
+  padding: 9.5px;
+  margin: 0px 0px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(204, 204, 204);
+  border-image: initial;
+  border-radius: 4px;
+}
+
+
 .bug-btn {
   color: #f1f1f1;
   font-size: 1em;
@@ -181,6 +199,8 @@
   height: 180px;
   width: 720px;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .mainImageBox.dragDrop {

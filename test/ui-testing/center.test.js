@@ -9,8 +9,10 @@ describe('Center Text', () => {
   test('Centering and decentering text', async () => {
     // selects a string from textarea in md mode
     await page.setViewport({width: 1920, height: 1080});
+    if (await page.evaluate(() => $(".woofmark-mode-wysiwyg").is(":disabled"))) {
+      await page.click('.woofmark-mode-markdown');
+    }
     await page.waitForSelector('.ple-module-body');
-    await page.click('.woofmark-mode-markdown');
     await page.focus('.ple-textarea');
 
     // center aligns the string and checks for presence of '->' and '<-'

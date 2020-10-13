@@ -7,8 +7,13 @@ beforeAll(async () => {
 
 describe('Italic Text', () => {
   test('Adds emphasized text in rich text mode', async () => {
+    // switches to wysiwyg mode if it is in markdown mode
+    if (await page.evaluate(() => $(".woofmark-mode-markdown").is(":disabled"))) {
+      await page.click('.woofmark-mode-wysiwyg');
+    }
     // clicks on italic button and checks if 'emphasized text' is added in the editor
     await page.waitForSelector('.ple-module-body');
+    await page.keyboard.press('Backspace');
     await page.click('.woofmark-command-italic');
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('emphasized text'));
     expect(stringIsIncluded).toBe(true);
