@@ -11522,7 +11522,7 @@ module.exports = tokenizeLinks;
 
 },{}],114:[function(require,module,exports){
 //! moment.js
-//! version : 2.27.0
+//! version : 2.28.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -15927,7 +15927,7 @@ module.exports = tokenizeLinks;
             eras = this.localeData().eras();
         for (i = 0, l = eras.length; i < l; ++i) {
             // truncate time
-            val = this.startOf('day').valueOf();
+            val = this.clone().startOf('day').valueOf();
 
             if (eras[i].since <= val && val <= eras[i].until) {
                 return eras[i].name;
@@ -15947,7 +15947,7 @@ module.exports = tokenizeLinks;
             eras = this.localeData().eras();
         for (i = 0, l = eras.length; i < l; ++i) {
             // truncate time
-            val = this.startOf('day').valueOf();
+            val = this.clone().startOf('day').valueOf();
 
             if (eras[i].since <= val && val <= eras[i].until) {
                 return eras[i].narrow;
@@ -15967,7 +15967,7 @@ module.exports = tokenizeLinks;
             eras = this.localeData().eras();
         for (i = 0, l = eras.length; i < l; ++i) {
             // truncate time
-            val = this.startOf('day').valueOf();
+            val = this.clone().startOf('day').valueOf();
 
             if (eras[i].since <= val && val <= eras[i].until) {
                 return eras[i].abbr;
@@ -15990,7 +15990,7 @@ module.exports = tokenizeLinks;
             dir = eras[i].since <= eras[i].until ? +1 : -1;
 
             // truncate time
-            val = this.startOf('day').valueOf();
+            val = this.clone().startOf('day').valueOf();
 
             if (
                 (eras[i].since <= val && val <= eras[i].until) ||
@@ -17141,7 +17141,7 @@ module.exports = tokenizeLinks;
 
     //! moment.js
 
-    hooks.version = '2.27.0';
+    hooks.version = '2.28.0';
 
     setHookCallback(createLocal);
 
@@ -17760,86 +17760,79 @@ module.exports = function (headers) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],117:[function(require,module,exports){
-/* Simple JavaScript Inheritance
- * By John Resig http://ejohn.org/
+/* Simple JavaScript Inheritance for ES 5.1
+ * based on http://ejohn.org/blog/simple-javascript-inheritance/
+ *  (inspired by base2 and Prototype)
  * MIT Licensed.
  */
-// Inspired by base2 and Prototype
+(function (global) {
+  'use strict';
+  var fnTest = /xyz/.test(function () {
+    xyz;
+  })
+    ? /\b_super\b/
+    : /.*/;
 
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], function () {
-      return (root.Class = factory());
-    });
-  } else if (typeof module === 'object' && module.exports) {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory();
-  } else {
-    // Browser globals
-    root.Class = factory();
-  }
-}(this, function () {
-  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
   // The base Class implementation (does nothing)
-  this.Class = function(){};
+  function BaseClass() {}
 
   // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
+  BaseClass.extend = function (props) {
     var _super = this.prototype;
 
-    // Instantiate a base class (but only create the instance,
-    // don't run the init constructor)
-    initializing = true;
-    var prototype = new this();
-    initializing = false;
+    // Set up the prototype to inherit from the base class
+    // (but without running the init constructor)
+    var proto = Object.create(_super);
 
     // Copy the properties over onto the new prototype
-    for (var name in prop) {
+    for (var name in props) {
       // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" &&
-      typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-          (function(name, fn){
-            return function() {
-              var tmp = this._super;
+      proto[name] =
+        typeof props[name] === 'function' && typeof _super[name] == 'function' && fnTest.test(props[name])
+          ? (function (name, fn) {
+              return function () {
+                var tmp = this._super;
 
-              // Add a new ._super() method that is the same method
-              // but on the super-class
-              this._super = _super[name];
+                // Add a new ._super() method that is the same method
+                // but on the super-class
+                this._super = _super[name];
 
-              // The method only need to be bound temporarily, so we
-              // remove it when we're done executing
-              var ret = fn.apply(this, arguments);
-              this._super = tmp;
+                // The method only need to be bound temporarily, so we
+                // remove it when we're done executing
+                var ret = fn.apply(this, arguments);
+                this._super = tmp;
 
-              return ret;
-            };
-          })(name, prop[name]) :
-          prop[name];
+                return ret;
+              };
+            })(name, props[name])
+          : props[name];
     }
 
-    // The dummy class constructor
-    function Class() {
-      // All construction is actually done in the init method
-      if ( !initializing && this.init )
-        this.init.apply(this, arguments);
-    }
+    // The new constructor
+    var newClass =
+      typeof proto.init === 'function'
+        ? proto.hasOwnProperty('init')
+          ? proto.init // All construction is actually done in the init method
+          : function SubClass() {
+              _super.init.apply(this, arguments);
+            }
+        : function EmptyClass() {};
 
     // Populate our constructed prototype object
-    Class.prototype = prototype;
+    newClass.prototype = proto;
 
     // Enforce the constructor to be what we expect
-    Class.constructor = Class;
+    proto.constructor = newClass;
 
     // And make this class extendable
-    Class.extend = arguments.callee;
+    newClass.extend = BaseClass.extend;
 
-    return Class;
+    return newClass;
   };
-  return Class;
-}));
+
+  // export
+  global.Class = BaseClass;
+})(this);
 
 },{}],118:[function(require,module,exports){
 (function (global){
@@ -22654,7 +22647,7 @@ module.exports = {
 
 },{}],185:[function(require,module,exports){
 var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
+builder += '<button class="btn btn-outline-secondary dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
 builder += '<span class= "selected">What Do you want to insert?</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -22667,7 +22660,7 @@ builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Ques
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+builder += '<button class="btn btn-outline-secondarydropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
 builder += '<span class="selected2">Insert as a</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -22679,7 +22672,7 @@ builder += '</div>';
 builder += '<div class="input-group">';
 builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
 builder += '<span class="input-group-btn">';
-builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+builder += '<button class="btn btn-outline-secondary go1" type="button">Go!</button>';
 builder += '</span>';
 builder += '</div>';
 module.exports = builder;
@@ -22754,7 +22747,7 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
@@ -22825,10 +22818,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.image.onload = function() {
           var heightDropdown = this.height;
           var widthDropdown = this.width;
-          if (this.width > 340) {
-            var aspectRatio = this.width / 340;
-            widthDropdown = 340;
-            heightDropdown = this.height / aspectRatio;
+          if (this.height > 180) {
+            var aspectRatio = this.height / 180;
+            widthDropdown = this.width / aspectRatio; ;
+            heightDropdown = 180;
           }
           _module.dropEl.css('height', heightDropdown);
           _module.dropEl.css('width', widthDropdown);
@@ -23110,7 +23103,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   // $('.woofmark-mode-markdown').removeClass('disabled')
 
   // create a menu option for auto center:
-  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-outline-secondary" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
   // since chunk.selection returns null for images
 
   $(document).ready(function() {
@@ -23243,7 +23236,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
 
 module.exports = function initEmbed(_module, wysiwyg) {
   // create a menu option for embeds:
-  $('.wk-commands').append('<button class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-embed btn btn-outline-secondary" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="youtube"]').tooltip();
@@ -23274,7 +23267,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
   // create a menu option for horizontal rules:
-  $('.wk-commands').append('<button class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-horizontal-rule btn btn-outline-secondary" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="horizontal"]').tooltip();
@@ -23334,17 +23327,17 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<button class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-outline-secondary" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();
   });
 
   var builder = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-  builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+  builder += '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
   builder += ' x ';
-  builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
-  builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+  builder += '<a id="decCols" class="btn btn-sm btn-outline-secondaryt"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  builder += '&nbsp;<a class="ple-table-size btn btn-outline-secondary">Add</a>';
   builder += '</div>';
 
   $('.woofmark-command-table').attr('data-content', builder);
@@ -23422,7 +23415,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         icon: "clock-o",
         position: 90,
         text:
-          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-default' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
+          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-outline-secondary' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
       }
     ];
 
@@ -23882,7 +23875,7 @@ module.exports = function relatedNodes(module) {
     relatedEl.find('.result').remove();
 
     relatedResults.slice(0, 8).forEach(function(result) {
-      relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
+      relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-outline-secondary add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
       relatedEl.find('.result-' + result.id + ' .title').html(result.title);
       relatedEl.find('.result-' + result.id + ' .title').attr('href', result.url);
       relatedEl.find('.result-' + result.id + ' .author').html('@' + result.author);
@@ -24017,7 +24010,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
-    // _module.menuEl.append('<a class="btn btn-default">...</a>');
+    // _module.menuEl.append('<a class="btn btn-outline-secondary">...</a>');
 
     $(_module.el).find('input').keydown(function(e) {
       _editor.validate();
