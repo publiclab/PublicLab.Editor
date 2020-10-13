@@ -42,7 +42,7 @@ module.exports = function relatedNodes(module) {
     relatedEl.find('.result').remove();
 
     relatedResults.slice(0, 8).forEach(function(result) {
-      relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
+      relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-outline-secondary add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
       relatedEl.find('.result-' + result.id + ' .title').html(result.title);
       relatedEl.find('.result-' + result.id + ' .title').attr('href', result.url);
       relatedEl.find('.result-' + result.id + ' .author').html('@' + result.author);
