@@ -263,6 +263,7 @@ textarea.ple-textarea {
 
 .wk-commands {
   float: left;
+  display: block;
 }
 
 .wk-switchboard {
@@ -273,6 +274,10 @@ textarea.ple-textarea {
   padding: 30px;
   border: 4px dotted #ccc;
   background: #eee;
+}
+
+.wk-placeholder-text{
+  padding-left: 0;
 }
 
 .wk-prompt {
