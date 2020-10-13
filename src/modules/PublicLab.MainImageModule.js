@@ -25,10 +25,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.image.onload = function() {
           var heightDropdown = this.height;
           var widthDropdown = this.width;
-          if (this.width > 340) {
-            var aspectRatio = this.width / 340;
-            widthDropdown = 340;
-            heightDropdown = this.height / aspectRatio;
+          if (this.height > 180) {
+            var aspectRatio = this.height / 180;
+            widthDropdown = this.width / aspectRatio; ;
+            heightDropdown = 180;
           }
           _module.dropEl.css('height', heightDropdown);
           _module.dropEl.css('width', widthDropdown);

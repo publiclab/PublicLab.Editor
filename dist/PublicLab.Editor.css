@@ -199,6 +199,8 @@ pre {
   height: 180px;
   width: 720px;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .mainImageBox.dragDrop {
