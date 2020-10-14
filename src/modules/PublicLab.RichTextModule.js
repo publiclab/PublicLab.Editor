@@ -30,7 +30,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         icon: "clock-o",
         position: 90,
         text:
-          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-default' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
+          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-outline-secondary' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
       }
     ];
 
@@ -308,17 +308,18 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // if scrolling through the editor text area the toolbar will float
     var wkC = document.getElementsByClassName("wk-commands")[0];
+    console.log('one2');
 
     $(window).scroll(function() {
-      var textAreaRect = document
-          .getElementsByClassName("wk-container")[0]
+      var textAreaRect = $(".ple-textarea")[0]
           .getBoundingClientRect();
-      var footerRect = document
-          .getElementsByClassName("ple-footer")[0]
+      var richAreaRect = $(".wk-wysiwyg")[0]
+          .getBoundingClientRect();
+      var footerRect = $(".ple-footer")[0]
           .getBoundingClientRect().height;
 
       if (
-        textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+        (textAreaRect.bottom || richAreaRect.bottom) >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && (textAreaRect.top || richAreaRect.top) <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
       ) {
         wkC.style.position = "fixed";
         wkC.style.bottom = footerRect + "px";

@@ -7,12 +7,19 @@ beforeAll(async () => {
 
 describe('Bold Text', () => {
   test('Adds strong text in rich text mode', async () => {
+    // switches to wysiwyg mode if it is in markdown mode
+    if (await page.evaluate(() => $(".woofmark-mode-markdown").is(":disabled"))) {
+      await page.click('.woofmark-mode-wysiwyg');
+    }
+
     // clicks on bold button and checks if 'strong text' is added in the editor
     await page.waitForSelector('.ple-module-body');
+    await page.waitForSelector('.wk-wysiwyg');
+    await page.keyboard.press('Backspace');
     await page.click('.woofmark-command-bold');
+
     const stringIsIncluded = await page.evaluate(() => document.querySelector('.wk-wysiwyg').textContent.includes('strong text'));
     expect(stringIsIncluded).toBe(true);
-
     // resets the changes by removing the added text
     await page.keyboard.press("Backspace");
   }, timeout);

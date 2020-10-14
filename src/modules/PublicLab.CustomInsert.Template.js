@@ -1,5 +1,5 @@
 var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
+builder += '<button class="btn btn-outline-secondary dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
 builder += '<span class= "selected">What Do you want to insert?</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -12,7 +12,7 @@ builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Ques
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+builder += '<button class="btn btn-outline-secondarydropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
 builder += '<span class="selected2">Insert as a</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -24,7 +24,7 @@ builder += '</div>';
 builder += '<div class="input-group">';
 builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
 builder += '<span class="input-group-btn">';
-builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+builder += '<button class="btn btn-outline-secondary go1" type="button">Go!</button>';
 builder += '</span>';
 builder += '</div>';
 module.exports = builder;

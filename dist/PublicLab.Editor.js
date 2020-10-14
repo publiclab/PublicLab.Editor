@@ -352,7 +352,6 @@ function setup (fileinput, options) {
 function create (options) {
   var o = options || {};
   o.formData = o.formData || {};
-  o.xhrOptions = o.xhrOptions || {};
   o.fieldKey = o.fieldKey || 'uploads';
   var bureaucrat = emitter({
     submit: submit
@@ -370,7 +369,7 @@ function create (options) {
     bureaucrat.emit('valid', validFiles);
     var form = new FormData();
     Object.keys(o.formData).forEach(function copyFormData(key) {
-      form[key] = o.formData[key];
+      form.append(key, o.formData[key]);
     });
     var req = {
       'Content-Type': 'multipart/form-data',
@@ -381,9 +380,6 @@ function create (options) {
       url: o.endpoint || '/api/files',
       body: form
     };
-    Object.keys(o.xhrOptions).forEach(function copyXhrOptions(key) {
-      req[key] = o.xhrOptions[key];
-    });
 
     validFiles.forEach(appendFile);
     xhr(req, handleResponse);
@@ -19170,18 +19166,18 @@ module.exports = parseLinkInput;
 
 function trim (remove) {
   var self = this;
+  var beforeReplacer = function (text) {
+    self.before += text; return '';
+  };
 
+  var afterReplacer = function (text) {
+    self.after = text + self.after; return '';
+  };
+  
   if (remove) {
     beforeReplacer = afterReplacer = '';
   }
   self.selection = self.selection.replace(/^(\s*)/, beforeReplacer).replace(/(\s*)$/, afterReplacer);
-
-  function beforeReplacer (text) {
-    self.before += text; return '';
-  }
-  function afterReplacer (text) {
-    self.after = text + self.after; return '';
-  }
 }
 
 module.exports = trim;
@@ -19573,15 +19569,23 @@ function heading (chunks) {
     swap();
   } else {
     add();
-  }
+  } 
 
+  // func changes headings
   function swap () {
     var level = parseInt(lead[1], 10);
-    var next = level <= 1 ? 4 : level - 1;
+    // checks for the next heading size. Calls remove() if <h4> is reached.
+    var next = level > 3 ? remove() : level + 1;
     chunks.before = chunks.before.replace(rleading, '<h' + next + '>');
     chunks.after = chunks.after.replace(rtrailing, '</h' + next + '>');
   }
 
+  function remove () {
+    chunks.before = chunks.before.replace(rleading, '');
+    chunks.after = chunks.after.replace(rtrailing, '');
+  }
+
+  // func called to enter a new heading
   function add () {
     if (!chunks.selection) {
       chunks.selection = strings.placeholders.heading;
@@ -20287,8 +20291,12 @@ function heading (chunks) {
   chunks.startTag = chunks.endTag = '';
   chunks.skip({ before: 1, after: 1 });
 
-  var levelToCreate = level < 2 ? 4 : level - 1;
-  if (levelToCreate > 0) {
+  // checks the next heading size to implement. Changes to 0 if 4 is reached.
+  var levelToCreate = level > 3 ? 0 : level + 1;
+  if (levelToCreate === 0) {
+    chunks.startTag = chunks.startTag.replace(/#+/, '');
+  }
+  else {
     chunks.startTag = many('#', levelToCreate) + ' ';
   }
 }
@@ -20672,6 +20680,7 @@ function classify (group, classes) {
 }
 
 function prompt (options, done) {
+  var scrollSize = 0; // For window.scroll 
   var text = strings.prompts[options.type];
   var dom = render({
     id: 'wk-prompt-' + options.type,
@@ -20682,11 +20691,20 @@ function prompt (options, done) {
   var domup;
 
   crossvent.add(dom.cancel, 'click', remove);
+  crossvent.add(root, 'click', rootClick);
   crossvent.add(dom.close, 'click', remove);
   crossvent.add(dom.ok, 'click', ok);
   crossvent.add(dom.input, 'keypress', enter);
   crossvent.add(dom.dialog, 'keydown', esc);
   classify(dom, options.classes.prompts);
+
+  // Disappearing the popup when scrolled.
+  window.onscroll = function () {
+    scrollSize++;
+    if (scrollSize > 10) {
+      remove();
+    }
+  };
 
   var upload = options.upload;
   if (typeof upload === 'string') {
@@ -20705,6 +20723,14 @@ function prompt (options, done) {
 
   function focusDialog () {
     dom.input.focus();
+  }
+
+  // function will be called when click any other place except the editor box and onClick it will remove the popup.
+  function rootClick (e) {
+    var editorClassList = e.target.classList.value;
+    if (!editorClassList.includes('wk-prompt')) {
+      remove();
+    }
   }
 
   function enter (e) {
@@ -20977,11 +21003,7 @@ function commands (el, id) {
 }
 
 function modes (el, id) {
-  var texts = {
-    markdown: 'm\u2193',
-    wysiwyg: 'wysiwyg'
-  };
-  setText(el, texts[id] || id);
+  setText(el, strings.modes[id] || id);
 }
 
 module.exports = {
@@ -21064,7 +21086,11 @@ module.exports = {
     upload: ', or upload a file',
     uploading: 'Uploading your file...',
     uploadfailed: 'The upload failed! That\'s all we know.'
-  }
+  },
+  modes: {
+    wysiwyg: 'wysiwyg',
+    markdown: 'm\u2193',
+  },
 };
 
 },{}],175:[function(require,module,exports){
@@ -21075,25 +21101,35 @@ var classes = require('./classes');
 var dragClass = 'wk-dragging';
 var dragClassSpecific = 'wk-container-dragging';
 var root = document.documentElement;
+var dragginCss = 0; // variable to count the enter and leaving numbers.
 
 function uploads (container, droparea, editor, options, remove) {
   var op = remove ? 'remove' : 'add';
-  crossvent[op](root, 'dragenter', dragging);
-  crossvent[op](root, 'dragend', dragstop);
-  crossvent[op](root, 'mouseout', dragstop);
+  crossvent[op](root, 'dragend', dragstopforce);
+  crossvent[op](root, 'mouseout', dragstopforce);
   crossvent[op](container, 'dragover', handleDragOver, false);
+  crossvent[op](container, 'dragenter', dragging, false);  // whenever the drag with components enter the container
+  crossvent[op](container, 'dragleave', dragstop, false);  // whenever the drag with components moves out of container
   crossvent[op](droparea, 'drop', handleFileSelect, false);
 
   function dragging () {
+    dragginCss++;
     classes.add(droparea, dragClass);
     classes.add(droparea, dragClassSpecific);
   }
   function dragstop () {
+    dragginCss--;
+    if(dragginCss === 0){
+      dragstopper(droparea);
+    }
+  }
+  function dragstopforce () {
     dragstopper(droparea);
   }
   function handleDragOver (e) {
     stop(e);
-    dragging();
+    classes.add(droparea, dragClass);
+    classes.add(droparea, dragClassSpecific);
     e.dataTransfer.dropEffect = 'copy';
   }
   function handleFileSelect (e) {
@@ -21360,6 +21396,34 @@ function woofmark (textarea, options) {
         textarea.value = parse('parseHTML', textarea.value).trim();
       } else {
         textarea.value = parse('parseHTML', editable).trim();
+        // if textarea contains wrongly formatted bold or italic text i.e texts that have space before the closing tag
+        // E.g **text **, remove the space before the tag and place it after the tag.
+        const matchWrongBold = /\*\*[A-Z][^*]+ \*\*/gi;
+        const matchWrongItalic = /_[A-Z][^_]+ _/gi;
+
+       if (textarea.value.match(matchWrongBold)) {
+         const wrongBoldCount = textarea.value.match(matchWrongBold);
+         const matchWrongBold2 = /\*\*[A-Z][^*]+ \*\*/i;
+        
+         for (let i = 0; i <= wrongBoldCount.length - 1; i++) {
+           if (textarea.value.match(matchWrongBold2)) {
+            wrongBoldCount[i] = wrongBoldCount[i].replace(' **', '** ');
+             textarea.value = textarea.value.replace(matchWrongBold2, wrongBoldCount[i]);
+           }
+         }
+       }
+
+       if (textarea.value.match(matchWrongItalic)) {
+        const wrongItalicCount = textarea.value.match(matchWrongItalic);
+        const matchWrongItalic2 = /_[A-Z][^_]+ _/i;
+       
+        for (let i = 0; i <= wrongItalicCount.length - 1; i++) {
+          if (textarea.value.match(matchWrongItalic2)) {
+            wrongItalicCount[i] = wrongItalicCount[i].replace(' _', '_ ');
+            textarea.value = textarea.value.replace(matchWrongItalic2, wrongItalicCount[i]);
+          }
+        }
+      }
       }
     } else if (nextMode === 'html') {
       if (currentMode === 'markdown') {
@@ -21947,12 +22011,12 @@ module.exports = PublicLab.History = Class.extend({
             // before a day's log entries:
             if (i === 0 || (i > 0 && log.formattedDate != _history.log[i - 1].formattedDate)) {
               dateClasses.push(log.dateClass);
-              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-default clear">clear</a></p>';
+              html += '<p class="day day-' + log.dateClass + '"><em>' + log.formattedDate + '</em> | <a class="count"></a> | <a class="btn btn-xs btn-outline-secondary clear">clear</a></p>';
             }
 
             html += '<p style="display:none;" class="log day-' + log.dateClass + ' ' + className + '">';
             html += '<b>' + i + '</b>: ';
-            html += '<a class="btn btn-xs btn-default revert">revert</a> <a class="btn btn-xs btn-default clear">clear</a> | Preview: ';
+            html += '<a class="btn btn-xs btn-outline-secondary revert">revert</a> <a class="btn btn-xs btn-outline-secondary clear">clear</a> | Preview: ';
             html += time;
             html += ' -- <i class="preview">' + log.text.substr(0, 30) + '...</i>';
             html += '</p>';
@@ -22393,7 +22457,7 @@ module.exports = function(textarea, _editor, _module) {
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
   wysiwyg.stylePrompt = function() {
-    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-default");
+    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-outline-secondary");
     $(".wk-prompt input")
         .addClass("input form-control")
         .css("margin-bottom", "5px");
@@ -22409,7 +22473,7 @@ module.exports = function(textarea, _editor, _module) {
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-        "btn btn-default"
+        "btn btn-light"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
@@ -22777,7 +22841,7 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
       }
 
       if (id) _editor.data.main_image = id;
-      
+
       return _module.options.url;
     };
 
@@ -22903,11 +22967,11 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.el.find('.progress').hide();
         infoArea.textContent = '';
         showImage = false;
-      _module.options.url = '';
-      _module.image.src = '';
-      _editor.data.has_main_image = false;
-      _editor.data.image_revision = '';
-      $('#removeFile').hide();
+        _module.options.url = '';
+        _module.image.src = '';
+        _editor.data.has_main_image = false;
+        _editor.data.image_revision = '';
+        $('#removeFile').hide();
       };
     }
   }
@@ -23046,7 +23110,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   // $('.woofmark-mode-markdown').removeClass('disabled')
 
   // create a menu option for auto center:
-  $('.wk-commands').append('<a class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
   // since chunk.selection returns null for images
 
   $(document).ready(function() {
@@ -23179,7 +23243,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
 
 module.exports = function initEmbed(_module, wysiwyg) {
   // create a menu option for embeds:
-  $('.wk-commands').append('<a class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="youtube"]').tooltip();
@@ -23210,7 +23274,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
   // create a menu option for horizontal rules:
-  $('.wk-commands').append('<a class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="horizontal"]').tooltip();
@@ -23270,7 +23334,7 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<a class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();
@@ -23636,17 +23700,18 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
 
     // if scrolling through the editor text area the toolbar will float
     var wkC = document.getElementsByClassName("wk-commands")[0];
+    console.log('one2');
 
     $(window).scroll(function() {
-      var textAreaRect = document
-          .getElementsByClassName("wk-container")[0]
+      var textAreaRect = $(".ple-textarea")[0]
           .getBoundingClientRect();
-      var footerRect = document
-          .getElementsByClassName("ple-footer")[0]
+      var richAreaRect = $(".wk-wysiwyg")[0]
+          .getBoundingClientRect();
+      var footerRect = $(".ple-footer")[0]
           .getBoundingClientRect().height;
 
       if (
-        textAreaRect.bottom >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && textAreaRect.top <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+        (textAreaRect.bottom || richAreaRect.bottom) >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && (textAreaRect.top || richAreaRect.top) <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
       ) {
         wkC.style.position = "fixed";
         wkC.style.bottom = footerRect + "px";

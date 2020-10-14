@@ -1,6 +1,6 @@
 {
   "name": "publiclab-editor",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
   "main": "dist/PublicLab.Editor.js",
   "scripts": {
@@ -34,7 +34,8 @@
   "dependencies": {
     "at.js": "^1.5.4",
     "blueimp-file-upload": "^10.30.1",
-    "bootstrap": "~3.4.0",
+    "popper.js": "1.14.3",
+    "bootstrap": "4.3.0",
     "bootstrap-datepicker": "~1.9.0",
     "bootstrap-tokenfield": "~0.12.0",
     "crossvent": "1.5.5",
@@ -45,7 +46,7 @@
     "leaflet": "^1.6.0",
     "leaflet-blurred-location": "^1.5.1",
     "megamark": "3.3.0",
-    "moment": "~2.27.0",
+    "moment": "~2.29.1",
     "resig-class": "~1.0.0",
     "typeahead.js-browserify": "~1.0.7",
     "woofmark": "git://github.com/jywarren/woofmark.git#plots2",
@@ -66,7 +67,7 @@
     "jasmine-jquery": "~2.1.1",
     "jest": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
-    "lint-staged": "10.2.11",
+    "lint-staged": "10.4.0",
     "matchdep": "^2.0.0",
     "puppeteer": "^2.1.0"
   },
