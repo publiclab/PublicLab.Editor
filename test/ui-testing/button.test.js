@@ -3,7 +3,7 @@ const fs = require('fs');
 var editor;
 
 beforeAll(async () => {
-  path = fs.realpathSync('file://../examples/index.html');
+  const path = fs.realpathSync('file://../examples/index.html');
   await page.goto('file://' + path, {waitUntil: 'domcontentloaded'});
 
   editor = new PL.Editor({
