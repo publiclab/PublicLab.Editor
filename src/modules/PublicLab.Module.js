@@ -1,6 +1,7 @@
 /*
  * Form modules like title, tags, body, main image
  */
+var Class = require('resig-class').Class;
 
 module.exports = PublicLab.Module = Class.extend({
 

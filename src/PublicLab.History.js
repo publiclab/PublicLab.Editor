@@ -2,7 +2,7 @@
  * History of edits, sorted by day.
  */
 
-var Class = require('resig-class');
+var Class = require('resig-class').Class;
 var moment = require('moment');
 
 module.exports = PublicLab.History = Class.extend({

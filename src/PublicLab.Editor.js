@@ -1,4 +1,4 @@
-var Class = require('resig-class');
+var Class = require('resig-class').Class;
 
 PL = PublicLab = {};
 module.exports = PL;

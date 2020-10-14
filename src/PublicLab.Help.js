@@ -1,6 +1,7 @@
 /*
  * UI behaviors and systems to provide helpful tips and guidance.
  */
+var Class = require('resig-class').Class;
 
 module.exports = PublicLab.Help = Class.extend({
 
