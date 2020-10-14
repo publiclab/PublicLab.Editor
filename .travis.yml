@@ -7,6 +7,9 @@ before_install:
   - npm install -g grunt-cli
 before_script:
   - npm run build
-script: 
-  - grunt jasmine --force
-  - npm run test-ui
+jobs:
+  include:
+    - name: "Jasmine tests"
+      script: grunt jasmine --force
+    - name: "Jest tests"
+      script: npm run test-ui
