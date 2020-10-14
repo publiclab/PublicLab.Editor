@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 
         jasmine: {
           publiclabeditor: {
-            src: 'dist/*.js',
+            src: 'dist/PublicLab.Editor.js',
             options: {
               specs: 'spec/javascripts/*spec.js',
               vendor: [

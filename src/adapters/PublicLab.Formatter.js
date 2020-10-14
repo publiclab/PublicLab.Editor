@@ -3,7 +3,7 @@
  * application, like PublicLab.org or Drupal.
  */
 
-var Class = require('resig-class');
+var Class = require('resig-class').Class;
 
 module.exports = PublicLab.Formatter = Class.extend({
 

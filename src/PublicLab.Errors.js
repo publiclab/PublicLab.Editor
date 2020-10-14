@@ -2,6 +2,7 @@
  * Error display; error format is:
  * "title": ["can't be blank"]
  */
+var Class = require('resig-class').Class;
 
 module.exports = PublicLab.Errors = Class.extend({
 

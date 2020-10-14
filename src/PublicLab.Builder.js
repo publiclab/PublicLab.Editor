@@ -1,6 +1,7 @@
 /*
  * Methods to construct module HTML in the DOM
  */
+var Class = require('resig-class').Class;
 
 module.exports = PublicLab.Builder = Class.extend({
 

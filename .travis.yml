@@ -2,10 +2,14 @@ language: node_js
 node_js:
   - '10'
   - '12'
+services: xvfb
 before_install:
   - npm install -g grunt-cli
 before_script:
-  - grunt build
-script: 
-  - grunt jasmine --force
-  - npm run test-ui
+  - npm run build
+jobs:
+  include:
+    - name: "Jasmine tests"
+      script: grunt jasmine --force
+    - name: "Jest tests"
+      script: npm run test-ui

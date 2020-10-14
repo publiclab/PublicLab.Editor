@@ -1,6 +1,7 @@
 /*
  * UI guides to display in sidebar of a given module
  */
+var Class = require('resig-class').Class;
 
 module.exports = PublicLab.Guide = Class.extend({
 
