@@ -53,7 +53,7 @@
     "xhr": "~2.5.0"
   },
   "devDependencies": {
-    "browserify": "16.5.2",
+    "browserify": "17.0.0",
     "eslint": "^7.1.0",
     "eslint-config-google": "^0.14.0",
     "grunt": "^1.0.4",
