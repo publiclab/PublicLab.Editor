@@ -35,7 +35,7 @@
     "at.js": "^1.5.4",
     "blueimp-file-upload": "^10.30.1",
     "popper.js": "1.16.1",
-    "bootstrap": "4.3.1",
+    "bootstrap": "4.5.3",
     "bootstrap-datepicker": "~1.9.0",
     "bootstrap-tokenfield": "~0.12.0",
     "crossvent": "1.5.5",
