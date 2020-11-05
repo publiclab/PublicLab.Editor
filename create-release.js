@@ -18,7 +18,7 @@ async function fetchAppParameters() {
     {  
         type: 'list',
         name: 'verson',
-        message: "How will you describe the release upgrade?",
+        message: "How will you describe the release upgrade? Note changes or any breaking changes if it's a major release, following Semantic Versioning conventions: https://docs.npmjs.com/about-semantic-versioning",
         default: 'Major',
         choices: ['Minor', 'Major'],
       },
