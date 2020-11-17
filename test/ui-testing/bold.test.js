@@ -53,16 +53,16 @@ describe('Bold Text', () => {
     await page.waitForSelector('.ple-module-body');
     await page.waitForSelector('.wk-wysiwyg');
 
-    await page.type("Normal text");
-    await page.type(String.fromCharCode(13)); // Enter (see https://stackoverflow.com/questions/46442253/pressing-enter-button-in-puppeteer)
+    await page.type('.wk-wysiwyg', "Normal text");
+    await page.type('.wk-wysiwyg', String.fromCharCode(13)); // Enter (see https://stackoverflow.com/questions/46442253/pressing-enter-button-in-puppeteer)
 
     await page.click('.woofmark-command-bold');
-    await page.type("Bold text");
-    await page.type(String.fromCharCode(13));
-    await page.type(String.fromCharCode(13));
+    await page.type('.wk-wysiwyg', "Bold text");
+    await page.type('.wk-wysiwyg', String.fromCharCode(13));
+    await page.type('.wk-wysiwyg', String.fromCharCode(13));
     
     // here we observed a bug where we get 2 empty lines with just `**` on each
-    await page.type("Bold again");
+    await page.type('.wk-wysiwyg', "Bold again");
 
     stringMatches = await page.evaluate(() => document.querySelector('.ple-textarea').value == "Normal text\n\n**Bold text**\n\n**Bold again**");
     expect(stringMatches).toBe(true);
