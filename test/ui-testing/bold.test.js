@@ -44,4 +44,27 @@ describe('Bold Text', () => {
     await page.keyboard.press("Backspace");
     await page.click('.woofmark-mode-wysiwyg');
   }, timeout);
+
+  test('does not leave empty lines with ** bold markdown tags when adding newlines from end of bold text', async () => {
+    // switches to wysiwyg mode if it is in markdown mode
+    if (await page.evaluate(() => $(".woofmark-mode-markdown").is(":disabled"))) {
+      await page.click('.woofmark-mode-wysiwyg');
+    }
+    await page.waitForSelector('.ple-module-body');
+    await page.waitForSelector('.wk-wysiwyg');
+
+    await page.type("Normal text");
+    await page.type(String.fromCharCode(13)); // Enter (see https://stackoverflow.com/questions/46442253/pressing-enter-button-in-puppeteer)
+
+    await page.click('.woofmark-command-bold');
+    await page.type("Bold text");
+    await page.type(String.fromCharCode(13));
+    await page.type(String.fromCharCode(13));
+    
+    // here we observed a bug where we get 2 empty lines with just `**` on each
+    await page.type("Bold again");
+
+    stringMatches = await page.evaluate(() => document.querySelector('.ple-textarea').value == "Normal text\n\n**Bold text**\n\n**Bold again**");
+    expect(stringMatches).toBe(true);
+  }, timeout);
 });
