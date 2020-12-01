@@ -22654,7 +22654,7 @@ module.exports = {
 
 },{}],185:[function(require,module,exports){
 var builder = '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-default dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
+builder += '<button class="btn btn-outline-secondary dropdown-toggle dropdownMenu1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;" >';
 builder += '<span class= "selected">What Do you want to insert?</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -22667,7 +22667,7 @@ builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Ques
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-default dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+builder += '<button class="btn btn-outline-secondarydropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
 builder += '<span class="selected2">Insert as a</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -22679,7 +22679,7 @@ builder += '</div>';
 builder += '<div class="input-group">';
 builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
 builder += '<span class="input-group-btn">';
-builder += '<button class="btn btn-default go1" type="button">Go!</button>';
+builder += '<button class="btn btn-outline-secondary go1" type="button">Go!</button>';
 builder += '</span>';
 builder += '</div>';
 module.exports = builder;
@@ -22754,7 +22754,7 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-default" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
@@ -22825,10 +22825,10 @@ module.exports = PublicLab.MainImageModule = PublicLab.Module.extend({
         _module.image.onload = function() {
           var heightDropdown = this.height;
           var widthDropdown = this.width;
-          if (this.width > 340) {
-            var aspectRatio = this.width / 340;
-            widthDropdown = 340;
-            heightDropdown = this.height / aspectRatio;
+          if (this.height > 180) {
+            var aspectRatio = this.height / 180;
+            widthDropdown = this.width / aspectRatio; ;
+            heightDropdown = 180;
           }
           _module.dropEl.css('height', heightDropdown);
           _module.dropEl.css('width', widthDropdown);
@@ -23110,7 +23110,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
   // $('.woofmark-mode-markdown').removeClass('disabled')
 
   // create a menu option for auto center:
-  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-default" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-autocenter btn btn-outline-secondary" data-toggle="autocenter" title="<center> In Rich mode, insert spaces for images."><i class="fa fa-align-center"></i></button>');
   // since chunk.selection returns null for images
 
   $(document).ready(function() {
@@ -23243,7 +23243,7 @@ module.exports = function initAutoCenter(_module, wysiwyg) {
 
 module.exports = function initEmbed(_module, wysiwyg) {
   // create a menu option for embeds:
-  $('.wk-commands').append('<button class="woofmark-command-embed btn btn-default" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-embed btn btn-outline-secondary" data-toggle="youtube" title="Youtube link <iframe>"><i class="fa fa-youtube"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="youtube"]').tooltip();
@@ -23274,7 +23274,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
 
 module.exports = function initHorizontalRule(_module, wysiwyg) {
   // create a menu option for horizontal rules:
-  $('.wk-commands').append('<button class="woofmark-command-horizontal-rule btn btn-default" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-horizontal-rule btn btn-outline-secondary" data-toggle="horizontal" title="Horizontal line <hr>"><i class="fa fa-ellipsis-h"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="horizontal"]').tooltip();
@@ -23334,17 +23334,17 @@ module.exports = function initTables(_module, wysiwyg) {
 
 
   // create a submenu for sizing tables
-  $('.wk-commands').append('<button class="woofmark-command-table btn btn-default" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-outline-secondary" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();
   });
 
   var builder = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-  builder += '<a id="decRows" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
+  builder += '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
   builder += ' x ';
-  builder += '<a id="decCols" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>';
-  builder += '&nbsp;<a class="ple-table-size btn btn-default">Add</a>';
+  builder += '<a id="decCols" class="btn btn-sm btn-outline-secondaryt"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  builder += '&nbsp;<a class="ple-table-size btn btn-outline-secondary">Add</a>';
   builder += '</div>';
 
   $('.woofmark-command-table').attr('data-content', builder);
@@ -23422,7 +23422,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         icon: "clock-o",
         position: 90,
         text:
-          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-default' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
+          "Your work is auto-saved so you can return to it in this browser. To recover drafts, open the <button class='btn btn-sm btn-outline-secondary' style='padding-left:1.5em'><i class='fa fa-clock-o'></i></button> menu below."
       }
     ];
 
@@ -23882,7 +23882,7 @@ module.exports = function relatedNodes(module) {
     relatedEl.find('.result').remove();
 
     relatedResults.slice(0, 8).forEach(function(result) {
-      relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-default add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
+      relatedEl.append('<div class="result result-' + result.id + '" style="margin: 3px;"><a class="btn btn-xs btn-outline-secondary add-tag"><i class="fa fa-plus-circle"></i> Add</a> <a class="title"></a> by <a class="author"></a></div>');
       relatedEl.find('.result-' + result.id + ' .title').html(result.title);
       relatedEl.find('.result-' + result.id + ' .title').attr('href', result.url);
       relatedEl.find('.result-' + result.id + ' .author').html('@' + result.author);
@@ -24017,7 +24017,7 @@ module.exports = PublicLab.TitleModule = PublicLab.Module.extend({
     _module.menuEl = _module.el.find('.ple-menu-more');
 
     // a "more tools" menu, not currently used:
-    // _module.menuEl.append('<a class="btn btn-default">...</a>');
+    // _module.menuEl.append('<a class="btn btn-outline-secondary">...</a>');
 
     $(_module.el).find('input').keydown(function(e) {
       _editor.validate();
