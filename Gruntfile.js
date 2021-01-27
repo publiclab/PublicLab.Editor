@@ -45,6 +45,11 @@ module.exports = function(grunt) {
           publiclabeditor: {
             src: 'dist/PublicLab.Editor.js',
             options: {
+              allowFileAccess: true,
+              sandboxArgs: {
+                args: ['--no-sandbox'],
+                timeout: 3000
+              },
               specs: 'spec/javascripts/*spec.js',
               vendor: [
                 'node_modules/jquery/dist/jquery.min.js',
