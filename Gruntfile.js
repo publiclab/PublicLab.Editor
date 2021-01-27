@@ -43,8 +43,13 @@ module.exports = function(grunt) {
 
         jasmine: {
           publiclabeditor: {
-            src: 'dist/*.js',
+            src: 'dist/PublicLab.Editor.js',
             options: {
+              allowFileAccess: true,
+              sandboxArgs: {
+                args: ['--no-sandbox', '--allow-sync-xhr-in-page-dismissal'],
+                timeout: 3000
+              },
               specs: 'spec/javascripts/*spec.js',
               vendor: [
                 'node_modules/jquery/dist/jquery.min.js',

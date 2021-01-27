@@ -2,7 +2,7 @@ var editor;
 
 describe("Errors", function() {
   it("displays given errors", function() {
-    fixture = loadFixtures('index.html');
+    var fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0],
@@ -18,7 +18,7 @@ describe("Errors", function() {
   });
 
   it("does not display error alert if there are no errors", function() {
-    fixture = loadFixtures('index.html');
+    var fixture = loadFixtures('index.html');
 
     $('.ple-errors').html('');
 

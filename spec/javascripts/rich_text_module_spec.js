@@ -2,7 +2,7 @@ var editor; var module;
 
 describe("RichTextModule", function() {
   beforeAll(function() {
-    var fixture = loadFixtures('index.html');
+    fixture = loadFixtures('index.html');
 
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
