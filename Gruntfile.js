@@ -47,7 +47,7 @@ module.exports = function(grunt) {
             options: {
               allowFileAccess: true,
               sandboxArgs: {
-                args: ['--no-sandbox','allow-sync-xhr-in-page-dismissal'],
+                args: ['--no-sandbox', '--allow-sync-xhr-in-page-dismissal'],
                 timeout: 3000
               },
               specs: 'spec/javascripts/*spec.js',
