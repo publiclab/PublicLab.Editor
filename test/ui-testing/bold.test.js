@@ -1,7 +1,8 @@
 const timeout = process.env.SLOWMO ? 60000 : 10000;
 const fs = require('fs');
 beforeAll(async () => {
-  await page.goto('https://localhost:8080/', {waitUntil: 'domcontentloaded'});
+  path = fs.realpathSync('file://../examples/index.html');
+  await page.goto('file://' + path, {waitUntil: 'domcontentloaded'});
 });
 
 describe('Bold Text', () => {
