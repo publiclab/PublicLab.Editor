@@ -17,9 +17,9 @@
     />
     <script src="../node_modules/leaflet-blurred-location/dist/Leaflet.BlurredLocation.js"></script>
     <link
-    href="../node_modules/woofmark/dist/woofmark.min.css"
-    rel="stylesheet"
-  />
+      href="../node_modules/woofmark/dist/woofmark.min.css"
+      rel="stylesheet"
+    />
     <link
       href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -39,7 +39,10 @@
 
     <link href="../dist/PublicLab.Editor.css" rel="stylesheet" />
     <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="../node_modules/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script
+      src="../node_modules/popper.js/dist/umd/popper.min.js"
+      type="text/javascript"
+    ></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- required for TagsModule -->
@@ -60,40 +63,37 @@
       href="../node_modules/at.js/dist/css/jquery.atwho.min.css"
       rel="stylesheet"
     />
+
     <script src="../node_modules/at.js/dist/js/jquery.atwho.min.js"></script>
     <script src="data/emoji.js"></script>
   </head>
 
   <body>
-    <div class="pl-editor">
+    <div class="pl-editor container-fluid">
       <div class="ple-header">
         <h1>Share</h1>
 
         <!-- selector module -->
         <div class="container ple-type">
           <div class="row justify-content-center">
-
-              <div class="col-md-8">
-                <select class="form-control input-lg">
-                  <option selected value="">a research note</option>
-                  <option value="">a question or request</option>
-                  <option value="">an event</option>
-                </select>
-              </div>
-              <div
-                class="col-xs-2"
-                style="text-align: left;"
+            <div class="col-md-8">
+              <select class="form-control input-lg">
+                <option selected value="">a research note</option>
+                <option value="">a question or request</option>
+                <option value="">an event</option>
+              </select>
+            </div>
+            <div class="col-xs-2" style="text-align: left">
+              <button
+                rel="tooltip"
+                data-placement="bottom"
+                title="Learn more about different posting types."
+                class="btn btn-link ple-help-light"
+                style="font-size: 18px"
               >
-                <button
-                  rel="tooltip"
-                  data-placement="bottom"
-                  title="Learn more about different posting types."
-                  class="btn btn-link ple-help-light"
-                  style="font-size: 18px;"
-                  ><i class="fa fa-question-circle"></i
-                ></button>
-              </div>
-
+                <i class="fa fa-question-circle"></i>
+              </button>
+            </div>
           </div>
         </div>
         <!-- end selector module -->
@@ -113,17 +113,17 @@
         <!-- title module -->
         <div class="ple-module-title ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3">
-            <h2>1</h2>
-          </div>
+            <div class="ple-module-guide col-md-3">
+              <h2>1</h2>
+            </div>
 
-          <div class="ple-module-content col-md-9">
-            <input
-              class="form-control input-lg"
-              type="text"
-              placeholder="Title"
-            />
-          </div>
+            <div class="ple-module-content col-md-9">
+              <input
+                class="form-control input-lg"
+                type="text"
+                placeholder="Title"
+              />
+            </div>
           </div>
         </div>
         <!-- end title module -->
@@ -131,44 +131,44 @@
         <!-- main_image module -->
         <div class="ple-module-main_image ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3">
-            <h2>2</h2>
-          </div>
-          <div class="module-mainImage ple-module-content col-md-9 container">
-            <div class="mainImageBox">
-              <div id="mainImage" class="ple-drag-drop">
-                Drag an image here to upload.
-              </div>
+            <div class="ple-module-guide col-md-3">
+              <h2>2</h2>
             </div>
-            <div class="col-md-6 help">
-              <div style="display: none;" class="progress">
-                <div
-                  class="progress-bar progress-bar-striped active"
-                  role="progressbar"
-                  aria-valuenow="0"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  style="width: 0%;"
-                ></div>
+            <div class="module-mainImage ple-module-content col-md-9 container">
+              <div class="mainImageBox">
+                <div id="mainImage" class="ple-drag-drop">
+                  Drag an image here to upload.
+                </div>
               </div>
-              <div id="thumbnail-filename"></div>
+              <div class="col-md-6 help">
+                <div style="display: none" class="progress">
+                  <div
+                    class="progress-bar progress-bar-striped active"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <div id="thumbnail-filename"></div>
 
-              <div id="imageButtons">
-                <input type="file" name="image[photo]" id="thumbnail-img" />
-                <label for="thumbnail-img" class="thumbnailBtn">
-                  <span>Choose File</span>
-                </label>
-                <button id="removeFile" class="thumbnailBtn">
-                  Remove File
-                </button>
+                <div id="imageButtons">
+                  <input type="file" name="image[photo]" id="thumbnail-img" />
+                  <label for="thumbnail-img" class="thumbnailBtn">
+                    <span>Choose File</span>
+                  </label>
+                  <button id="removeFile" class="thumbnailBtn">
+                    Remove File
+                  </button>
+                </div>
+                <p class="ple-help">
+                  <span class="ple-help-minor"
+                    >Select an optional main image for your post.</span
+                  >
+                </p>
               </div>
-              <p class="ple-help">
-                <span class="ple-help-minor"
-                  >Select an optional main image for your post.</span
-                >
-              </p>
             </div>
-          </div>
           </div>
         </div>
         <!-- end main_image module -->
@@ -176,91 +176,95 @@
         <!-- Map Module start -->
         <div class="ple-module-map ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3">
-            <h2>3</h2>
-          </div>
+            <div class="ple-module-guide col-md-3">
+              <h2>3</h2>
+            </div>
 
-          <div class="ple-module-content col-md-9">
-            <button id="location_button" class="btn btn-lg btn-outline-secondary">
-              <i class="fa fa-map-marker" aria-hidden="true"></i> Add a location
-            </button>
-            <p class="ple-help">
-              <span class="ple-help-minor">
-                Search location through place name , latitude and longitude or
-                by panning the map .
-              </span>
-            </p>
+            <div class="ple-module-content col-md-9">
+              <button
+                id="location_button"
+                class="btn btn-lg btn-outline-secondary"
+              >
+                <i class="fa fa-map-marker" aria-hidden="true"></i> Add a
+                location
+              </button>
+              <p class="ple-help">
+                <span class="ple-help-minor">
+                  Search location through place name , latitude and longitude or
+                  by panning the map .
+                </span>
+              </p>
 
-            <div id="map_content">
-              <div class="row">
-                <div class="col-md-6">
-                  <div
-                    id="map"
-                    class="leaflet-map"
-                    style="width: 100%; height: 300px; z-index: 0;"
-                  ></div>
-                </div>
-                <div class="col-md-6">
-                  <h4>By place name :</h4>
-                  <p>
-                    <input
-                      id="placenameInput"
-                      type="text"
-                      class="form-control"
-                    />
-                  </p>
-                  <p></p>
-                  <h4>By entering co-ordinates :</h4>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p>
-                        <input
-                          id="lat"
-                          type="text"
-                          class="form-control"
-                          placeholder="Latitude"
-                        />
-                      </p>
-                    </div>
-                    <div class="col-md-6">
-                      <p>
-                        <input
-                          id="lng"
-                          type="text"
-                          class="form-control"
-                          placeholder="Longitude"
-                        />
-                      </p>
-                    </div>
+              <div id="map_content">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div
+                      id="map"
+                      class="leaflet-map"
+                      style="width: 100%; height: 300px; z-index: 0"
+                    ></div>
                   </div>
-                  <br />
-                  <p>
-                    <button
-                      class="btn btn-lg btn-outline-secondary"
-                      onclick="locateUserHandler()"
-                    >
-                      <div id="ldi-geocode-button">
-                        <i class="fa fa-compass"></i> Use current location
+                  <div class="col-md-6">
+                    <h4>By place name :</h4>
+                    <p>
+                      <input
+                        id="placenameInput"
+                        type="text"
+                        class="form-control"
+                      />
+                    </p>
+                    <p></p>
+                    <h4>By entering co-ordinates :</h4>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p>
+                          <input
+                            id="lat"
+                            type="text"
+                            class="form-control"
+                            placeholder="Latitude"
+                          />
+                        </p>
                       </div>
-                    </button>
-                  </p>
+                      <div class="col-md-6">
+                        <p>
+                          <input
+                            id="lng"
+                            type="text"
+                            class="form-control"
+                            placeholder="Longitude"
+                          />
+                        </p>
+                      </div>
+                    </div>
+                    <br />
+                    <p>
+                      <button
+                        class="btn btn-lg btn-outline-secondary"
+                        onclick="locateUserHandler()"
+                      >
+                        <div id="ldi-geocode-button">
+                          <i class="fa fa-compass"></i> Use current location
+                        </div>
+                      </button>
+                    </p>
 
-                  <br />
-                  <label>
-                    <input
-                      id="obscureLocation"
-                      type="checkbox"
-                      onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'
-                    />
-                    Blur my location
-                  </label>
-                  <a href="https://publiclab.org/location-privacy"
-                    >Learn more</a
-                  >
+                    <br />
+                    <label>
+                      <input
+                        id="obscureLocation"
+                        type="checkbox"
+                        onchange='editor.mapModule.blurredLocation.setBlurred(document.getElementById("obscureLocation").checked);'
+                      />
+                      Blur my location
+                    </label>
+                    <a href="https://publiclab.org/location-privacy"
+                      >Learn more</a
+                    >
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
         <!-- Map Module end -->
@@ -268,12 +272,14 @@
         <!-- body module -->
         <div class="ple-module-body ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3">
-            <h2>4</h2>
-          </div>
+            <div class="ple-module-guide col-md-3">
+              <h2>4</h2>
+            </div>
 
-          <div class="ple-module-content col-md-9 container wk-placeholder-text">
-            <textarea class="ple-textarea form-control">
+            <div
+              class="ple-module-content col-md-9 container wk-placeholder-text"
+            >
+              <textarea class="ple-textarea form-control">
 # About my project
 
 I've been working on [this thing](/) and wanted to share.
@@ -297,8 +303,8 @@ And then, after #balloon-mapping with @eustatic, tables:
 var myVariable = 4;
 
 ````</textarea
-            >
-          </div>
+              >
+            </div>
           </div>
         </div>
         <!-- end body module -->
@@ -306,62 +312,62 @@ var myVariable = 4;
         <!-- tags module -->
         <div class="ple-module-tags ple-module container">
           <div class="row">
-          <div class="ple-module-guide col-md-3">
-            <h2>5</h2>
-          </div>
-          <div class="ple-module-content col-md-9">
-            <input
-              class="form-control input-lg"
-              type="text"
-              placeholder="balloon-mapping, water-quality..."
-            />
-          </div>
+            <div class="ple-module-guide col-md-3">
+              <h2>5</h2>
+            </div>
+            <div class="ple-module-content col-md-9">
+              <input
+                class="form-control input-lg"
+                type="text"
+                placeholder="balloon-mapping, water-quality..."
+              />
+            </div>
           </div>
         </div>
         <!-- end tags module -->
 
         <!-- multi module -->
-        <div class="ple-module-multi ple-module container">
-          <div class="row">
-          <div class="ple-module-guide col-md-3">
+        <div class="ple-module-multi ple-module row">
+          <div class="ple-module-guide col-12 col-md-2">
             <p>Extras</p>
           </div>
-          <div class="ple-module-content col-md-9">
+          <div class="ple-module-content col-12 col-md-9">
             <div class="btn-group">
-              <a class="btn btn-lg btn-outline-secondary">
-                <i class="fa fa-comment-o"></i> Invite responses
-                <i class="fa fa-caret-down"></i>
-              </a>
-              <a class="btn btn-lg btn-outline-secondary">
-                <i class="fa fa-envelope-o"></i> Event
-                <i class="fa fa-caret-down"></i>
-              </a>
-              <a class="btn btn-lg btn-outline-secondary">
-                <i class="fa fa-map-o"></i> Map
-              </a>
-              <a class="btn btn-lg btn-outline-secondary">
-                <i class="fa fa-line-chart"></i> Chart
-              </a>
-              <a class="btn btn-lg btn-outline-secondary">
-                More <i class="fa fa-caret-down"></i>
-              </a>
+              <div class="row">
+                <a type="button" class="btn btn-outline-secondary">
+                  <i class="fa fa-comment-o"></i> Invite responses
+                  <i class="fa fa-caret-down"></i>
+                </a>
+                <a type="button" class="btn btn-outline-secondary">
+                  <i class="fa fa-envelope-o"></i> Event
+                  <i class="fa fa-caret-down"></i>
+                </a>
+                <a type="button" class="btn btn-outline-secondary">
+                  <i class="fa fa-map-o"></i> Map
+                </a>
+                <a type="button" class="btn btn-outline-secondary">
+                  <i class="fa fa-line-chart"></i> Chart
+                </a>
+                <a type="button" class="btn btn-outline-secondary">
+                  More <i class="fa fa-caret-down"></i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
-        </div>
         <!-- end multi module -->
       </div>
-      <div class="bug-btn-wrapper">
+      <div class="bug-btn-wrapper row">
         <a
           href="https://publiclab.org/post?n=23853"
-          class="bug-btn"
+          class="bug-btn col-12 offset-md-3 col-md-9"
           target="_blank"
           >Found an issue with the editor? Report a bug.</a
         >
       </div>
 
-      <div class="ple-footer">
-        <div class="ple-menu-more" style="display: none;">
+      <div class="ple-footer row">
+        <div class="ple-menu-more" style="display: none">
           <b>History</b>
           <div class="ple-history"></div>
           <hr />
@@ -371,25 +377,31 @@ var myVariable = 4;
             </div>
           -->
         </div>
-
-        <button class="btn btn-lg btn-outline-secondary btn-more">
-          <i class="fa fa-clock-o"></i>
-        </button>
-
-        <span>
-          &nbsp; By publishing, you agree to
-          <a href="https://publiclab.org/licenses">open source your work</a>
-          <span class="hidden-xs"> so that others may use it.</span>
-        </span>
-
-        <button class="ple-publish btn btn-lg btn-primary pull-right disabled">
-          Publish
-        </button>
-
-        <span class="ple-help pull-right">
-          <span class="ple-steps-left">X</span>
-          <span class="hidden-xs"> steps left</span>
-        </span>
+        <div class="col-1">
+          <button class="btn btn-lg btn-outline-secondary btn-more">
+            <i class="fa fa-clock-o"></i>
+          </button>
+        </div>
+        <div class="offset-1 col-9 offset-md-0 col-md-7">
+          <span>
+            &nbsp; By publishing, you agree to
+            <a href="https://publiclab.org/licenses">open source your work</a>
+            <span class="hidden-xs"> so that others may use it.</span>
+          </span>
+        </div>
+        <div class="offset-7 col-5 offset-md-0 col-md-4">
+          <button
+            class="ple-publish btn btn-lg btn-primary pull-right disabled"
+          >
+            Publish
+          </button>
+        </div>
+        <div class="offset-2 col-10 offset-md-6 col-md-6">
+          <span class="ple-help pull-right">
+            <span class="ple-steps-left">X</span>
+            <span class="hidden-xs"> steps left</span>
+          </span>
+        </div>
       </div>
     </div>
 
