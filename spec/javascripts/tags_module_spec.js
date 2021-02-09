@@ -3,7 +3,8 @@ var editor; var module;
 describe("TagsModule", function() {
   beforeAll(function() {
     fixture = loadFixtures('index.html');
-
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+    
     editor = new PL.Editor({
       textarea: $('.ple-textarea')[0]
     });
