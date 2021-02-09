@@ -3,6 +3,7 @@ const fs = require('fs');
 beforeAll(async () => {
   path = fs.realpathSync('file://../examples/index.html');
   await page.goto('file://' + path, {waitUntil: 'domcontentloaded'});
+  await page.setDefaultNavigationTimeout(60000);
 });
 
 describe('Custom Insert text', () => {
