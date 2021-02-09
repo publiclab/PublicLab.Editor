@@ -1,12 +1,15 @@
 var editor;
 
 describe("Editor", function() {
-  beforeAll(async function() {
+  beforeAll((done) => {
     fixture = loadFixtures('index.html');
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+    document.addEventListener("DOMContentLoaded", function(event) {
 
-    editor = await new PL.Editor({
-      textarea: $('.ple-textarea')[0]
+      editor = await new PL.Editor({
+        textarea: $('.ple-textarea')[0]
+      });
+
     });
   });
 
