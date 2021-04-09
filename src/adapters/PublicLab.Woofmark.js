@@ -335,6 +335,8 @@ module.exports = function(textarea, _editor, _module) {
         "btn btn-light"
     );
 
+    $(".wk-commands a.woofmark-command-insert").addClass("btn-light");
+
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
     $(".wk-commands button.woofmark-command-code").addClass("hidden-xs");
     $(".wk-commands button.woofmark-command-ol").addClass("hidden-xs");
