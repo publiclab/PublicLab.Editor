@@ -22208,7 +22208,7 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: {nid: null},
+      formData: {nid: null, authenticity_token: _module.options.token},
 
       // xhr upload options like CSRF token
       xhrOptions: {
@@ -22242,7 +22242,7 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: {nid: null},
+      formData: {nid: null, authenticity_token: _module.options.token},
 
       // xhr upload options like CSRF token
       xhrOptions: {
