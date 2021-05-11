@@ -48,7 +48,7 @@
     "megamark": "3.3.0",
     "moment": "~2.29.1",
     "popper.js": "1.16.1",
-    "resig-class": "~1.0.0",
+    "resig-class": "~2.0.0",
     "typeahead.js-browserify": "~1.0.7",
     "woofmark": "git://github.com/jywarren/woofmark.git#plots2",
     "xhr": "~2.5.0"
