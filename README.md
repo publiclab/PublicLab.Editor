@@ -186,6 +186,8 @@ Various modules have different configurable options to be added to the options o
 
 ### Rich Text Module
 
+The Rich Text module is built around a [custom fork](https://github.com/jywarren/woofmark/) of the [Woofmark editor](https://github.com/bevacqua/woofmark).
+
 **formats** -- provide an array of strings specifying allowed file extensions that may be uploaded inline in the rich text input area:
 
 ```js
