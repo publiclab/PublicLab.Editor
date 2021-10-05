@@ -332,7 +332,7 @@ module.exports = function(textarea, _editor, _module) {
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
     $(".wk-commands button, .wk-switchboard button").addClass(
-        "btn btn-light"
+        "btn btn-outline-secondary"
     );
 
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
