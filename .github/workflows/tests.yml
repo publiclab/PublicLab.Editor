@@ -1,5 +1,6 @@
 name: tests
 on: [pull_request]
+    types: [ closed, opened, synchronize, reopened ] # also run upon closing (for merged PRs, though it'll also run on abandoned ones)
 jobs:
   base-tests:
     runs-on: ubuntu-18.04
