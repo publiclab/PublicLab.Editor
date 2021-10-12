@@ -2,7 +2,7 @@ PublicLab.Editor
 [![npm version](https://badge.fury.io/js/publiclab-editor.svg)](https://badge.fury.io/js/publiclab-editor)
 ====
 
-[![Build Status](https://travis-ci.org/publiclab/PublicLab.Editor.svg)](https://travis-ci.org/publiclab/PublicLab.Editor)
+[![Build Status](https://github.com/publiclab/plots2/workflows/tests/badge.svg?branch=main)](https://github.com/publiclab/PublicLab.Editor/actions/workflows/tests.yml)
 [![Code of Conduct](https://img.shields.io/badge/code-of%20conduct-green.svg)](https://publiclab.org/conduct)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/publiclab/PublicLab.Editor) 
 
@@ -186,6 +186,8 @@ Various modules have different configurable options to be added to the options o
 
 ### Rich Text Module
 
+The Rich Text module is built around a [custom fork](https://github.com/jywarren/woofmark/) of the [Woofmark editor](https://github.com/bevacqua/woofmark).
+
 **formats** -- provide an array of strings specifying allowed file extensions that may be uploaded inline in the rich text input area:
 
 ```js
@@ -196,6 +198,14 @@ var editor = new PL.Editor({
   }
 });
 ```
+
+### Rich Text shortcodes
+
+The [Public Lab website](https://publiclab.org) makes use of a “short-code” syntax, similar to WordPress’s short-codes convention, in which text in the format `[notes:water-quality]` (for example) generates a dynamically-populated table of content from the website, in this case under the topic "water-quality". The Editor allows for these types of inserts and deals with them in different ways, either displaying them as editable blocks, or inserting them via special buttons.
+
+Read more about the different types of inserts, how they work, and what they look like at https://publiclab.org/power-tags#Inline+power+tags https://publiclab.org/advanced-grids, and https://publiclab.org/notes/liz/08-30-2016/check-out-these-activity-grids.
+
+
 ###  Atwho.js Data Module
 
 `At.js` is essentially an autocompletion library to autocomplete mentions, smileys etc. just like you see on Github. It can be used to implement the following functionalities:
