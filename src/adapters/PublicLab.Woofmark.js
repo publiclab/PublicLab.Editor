@@ -335,6 +335,17 @@ module.exports = function(textarea, _editor, _module) {
         "btn btn-outline-secondary"
     );
 
+    $('.wk-commands button.woofmark-command-bold').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-italic').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-quote').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-code').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-ol').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-ul').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-heading').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-link').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-image').addClass('btn-outline-secondary');
+    $('.wk-commands button.woofmark-command-attachment').addClass('btn-outline-secondary');
+
     $(".wk-commands button.woofmark-command-quote").addClass("hidden-xs");
     $(".wk-commands button.woofmark-command-code").addClass("hidden-xs");
     $(".wk-commands button.woofmark-command-ol").addClass("hidden-xs");
