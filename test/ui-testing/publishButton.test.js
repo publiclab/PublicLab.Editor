@@ -7,6 +7,8 @@ beforeAll(async () => {
 
 describe('Publish button', () => {
   
-  // tests go here:
+  test('something we are testing described here', () => {
+
+  });
   
 });
