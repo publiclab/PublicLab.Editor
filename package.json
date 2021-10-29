@@ -21,6 +21,9 @@
       "git add"
     ]
   },
+  "jest": {
+    "setupFiles": ["./test/setup-jest.js"]
+  },
   "keywords": [
     "editor",
     "wysiwyg",
