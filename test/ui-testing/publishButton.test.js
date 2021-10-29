@@ -5,7 +5,7 @@ beforeAll(async () => {
   await page.goto('file://' + path, {waitUntil: 'domcontentloaded'});
 });
 
-global.window = window
+# global.window = window
 global.$ = require('jquery');
 
 describe('Publish button', () => {
