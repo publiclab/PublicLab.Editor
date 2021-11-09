@@ -7,8 +7,8 @@ beforeAll(async () => {
   await page.addScriptTag({url: 'https://code.jquery.com/jquery-3.2.1.min.js'});
 });
 
-describe('Publish button', async () => {
-  test('publish button gets enabled', () => {
+describe('Publish button', () => {
+  test('publish button gets enabled', async () => {
     // Check initially that Publish button is disabled.
     expect(await page.$('.ple-publish').getAttribute('disabled')).toBe(true);
     // Add title.
