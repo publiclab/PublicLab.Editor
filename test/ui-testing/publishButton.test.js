@@ -1,6 +1,10 @@
 const timeout = process.env.SLOWMO ? 60000 : 10000;
 const fs = require('fs');
+const puppeteer = require('puppeteer');
+
 beforeAll(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
   path = fs.realpathSync('file://../examples/index.html');
   await page.goto('file://' + path, {waitUntil: 'domcontentloaded'});
   await page.waitForSelector('body');
