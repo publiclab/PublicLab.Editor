@@ -10,7 +10,7 @@ beforeAll(async () => {
 describe('Publish button', () => {
   test('publish button gets enabled', () => {
     // Check initially that Publish button is disabled.
-    expect(page.$('.ple-publish').getAttribute('disabled')).toBe(true);
+    expect(await page.$('.ple-publish').getAttribute('disabled')).toBe(true);
     // Add title.
     page.$('.ple-module-title input').innerText.toBe('Title');
     page.type('.ple-module-title input', 'hello');
