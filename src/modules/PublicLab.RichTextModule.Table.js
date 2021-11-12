@@ -12,70 +12,62 @@ module.exports = function initTables(_module, wysiwyg) {
     cols = cols || 3;
     rows = rows || 2;
 
-    var table = '|';
+    var table = "|";
 
     for (var col = 0; col < cols; col++) {
-      table = table + ' col' + col + ' |';
+      table = table + " col" + col + " |";
     }
 
-    table = table + '\n|';
+    table = table + "\n|";
 
     for (var col = 0; col < cols; col++) {
-      table = table + '------|';
+      table = table + "------|";
     }
 
-    table = table + '\n';
+    table = table + "\n";
 
     for (var row = 0; row < rows; row++) {
-      table = table + '|';
+      table = table + "|";
 
       for (var col = 0; col < cols; col++) {
-        table = table + ' cell |';
+        table = table + " cell |";
       }
 
-      table = table + '\n';
+      table = table + "\n";
     }
 
-    return table + '\n';
+    return table + "\n";
   }
 
+
   // create a submenu for sizing tables
-  $('.wk-commands').append(
-      '<button class="woofmark-command-table btn btn-outline-secondary" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>'
-  );
+  $('.wk-commands').append('<button class="woofmark-command-table btn btn-outline-secondary" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
   $(document).ready(function() {
     $('[data-toggle="table"]').tooltip();
   });
 
-  var builder =
-    '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-  builder +=
-    '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  var builder = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
+  builder += '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
   builder += ' x ';
-  builder +=
-    '<a id="decCols" class="btn btn-sm btn-outline-secondaryt"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
-  builder +=
-    '&nbsp;<a class="ple-table-size btn btn-outline-secondary">Add</a>';
+  builder += '<a id="decCols" class="btn btn-sm btn-outline-secondaryt"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  builder += '&nbsp;<a class="ple-table-size btn btn-outline-secondary">Add</a>';
   builder += '</div>';
 
   $('.woofmark-command-table').attr('data-content', builder);
 
+
   $(document).on('click', '#incRows', function() {
-    $('#tableRows').text(Number($('#tableRows').text()) + 1);
+    $("#tableRows").text( Number($("#tableRows").text()) + 1 );
   });
   $(document).on('click', '#decRows', function() {
-    if (Number($('#tableRows').text()) > 1) {
-      $('#tableRows').text(Number($('#tableRows').text()) - 1);
-    }
+    $("#tableRows").text( Number($("#tableRows").text()) - 1 );
   });
   $(document).on('click', '#incCols', function() {
-    $('#tableCols').text(Number($('#tableCols').text()) + 1);
+    $("#tableCols").text( Number($("#tableCols").text()) + 1 );
   });
   $(document).on('click', '#decCols', function() {
-    if (Number($('#tableCols').text()) > 1) {
-      $('#tableCols').text(Number($('#tableCols').text()) - 1);
-    }
+    $("#tableCols").text( Number($("#tableCols").text()) - 1 );
   });
 
   $('.woofmark-command-table').attr('data-content', builder);
