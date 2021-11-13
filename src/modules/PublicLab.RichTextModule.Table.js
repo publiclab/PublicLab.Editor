@@ -69,7 +69,7 @@ module.exports = function initTables(_module, wysiwyg) {
   });
   $(document).on('click', '#decCols', function() {
     const numOfCols = Number($("#tableCols").text());
-    if (numOfCols > 1) $("#tableCols").text( Number($("#tableCols").text()) - 1 );
+    if (numOfCols > 1) $("#tableCols").text( numOfCols - 1 );
   });
 
   $('.woofmark-command-table').attr('data-content', builder);
