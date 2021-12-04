@@ -61,15 +61,13 @@ module.exports = function initTables(_module, wysiwyg) {
     $("#tableRows").text( Number($("#tableRows").text()) + 1 );
   });
   $(document).on('click', '#decRows', function() {
-    const numOfRows = Number($("#tableRows").text());
-    if (numOfRows > 1) $("#tableRows").text( numOfRows - 1 );
+    $("#tableRows").text( Number($("#tableRows").text()) - 1 );
   });
   $(document).on('click', '#incCols', function() {
     $("#tableCols").text( Number($("#tableCols").text()) + 1 );
   });
   $(document).on('click', '#decCols', function() {
-    const numOfCols = Number($("#tableCols").text());
-    if (numOfCols > 1) $("#tableCols").text( numOfCols - 1 );
+    $("#tableCols").text( Number($("#tableCols").text()) - 1 );
   });
 
   $('.woofmark-command-table').attr('data-content', builder);
