@@ -171,9 +171,19 @@ pre {
   display: flex;
 }
 
+.ple-module-guide {
+  max-width: 100%;
+}
+
 .ple-module-guide h2 {
   font-size: 4em;
   margin-top: 0;
+  text-align: center;
+}
+
+.ple-module-input {
+  padding: 1.7rem 1rem;
+  font-size: 1.3rem;
 }
 
 .ple-module-guide p {
@@ -194,6 +204,17 @@ pre {
   padding-top: 6px;
   padding-right: 12px;
   padding-bottom: 8px;
+}
+
+.ple-module-title .title-module {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center;
+  flex-wrap: nowrap !important;
+  height: fit-content;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .mainImageBox {
