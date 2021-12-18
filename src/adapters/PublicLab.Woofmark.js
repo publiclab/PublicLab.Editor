@@ -15,7 +15,7 @@ module.exports = function(textarea, _editor, _module) {
     ul: "list-ul",
     heading: "header",
     attachment: "paperclip",
-    table: "table"
+    table: "table",
   };
 
   _module.options.tags =
@@ -27,9 +27,9 @@ module.exports = function(textarea, _editor, _module) {
             "#spectrometer",
             "#air-quality",
             "#water-quality",
-            "#balloon-mapping"
-          ]
-        }
+            "#balloon-mapping",
+          ],
+        },
       ]);
     };
 
@@ -49,7 +49,7 @@ module.exports = function(textarea, _editor, _module) {
         button.className = "woofmark-command-" + id;
         var icon = icons[id] || id;
         button.innerHTML = '<i class="fa fa-' + icon + '"></i>';
-      }
+      },
     },
 
     images: {
@@ -74,7 +74,7 @@ module.exports = function(textarea, _editor, _module) {
               "X-CSRF-Token",
               $('meta[name="csrf-token"]').attr("content")
           );
-        }
+        },
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
@@ -86,7 +86,7 @@ module.exports = function(textarea, _editor, _module) {
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
-      }
+      },
     },
 
     attachments: {
@@ -108,7 +108,7 @@ module.exports = function(textarea, _editor, _module) {
               "X-CSRF-Token",
               $('meta[name="csrf-token"]').attr("content")
           );
-        }
+        },
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
@@ -128,13 +128,13 @@ module.exports = function(textarea, _editor, _module) {
           "pdf",
           "svg",
           "doc",
-          "ppt"
+          "ppt",
         ];
         var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
-      }
+      },
     },
 
     mergeHtmlAndAttachment: function(chunks, link) {
@@ -152,13 +152,13 @@ module.exports = function(textarea, _editor, _module) {
         return {
           before: chunks.before,
           selection: output,
-          after: chunks.after
+          after: chunks.after,
         };
       } else {
         return {
           before: chunks.before,
           selection: '<a href="' + link.href + '">' + linkText + "</a>",
-          after: chunks.after
+          after: chunks.after,
         };
       }
     },
@@ -212,7 +212,7 @@ module.exports = function(textarea, _editor, _module) {
             "tr",
             "u",
             "ul",
-            "iframe"
+            "iframe",
           ],
 
           allowedAttributes: {
@@ -224,11 +224,11 @@ module.exports = function(textarea, _editor, _module) {
               "width",
               "height",
               "style",
-              "border"
+              "border",
             ],
             img: ["src", "alt", "title", "aria-label"],
-            div: ["class"]
-          }
+            div: ["class"],
+          },
         },
         tokenizers: [
           {
@@ -237,21 +237,21 @@ module.exports = function(textarea, _editor, _module) {
               return (
                 separator + '<a href="/profile/' + id + '">@' + id + "</a>"
               );
-            }
+            },
           },
           {
             token: /(^|\s)#([A-z\-]+)\b/g, // #hashtags
             transform: function(all, separator, id) {
               return separator + '<a href="/tag/' + id + '">#' + id + "</a>";
-            }
+            },
           },
           {
             token: /\[([\S\:\/]+)\]/, // [power:tags]
             transform: function(all, keywords) {
               return '<div class="powertags">Power tag: ' + keywords + "</div>";
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
     },
 
@@ -286,16 +286,13 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + "\n";
           }
-        }
+        },
       });
-    }
+    },
   });
-  require("../modules/PublicLab.CustomInsert.js")(
-      _module,
-      wysiwyg
-  );
+  require("../modules/PublicLab.CustomInsert.js")(_module, wysiwyg);
 
   // set up table generation tools:
   require("../modules/PublicLab.RichTextModule.Table.js")(_module, wysiwyg);
@@ -316,7 +313,9 @@ module.exports = function(textarea, _editor, _module) {
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
   wysiwyg.stylePrompt = function() {
-    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-outline-secondary");
+    $(".wk-prompt button, span.wk-prompt-browse").addClass(
+        "btn btn-outline-secondary"
+    );
     $(".wk-prompt input")
         .addClass("input form-control")
         .css("margin-bottom", "5px");
@@ -331,9 +330,7 @@ module.exports = function(textarea, _editor, _module) {
         '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
-    $(".wk-commands button, .wk-switchboard button").addClass(
-        "btn btn-outline-secondary"
-    );
+    $(".wk-commands button, .wk-switchboard button").addClass("btn btn-light");
 
     $(".wk-commands a.woofmark-command-insert").addClass("btn-light");
 
@@ -357,7 +354,7 @@ module.exports = function(textarea, _editor, _module) {
     } else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
     $(".wk-switchboard button").click(function() {
-      $(this).tooltip('hide');
+      $(this).tooltip("hide");
       $(".wk-switchboard button.woofmark-mode-markdown").toggle();
       $(".wk-switchboard button.woofmark-mode-wysiwyg").toggle();
     });

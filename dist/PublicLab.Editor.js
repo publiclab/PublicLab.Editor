@@ -22151,28 +22151,28 @@ var woofmark = require("woofmark");
 var domador = require("domador");
 var megamark = require("megamark");
 
-module.exports = function(textarea, _editor, _module) {
+module.exports = function (textarea, _editor, _module) {
   var icons = {
     quote: "quote-right",
     ol: "list-ol",
     ul: "list-ul",
     heading: "header",
     attachment: "paperclip",
-    table: "table"
+    table: "table",
   };
 
   _module.options.tags =
     _module.options.tags ||
-    function(data, done) {
+    function (data, done) {
       done(null, [
         {
           list: [
             "#spectrometer",
             "#air-quality",
             "#water-quality",
-            "#balloon-mapping"
-          ]
-        }
+            "#balloon-mapping",
+          ],
+        },
       ]);
     };
 
@@ -22181,18 +22181,18 @@ module.exports = function(textarea, _editor, _module) {
     storage: "ple-woofmark-mode",
 
     render: {
-      modes: function(button, id) {
+      modes: function (button, id) {
         button.className = "woofmark-mode-" + id;
         if (id == "html") $(button).remove();
         if (id == "markdown") button.innerHTML = "Markdown";
         if (id == "wysiwyg") button.innerHTML = "Rich";
       },
 
-      commands: function(button, id) {
+      commands: function (button, id) {
         button.className = "woofmark-command-" + id;
         var icon = icons[id] || id;
         button.innerHTML = '<i class="fa fa-' + icon + '"></i>';
-      }
+      },
     },
 
     images: {
@@ -22208,16 +22208,16 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: {nid: null, authenticity_token: _module.options.token},
+      formData: { nid: null, authenticity_token: _module.options.token },
 
       // xhr upload options like CSRF token
       xhrOptions: {
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
           xhr.setRequestHeader(
-              "X-CSRF-Token",
-              $('meta[name="csrf-token"]').attr("content")
+            "X-CSRF-Token",
+            $('meta[name="csrf-token"]').attr("content")
           );
-        }
+        },
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
@@ -22229,7 +22229,7 @@ module.exports = function(textarea, _editor, _module) {
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
-      }
+      },
     },
 
     attachments: {
@@ -22242,16 +22242,16 @@ module.exports = function(textarea, _editor, _module) {
       fieldKey: "image[photo]",
 
       // additional form fields
-      formData: {nid: null, authenticity_token: _module.options.token},
+      formData: { nid: null, authenticity_token: _module.options.token },
 
       // xhr upload options like CSRF token
       xhrOptions: {
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
           xhr.setRequestHeader(
-              "X-CSRF-Token",
-              $('meta[name="csrf-token"]').attr("content")
+            "X-CSRF-Token",
+            $('meta[name="csrf-token"]').attr("content")
           );
-        }
+        },
       },
 
       // should return whether `e.dataTransfer.files[i]` is valid, defaults to a `true` operation
@@ -22271,16 +22271,16 @@ module.exports = function(textarea, _editor, _module) {
           "pdf",
           "svg",
           "doc",
-          "ppt"
+          "ppt",
         ];
         var filetype = file.name.split(".")[file.name.split(".").length - 1];
         filetype = filetype.toLowerCase();
         if (formats.indexOf(filetype) === -1) valid = false;
         return valid;
-      }
+      },
     },
 
-    mergeHtmlAndAttachment: function(chunks, link) {
+    mergeHtmlAndAttachment: function (chunks, link) {
       var linkText = chunks.selection || link.title;
       console.log(link, chunks);
       if (false) console.log(link);
@@ -22295,18 +22295,18 @@ module.exports = function(textarea, _editor, _module) {
         return {
           before: chunks.before,
           selection: output,
-          after: chunks.after
+          after: chunks.after,
         };
       } else {
         return {
           before: chunks.before,
           selection: '<a href="' + link.href + '">' + linkText + "</a>",
-          after: chunks.after
+          after: chunks.after,
         };
       }
     },
 
-    parseMarkdown: function(input) {
+    parseMarkdown: function (input) {
       _module.scrollTop = document.body.scrollTop;
 
       return megamark(input, {
@@ -22355,7 +22355,7 @@ module.exports = function(textarea, _editor, _module) {
             "tr",
             "u",
             "ul",
-            "iframe"
+            "iframe",
           ],
 
           allowedAttributes: {
@@ -22367,51 +22367,51 @@ module.exports = function(textarea, _editor, _module) {
               "width",
               "height",
               "style",
-              "border"
+              "border",
             ],
             img: ["src", "alt", "title", "aria-label"],
-            div: ["class"]
-          }
+            div: ["class"],
+          },
         },
         tokenizers: [
           {
             token: /(^|\s)@([A-z\_]+)\b/g, // @callouts
-            transform: function(all, separator, id) {
+            transform: function (all, separator, id) {
               return (
                 separator + '<a href="/profile/' + id + '">@' + id + "</a>"
               );
-            }
+            },
           },
           {
             token: /(^|\s)#([A-z\-]+)\b/g, // #hashtags
-            transform: function(all, separator, id) {
+            transform: function (all, separator, id) {
               return separator + '<a href="/tag/' + id + '">#' + id + "</a>";
-            }
+            },
           },
           {
             token: /\[([\S\:\/]+)\]/, // [power:tags]
-            transform: function(all, keywords) {
+            transform: function (all, keywords) {
               return '<div class="powertags">Power tag: ' + keywords + "</div>";
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
     },
 
-    parseHTML: function(input) {
+    parseHTML: function (input) {
       _module.scrollTop = document.body.scrollTop;
 
       return domador(input, {
         allowFrame: true,
         inline: true,
         fencing: true,
-        fencinglanguage: function(el) {
+        fencinglanguage: function (el) {
           var match = el.className.match(/md-lang-((?:[^\s]|$)+)/);
           if (match) {
             return match.pop();
           }
         },
-        transform: function(el) {
+        transform: function (el) {
           if (el.tagName === "IFRAME") {
             return "\n\n\n" + el.outerHTML;
           }
@@ -22429,54 +22429,51 @@ module.exports = function(textarea, _editor, _module) {
           }
 
           if (el.tagName === "DIV" && $(el).hasClass("powertags")) {
-            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + '\n';
+            return "[" + el.innerHTML.replace("Power tag: ", "") + "]" + "\n";
           }
-        }
+        },
       });
-    }
+    },
   });
-  require("../modules/PublicLab.CustomInsert.js")(
-      _module,
-      wysiwyg
-  );
+  require("../modules/PublicLab.CustomInsert.js")(_module, wysiwyg);
 
   // set up table generation tools:
   require("../modules/PublicLab.RichTextModule.Table.js")(_module, wysiwyg);
 
   // set up horizontal rule insertion tool:
   require("../modules/PublicLab.RichTextModule.HorizontalRule.js")(
-      _module,
-      wysiwyg
+    _module,
+    wysiwyg
   );
 
   // set up auto center insertion tool:
   require("../modules/PublicLab.RichTextModule.AutoCenter.js")(
-      _module,
-      wysiwyg
+    _module,
+    wysiwyg
   );
 
   // set up embed insertion tool:
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
-  wysiwyg.stylePrompt = function() {
-    $(".wk-prompt button, span.wk-prompt-browse").addClass("btn btn-outline-secondary");
+  wysiwyg.stylePrompt = function () {
+    $(".wk-prompt button, span.wk-prompt-browse").addClass(
+      "btn btn-outline-secondary"
+    );
     $(".wk-prompt input")
-        .addClass("input form-control")
-        .css("margin-bottom", "5px");
+      .addClass("input form-control")
+      .css("margin-bottom", "5px");
   };
 
   $(
-      ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
+    ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
   ).click(wysiwyg.stylePrompt);
 
-  wysiwyg.style = function() {
+  wysiwyg.style = function () {
     $(".wk-commands").after(
-        '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
+      '&nbsp; <span style="color:#888;display:none;" class="ple-history-saving btn"><i class="fa fa-clock-o"></i> <span class="hidden-xs">Saving...</span></span>'
     );
     $(".wk-commands, .wk-switchboard").addClass("btn-group");
-    $(".wk-commands button, .wk-switchboard button").addClass(
-        "btn btn-outline-secondary"
-    );
+    $(".wk-commands button, .wk-switchboard button").addClass("btn btn-light");
 
     $(".wk-commands a.woofmark-command-insert").addClass("btn-light");
 
@@ -22486,21 +22483,21 @@ module.exports = function(textarea, _editor, _module) {
     $(".wk-commands button.woofmark-command-attachment").addClass("hidden-xs");
 
     $(".wk-switchboard button.woofmark-mode-markdown")
-        .parent()
-        .removeClass("btn-group");
+      .parent()
+      .removeClass("btn-group");
     $(".wk-switchboard button.woofmark-mode-markdown").html(
-        '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
+      '<span class="visible-xs">#</span><span class="hidden-xs">Markdown</span>'
     );
     $(".wk-switchboard button.woofmark-mode-wysiwyg").html(
-        '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
+      '<span class="visible-xs">Aa</span><span class="hidden-xs">Rich</span>'
     );
 
     if (wysiwyg.mode === "wysiwyg") {
       $(".wk-switchboard button.woofmark-mode-wysiwyg").hide();
     } else $(".wk-switchboard button.woofmark-mode-markdown").hide();
 
-    $(".wk-switchboard button").click(function() {
-      $(this).tooltip('hide');
+    $(".wk-switchboard button").click(function () {
+      $(this).tooltip("hide");
       $(".wk-switchboard button.woofmark-mode-markdown").toggle();
       $(".wk-switchboard button.woofmark-mode-wysiwyg").toggle();
     });
