@@ -40,7 +40,7 @@ module.exports = {
 
   enableScroll: function() {
     window.isScrollingDisabled = false;
-    window.onscroll = function() {};
+    window.onscroll = function() { };
   },
 
   preventModalScrollToTop: function() {

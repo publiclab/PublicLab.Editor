@@ -34,7 +34,7 @@ module.exports = PublicLab.Formatter = Class.extend({
         output.main_image = data.main_image || null; // id to associate with pre-uploaded image
         output.node_images = data.node_images || null; // comma-separated image.ids, I think
         // photo is probably actually a multipart, but we pre-upload anyways, so probably not necessary:
-        output.image = { };
+        output.image = {};
         output.image.photo = data.image || null;
 
         return output;
