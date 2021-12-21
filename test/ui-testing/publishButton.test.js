@@ -7,7 +7,7 @@ beforeAll(async () => {
 
 describe('Publish button', () => {
   
-  test('Publish button is enabled', () => {
+  test('Publish button is enabled', async () => {
     // Check initially that Publish button is disabled.    
     expect(await page.evaluate(() => document.querySelector('.ple-textarea').disabled).toBe(true);
     // Add title.
