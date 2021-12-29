@@ -43,7 +43,7 @@ module.exports = function initTables(_module, wysiwyg) {
   // create a submenu for sizing tables
   $('.wk-commands').append('<button class="woofmark-command-table btn btn-outline-secondary" data-toggle="table" title="Table <table>"><i class="fa fa-table"></i></button>');
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     $('[data-toggle="table"]').tooltip();
   });
 
@@ -57,17 +57,17 @@ module.exports = function initTables(_module, wysiwyg) {
   $('.woofmark-command-table').attr('data-content', builder);
 
 
-  $(document).on('click', '#incRows', function() {
+  $(document).on('click', '#incRows', function () {
     $("#tableRows").text(Number($("#tableRows").text()) + 1);
   });
-  $(document).on('click', '#decRows', function() {
+  $(document).on('click', '#decRows', function () {
     const numOfRows = Number($("#tableRows").text());
     if (numOfRows > 1) $("#tableRows").text(numOfRows - 1);
   });
-  $(document).on('click', '#incCols', function() {
+  $(document).on('click', '#incCols', function () {
     $("#tableCols").text(Number($("#tableCols").text()) + 1);
   });
-  $(document).on('click', '#decCols', function() {
+  $(document).on('click', '#decCols', function () {
     const numOfCols = Number($("#tableCols").text());
     if (numOfCols > 1) $("#tableCols").text(numOfCols - 1);
   });
@@ -76,14 +76,14 @@ module.exports = function initTables(_module, wysiwyg) {
   $('.woofmark-command-table').attr('data-container', 'body');
   $('.woofmark-command-table').attr('data-placement', 'top');
 
-  $('.woofmark-command-table').popover({html: true});
+  $('.woofmark-command-table').popover({ html: true });
 
-  $('.wk-commands .woofmark-command-table').click(function() {
-    $('.ple-table-size').click(function() {
-      wysiwyg.runCommand(function(chunks, mode) {
+  $('.wk-commands .woofmark-command-table').click(function () {
+    $('.ple-table-size').click(function () {
+      wysiwyg.runCommand(function (chunks, mode) {
         var table = createTable(
-            +Number($('.ple-table-popover #tableCols').text()),
-            +Number($('.ple-table-popover #tableRows').text())
+          +Number($('.ple-table-popover #tableCols').text()),
+          +Number($('.ple-table-popover #tableRows').text())
         );
 
         if (mode === 'markdown') chunks.before += table;
