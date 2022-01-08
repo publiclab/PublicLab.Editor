@@ -39,7 +39,6 @@ describe('Errors', () => {
 
   test('Sends AJAX request on editor.publish()', async () => {
     await page.evaluate(() => editor.options.destination = '/post');
-    await page.evaluate(() => console.log($));
     const spy = jest.fn().mockImplementation(async (options) => {
       await page.evaluate(() => {
         if (options === editor.options.destination) {
