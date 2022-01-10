@@ -67,7 +67,13 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+
+  $('.wk-commands').append('<button class="woofmark-command-insert btn btn-outline-secondary" data-toggle="insert" title="Custom Insert"><i class="fa fa-tags"></i></button>');
+
+  $(document).ready(function() {
+    $('[data-toggle="insert"]').tooltip();
+  });
+
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
