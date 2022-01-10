@@ -67,7 +67,6 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-
   $('.wk-commands').append('<button class="woofmark-command-insert btn btn-outline-secondary" data-toggle="insert" title="Custom Insert"><i class="fa fa-tags"></i></button>');
 
   $(document).ready(function() {
