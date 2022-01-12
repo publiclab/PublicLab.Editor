@@ -1,7 +1,7 @@
 const timeout = process.env.SLOWMO ? 60000 : 10000;
 const fs = require('fs');
 let editor;
-let _module; // couldn't use module because module was already defined by Nodejs
+let _module; // couldn't use "module" because module was already defined by Nodejs
 
 beforeAll(async () => {
   path = fs.realpathSync('file://../examples/index.html');
