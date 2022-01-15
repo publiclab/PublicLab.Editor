@@ -40,7 +40,7 @@
     "crossvent": "1.5.5",
     "domador": "2.4.4",
     "font-awesome": "~4.7.0",
-    "grow-textarea": "git://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669",
+    "grow-textarea": "https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669",
     "http-server": "^0.12.3",
     "jquery": "^3.6.0",
     "leaflet": "^1.6.0",
@@ -50,7 +50,7 @@
     "popper.js": "1.16.1",
     "resig-class": "~1.0.0",
     "typeahead.js-browserify": "~1.0.7",
-    "woofmark": "git://github.com/jywarren/woofmark.git#plots2",
+    "woofmark": "https://github.com/jywarren/woofmark.git#plots2",
     "xhr": "~2.5.0"
   },
   "devDependencies": {
