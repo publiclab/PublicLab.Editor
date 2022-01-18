@@ -75,7 +75,6 @@ module.exports = function initTables(_module, wysiwyg) {
   $('.woofmark-command-table').attr('data-content', builder);
   $('.woofmark-command-table').attr('data-container', 'body');
   $('.woofmark-command-table').attr('data-placement', 'top');
-  $('.woofmark-command-table').attr('data-trigger', 'focus');
 
   $('.woofmark-command-table').popover({html: true});
 
