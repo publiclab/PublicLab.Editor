@@ -103,16 +103,12 @@ module.exports = function initTables(_module, wysiwyg) {
   // close table popover when user click outside the page
   $(':not(".woofmark-command-table")').click((e) => {
     // check to see that the clicked element isn't fa-table icon, else when you click on the fa-table icon, the popover will close
-    try {
-      if ($('.woofmark-command-table').children()[0] != e.target) {
-        const popoverContainer = document.querySelector('.popover');
-        const isChildElement = popoverContainer.contains(e.target);
-        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
-          $('.woofmark-command-table').click();
-        }
+    if (popoverIsOpen && $('.woofmark-command-table').children()[0] != e.target) {
+      const popoverContainer = document.querySelector('.popover');
+      const isChildElement = popoverContainer.contains(e.target);
+      if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
+        $('.woofmark-command-table').click();
       }
-    } catch (error) {
-
     }
   });
 };

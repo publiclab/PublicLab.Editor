@@ -119,15 +119,12 @@ module.exports = function CustomInsert(_module, wysiwyg) {
 
   $(':not(".woofmark-command-insert")').click((e) => {
     // check to see that the clicked element isn't fa-insert icon, else when you click on the fa-insert icon, the popover will close
-    try {
-      if ($('.woofmark-command-insert').children()[0] != e.target) {
-        const popoverContainer = document.querySelector('.popover');
-        const isChildElement = popoverContainer.contains(e.target);
-        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
-          $('.woofmark-command-insert').click();
-        }
+    if ( popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target) {
+      const popoverContainer = document.querySelector('.popover');
+      const isChildElement = popoverContainer.contains(e.target);
+      if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
+        $('.woofmark-command-insert').click();
       }
-    } catch (error) {
     }
   });
 };
