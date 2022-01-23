@@ -40,17 +40,25 @@ describe('Wysiwyg', () => {
   });
 
   test("parses @usernames and #tagnames and #tag-names", async () => {
-    expect(await page.evaluate(() => wysiwyg.parseMarkdown('@hodor'))).toEqual('<p><a href="/profile/hodor">@hodor</a></p>\n');
-    expect(await page.evaluate(() => wysiwyg.parseMarkdown('#spectrometer'))).toEqual('<p><a href="/tag/spectrometer">#spectrometer</a></p>\n');
-    expect(await page.evaluate(() => wysiwyg.parseMarkdown('#balloon-mapping'))).toEqual('<p><a href="/tag/balloon-mapping">#balloon-mapping</a></p>\n');
+    try {
+      expect(await page.evaluate(() => wysiwyg.parseMarkdown('@hodor'))).toEqual('<p><a href="/profile/hodor">@hodor</a></p>\n');
+      expect(await page.evaluate(() => wysiwyg.parseMarkdown('#spectrometer'))).toEqual('<p><a href="/tag/spectrometer">#spectrometer</a></p>\n');
+      expect(await page.evaluate(() => wysiwyg.parseMarkdown('#balloon-mapping'))).toEqual('<p><a href="/tag/balloon-mapping">#balloon-mapping</a></p>\n');
+    } catch (err) {
+      console.log(err);
+    }
   });
 
   test("runs post-conversion filter", async () => {
-    await page.evaluate(() => wysiwyg.setMode('html'));
-    await page.evaluate(() => {
-      table = "<table><tr><td>Hi</td></tr></table>";
-      wysiwyg.value(table);
-    });
-    expect(await page.evaluate(() => wysiwyg.value(table))).toEqual("| Hi|");
+    try {
+      await page.evaluate(() => wysiwyg.setMode('html'));
+      await page.evaluate(() => {
+        table = "<table><tr><td>Hi</td></tr></table>";
+        wysiwyg.value(table);
+      });
+      expect(await page.evaluate(() => wysiwyg.value(table))).toEqual("| Hi|");
+    } catch (err) {
+      console.log(err);
+    }
   });
 }, timeout);
