@@ -67,5 +67,5 @@ describe('Custom Insert text', () => {
     } catch (err) {
       // console.log(err);
     }
-  }, timeout);
-});
+  });
+}, timeout);
