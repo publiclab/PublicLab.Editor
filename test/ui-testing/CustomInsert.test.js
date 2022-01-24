@@ -65,7 +65,6 @@ describe('Custom Insert text', () => {
       expect(stringIsIncluded2).toBe(true);
       await page.click('.woofmark-mode-wysiwyg');
     } catch (err) {
-      // console.log(err);
       throw new Error(err);
     }
   }, timeout);
