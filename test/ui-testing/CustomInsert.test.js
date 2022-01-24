@@ -1,4 +1,4 @@
-const timeout = process.env.SLOWMO ? 60000 : 4000;
+const timeout = process.env.SLOWMO ? 60000 : 10000;
 const fs = require('fs');
 beforeAll(async () => {
   path = fs.realpathSync('file://../examples/index.html');
@@ -67,5 +67,5 @@ describe('Custom Insert text', () => {
     } catch (err) {
       // console.log(err);
     }
-  });
-}, timeout);
+  }), timeout;
+});
