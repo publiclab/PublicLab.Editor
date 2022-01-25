@@ -39,19 +39,19 @@ describe('Wysiwyg', () => {
       // the URLs from the footers:
       expect(await page.evaluate(() => wysiwyg.parseMarkdown("# About my project\n\nI have been working on [this thing](/link) and wanted to share.\n\nMy goals have been:\n\n- simple to make\n- ease of use\n- low cost\n\nAnd then, after #balloon-mapping with @eustatic, tables:\n\n| col1 | col2 | col3 |\n|------|------|------|\n| foo  | bar  | baz  |\n| food | bars | bats |\n\n```javascript\n\n// Code could go here\nvar myVariable = 4;\n\n```"))).toEqual(html);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   });
 
-  // test("parses @usernames and #tagnames and #tag-names", async () => {
-  //   try {
-  //     expect(await page.evaluate(() => wysiwyg.parseMarkdown('@hodor'))).toEqual('<p><a href="/profile/hodor">@hodor</a></p>\n');
-  //     expect(await page.evaluate(() => wysiwyg.parseMarkdown('#spectrometer'))).toEqual('<p><a href="/tag/spectrometer">#spectrometer</a></p>\n');
-  //     expect(await page.evaluate(() => wysiwyg.parseMarkdown('#balloon-mapping'))).toEqual('<p><a href="/tag/balloon-mapping">#balloon-mapping</a></p>\n');
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // });
+  test("parses @usernames and #tagnames and #tag-names", async () => {
+    try {
+      expect(await page.evaluate(() => wysiwyg.parseMarkdown('@hodor'))).toEqual('<p><a href="/profile/hodor">@hodor</a></p>\n');
+      expect(await page.evaluate(() => wysiwyg.parseMarkdown('#spectrometer'))).toEqual('<p><a href="/tag/spectrometer">#spectrometer</a></p>\n');
+      expect(await page.evaluate(() => wysiwyg.parseMarkdown('#balloon-mapping'))).toEqual('<p><a href="/tag/balloon-mapping">#balloon-mapping</a></p>\n');
+    } catch (err) {
+      // console.log(err);
+    }
+  });
 
   // test("runs post-conversion filter", async () => {
   //   try {
