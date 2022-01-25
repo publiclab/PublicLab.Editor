@@ -55,8 +55,8 @@ describe('Wysiwyg', () => {
 
   test("runs post-conversion filter", async () => {
     try {
-      await page.evaluate(() => wysiwyg.setMode('html'));
       await page.evaluate(() => {
+        wysiwyg.setMode('html');
         table = "<table><tr><td>Hi</td></tr></table>";
         wysiwyg.value(table);
       });
@@ -64,5 +64,5 @@ describe('Wysiwyg', () => {
     } catch (err) {
       // console.log(err);
     }
-  }, timeout);
-});
+  });
+}), timeout;
