@@ -53,16 +53,16 @@ describe('Wysiwyg', () => {
     }
   });
 
-  // test("runs post-conversion filter", async () => {
-  //   try {
-  //     await page.evaluate(() => wysiwyg.setMode('html'));
-  //     await page.evaluate(() => {
-  //       table = "<table><tr><td>Hi</td></tr></table>";
-  //       wysiwyg.value(table);
-  //     });
-  //     expect(await page.evaluate(() => wysiwyg.value(table))).toEqual("| Hi|");
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // });
+  test("runs post-conversion filter", async () => {
+    try {
+      await page.evaluate(() => wysiwyg.setMode('html'));
+      await page.evaluate(() => {
+        table = "<table><tr><td>Hi</td></tr></table>";
+        wysiwyg.value(table);
+      });
+      expect(await page.evaluate(() => wysiwyg.value(table))).toEqual("| Hi|");
+    } catch (err) {
+      // console.log(err);
+    }
+  });
 }, timeout);
