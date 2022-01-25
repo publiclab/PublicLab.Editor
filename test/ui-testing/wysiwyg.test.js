@@ -64,5 +64,5 @@ describe('Wysiwyg', () => {
     } catch (err) {
       // console.log(err);
     }
-  });
-}, timeout);
+  }, timeout);
+});
