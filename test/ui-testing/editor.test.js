@@ -1,4 +1,4 @@
-const timeout = process.env.SLOWMO ? 60000 : 10000;
+const timeout = process.env.SLOWMO ? 60000 : 15000;
 const fs = require('fs');
 let editor;
 
