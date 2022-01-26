@@ -120,7 +120,7 @@ module.exports = function CustomInsert(_module, wysiwyg) {
       if (popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target) {
         const popoverContainer = document.querySelector('.popover');
         const isChildElement = popoverContainer.contains(e.target);
-        if (popoverIsOpen && !e.target.classList.contains(".woofmark-command-insert") && !isChildElement) {
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
           $('.woofmark-command-insert').click();
         }
       }

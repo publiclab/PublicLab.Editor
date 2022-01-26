@@ -22803,15 +22803,15 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     });
     // for the popover to disappear when clicked anywhere on the screen
     $(':not(".woofmark-command-insert")').click((e) => {
-      if(popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target){
+      if (popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target) {
         const popoverContainer = document.querySelector('.popover');
         const isChildElement = popoverContainer.contains(e.target);
-        if(popoverIsOpen && !e.target.classList.contains(".woofmark-command-insert") && !isChildElement){
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
           $('.woofmark-command-insert').click();
         }
       }
-    })
-  });  
+    });
+  });
 };
 
 },{"./PublicLab.CustomInsert.Template.js":185}],187:[function(require,module,exports){
