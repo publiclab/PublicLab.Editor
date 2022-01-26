@@ -22758,14 +22758,17 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
   $('.woofmark-command-insert').attr('data-container', 'body');
   $('.woofmark-command-insert').attr('data-placement', 'top');
   $('.woofmark-command-insert').popover({html: true, sanitize: false});
+
+  let popoverIsOpen = false;
   $('.wk-commands .woofmark-command-insert').click(function() {
+    popoverIsOpen = !popoverIsOpen;
     var sel = window.getSelection();
     if (sel.anchorNode !== null) {
       var range = sel.getRangeAt(0);
@@ -22798,7 +22801,17 @@ module.exports = function CustomInsert(_module, wysiwyg) {
         });
       }
     });
-  });
+    // for the popover to disappear when clicked anywhere on the screen
+    $(':not(".woofmark-command-insert")').click((e) => {
+      if(popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target){
+        const popoverContainer = document.querySelector('.popover');
+        const isChildElement = popoverContainer.contains(e.target);
+        if(popoverIsOpen && !e.target.classList.contains(".woofmark-command-insert") && !isChildElement){
+          $('.woofmark-command-insert').click();
+        }
+      }
+    })
+  });  
 };
 
 },{"./PublicLab.CustomInsert.Template.js":185}],187:[function(require,module,exports){
