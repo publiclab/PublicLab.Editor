@@ -22758,7 +22758,8 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
@@ -23394,17 +23395,17 @@ module.exports = function initTables(_module, wysiwyg) {
         $('.woofmark-command-table').popover('toggle');
       });
     });
-  });
-   // close table popover when user click outside the page
-   $(':not(".woofmark-command-table")').click((e) => {
-    // check to see that the clicked element isn't fa-table icon, else when you click on the fa-table icon, the popover will close
-    if (popoverIsOpen && $('.woofmark-command-table').children()[0] != e.target) {
-      const popoverContainer = document.querySelector('.popover');
-      const isChildElement = popoverContainer.contains(e.target);
-      if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
-        $('.woofmark-command-table').click();
+
+    $(':not(".woofmark-command-table")').click((e) => {
+      // check to see that the clicked element isn't fa-table icon, else when you click on the fa-table icon, the popover will close
+      if (popoverIsOpen && $('.woofmark-command-table').children()[0] != e.target) {
+        const popoverContainer = document.querySelector('.popover');
+        const isChildElement = popoverContainer.contains(e.target);
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
+          $('.woofmark-command-table').click();
+        }
       }
-    }
+    });
   });
 };
 
