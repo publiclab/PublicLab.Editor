@@ -69,8 +69,6 @@ describe('History', () => {
     await page.evaluate(() => {
       for (let i = 10; i < 20; i++) {
         editor.history.add("some text " + i);
-        // checked for the length instead of individual value in the loop, hence the below test wasn't added
-        // expect( await page.evaluate(() => editor.history.log[editor.history.log.length - 1].text) ).toBe("some text " + i);
       }
     });
     expect(await page.evaluate(() => editor.history.log.length)).toBe(20);
@@ -105,8 +103,6 @@ describe('History', () => {
         editor.history.display($('#history')[0]);
       });
       expect(await page.evaluate(() => $('#history p.log').length)).toBe(1 + i);
-      // commented out this line because the value of i available to it is 0 which is inconsistent
-      // expect(await page.evaluate(() => $('#history p.log:last .preview').html())).toBe("some text " + i + "...");
     }
     expect(await page.evaluate(() => $('#history p.day').length)).toBe(1);
   });
