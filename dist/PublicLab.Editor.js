@@ -22758,14 +22758,22 @@ module.exports = function CustomInsert(_module, wysiwyg) {
     }
   });
   const builder = require("./PublicLab.CustomInsert.Template.js");
-  $('.wk-commands').append('<a class="woofmark-command-insert btn btn-outline-secondary" data-toggle="Insert" title="Custom Insert"><i class="fa fa-tags"></i></a>');
+  $('.wk-commands').append('<button class="woofmark-command-insert btn btn-outline-secondary" data-toggle="insert" title="Custom Insert"><i class="fa fa-tags"></i></button>');
+
+  $(document).ready(function() {
+    $('[data-toggle="insert"]').tooltip();
+  });
+
   var Option1 = "Notes";
   var Option2 = "List";
   $('.woofmark-command-insert').attr('data-content', builder);
   $('.woofmark-command-insert').attr('data-container', 'body');
   $('.woofmark-command-insert').attr('data-placement', 'top');
   $('.woofmark-command-insert').popover({html: true, sanitize: false});
+
+  let popoverIsOpen = false;
   $('.wk-commands .woofmark-command-insert').click(function() {
+    popoverIsOpen = !popoverIsOpen;
     var sel = window.getSelection();
     if (sel.anchorNode !== null) {
       var range = sel.getRangeAt(0);
@@ -22796,6 +22804,16 @@ module.exports = function CustomInsert(_module, wysiwyg) {
             chunks.before += _module.wysiwyg.parseMarkdown(syntax);
           }
         });
+      }
+    });
+    // for the popover to disappear when clicked anywhere on the screen
+    $(':not(".woofmark-command-insert")').click((e) => {
+      if (popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target) {
+        const popoverContainer = document.querySelector('.popover');
+        const isChildElement = popoverContainer.contains(e.target);
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
+          $('.woofmark-command-insert').click();
+        }
       }
     });
   });
@@ -23345,9 +23363,9 @@ module.exports = function initTables(_module, wysiwyg) {
   });
 
   var builder = '<div class="form-inline form-group ple-table-popover" style="width:400px;">';
-  builder += '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
-  builder += ' x ';
-  builder += '<a id="decCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableCols">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  builder += '<a id="decRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableRows" class="mx-1">4</span> <a id="incRows" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
+  builder += '<span class="mx-1">x</span>';
+  builder += '<a id="decCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-minus"></i></a> <span id="tableCols" class="mx-1">3</span> <a id="incCols" class="btn btn-sm btn-outline-secondary"><i class="fa fa-plus"></i></a>';
   builder += '&nbsp;<a class="ple-table-size btn btn-outline-secondary">Add</a>';
   builder += '</div>';
 
@@ -23374,8 +23392,10 @@ module.exports = function initTables(_module, wysiwyg) {
   $('.woofmark-command-table').attr('data-placement', 'top');
 
   $('.woofmark-command-table').popover({html: true});
-
+  let popoverIsOpen = false;
   $('.wk-commands .woofmark-command-table').click(function() {
+    popoverIsOpen = !popoverIsOpen;
+
     $('.ple-table-size').click(function() {
       wysiwyg.runCommand(function(chunks, mode) {
         var table = createTable(
@@ -23391,6 +23411,17 @@ module.exports = function initTables(_module, wysiwyg) {
 
         $('.woofmark-command-table').popover('toggle');
       });
+    });
+
+    $(':not(".woofmark-command-table")').click((e) => {
+      // check to see that the clicked element isn't fa-table icon, else when you click on the fa-table icon, the popover will close
+      if (popoverIsOpen && $('.woofmark-command-table').children()[0] != e.target) {
+        const popoverContainer = document.querySelector('.popover');
+        const isChildElement = popoverContainer.contains(e.target);
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
+          $('.woofmark-command-table').click();
+        }
+      }
     });
   });
 };
