@@ -22671,7 +22671,7 @@ builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Ques
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-outline-secondarydropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+builder += '<button class="btn btn-outline-secondary dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
 builder += '<span class="selected2">Insert as a</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
