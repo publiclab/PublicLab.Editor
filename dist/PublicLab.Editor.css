@@ -309,6 +309,17 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
 .tooltip.bottom .tooltip-arrow {
   display: none;
 }
+
+.menu1 li:hover a,
+.menu2 li:hover a {
+  text-decoration: none !important;
+  color: white !important;
+}  
+.menu1 li:hover,
+.menu2 li:hover {
+  background-color: #007bff !important;
+}
+
 @media (max-width: 550px) {
   .ple-module-content a.btn {
     font-size: 0px !important;
