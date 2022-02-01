@@ -22663,11 +22663,11 @@ builder += '<span class= "selected">What Do you want to insert?</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
 builder += '<ul class="dropdown-menu menu1" role="menu" aria-labelledby="dropdownMenu1">';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="Notes">Notes</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="Wikis">Wikis</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="Nodes">Nodes(Wikis + Notes)</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="Activity">Activity</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="Questions">Questions</a></li>';
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="dropdown" style="margin-bottom: 20px;">';
@@ -22676,14 +22676,14 @@ builder += '<span class="selected2">Insert as a</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
 builder += '<ul class="dropdown-menu menu2" role ="menu" aria-labelledby="dropdownMenu2">';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
-builder += '<li role="presentation"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="List">List</a></li>';
+builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class="Grid">Grid</a></li>';
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="input-group">';
 builder += '<input type="text" class="form-control inputText" placeholder="Enter a tagname" style="min-width: 150px;">';
 builder += '<span class="input-group-btn">';
-builder += '<button class="btn btn-outline-secondary go1" type="button">Go!</button>';
+builder += '<button class="btn btn-outline-secondary ml-2 go1" type="button">Go!</button>';
 builder += '</span>';
 builder += '</div>';
 module.exports = builder;
@@ -23392,8 +23392,10 @@ module.exports = function initTables(_module, wysiwyg) {
   $('.woofmark-command-table').attr('data-placement', 'top');
 
   $('.woofmark-command-table').popover({html: true});
-
+  let popoverIsOpen = false;
   $('.wk-commands .woofmark-command-table').click(function() {
+    popoverIsOpen = !popoverIsOpen;
+
     $('.ple-table-size').click(function() {
       wysiwyg.runCommand(function(chunks, mode) {
         var table = createTable(
@@ -23409,6 +23411,17 @@ module.exports = function initTables(_module, wysiwyg) {
 
         $('.woofmark-command-table').popover('toggle');
       });
+    });
+
+    $(':not(".woofmark-command-table")').click((e) => {
+      // check to see that the clicked element isn't fa-table icon, else when you click on the fa-table icon, the popover will close
+      if (popoverIsOpen && $('.woofmark-command-table').children()[0] != e.target) {
+        const popoverContainer = document.querySelector('.popover');
+        const isChildElement = popoverContainer.contains(e.target);
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
+          $('.woofmark-command-table').click();
+        }
+      }
     });
   });
 };
