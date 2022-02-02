@@ -16,7 +16,7 @@
     "*.js": [
       "npx eslint src/**/*.js --fix",
       "npx eslint src/*.js --fix",
-      "npx eslint spec/javascripts/*.js --fix",
+      "npx eslint test/ui-testing/*.js --fix",
       "npx eslint *.js --fix",
       "git add"
     ]
