@@ -22817,6 +22817,13 @@ module.exports = function CustomInsert(_module, wysiwyg) {
       }
     });
   });
+
+  $(document).on("keydown", (e) => {
+    if(popoverIsOpen && e.key == "Escape"){
+      $(".woofmark-command-insert").click();
+    }
+  })
+
 };
 
 },{"./PublicLab.CustomInsert.Template.js":185}],187:[function(require,module,exports){

@@ -126,4 +126,10 @@ module.exports = function CustomInsert(_module, wysiwyg) {
       }
     });
   });
+
+  $(document).on("keydown", (e) => {
+    if (popoverIsOpen && e.key == "Escape") {
+      $(".woofmark-command-insert").click();
+    }
+  });
 };
