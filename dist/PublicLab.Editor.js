@@ -23424,6 +23424,13 @@ module.exports = function initTables(_module, wysiwyg) {
       }
     });
   });
+
+  $(document).on("keydown", (e) => {
+    console.log(e);
+    if(popoverIsOpen && e.key == "Escape"){
+      $(".woofmark-command-table").click();
+    }
+  })
 };
 
 },{}],194:[function(require,module,exports){

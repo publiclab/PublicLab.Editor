@@ -109,4 +109,10 @@ module.exports = function initTables(_module, wysiwyg) {
       }
     });
   });
+
+  $(document).on("keydown", (e) => {
+    if (popoverIsOpen && e.key == "Escape") {
+      $(".woofmark-command-table").click();
+    }
+  });
 };
