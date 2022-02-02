@@ -1,5 +1,6 @@
 name: tests
 on: [pull_request]
+jobs:
   ui-tests:
     runs-on: ubuntu-18.04
     steps:
