@@ -22816,14 +22816,14 @@ module.exports = function CustomInsert(_module, wysiwyg) {
         }
       }
     });
+
+    // to hide the popover on pressing esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key === "Escape") {
+        $(".woofmark-command-insert").click();
+      }
+    });
   });
-
-  $(document).on("keydown", (e) => {
-    if(popoverIsOpen && e.key == "Escape"){
-      $(".woofmark-command-insert").click();
-    }
-  })
-
 };
 
 },{"./PublicLab.CustomInsert.Template.js":185}],187:[function(require,module,exports){

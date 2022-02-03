@@ -125,11 +125,12 @@ module.exports = function CustomInsert(_module, wysiwyg) {
         }
       }
     });
-  });
 
-  $(document).on("keydown", (e) => {
-    if (popoverIsOpen && e.key == "Escape") {
-      $(".woofmark-command-insert").click();
-    }
+    // to hide the popover on pressing esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key === "Escape") {
+        $(".woofmark-command-insert").click();
+      }
+    });
   });
 };
