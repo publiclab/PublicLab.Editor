@@ -108,11 +108,12 @@ module.exports = function initTables(_module, wysiwyg) {
         }
       }
     });
-  });
 
-  $(document).on("keydown", (e) => {
-    if (popoverIsOpen && e.key == "Escape") {
-      $(".woofmark-command-table").click();
-    }
+    // to hide the popover on pressing Esc buttong
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key == "Escape") {
+        $(".woofmark-command-table").click();
+      }
+    });
   });
 };
