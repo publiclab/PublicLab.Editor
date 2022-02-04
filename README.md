@@ -333,19 +333,13 @@ For additional support, join the Public Lab website and mailing list at http://p
 
 ## Testing
 
-Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jasmine for testing: https://jasmine.github.io/2.4/introduction.html. The UI tests are written using jest and puppeteer. 
+Automated tests are an essential way to ensure that new changes don't break existing functionality, and can help you be confident that your code is ready to be merged in. We use Jest for testing: https://github.com/facebook/jest. The tests are written using jest and puppeteer. 
 
-The combined tests are run using `npm run test`.
+To add new tests, edit the  `*test.js` files in `/test/ui-testing/`.
 
-To run tests, open /test.html in a browser. If you have phantomjs installed, you can run `grunt jasmine` to run tests on the commandline.
+To run the tests you can run `npm run test-ui`.
 
-You can find the installation instructions for phantomjs in its official [build documentation](http://phantomjs.org/build.html). For Ubuntu/debian based system you can follow [these instructions](https://gist.github.com/julionc/7476620) or use the script mentioned there.
-
-To add new tests, edit the `*_spec.js` files in `/spec/javascripts/`.
-
-To run the UI tests you can run `npm run test-ui`. To add new tests, edit the  `*test.js` files in `/test/ui-testing/`. 
-
-If you face any error while running UI tests:
+If you face any error while running the tests:
 
 1. Make sure you're not running them as a root user. If running them as a root user include args: ['--no-sandbox'] in jest-puppeteer.config.js (not recommended).
 2. Make sure you have all the required dependencies installed.
