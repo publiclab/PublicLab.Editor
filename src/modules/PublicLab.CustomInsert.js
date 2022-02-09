@@ -79,7 +79,10 @@ module.exports = function CustomInsert(_module, wysiwyg) {
   $('.woofmark-command-insert').attr('data-container', 'body');
   $('.woofmark-command-insert').attr('data-placement', 'top');
   $('.woofmark-command-insert').popover({html: true, sanitize: false});
+
+  let popoverIsOpen = false;
   $('.wk-commands .woofmark-command-insert').click(function() {
+    popoverIsOpen = !popoverIsOpen;
     var sel = window.getSelection();
     if (sel.anchorNode !== null) {
       var range = sel.getRangeAt(0);
@@ -110,6 +113,23 @@ module.exports = function CustomInsert(_module, wysiwyg) {
             chunks.before += _module.wysiwyg.parseMarkdown(syntax);
           }
         });
+      }
+    });
+    // for the popover to disappear when clicked anywhere on the screen
+    $(':not(".woofmark-command-insert")').click((e) => {
+      if (popoverIsOpen && $('.woofmark-command-insert').children()[0] != e.target) {
+        const popoverContainer = document.querySelector('.popover');
+        const isChildElement = popoverContainer.contains(e.target);
+        if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
+          $('.woofmark-command-insert').click();
+        }
+      }
+    });
+
+    // to hide the popover on pressing esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key === "Escape") {
+        $(".woofmark-command-insert").click();
       }
     });
   });
