@@ -1,6 +1,6 @@
 {
   "name": "publiclab-editor",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
   "main": "dist/PublicLab.Editor.js",
   "scripts": {

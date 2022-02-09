@@ -22816,6 +22816,13 @@ module.exports = function CustomInsert(_module, wysiwyg) {
         }
       }
     });
+
+    // to hide the popover on pressing esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key === "Escape") {
+        $(".woofmark-command-insert").click();
+      }
+    });
   });
 };
 
@@ -23421,6 +23428,13 @@ module.exports = function initTables(_module, wysiwyg) {
         if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
           $('.woofmark-command-table').click();
         }
+      }
+    });
+
+    // to hide the popover on pressing Esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key == "Escape") {
+        $(".woofmark-command-table").click();
       }
     });
   });
