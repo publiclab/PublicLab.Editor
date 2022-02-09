@@ -1,11 +1,11 @@
 {
   "name": "publiclab-editor",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "PublicLab.Editor is a general purpose, JavaScript/Bootstrap UI framework for rich text posting, which provides an author-friendly, minimal, mobile/desktop (fluid) interface for creating blog-like content, designed for PublicLab.org",
   "main": "dist/PublicLab.Editor.js",
   "scripts": {
     "build": "grunt build",
-    "test": "grunt jasmine && npm run test-ui",
+    "test": "npm run test-ui",
     "test-ui": "node ./node_modules/.bin/jest"
   },
   "repository": {
@@ -16,7 +16,7 @@
     "*.js": [
       "npx eslint src/**/*.js --fix",
       "npx eslint src/*.js --fix",
-      "npx eslint spec/javascripts/*.js --fix",
+      "npx eslint test/ui-testing/*.js --fix",
       "npx eslint *.js --fix",
       "git add"
     ]
@@ -60,12 +60,8 @@
     "grunt": "^1.0.4",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-jasmine": "^2.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "husky": "^4.3.8",
-    "jasmine": "^3.6.4",
-    "jasmine-ajax": "~4.0.0",
-    "jasmine-jquery": "~2.1.1",
     "jest": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "lint-staged": "10.5.3",
