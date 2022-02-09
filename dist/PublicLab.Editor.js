@@ -22671,7 +22671,7 @@ builder += '<li role="button" class="p-2"><a role="menuitem" tabindex="-1" class
 builder += '</ul>';
 builder += '</div>';
 builder += '<div class="dropdown" style="margin-bottom: 20px;">';
-builder += '<button class="btn btn-outline-secondarydropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
+builder += '<button class="btn btn-outline-secondary dropdown-toggle dropdownMenu2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 150px;">';
 builder += '<span class="selected2">Insert as a</span>';
 builder += '<span class="caret"></span>';
 builder += '</button>';
@@ -22814,6 +22814,13 @@ module.exports = function CustomInsert(_module, wysiwyg) {
         if (popoverIsOpen && !e.target.classList.contains("woofmark-command-insert") && !isChildElement) {
           $('.woofmark-command-insert').click();
         }
+      }
+    });
+
+    // to hide the popover on pressing esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key === "Escape") {
+        $(".woofmark-command-insert").click();
       }
     });
   });
@@ -23421,6 +23428,13 @@ module.exports = function initTables(_module, wysiwyg) {
         if (popoverIsOpen && !e.target.classList.contains("woofmark-command-table") && !isChildElement) {
           $('.woofmark-command-table').click();
         }
+      }
+    });
+
+    // to hide the popover on pressing Esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key == "Escape") {
+        $(".woofmark-command-table").click();
       }
     });
   });
