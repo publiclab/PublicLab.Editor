@@ -23423,6 +23423,13 @@ module.exports = function initTables(_module, wysiwyg) {
         }
       }
     });
+
+    // to hide the popover on pressing Esc button
+    $(document).on("keydown", (e) => {
+      if (popoverIsOpen && e.key == "Escape") {
+        $(".woofmark-command-table").click();
+      }
+    });
   });
 };
 
