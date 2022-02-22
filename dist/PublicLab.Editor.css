@@ -330,9 +330,6 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   .module-mainImage {
     flex-direction: column;
   }
-  .thumbnailBtn {
-    width: 120px;
-  }
   #imageButtons {
     flex-direction: row;
     justify-content: space-between;
@@ -340,4 +337,40 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   .mainImageBox {
     width: auto;
   }
+  .ple-module-main_image .ple-module-guide {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    gap: 30px;
+  }
+  .mainImageBox .ple-drag-drop {
+    background: url(/i/45384) no-repeat;
+    border-color: rgb(204, 204, 204);
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+    width: 100%;
+  }
+  .ple-module-content .help {
+    margin-top: 25px;
+    padding: 0;
+  }
+  #imageButtons {
+    flex-direction: column;
+  }
+  #imageButtons .thumbnailBtn {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+    color: #6c757d;
+    border-color: #6c757d;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  #imageButtons .thumbnailBtn:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
 }
