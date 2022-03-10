@@ -335,21 +335,28 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
     justify-content: space-between;
   }
   .mainImageBox {
-    width: auto;
-  }
-  .ple-module-main_image .ple-module-guide {
-    display: flex;
-    align-items: flex-start;
     width: 100%;
-    gap: 30px;
+  }
+  .ple-module-main_image {
+    flex-direction: column;
+  }
+  .ple-image_module_guide {
+    max-width: 100% !important;
+  }
+  .ple-module-main_image .ple-module-guide  {
+    display: flex !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    gap: 30px !important;
   }
   .mainImageBox .ple-drag-drop {
-    background: url(/i/45384) no-repeat;
+    background: url(/i/45384);
+    background-repeat: no-repeat !important;
     border-color: rgb(204, 204, 204);
-    background-size: cover;
-    background-position: center;
+    background-size: cover !important;
+    background-position: center !important;
     height: 200px;
-    width: 100%;
+    width: 100% !important;
   }
   .ple-module-content .help {
     margin-top: 25px;
@@ -372,5 +379,5 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
-}
+  }
 }
