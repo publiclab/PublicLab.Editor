@@ -320,7 +320,7 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   background-color: #007bff !important;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 992px) {
   .ple-module-main_image .ple-module-guide  {
     display: flex !important;
     align-items: flex-start !important;
