@@ -323,7 +323,7 @@ module.exports = function(textarea, _editor, _module) {
   };
 
   $(
-      ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image"
+    ".wk-commands button.woofmark-command-attachment, .wk-commands button.woofmark-command-image, .wk-commands button.woofmark-command-link"
   ).click(wysiwyg.stylePrompt);
 
   wysiwyg.style = function() {
