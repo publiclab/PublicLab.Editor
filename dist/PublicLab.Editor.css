@@ -320,6 +320,53 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   background-color: #007bff !important;
 }
 
+@media (max-width: 992px) {
+  .ple-module-main_image .ple-module-guide  {
+    display: flex !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    gap: 30px !important;
+  }
+  .ple-image_module_guide {
+    max-width: 100% !important;
+  }
+  .ple-module-main_image {
+    flex-direction: column;
+  }
+  .module-mainImage {
+    padding: 0;
+    align-items: flex-start;
+    flex: 50% 50%;
+  }
+  .mainImageBox {
+    margin-bottom: 30px;
+  }
+  .mainImageBox .ple-drag-drop {
+    background: url(/i/45384);
+    background-repeat: no-repeat !important;
+    border-color: rgb(204, 204, 204);
+    background-size: cover !important;
+    background-position: center !important;
+    height: 200px;
+    width: 100% !important;
+  }
+  #imageButtons .thumbnailBtn {
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    border-radius: 0.3rem;
+    color: #6c757d;
+    border-color: #6c757d;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  #imageButtons .thumbnailBtn:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+}
+
 @media (max-width: 550px) {
   .ple-module-content a.btn {
     font-size: 0px !important;
@@ -330,14 +377,24 @@ https://github.com/sliptree/bootstrap-tokenfield/pull/287 */
   .module-mainImage {
     flex-direction: column;
   }
-  .thumbnailBtn {
-    width: 120px;
-  }
   #imageButtons {
     flex-direction: row;
     justify-content: space-between;
   }
   .mainImageBox {
-    width: auto;
+    width: 100%;
+  }
+  .ple-module-main_image {
+    flex-direction: column;
+  }
+  .ple-image_module_guide {
+    max-width: 100% !important;
+  }
+  .ple-module-content .help {
+    margin-top: 25px;
+    padding: 0;
+  }
+  #imageButtons {
+    flex-direction: column;
   }
 }
