@@ -312,6 +312,9 @@ module.exports = function(textarea, _editor, _module) {
       wysiwyg
   );
 
+  // set up auto completion tool:
+  require("../modules/PublicLab.RichTextModule.Atwho.js")(_module, wysiwyg);
+
   // set up embed insertion tool:
   require("../modules/PublicLab.RichTextModule.Embed.js")(_module, wysiwyg);
 
