@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "browserify": "17.0.0",
-    "eslint": "^7.22.0",
+    "eslint": "^8.16.0",
     "eslint-config-google": "^0.14.0",
     "grunt": "^1.0.4",
     "grunt-browserify": "^6.0.0",
