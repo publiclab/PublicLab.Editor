@@ -41,7 +41,7 @@
     "domador": "2.4.4",
     "font-awesome": "~4.7.0",
     "grow-textarea": "https://github.com/jywarren/grow.git#d54141c9456343f14cc6c935faa0915af09eb669",
-    "http-server": "^0.12.3",
+    "http-server": "^14.1.0",
     "jquery": "^3.6.0",
     "leaflet": "^1.6.0",
     "leaflet-blurred-location": "^1.7.1",
