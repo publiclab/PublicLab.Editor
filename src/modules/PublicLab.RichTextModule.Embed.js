@@ -15,7 +15,7 @@ module.exports = function initEmbed(_module, wysiwyg) {
       var modalResult =
         "\n\n\n" +
         prompt(
-            "Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>"
+            "Enter the full embed code offered by the originating site; for YouTube, that might be: <iframe width='100%' src='https://youtube.com/embed/_________' frameborder='0' allowfullscreen></iframe>  Adjust width for smaller screens by changing width='800' (for example)"
         ) +
         "\n";
 
