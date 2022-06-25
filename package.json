@@ -64,7 +64,7 @@
     "husky": "^8.0.1",
     "jest": "^28.1.0",
     "jest-puppeteer": "^6.1.0",
-    "lint-staged": "13.0.2",
+    "lint-staged": "13.0.3",
     "matchdep": "^2.0.0",
     "puppeteer": "^2.1.0"
   },
