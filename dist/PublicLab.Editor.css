@@ -34,6 +34,7 @@ pre {
 }
 
 .bug-btn-wrapper {
+  .ple-map-content { font-size: 16px; }
   margin: 3rem;
 }
 
