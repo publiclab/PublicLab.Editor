@@ -66,7 +66,7 @@
     "jest-puppeteer": "^6.1.0",
     "lint-staged": "13.0.3",
     "matchdep": "^2.0.0",
-    "puppeteer": "^2.1.0"
+    "puppeteer": "^19.1.1"
   },
   "husky": {
     "hooks": {
