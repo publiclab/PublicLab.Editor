@@ -21836,6 +21836,7 @@ $(document).ready(function() {
   PL.Util.preventModalScrollToTop();
   PL.Util.enableTextModeKeyboardShortcut();
   PL.Util.preventUploadedImagesDragging();
+  PL.Util.hideFooterWhenTypingOnMobile();
   $('#removeFile').hide();
 });
 
@@ -22875,8 +22876,21 @@ module.exports = {
     var wysiwygDivObserver = new MutationObserver(handleChange);
 
     wysiwygDivObserver.observe(wysiwygDiv, observerConfig);
-  }
+  },
 
+  hideFooterWhenTypingOnMobile: function() {
+    var inputArea = $('input, textarea, .wk-wysiwyg');
+
+    inputArea.focusin(function () {
+       if(window.innerWidth <= 992) {
+         $('.ple-footer').hide();
+       }
+    });
+
+    inputArea.focusout(function () {
+      $('.ple-footer').show();
+    });
+  }
 };
 
 },{}],185:[function(require,module,exports){
