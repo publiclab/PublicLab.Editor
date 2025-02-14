@@ -417,6 +417,20 @@ var myVariable = 4;
           lon: 77,
           zoom: 5,
         });
+
+        // Add an event listener to check if all required fields are filled
+        const requiredFields = document.querySelectorAll('.ple-module-content input, .ple-module-content textarea');
+        requiredFields.forEach(field => {
+          field.addEventListener('input', () => {
+            if (editor.validate()) {
+              document.querySelector('.ple-publish').classList.remove('disabled');
+              document.querySelector('.ple-publish').disabled = false;
+            } else {
+              document.querySelector('.ple-publish').classList.add('disabled');
+              document.querySelector('.ple-publish').disabled = true;
+            }
+          });
+        });
       })();
     </script>
     <script src="data/atwho.PLE.js"></script>

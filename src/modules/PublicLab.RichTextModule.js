@@ -152,6 +152,7 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
         );
         $(".alert-change-mode").click(function alertChangeMode() {
           _module.setMode("markdown");
+          $(".markdown-warning").remove();
         });
         var refer = "#scrollpointMD_" + timestamp;
         $("html, body").animate(
@@ -300,6 +301,156 @@ module.exports = PublicLab.RichTextModule = PublicLab.Module.extend({
       if (_module.wysiwyg.mode == "wysiwyg") {
         _module.focusables[0] = $(_module.editable);
       } else _module.focusables[0] = $(_module.textarea);
+
+      $(".markdown-warning").remove();
+    });
+
+    $(_module.options.textarea).on("change keydown", function(e) {
+      _module.resize();
+    });
+
+    // if scrolling through the editor text area the toolbar will float
+    var wkC = document.getElementsByClassName("wk-commands")[0];
+    console.log('one2');
+
+    $(window).scroll(function() {
+      var textAreaRect = $(".ple-textarea")[0]
+          .getBoundingClientRect();
+      var richAreaRect = $(".wk-wysiwyg")[0]
+          .getBoundingClientRect();
+      var footerRect = $(".ple-footer")[0]
+          .getBoundingClientRect().height;
+
+      if (
+        (textAreaRect.bottom || richAreaRect.bottom) >= ((window.innerHeight || document.documentElement.clientHeight) - footerRect) && (textAreaRect.top || richAreaRect.top) <= ((window.innerHeight || document.documentElement.clientHeight) - footerRect)
+      ) {
+        wkC.style.position = "fixed";
+        wkC.style.bottom = footerRect + "px";
+        wkC.style.zIndex= 2;
+      } else {
+        wkC.style.position = "relative";
+        wkC.style.bottom = 0 + "px";
+      }
+    });
+
+    crossvent.add(_module.wysiwyg.editable, "keyup", function(e) {
+      _editor.validate();
+      var regexp = /data:image\/[^\s]+/i;
+      var timestamp = Date.now();
+      if (
+        _module.wysiwyg.mode == "wysiwyg" &&
+        _module.value().search(regexp) &&
+        $(".data-urls-warning").length === 0
+      ) {
+        var diRegEx = _module.value().match(regexp);
+        if (diRegEx) {
+          var message =
+            "Sorry, this editor can't handle images of this format. Please follow these steps:<br/><ul><li><a download href='" +
+            diRegEx[0] +
+            "'>Download</a> your image</li><li>Drag it back into the editor, it's that simple!</li></ul>";
+          _module.wysiwyg.editable.innerHTML = _module.wysiwyg.editable.innerHTML.replace(
+              regexp,
+              ""
+          );
+          $(_module.wysiwyg.editable).after(
+              "<div id='scrollpointDURI_" +
+              timestamp +
+              "' class='data-urls-warning alert alert-warning'>" +
+              message +
+              "</div>"
+          );
+          var refer = "#scrollpointDURI_" + timestamp;
+          $("html, body").animate(
+              {
+                scrollTop: $(refer).offset().top
+              },
+              2000
+          );
+        }
+      }
+    });
+
+    crossvent.add(_module.wysiwyg.textarea, "keyup", function(e) {
+      _editor.validate();
+      var regexp = /\*\*[\n]+\*\*/g;
+      var timestamp = Date.now();
+      if (
+        _module.wysiwyg.mode == "markdown" &&
+        _module.value().match(regexp) &&
+        $(".invalid-bold-tags-warning").length === 0
+      ) {
+        var message =
+          "Invalid input: Please remove all invalid bold tags like the ones below:<br><br>**<br>**";
+        _module.wysiwyg.textarea.innerHTML = _module.wysiwyg.textarea.innerHTML.replace(
+            regexp,
+            ""
+        );
+        $(_module.wysiwyg.textarea).after(
+            "<div id='scrollpointBold_" +
+            timestamp +
+            "' class='invalid-bold-tags-warning alert alert-warning'>" +
+            message +
+            "</div>"
+        );
+        var refer = "#scrollpointBold_" + timestamp;
+        $("html, body").animate(
+            {
+              scrollTop: $(refer).offset().top
+            },
+            2000
+        );
+      }
+    });
+
+    crossvent.add(_module.wysiwyg.textarea, "keyup", function(e) {
+      _editor.validate();
+      var regexp = /[\*]{2}[\s]{0,1}[\n]+[\#]+[^\P{P}*]+[\*]{2}/;
+      // checks for the following pattern
+      // <double asterisks><zero or one space>
+      // <atleast one new lines>
+      // <atleast one hash><include atleast one characters that is NOT an asterisk><double asterisks>
+      if (_module.wysiwyg.mode == "markdown" && _module.value().match(regexp)) {
+        _module.value(
+            _module
+                .value()
+                .match(regexp)[0]
+                .substr(3, _module.value().match(regexp)[0].length - 5)
+        );
+      }
+    });
+
+    crossvent.add(_module.wysiwyg.editable, "mouseover", function(e) {
+      _editor.validate();
+      if (_module.wysiwyg.mode === "wysiwyg" && e.target.href) {
+        var n = new Date().getTime();
+        e.target.id = n;
+        $("#" + n).attr("data-toggle", "tooltip");
+        $("#" + n).attr("title", e.target.href);
+        $('[data-toggle="tooltip"]').tooltip();
+      }
+    });
+
+    // once woofmark's done with the textarea, this is triggered
+    // using woofmark's special event system, crossvent
+    // -- move this into the Woofmark adapter initializer
+    crossvent.add(_module.options.textarea, "woofmark-mode-change", function(
+        e
+    ) {
+      _module.resize();
+
+      _module.afterParse();
+
+      // ensure document is scrolled to the same place:
+      document.body.scrollTop = _module.scrollTop;
+      // might need to adjust for markdown/rich text not
+      // taking up same amount of space, if menu is below _editor...
+      // if (_editor.wysiwyg.mode == "markdown")
+
+      if (_module.wysiwyg.mode == "wysiwyg") {
+        _module.focusables[0] = $(_module.editable);
+      } else _module.focusables[0] = $(_module.textarea);
+
+      $(".markdown-warning").remove();
     });
 
     $(_module.options.textarea).on("change keydown", function(e) {
