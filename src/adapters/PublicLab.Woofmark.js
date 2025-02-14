@@ -371,7 +371,8 @@ module.exports = function(textarea, _editor, _module) {
       $(".wk-commands button.woofmark-command-ol").hide();
       $(".wk-commands button.woofmark-command-ul").hide();
     } else {
-      $(".wk-switchboard button").addClass("btn-sm");
+      $(".wk-switchboard button").addClass("btn");
+      $(".wk-switchboard button").addClass("btn-light");
     }
   };
 
