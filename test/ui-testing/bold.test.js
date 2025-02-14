@@ -44,4 +44,32 @@ describe('Bold Text', () => {
     await page.keyboard.press("Backspace");
     await page.click('.woofmark-mode-wysiwyg');
   }, timeout);
+
+  test('Filters out newlines with only formatting', async () => {
+    // switches to wysiwyg mode if it is in markdown mode
+    if (await page.evaluate(() => $(".woofmark-mode-markdown").is(":disabled"))) {
+      await page.click('.woofmark-mode-wysiwyg');
+    }
+
+    // clicks on bold button and adds newlines with only formatting
+    await page.waitForSelector('.ple-module-body');
+    await page.waitForSelector('.wk-wysiwyg');
+    await page.keyboard.press('Backspace');
+    await page.click('.woofmark-command-bold');
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('Enter');
+    await page.keyboard.type('bold text');
+    await page.click('.woofmark-command-bold');
+    await page.keyboard.press('Enter');
+    await page.keyboard.type('normal text');
+
+    // switches to markdown mode and checks for filtering out newlines with only formatting
+    await page.click('.woofmark-mode-markdown');
+    const filteredNewlines = await page.evaluate(() => document.querySelector('.ple-textarea').value.includes('**\n**'));
+    expect(filteredNewlines).toBe(false);
+
+    // resets changes by removing the added text and changes back to wysiwyg mode
+    await page.keyboard.press("Backspace");
+    await page.click('.woofmark-mode-wysiwyg');
+  }, timeout);
 });
