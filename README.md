@@ -170,12 +170,29 @@ PublicLab.Editor expects a response from the server upon sending a request to `d
 
 * Testing image upload and other features that depend on an interactive server is difficult with just a basic one-line webserver. Instead, you can set up the `plots2` project as explained here to see the Editor working interactively while you test out those features.
 
- * Clone [`plots2`](https://github.com/publiclab/plots2#standard-installation) and follow the [Standard Installation](https://github.com/publiclab/plots2#standard-installation) instructions to run it on your local server.
-* Now in `plots2/package.json#` at `line 62`, replace this line with `"publiclab-editor": "file:..<path>"` where `<path>` is path of your cloned `PublicLab.Editor` repo folder
-* Now with `passenger start` you can access the Editor at `localhost:3000/post`. Make changes in Editor's source code and run `grunt build` or `grunt debug` to bundle all files. Then run `yarn install --force` in plots2 repo to view changes on server.
-* For reflecting HTML changes use   `plots2/app/views/editor/rich.html.erb` instead of example.html. They both have same structure.
-* For reflecting the changes on the local server need to run `yarn install --force` and refresh your page.
+* Clone [`plots2`](https://github.com/publiclab/plots2#standard-installation) and follow the [Standard Installation](https://github.com/publiclab/plots2#standard-installation) instructions to run it on your local server.
+* In the root of your local `PublicLab.Editor` checkout, register the package with Yarn:
 
+  ```sh
+  yarn link
+  ```
+
+  The package name is `publiclab-editor`. From the root of your `plots2` checkout, link that package:
+
+  ```sh
+  yarn link publiclab-editor
+  ```
+
+  Yarn creates a symlink in `plots2/node_modules` that points to your local `PublicLab.Editor` checkout. You do not need to change `plots2/package.json` or reinstall the package after each Editor change.
+* After changing files in `PublicLab.Editor/src`, rebuild the bundle from the Editor checkout:
+
+  ```sh
+  npm run build
+  ```
+
+  The linked package uses `dist/PublicLab.Editor.js`, so the rebuilt bundle is available to `plots2` immediately. Refresh the page to see the changes.
+* Start `plots2` with `passenger start` and open `localhost:3000/post`. For HTML changes, edit `plots2/app/views/editor/rich.html.erb`; it has the same structure as `examples/index.html`.
+* To stop using the local checkout, run `yarn unlink publiclab-editor` from the `plots2` checkout, then run `yarn install` to restore the package from `package.json`.
 
 
 ****
